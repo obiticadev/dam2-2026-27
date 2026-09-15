@@ -1,0 +1,30 @@
+# Sistema operativo
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editores
+.idea/
+*.iml
+*.iws
+.vscode/
+*.swp
+*~
+
+# Secretos y configuracion local
+.env
+.env.*
+!.env.example
+*.p12
+*.pfx
+secrets.*
+credentials.*
+
+# Temporales. Los documentos, PDF, imagenes y ZIP no se ignoran.
+*.log
+*.tmp
+*.temp
+*.bak
+~$*
+*.db-journal
+*.sqlite-journal
