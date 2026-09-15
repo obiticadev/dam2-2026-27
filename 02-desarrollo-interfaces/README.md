@@ -1,13 +1,13 @@
 # Desarrollo de Interfaces (DI)
 
-Indice del temario y los recursos autorizados sobre interfaces, componentes
-visuales, usabilidad, accesibilidad y distribucion de aplicaciones.
+Índice del temario y los recursos autorizados sobre interfaces, componentes
+visuales, usabilidad, accesibilidad y distribución de aplicaciones.
 
 | Unidad | Contenido | Estado |
 |---|---|---|
-| Pendiente | Se completara con la programacion oficial | No iniciada |
+| Pendiente | Se completará con la programación oficial | No iniciada |
 
-## Trabajo practico
+## Trabajo práctico
 
-- [Ejercicios y practicas de DI](https://github.com/obiticadev/dam2-2026-27-di-labs)
-- Proyectos independientes: todavia no hay proyectos publicados.
+- [Ejercicios y prácticas de DI](https://github.com/obiticadev/dam2-2026-27-di-labs)
+- Proyectos independientes: todavía no hay proyectos publicados.

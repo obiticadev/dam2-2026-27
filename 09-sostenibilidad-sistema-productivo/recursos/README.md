@@ -1,3 +1,3 @@
 # Recursos
 
-PDF, enunciados, imagenes y archivos auxiliares publicables de Sostenibilidad.
+PDF, enunciados, imágenes y archivos auxiliares publicables de Sostenibilidad.

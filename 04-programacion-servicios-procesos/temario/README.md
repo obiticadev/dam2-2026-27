@@ -1,3 +1,3 @@
 # Temario
 
-Resumenes y documentacion propia de PSP, organizados por unidad.
+Resúmenes y documentación propia de PSP, organizados por unidad.

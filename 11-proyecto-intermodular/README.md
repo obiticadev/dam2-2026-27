@@ -1,7 +1,7 @@
 # Proyecto Intermodular
 
-Indice del proyecto que integre los conocimientos de segundo. El codigo tendra un
-repositorio independiente cuando se conozcan alcance, equipo y tecnologias.
+Índice del proyecto que integre los conocimientos de segundo. El código tendrá un
+repositorio independiente cuando se conozcan alcance, equipo y tecnologías.
 
 ## Proyecto
 

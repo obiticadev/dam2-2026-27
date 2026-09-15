@@ -1,3 +1,3 @@
 # Temario
 
-Resumenes y documentacion propia de Digitalizacion, organizados por unidad.
+Resúmenes y documentación propia de Digitalización, organizados por unidad.

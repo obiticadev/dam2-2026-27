@@ -11,7 +11,7 @@ Desktop.ini
 *.swp
 *~
 
-# Secretos y configuracion local
+# Secretos y configuración local
 .env
 .env.*
 !.env.example
@@ -20,7 +20,7 @@ Desktop.ini
 secrets.*
 credentials.*
 
-# Temporales. Los documentos, PDF, imagenes y ZIP no se ignoran.
+# Temporales. Los documentos, PDF, imágenes y ZIP no se ignoran.
 *.log
 *.tmp
 *.temp

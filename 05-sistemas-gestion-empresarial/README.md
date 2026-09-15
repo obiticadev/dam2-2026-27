@@ -1,13 +1,13 @@
-# Sistemas de Gestion Empresarial (SGE)
+# Sistemas de Gestión Empresarial (SGE)
 
-Indice del temario y los recursos autorizados sobre implantacion, integracion y
-personalizacion de sistemas de gestion empresarial.
+Índice del temario y los recursos autorizados sobre implantación, integración y
+personalización de sistemas de gestión empresarial.
 
 | Unidad | Contenido | Estado |
 |---|---|---|
-| Pendiente | Se completara con la programacion oficial | No iniciada |
+| Pendiente | Se completará con la programación oficial | No iniciada |
 
-## Trabajo practico
+## Trabajo práctico
 
-- [Ejercicios y practicas de SGE](https://github.com/obiticadev/dam2-2026-27-sge-labs)
-- Proyectos independientes: todavia no hay proyectos publicados.
+- [Ejercicios y prácticas de SGE](https://github.com/obiticadev/dam2-2026-27-sge-labs)
+- Proyectos independientes: todavía no hay proyectos publicados.

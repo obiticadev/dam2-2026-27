@@ -1,3 +1,3 @@
-# Practicas
+# Prácticas
 
-Entregas evaluables de Digitalizacion que no requieran repositorio propio.
+Entregas evaluables de Digitalización que no requieran repositorio propio.

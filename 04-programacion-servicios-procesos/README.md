@@ -1,13 +1,13 @@
-# Programacion de Servicios y Procesos (PSP)
+# Programación de Servicios y Procesos (PSP)
 
-Indice del temario y los recursos autorizados sobre procesos, concurrencia,
-sincronizacion, comunicaciones y servicios de red.
+Índice del temario y los recursos autorizados sobre procesos, concurrencia,
+sincronización, comunicaciones y servicios de red.
 
 | Unidad | Contenido | Estado |
 |---|---|---|
-| Pendiente | Se completara con la programacion oficial | No iniciada |
+| Pendiente | Se completará con la programación oficial | No iniciada |
 
-## Trabajo practico
+## Trabajo práctico
 
-- [Ejercicios y practicas de PSP](https://github.com/obiticadev/dam2-2026-27-psp-labs)
-- Proyectos independientes: todavia no hay proyectos publicados.
+- [Ejercicios y prácticas de PSP](https://github.com/obiticadev/dam2-2026-27-psp-labs)
+- Proyectos independientes: todavía no hay proyectos publicados.

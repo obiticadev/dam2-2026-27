@@ -1,3 +1,3 @@
 # Recursos
 
-PDF, enunciados, imagenes y archivos auxiliares publicables de Programacion en Python.
+PDF, enunciados, imágenes y archivos auxiliares publicables de Programación en Python.

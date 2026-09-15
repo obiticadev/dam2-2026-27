@@ -1,3 +1,3 @@
 # Recursos
 
-PDF, enunciados, imagenes y archivos auxiliares publicables de Desarrollo de Interfaces.
+PDF, enunciados, imágenes y archivos auxiliares publicables de Desarrollo de Interfaces.

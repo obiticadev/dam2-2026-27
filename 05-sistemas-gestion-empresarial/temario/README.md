@@ -1,3 +1,3 @@
 # Temario
 
-Resumenes y documentacion propia de SGE, organizados por unidad.
+Resúmenes y documentación propia de SGE, organizados por unidad.

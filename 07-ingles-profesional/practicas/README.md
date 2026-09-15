@@ -1,3 +1,3 @@
-# Practicas
+# Prácticas
 
-Entregas evaluables de Ingles Profesional que no requieran repositorio propio.
+Entregas evaluables de Inglés Profesional que no requieran repositorio propio.

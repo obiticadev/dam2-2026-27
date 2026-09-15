@@ -1,3 +1,3 @@
 # Recursos
 
-PDF, requisitos, imagenes y archivos auxiliares publicables del proyecto.
+PDF, requisitos, imágenes y archivos auxiliares publicables del proyecto.

@@ -1,3 +1,3 @@
 # Temario
 
-Documentacion de referencia y requisitos del Proyecto Intermodular.
+Documentación de referencia y requisitos del Proyecto Intermodular.

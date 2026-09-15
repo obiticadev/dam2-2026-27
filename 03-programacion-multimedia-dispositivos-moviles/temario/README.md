@@ -1,3 +1,3 @@
 # Temario
 
-Resumenes y documentacion propia de PMDM, organizados por unidad.
+Resúmenes y documentación propia de PMDM, organizados por unidad.

@@ -1,12 +1,12 @@
-# Programacion en Python
+# Programación en Python
 
-Indice del temario y los recursos autorizados de Programacion en Python.
+Índice del temario y los recursos autorizados de Programación en Python.
 
 | Unidad | Contenido | Estado |
 |---|---|---|
-| Pendiente | Se completara con la programacion oficial | No iniciada |
+| Pendiente | Se completará con la programación oficial | No iniciada |
 
-## Trabajo practico
+## Trabajo práctico
 
-- [Ejercicios y practicas de Python](https://github.com/obiticadev/dam2-2026-27-python-labs)
-- Proyectos independientes: todavia no hay proyectos publicados.
+- [Ejercicios y prácticas de Python](https://github.com/obiticadev/dam2-2026-27-python-labs)
+- Proyectos independientes: todavía no hay proyectos publicados.

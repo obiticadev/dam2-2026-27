@@ -1,11 +1,11 @@
 # Proyectos
 
-Catalogo de aplicaciones y practicas destacadas con repositorio independiente.
+Catálogo de aplicaciones y prácticas destacadas con repositorio independiente.
 
-| Proyecto | Modulo | Tecnologias | Repositorio | Estado |
+| Proyecto | Módulo | Tecnologías | Repositorio | Estado |
 |---|---|---|---|---|
 | Pendiente | - | - | - | Planificado |
 
-Cada proyecto publicado incluira una descripcion del problema, instrucciones de
-ejecucion, tecnologias utilizadas, capturas cuando aporten valor y autoria de los
+Cada proyecto publicado incluirá una descripción del problema, instrucciones de
+ejecución, tecnologías utilizadas, capturas cuando aporten valor y autoría de los
 recursos o partes desarrolladas en equipo.

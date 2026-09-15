@@ -1,3 +1,3 @@
 # Tareas
 
-Tareas iniciales y actividades de preparacion del Proyecto Intermodular.
+Tareas iniciales y actividades de preparación del Proyecto Intermodular.

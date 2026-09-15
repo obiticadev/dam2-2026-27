@@ -1,13 +1,13 @@
-# Programacion Multimedia y Dispositivos Moviles (PMDM)
+# Programación Multimedia y Dispositivos Móviles (PMDM)
 
-Indice del temario y los recursos autorizados de desarrollo movil y multimedia.
-Las aplicaciones completas tendran repositorio propio.
+Índice del temario y los recursos autorizados de desarrollo móvil y multimedia.
+Las aplicaciones completas tendrán repositorio propio.
 
 | Unidad | Contenido | Estado |
 |---|---|---|
-| Pendiente | Se completara con la programacion oficial | No iniciada |
+| Pendiente | Se completará con la programación oficial | No iniciada |
 
-## Trabajo practico
+## Trabajo práctico
 
-- [Ejercicios y practicas de PMDM](https://github.com/obiticadev/dam2-2026-27-pmdm-labs)
-- Proyectos independientes: todavia no hay proyectos publicados.
+- [Ejercicios y prácticas de PMDM](https://github.com/obiticadev/dam2-2026-27-pmdm-labs)
+- Proyectos independientes: todavía no hay proyectos publicados.

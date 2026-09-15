@@ -1,3 +1,3 @@
 # Recursos
 
-PDF, enunciados, imagenes y archivos auxiliares publicables de Digitalizacion.
+PDF, enunciados, imágenes y archivos auxiliares publicables de Digitalización.

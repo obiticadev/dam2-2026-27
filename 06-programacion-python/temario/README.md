@@ -1,3 +1,3 @@
 # Temario
 
-Resumenes y documentacion propia de Programacion en Python, organizados por unidad.
+Resúmenes y documentación propia de Programación en Python, organizados por unidad.

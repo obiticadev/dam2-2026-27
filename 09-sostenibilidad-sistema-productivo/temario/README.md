@@ -1,3 +1,3 @@
 # Temario
 
-Resumenes y documentacion propia de Sostenibilidad, organizados por unidad.
+Resúmenes y documentación propia de Sostenibilidad, organizados por unidad.

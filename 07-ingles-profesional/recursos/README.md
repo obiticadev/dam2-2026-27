@@ -1,3 +1,3 @@
 # Recursos
 
-PDF, enunciados, imagenes y archivos auxiliares publicables de Ingles Profesional.
+PDF, enunciados, imágenes y archivos auxiliares publicables de Inglés Profesional.

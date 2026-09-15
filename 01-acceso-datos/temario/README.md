@@ -1,3 +1,3 @@
 # Temario
 
-Resumenes y documentacion propia de Acceso a Datos, organizados por unidad.
+Resúmenes y documentación propia de Acceso a Datos, organizados por unidad.

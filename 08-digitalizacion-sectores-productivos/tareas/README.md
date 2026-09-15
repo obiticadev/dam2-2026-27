@@ -1,3 +1,3 @@
 # Tareas
 
-Ejercicios de clase y actividades para casa de Digitalizacion.
+Ejercicios de clase y actividades para casa de Digitalización.

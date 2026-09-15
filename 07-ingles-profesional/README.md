@@ -1,8 +1,8 @@
-# Ingles Profesional
+# Inglés Profesional
 
-Espacio para vocabulario tecnico, actividades, presentaciones y recursos propios
-de comunicacion profesional.
+Espacio para vocabulario técnico, actividades, presentaciones y recursos propios
+de comunicación profesional.
 
 | Unidad | Contenido | Estado |
 |---|---|---|
-| Pendiente | Se completara con la programacion oficial | No iniciada |
+| Pendiente | Se completará con la programación oficial | No iniciada |

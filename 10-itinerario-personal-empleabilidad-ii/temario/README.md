@@ -1,3 +1,3 @@
 # Temario
 
-Resumenes y documentacion propia de IPE II, organizados por unidad.
+Resúmenes y documentación propia de IPE II, organizados por unidad.

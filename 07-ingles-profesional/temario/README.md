@@ -1,3 +1,3 @@
 # Temario
 
-Resumenes y documentacion propia de Ingles Profesional, organizados por unidad.
+Resúmenes y documentación propia de Inglés Profesional, organizados por unidad.
