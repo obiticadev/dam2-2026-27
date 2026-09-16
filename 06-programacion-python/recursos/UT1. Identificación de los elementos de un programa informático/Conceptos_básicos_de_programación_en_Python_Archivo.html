@@ -1,0 +1,1267 @@
+<html lang="es"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UT1. Identificación de los elementos de un programa informático</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg-alt: #f5f7fa;
+    --text: #1a1d21;
+    --text-muted2: #5a6169;
+    --border: #e1e4e8;
+    --accent: #0b5fff;
+    --accent-hover: #0847c4;
+    --code-bg: #f4f4f4;
+    --code-text: #24292e;
+    --code-border: #e1e4e8;
+    --table-header-bg: #eef2f7;
+    --table-row-alt: #fafbfc;
+    --solution-bg: #eef8f0;
+    --solution-border: #a9d8b8;
+    --solution-btn-bg: #2f9e52;
+    --solution-btn-text: #ffffff;
+    --sidebar-bg: #f7f8fa;
+    --sidebar-border: #e1e4e8;
+    --link-active-bg: #e6efff;
+    --shadow: rgba(0,0,0,0.10);
+    --diagram-bg: #f4f4f4;
+    --code-keyword: #a626a4;
+    --code-string: #22863a;
+    --code-comment: #6a737d;
+    --code-number: #b35900;
+    --code-builtin: #0b5fff;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #14171c;
+      --bg-alt: #1b1f26;
+      --text: #e6e8eb;
+      --text-muted2: #a0a6b0;
+      --border: #2b3038;
+      --accent: #5b9dff;
+      --accent-hover: #85b7ff;
+      --code-bg: #1e2229;
+      --code-text: #d6dbe1;
+      --code-border: #2b3038;
+      --table-header-bg: #232830;
+      --table-row-alt: #191c22;
+      --solution-bg: #17251c;
+      --solution-border: #2f5c3d;
+      --solution-btn-bg: #2f9e52;
+      --solution-btn-text: #06120a;
+      --sidebar-bg: #101317;
+      --sidebar-border: #262b33;
+      --link-active-bg: #1d2c44;
+      --shadow: rgba(0,0,0,0.4);
+      --diagram-bg: #1e2229;
+      --code-keyword: #c792ea;
+      --code-string: #7ee787;
+      --code-comment: #7f8b98;
+      --code-number: #f2c078;
+      --code-builtin: #5b9dff;
+    }
+  }
+
+  * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  a { color: var(--accent); }
+  a:hover { color: var(--accent-hover); }
+
+  /* ---------- Sidebar ---------- */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 290px;
+    background: var(--sidebar-bg);
+    border-right: 1px solid var(--sidebar-border);
+    overflow-y: auto;
+    padding: 1.25rem 0 2rem;
+    z-index: 40;
+    transition: transform 0.25s ease;
+  }
+
+  .sidebar-header {
+    padding: 0 1.25rem 1rem;
+    border-bottom: 1px solid var(--sidebar-border);
+    margin-bottom: 0.75rem;
+  }
+
+  .sidebar-header h2 {
+    margin: 0;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted2);
+  }
+
+  .sidebar nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .sidebar nav a {
+    display: block;
+    padding: 0.55rem 1.25rem;
+    text-decoration: none;
+    color: var(--text);
+    font-size: 0.92rem;
+    border-left: 3px solid transparent;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .sidebar nav a:hover {
+    background: var(--link-active-bg);
+  }
+
+  .sidebar nav a.active {
+    background: var(--link-active-bg);
+    border-left-color: var(--accent);
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  .sidebar-toggle {
+    position: fixed;
+    top: 0.85rem;
+    left: 1rem;
+    z-index: 60;
+    width: 42px;
+    height: 42px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px var(--shadow);
+  }
+
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 30;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* ---------- Content ---------- */
+  .content {
+    margin-left: 290px;
+    display: flex;
+    justify-content: center;
+    padding: 0 1.5rem;
+    width: auto;
+  }
+
+  .content-inner {
+    width: 100%;
+    max-width: 1024px;
+    padding: 2.5rem 0 5rem;
+    min-width: 0;
+  }
+
+  .content-inner h1 {
+    font-size: 2rem;
+    margin-top: 0;
+    border-bottom: 3px solid var(--accent);
+    padding-bottom: 0.5rem;
+  }
+
+  section { margin-bottom: 1.5rem; padding-top: 0.25rem; }
+
+  section h2 {
+    font-size: 1.5rem;
+    margin-top: 1.1rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  section h3 {
+    font-size: 1.15rem;
+    color: var(--accent);
+    margin-top: 1.75rem;
+  }
+
+  p { margin: 0.85em 0; }
+
+  strong { color: var(--text); }
+
+  code {
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    background: var(--code-bg);
+    color: var(--code-text);
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
+    font-size: 0.88em;
+    border: 1px solid var(--code-border);
+    overflow-wrap: anywhere;
+  }
+
+  pre {
+    background: var(--code-bg);
+    border: 1px solid var(--code-border);
+    border-radius: 8px;
+    padding: 1rem 1.1rem;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  pre code {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 1em;
+  }
+
+  .diagram pre {
+    background: var(--diagram-bg);
+  }
+
+  /* ---------- Syntax highlighting (Python code blocks) ---------- */
+  .tok-kw { color: var(--code-keyword); font-weight: 600; }
+  .tok-str { color: var(--code-string); }
+  .tok-com { color: var(--code-comment); font-style: italic; }
+  .tok-num { color: var(--code-number); }
+  .tok-builtin { color: var(--code-builtin); }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25em 0;
+    font-size: 0.92rem;
+    max-width: 100%;
+  }
+
+  caption { text-align: left; margin-bottom: 0.5em; color: var(--text-muted2); }
+
+  th, td {
+    border: 1px solid var(--border);
+    padding: 0.55em 0.75em;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    background: var(--table-header-bg);
+    font-weight: 600;
+  }
+
+  tbody tr:nth-child(even) {
+    background: var(--table-row-alt);
+  }
+
+  .tabla-col1-ajustada th:first-child,
+  .tabla-col1-ajustada td:first-child {
+    width: 1%;
+    white-space: nowrap;
+  }
+
+  ul, ol { padding-left: 1.4rem; }
+  li { margin: 0.3em 0; }
+
+  .exercise {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+  }
+
+  .exercise > :first-child { margin-top: 0; }
+
+  .activity {
+    background: var(--bg-alt);
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+  }
+
+  .activity h3 { margin-top: 0; }
+
+  /* ---------- Solutions (hidden by default, toggled by button) ---------- */
+  .solution-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    background: var(--solution-btn-bg);
+    color: var(--solution-btn-text);
+    border: none;
+    border-radius: 999px;
+    padding: 0.5em 1.1em;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: filter 0.15s ease;
+  }
+
+  .solution-toggle:hover { filter: brightness(1.08); }
+
+  .solution-toggle .icon {
+    transition: transform 0.2s ease;
+    display: inline-block;
+  }
+
+  .solution-toggle[aria-expanded="true"] .icon {
+    transform: rotate(90deg);
+  }
+
+  .solution-content {
+    background: var(--solution-bg);
+    border: 1px solid var(--solution-border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-top: 0.75rem;
+  }
+
+  .solution-content[hidden] { display: none; }
+
+  .solution-content > :first-child { margin-top: 0; }
+  .solution-content > :last-child { margin-bottom: 0; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px) {
+    .sidebar {
+      transform: translateX(-100%);
+      width: 82%;
+      max-width: 320px;
+      box-shadow: 4px 0 18px var(--shadow);
+    }
+
+    .sidebar.open { transform: translateX(0); }
+
+    .sidebar-toggle { display: flex; }
+
+    .content {
+      margin-left: 0;
+      padding: 0 1.25rem;
+    }
+
+    .content-inner {
+      padding: 4.5rem 0 3rem;
+    }
+
+    .content-inner h1 { font-size: 1.5rem; }
+    section h2 { font-size: 1.25rem; }
+
+    table { font-size: 0.82rem; }
+    th, td { padding: 0.4em 0.5em; }
+  }
+
+  @media (max-width: 480px) {
+    .content { padding: 0 0.9rem; }
+    .content-inner { padding: 4.5rem 0 2.5rem; }
+    pre { font-size: 0.76rem; padding: 0.75rem; }
+  }
+</style>
+
+</head>
+<body>
+
+<button id="sidebarToggle" class="sidebar-toggle" aria-label="Abrir menú de contenidos" aria-expanded="false">☰</button>
+<div id="overlay" class="overlay"></div>
+
+<aside id="sidebar" class="sidebar">
+  <div class="sidebar-header">
+    <h2>Contenidos</h2>
+  </div>
+  <nav>
+    <ul>
+      <li><a href="#introduccion" class="">Introducción</a></li>
+      <li><a href="#seccion-a" class="active">a) ¿Qué es Python? Herramientas y entorno de desarrollo</a></li>
+      <li><a href="#seccion-b">b) Entornos virtuales en Python</a></li>
+      <li><a href="#seccion-c">c) Estructura y bloques fundamentales</a></li>
+      <li><a href="#seccion-d">d) Ejecución de un programa: script frente a módulo</a></li>
+      <li><a href="#seccion-e">e) Variables</a></li>
+      <li><a href="#seccion-f">f) Tipos de datos</a></li>
+      <li><a href="#seccion-g">g) Entrada de datos por teclado: input()</a></li>
+      <li><a href="#seccion-h">h) Literales</a></li>
+      <li><a href="#seccion-i">i) Constantes</a></li>
+      <li><a href="#seccion-j">j) Operadores y expresiones</a></li>
+      <li><a href="#seccion-k">k) Conversiones de tipo</a></li>
+      <li><a href="#seccion-l">l) Comentarios</a></li>
+      <li><a href="#seccion-m">m) Actividad práctica</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<main id="content" class="content">
+<div class="content-inner">
+
+  <h1>UT1. Identificación de los elementos de un programa informático</h1>
+
+  <section id="introduccion">
+    <h2>Introducción</h2>
+    <p>Antes de escribir programas complejos es necesario reconocer las piezas básicas con las que se construyen: qué es Python y con qué herramientas se programa en él, cómo se organiza un programa por dentro, qué es una variable, qué tipos de datos existen, qué diferencia hay entre un literal y una constante, cómo se combinan los datos mediante operadores, cómo se convierten unos tipos en otros y cómo se documenta el código mediante comentarios.</p>
+    <p>Esta unidad de trabajo presenta estos elementos usando Python como lenguaje de referencia, por ser el lenguaje del módulo, aunque los conceptos son extrapolables a cualquier otro lenguaje de programación.</p>
+  </section>
+
+  <section id="seccion-a">
+    <h2>a) ¿Qué es Python? Herramientas y entorno de desarrollo</h2>
+
+    <p><strong>¿Qué es Python?</strong> Python es un <strong>lenguaje de programación de propósito general</strong> creado por Guido van Rossum y publicado por primera vez en 1991.</p>
+
+    <p>Su diseño prioriza la <strong>legibilidad del código</strong> (una sintaxis limpia, cercana al lenguaje natural, con una fuerte dependencia de la indentación) y la <strong>productividad del programador</strong>, lo que lo ha convertido en uno de los lenguajes más utilizados en ámbitos muy diversos: desarrollo web (backend), ciencia de datos e inteligencia artificial, automatización y scripting, desarrollo de aplicaciones de escritorio, testing, o como lenguaje introductorio en la enseñanza de la programación.</p>
+
+    <p><strong>¿Qué tipo de lenguaje de programación es Python?</strong> Se puede clasificar según varios criterios:</p>
+
+    <table>
+      <thead><tr><th>Criterio de clasificación</th><th>Python es...</th><th>Significado</th></tr></thead>
+      <tbody>
+        <tr><td>Según su nivel de abstracción</td><td><strong>De alto nivel</strong></td><td>Su sintaxis está pensada para ser entendida por personas, alejada del lenguaje máquina; el propio intérprete se encarga de traducirla.</td></tr>
+        <tr><td>Según cómo se ejecuta</td><td><strong>Interpretado</strong></td><td>El código fuente no se traduce por completo a lenguaje máquina antes de ejecutarse (como ocurre con un lenguaje <em>compilado</em>, por ejemplo C); un programa llamado <strong>intérprete</strong> (CPython, la implementación de referencia) va leyendo y ejecutando el código línea a línea en el momento de la ejecución. Esto facilita probar y depurar código rápidamente, a cambio de una ejecución algo más lenta que la de un lenguaje compilado.</td></tr>
+        <tr><td>Según el tipado</td><td><strong>De tipado dinámico y fuerte</strong></td><td><em>Dinámico</em>: no es necesario declarar el tipo de una variable, el intérprete lo deduce en tiempo de ejecución. <em>Fuerte</em>: Python no realiza conversiones automáticas "arriesgadas" entre tipos incompatibles (por ejemplo, <code>"3" + 3</code> provoca un error en lugar de un resultado inesperado).</td></tr>
+        <tr><td>Según el paradigma que admite</td><td><strong>Multiparadigma</strong></td><td>Permite programar de forma <strong>imperativa/estructurada</strong>, <strong>orientada a objetos</strong> y, en buena medida, también de forma <strong>funcional</strong>.</td></tr>
+        <tr><td>Según la plataforma</td><td><strong>Multiplataforma</strong></td><td>Un mismo programa Python puede ejecutarse, sin apenas cambios, en Windows, macOS o Linux, siempre que el sistema disponga de un intérprete de Python instalado.</td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>Herramientas necesarias para programar en Python:</strong></p>
+    <ol>
+      <li><strong>El intérprete de Python</strong>: el programa que traduce y ejecuta el código fuente. Se descarga de forma gratuita desde <a href="https://www.python.org/downloads/">python.org</a> (en Windows conviene marcar la casilla <em>"Add python.exe to PATH"</em> durante la instalación). Este módulo trabaja con <strong>Python 3</strong> (no con Python 2, una versión anterior ya obsoleta). Una vez instalado, se puede comprobar la versión disponible desde una terminal con el comando <code>python --version</code> (o <code>python3 --version</code> en algunos sistemas Linux/macOS).</li>
+      <li><strong>Un gestor de paquetes</strong>: <code>pip</code>, que se instala junto con Python, permite instalar librerías adicionales no incluidas en la instalación básica (por ejemplo, <code>pip install nombre_libreria</code>).</li>
+      <li><strong>Un editor de código o un IDE</strong>: aunque Python incluye un editor muy básico (<strong>IDLE</strong>), lo habitual es programar con un <strong>entorno integrado de desarrollo (IDE)</strong> más completo, como <strong>Visual Studio Code</strong> o <strong>PyCharm</strong>, que añaden autocompletado, depurador, gestión de proyectos y control de versiones.</li>
+      <li><strong>Una terminal (línea de comandos)</strong>: para ejecutar el intérprete, instalar paquetes con <code>pip</code> y lanzar los programas escritos; la mayoría de los IDE, incluido Visual Studio Code, incorporan una terminal integrada, por lo que no es necesario salir del propio editor.</li>
+      <li><em>(Opcional pero recomendable a medida que los proyectos crecen)</em> <strong>Entornos virtuales</strong> (<code>venv</code>): una copia aislada del intérprete y de las librerías para cada proyecto, de forma que las dependencias de un proyecto no interfieran con las de otro.</li>
+    </ol>
+
+    <p><strong>Configuración de Visual Studio Code para desarrollar en Python:</strong></p>
+
+    <p>Visual Studio Code (VS Code) es un editor de código gratuito y multiplataforma desarrollado por Microsoft, muy extendido gracias a su ligereza y a su sistema de extensiones. Para dejarlo listo para programar en Python:</p>
+    <ol>
+      <li><strong>Instalar Python</strong> desde <a href="https://www.python.org/downloads/">python.org</a> (ver punto 1 anterior), <em>antes</em> de configurar VS Code, ya que el editor necesita un intérprete instalado en el sistema al que conectarse.</li>
+      <li><strong>Descargar e instalar Visual Studio Code</strong> desde <a href="https://code.visualstudio.com/">code.visualstudio.com</a>.</li>
+      <li><strong>Instalar la extensión oficial "Python"</strong> (de Microsoft): dentro de VS Code, abrir la vista de <em>Extensiones</em> (icono lateral o <code>Ctrl+Shift+X</code>), buscar "Python" e instalar la extensión oficial. Esta extensión incorpora <strong>Pylance</strong> (autocompletado inteligente y detección de errores), soporte para el depurador y ejecución de código.</li>
+      <li><strong>Seleccionar el intérprete de Python</strong>: con la paleta de comandos (<code>Ctrl+Shift+P</code>), ejecutar <em>"Python: Select Interpreter"</em> y elegir la versión de Python instalada en el paso 1. VS Code recordará esta elección para cada carpeta de proyecto.</li>
+      <li><strong>Abrir una carpeta como proyecto</strong>: <code>Archivo &gt; Abrir carpeta...</code> (<em>File &gt; Open Folder</em>), seleccionando (o creando antes) la carpeta que contendrá el código fuente. Trabajar siempre desde una carpeta de proyecto, y no con archivos sueltos, facilita organizar el código, los recursos y, más adelante, el entorno virtual.</li>
+      <li><strong>Crear y ejecutar un archivo Python</strong>: crear un nuevo archivo con extensión <code>.py</code> (por ejemplo, <code>main.py</code>) y ejecutarlo con el botón <em>Run</em> (▷, arriba a la derecha) o desde la terminal integrada (<code>Terminal &gt; Nueva terminal</code>) con el comando <code>python main.py</code>.</li>
+      <li><em>(Recomendable)</em> <strong>Extensiones adicionales</strong>: además de Python/Pylance, suelen instalarse extensiones de formateo y estilo de código (por ejemplo, <em>Black Formatter</em> o <em>autopep8</em>), que ayudan a mantener un código ordenado y coherente con las convenciones de Python (PEP 8).</li>
+    </ol>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code class="language-python"><span class="tok-com"># Primer programa: se ejecuta desde la terminal integrada de VS Code con "python main.py"</span>
+<span class="tok-builtin">print</span>(<span class="tok-str">"Hola, mundo"</span>)
+<span class="tok-builtin">print</span>(<span class="tok-str">"Ya tengo Python y Visual Studio Code configurados"</span>)</code></pre>
+
+    <div class="activity">
+      <h3>Actividad propuesta</h3>
+      <ol>
+        <li>Instala Python desde <a href="https://www.python.org/downloads/">python.org</a> si aún no lo tienes, y comprueba la versión instalada con el comando <code>python --version</code> en una terminal.</li>
+        <li>Instala Visual Studio Code, añade la extensión oficial de Python y selecciona el intérprete instalado (<em>"Python: Select Interpreter"</em>).</li>
+        <li>Crea una carpeta de proyecto llamada <code>ut1_python</code>, ábrela en VS Code (<em>"Abrir carpeta..."</em>), crea dentro un archivo <code>main.py</code> con el contenido del ejemplo anterior y ejecútalo, comprobando el resultado en la terminal integrada.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="seccion-b">
+    <h2>b) Entornos virtuales en Python</h2>
+
+    <p><strong>¿Qué es un entorno virtual?</strong></p>
+
+    <p>Un <strong>entorno virtual</strong> (<em>virtual environment</em>) es una copia aislada e independiente del intérprete de Python y de sus librerías, asociada a un proyecto concreto. Al trabajar dentro de un entorno virtual, los paquetes que se instalan con <code>pip</code> se guardan únicamente en esa copia aislada, sin afectar ni al Python "global" del sistema ni a los entornos virtuales de otros proyectos.</p>
+
+    <p><strong>¿Por qué se necesitan?</strong></p>
+
+    <p>A medida que se trabaja en varios proyectos de Python en el mismo ordenador, es habitual que cada uno necesite <strong>versiones distintas</strong> de una misma librería, o que un proyecto requiera muchas librerías que no tienen sentido instalar de forma permanente en todo el sistema. Sin entornos virtuales, todas esas dependencias se instalarían mezcladas en la misma instalación global de Python, lo que tarde o temprano provoca conflictos de versiones entre proyectos. Un entorno virtual resuelve este problema dando a cada proyecto sus propias dependencias, de forma:</p>
+    <ul>
+      <li><strong>Aislada</strong>: lo que se instala en un entorno virtual no afecta a otros proyectos ni al sistema.</li>
+      <li><strong>Reproducible</strong>: es posible anotar en un archivo (habitualmente <code>requirements.txt</code>) qué librerías exactas necesita el proyecto, para poder recrear el mismo entorno en otro ordenador.</li>
+      <li><strong>Limpia</strong>: el Python del sistema operativo permanece con el mínimo de paquetes instalados, reduciendo el riesgo de romper otras herramientas que también dependan de él.</li>
+    </ul>
+
+    <p><strong>La herramienta <code>venv</code></strong>: Python incluye de serie, desde la versión 3.3, el módulo <code>venv</code>, que permite crear entornos virtuales sin necesidad de instalar nada adicional (existen alternativas, como <code>virtualenv</code> o <code>conda</code>, pero <code>venv</code> es la opción estándar y suficiente para este módulo).</p>
+
+    <p><strong>Crear y usar un entorno virtual desde la terminal:</strong></p>
+
+    <pre><code># 1. Crear el entorno virtual (se genera una carpeta, por convenio llamada .venv)
+python -m venv .venv
+
+# 2. Activarlo
+#    En Windows (símbolo del sistema):
+.venv\Scripts\activate
+#    En macOS / Linux:
+source .venv/bin/activate
+
+# Una vez activado, el prompt de la terminal muestra el nombre del entorno, por ejemplo:
+# (.venv) C:\proyectos\ut1_python&gt;
+
+# 3. Instalar librerías: quedan instaladas SOLO dentro de este entorno virtual
+pip install requests
+
+# 4. Anotar las dependencias del proyecto en un archivo, para poder reproducirlas
+pip freeze &gt; requirements.txt
+
+# 5. Desactivar el entorno virtual cuando se termina de trabajar
+deactivate</code></pre>
+
+    <p><strong>Crear un nuevo proyecto con su entorno virtual asociado en Visual Studio Code:</strong></p>
+    <ol>
+      <li>Crea (o abre) la <strong>carpeta del proyecto</strong> en VS Code, tal y como se explicó en el apartado a) (<code>Archivo &gt; Abrir carpeta...</code>).</li>
+      <li>Abre la <strong>terminal integrada</strong> (<code>Terminal &gt; Nueva terminal</code>); por defecto se abre ya situada en la carpeta del proyecto.</li>
+      <li>Crea el entorno virtual con <code>python -m venv .venv</code>. Se creará una carpeta <code>.venv</code> dentro del proyecto, con su propia copia del intérprete.</li>
+      <li>VS Code suele detectar automáticamente el nuevo entorno y mostrar un aviso ("<em>We noticed a new environment has been created</em>") ofreciendo seleccionarlo. Si no aparece, selecciónalo manualmente con la paleta de comandos (<code>Ctrl+Shift+P</code>) → <em>"Python: Select Interpreter"</em>, eligiendo el intérprete que aparece dentro de la carpeta <code>.venv</code>.</li>
+      <li>A partir de ese momento, cada vez que se abra una nueva terminal integrada en ese proyecto, VS Code activará automáticamente el entorno virtual seleccionado (se reconoce porque el prompt de la terminal muestra <code>(.venv)</code> al principio), y el botón <em>Run</em> ejecutará los archivos <code>.py</code> usando el intérprete de ese entorno.</li>
+      <li>Cualquier librería que el proyecto necesite se instala entonces con <code>pip install</code>, quedando registrada únicamente en ese entorno virtual.</li>
+    </ol>
+
+    <p>Trabajar siempre con un entorno virtual por proyecto, desde el principio, es una buena práctica que se dará por hecha en el resto de unidades de este módulo, especialmente cuando empecemos a usar librerías externas.</p>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code class="language-python"><span class="tok-com"># Este pequeño script, ejecutado DENTRO del entorno virtual activado,</span>
+<span class="tok-com"># permite comprobar que Python se está ejecutando desde el intérprete</span>
+<span class="tok-com"># del entorno virtual del proyecto y no desde el Python global del sistema.</span>
+<span class="tok-kw">import</span> sys
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Intérprete de Python en uso:"</span>)
+<span class="tok-builtin">print</span>(sys.prefix)</code></pre>
+
+    <div class="activity">
+      <h3>Actividad propuesta</h3>
+      <ol>
+        <li>Abre el proyecto <code>ut1_python</code> que creaste en el apartado a) y, desde la terminal integrada de VS Code, crea un entorno virtual con <code>python -m venv .venv</code>.</li>
+        <li>Actívalo (o comprueba que VS Code lo ha activado automáticamente al abrir la terminal) y confírmalo observando el prefijo <code>(.venv)</code> en el prompt.</li>
+        <li>Selecciona el intérprete del entorno virtual en VS Code (<em>"Python: Select Interpreter"</em>) y ejecuta el <code>main.py</code> del apartado a) para comprobar que sigue funcionando con normalidad.</li>
+        <li>Instala con <code>pip install requests</code> una librería de prueba dentro del entorno virtual, genera el archivo <code>requirements.txt</code> con <code>pip freeze &gt; requirements.txt</code> y ábrelo para comprobar su contenido.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="seccion-c">
+    <h2>c) Estructura y bloques fundamentales</h2>
+
+    <p>Un <strong>programa informático</strong> es un conjunto ordenado de instrucciones que un ordenador ejecuta para resolver un problema o realizar una tarea. Ese conjunto de instrucciones, escrito en un lenguaje de programación y en un archivo de texto, se denomina <strong>código fuente</strong>.</p>
+
+    <p>Todo programa Python se organiza en una serie de <strong>bloques fundamentales</strong>:</p>
+    <ol>
+      <li><strong>Cabecera / importaciones</strong>: en Python, la zona inicial del archivo donde se importan los módulos y librerías necesarios (<code>import</code>) y, opcionalmente, se indica el intérprete a usar mediante la línea <em>shebang</em> (<code>#!/usr/bin/env python3</code>) en sistemas Unix.</li>
+      <li><strong>Declaraciones globales</strong>: definición de constantes, variables globales o configuración inicial que va a usar el programa.</li>
+      <li><strong>Definición de funciones y clases</strong>: bloques de código reutilizable que encapsulan una tarea concreta (<code>def</code>) o que modelan una entidad mediante programación orientada a objetos (<code>class</code>). Se estudiarán en detalle en futuras unidades de trabajo, de modo que en esta unidad basta con reconocer que ese bloque existe dentro de la estructura de un programa.</li>
+      <li><strong>Cuerpo principal del programa</strong>: la secuencia de instrucciones que se ejecuta cuando se lanza el programa. Es el bloque donde ocurre la lógica central: se preparan o solicitan los datos, se realizan los cálculos y se muestran los resultados. En Python es una práctica profesional muy extendida proteger este cuerpo principal con la construcción <code>if __name__ == "__main__":</code>, que se explica con detalle en el apartado d) de esta unidad.</li>
+      <li><strong>Punto de entrada y salida</strong>: el lugar donde comienza la ejecución (la primera instrucción del cuerpo principal) y donde termina (fin del programa o instrucción de salida explícita, como <code>sys.exit()</code>).</li>
+    </ol>
+
+    <p>Dentro del cuerpo del programa, las instrucciones se agrupan siguiendo las tres <strong>estructuras de control</strong> propias de la programación estructurada:</p>
+    <ul>
+      <li><strong>Secuencial</strong>: las instrucciones se ejecutan una detrás de otra, en el orden en que aparecen.</li>
+      <li><strong>Selectiva o condicional</strong> (<code>if</code> / <code>elif</code> / <code>else</code>): el flujo se bifurca según se cumpla o no una condición.</li>
+      <li><strong>Iterativa o repetitiva</strong> (<code>for</code>, <code>while</code>): un bloque de instrucciones se repite mientras se cumpla una condición o para cada elemento de una colección.</li>
+    </ul>
+
+    <p>Estas dos últimas estructuras (selectiva e iterativa) se estudiarán en profundidad en la siguiente unidad de trabajo; en esta unidad basta con saber que existen y que son las responsables de que el flujo del programa no sea siempre una simple secuencia de arriba abajo.</p>
+
+    <p>Una particularidad de Python frente a otros lenguajes (Java, C#, C++) es que <strong>no delimita los bloques con llaves <code>{ }</code></strong>, sino mediante la <strong>indentación</strong> (sangrado), que no es una cuestión estética sino una regla sintáctica obligatoria: dos instrucciones con distinta indentación pertenecen a bloques distintos.</p>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code class="language-python"><span class="tok-com">#!/usr/bin/env python3</span>
+<span class="tok-com"># --- 1. Cabecera / importaciones ---</span>
+<span class="tok-kw">import</span> math
+
+<span class="tok-com"># --- 2. Declaraciones globales ---</span>
+IVA = <span class="tok-num">0.21</span>          <span class="tok-com"># constante global</span>
+precio = <span class="tok-num">100</span>        <span class="tok-com"># variable global</span>
+
+<span class="tok-com"># --- 3. Definición de funciones y clases ---</span>
+<span class="tok-com"># (todavía no se implementa: las funciones y las clases se estudiarán</span>
+<span class="tok-com">#  en las siguientes unidades; por ahora el cálculo se hace directamente</span>
+<span class="tok-com">#  en el cuerpo principal del programa)</span>
+
+<span class="tok-com"># --- 4. Cuerpo principal del programa ---</span>
+precio_final = precio * (<span class="tok-num">1</span> + IVA)          <span class="tok-com"># estructura secuencial</span>
+<span class="tok-builtin">print</span>(<span class="tok-str">"Precio final:"</span>, precio_final)
+<span class="tok-com"># (aquí se ubicarían más adelante las estructuras selectivas -if-</span>
+<span class="tok-com">#  e iterativas -for/while-, que se estudiarán más adelante)</span>
+
+<span class="tok-com"># --- 5. Punto de entrada y salida ---</span>
+<span class="tok-com"># La ejecución de este programa comienza en la línea "precio_final = ..."</span>
+<span class="tok-com"># (primera instrucción del cuerpo principal) y termina al llegar</span>
+<span class="tok-com"># a la última línea del archivo.</span></code></pre>
+
+    <div class="activity">
+      <h3>Actividad propuesta</h3>
+      <ol>
+        <li>Abre el proyecto <code>ut1_python</code> que creaste en el apartado a) (o crea uno nuevo llamado <code>ut1_estructura</code> si prefieres mantenerlo separado).</li>
+        <li>Dentro del proyecto, crea un archivo <code>main.py</code> y reproduce el ejemplo anterior, ejecutándolo desde el propio IDE.</li>
+        <li>Señala, mediante comentarios <code># ---</code>, cada uno de los cinco bloques fundamentales sobre tu propio código.</li>
+        <li>Añade al programa una nueva variable global <code>descuento</code> y una línea en el cuerpo principal que la reste al <code>precio_final</code>, manteniendo organizado cada bloque. Añade también, a modo de comentario, dónde colocarías en el futuro una función <code>es_mayor_de_edad(edad)</code> (se implementará en las siguientes unidades) y explica en qué bloque de los cinco quedaría ubicada.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="seccion-d">
+    <h2>d) Ejecución de un programa: script frente a módulo</h2>
+
+    <p>En el apartado anterior se ha visto que el cuerpo principal de un programa suele protegerse con la construcción <code>if __name__ == "__main__":</code>. Este apartado desarrolla en detalle <strong>qué significa esto y por qué es una práctica tan extendida</strong> entre programadores profesionales.</p>
+
+    <p>Un mismo archivo <code>.py</code> se puede usar de dos formas distintas:</p>
+    <ul>
+      <li>Como <strong>script ejecutable</strong>: se lanza directamente, por ejemplo escribiendo <code>python main.py</code> en la terminal o pulsando el botón <em>Run</em> del IDE, para que realice su tarea de principio a fin.</li>
+      <li>Como <strong>módulo importable</strong>: otro archivo Python lo incorpora mediante <code>import</code>, para reutilizar las funciones, clases o datos que contiene, sin necesidad de copiar su código.</li>
+    </ul>
+
+    <p>Para que Python sepa distinguir en qué "modo" se está usando un archivo en cada momento, asigna automáticamente a <strong>todo archivo <code>.py</code></strong> una variable interna llamada <code>__name__</code>, cuyo valor depende de cómo se está ejecutando ese archivo:</p>
+
+    <table>
+      <thead><tr><th>¿Cómo se usa el archivo?</th><th>Valor de <code>__name__</code> dentro de ese archivo</th></tr></thead>
+      <tbody>
+        <tr><td>Se ejecuta <strong>directamente</strong> (<code>python main.py</code>, o <em>Run</em> en el IDE)</td><td><code>"__main__"</code></td></tr>
+        <tr><td>Se <strong>importa</strong> desde otro archivo (por ejemplo, <code>import main</code>)</td><td>El nombre del propio archivo, como texto (<code>"main"</code>)</td></tr>
+      </tbody>
+    </table>
+
+    <p>Gracias a esta diferencia, comprobar <code>if __name__ == "__main__":</code> y colocar dentro de ese bloque el cuerpo principal del programa hace que dicho código <strong>solo se ejecute cuando el archivo se lanza directamente</strong>, y no cuando otro programa lo importa únicamente para reutilizar sus funciones o clases. De este modo, un mismo archivo puede funcionar a la vez como <strong>programa ejecutable</strong> y como <strong>módulo reutilizable</strong>, sin que al importarlo se disparen sus acciones por accidente (por ejemplo, mostrar mensajes por pantalla, pedir datos al usuario o realizar cálculos que solo tenían sentido al ejecutarlo directamente).</p>
+
+    <p>Esta construcción utiliza una <strong>estructura selectiva</strong> (<code>if</code>), contenido que se estudiará formalmente en la siguiente unidad de trabajo. Por ese motivo, en esta unidad no se pide todavía escribir el <code>if __name__ == "__main__":</code> en las actividades: basta con comprobar, mediante <code>print()</code>, el valor que toma <code>__name__</code> en cada situación, y con saber identificar en qué parte del código se colocaría esa protección en el futuro.</p>
+
+    <h3>Ejemplo en Python</h3>
+
+    <p>Programa <code>saludo.py</code>, pensado para observar el valor de <code>__name__</code> según cómo se ejecute:</p>
+
+    <pre><code class="language-python"><span class="tok-com"># --- saludo.py ---</span>
+<span class="tok-builtin">print</span>(<span class="tok-str">"Valor de __name__ en este archivo:"</span>, __name__)
+<span class="tok-builtin">print</span>(<span class="tok-str">"Hola desde saludo.py"</span>)</code></pre>
+
+    <p>Si este archivo se ejecuta <strong>directamente</strong> (<code>python saludo.py</code>), el resultado en pantalla es:</p>
+
+    <pre><code>Valor de __name__ en este archivo: __main__
+Hola desde saludo.py</code></pre>
+
+    <p>Si, en cambio, se crea un segundo archivo <code>principal.py</code> en la misma carpeta que <strong>importa</strong> al anterior...</p>
+
+    <pre><code class="language-python"><span class="tok-com"># --- principal.py ---</span>
+<span class="tok-kw">import</span> saludo
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Esto se ejecuta desde principal.py"</span>)</code></pre>
+
+    <p>... y se ejecuta <code>principal.py</code>, el resultado es:</p>
+
+    <pre><code>Valor de __name__ en este archivo: saludo
+Hola desde saludo.py
+Esto se ejecuta desde principal.py</code></pre>
+
+    <p>Obsérvese que, al importar <code>saludo</code>, <strong>su código se ejecuta igualmente</strong> (se muestran sus dos mensajes), pero esta vez <code>__name__</code> vale <code>"saludo"</code> en lugar de <code>"__main__"</code>. Es precisamente este comportamiento el que la construcción <code>if __name__ == "__main__":</code> permite controlar: envolviendo con ella las instrucciones de <code>saludo.py</code>, estas solo se ejecutarían al lanzar ese archivo directamente, y no al importarlo desde <code>principal.py</code>. Así quedaría, a modo de comentario, sin necesidad de escribirla todavía como código funcional:</p>
+
+    <pre><code class="language-python"><span class="tok-com"># --- saludo.py ---</span>
+<span class="tok-builtin">print</span>(<span class="tok-str">"Valor de __name__ en este archivo:"</span>, __name__)
+
+<span class="tok-com"># A partir de la siguiente unidad de trabajo, cuando se estudien las estructuras selectivas,</span>
+<span class="tok-com"># el siguiente mensaje se protegería así para que NO se repita al</span>
+<span class="tok-com"># importar este archivo desde otro programa:</span>
+<span class="tok-com">#</span>
+<span class="tok-com">#     if __name__ == "__main__":</span>
+<span class="tok-com">#         print("Hola desde saludo.py")</span></code></pre>
+
+    <div class="activity">
+      <h3>Actividad propuesta</h3>
+      <ol>
+        <li>Crea un proyecto nuevo (o reutiliza el de un apartado anterior) con un archivo <code>saludo.py</code> que reproduzca el primer ejemplo. Ejecútalo directamente y anota el valor que muestra <code>__name__</code>.</li>
+        <li>En la misma carpeta, crea <code>principal.py</code> con <code>import saludo</code> y una línea <code>print()</code> propia. Ejecuta <code>principal.py</code> y compara el resultado con el del punto anterior: ¿qué mensajes se repiten y por qué?</li>
+        <li>Explica con tus propias palabras qué problema práctico resuelve la construcción <code>if __name__ == "__main__":</code>, apoyándote en lo observado en la actividad anterior.</li>
+        <li>Retoma el programa del apartado c) (estructura y bloques fundamentales) y añade, a modo de comentario, el fragmento <code>if __name__ == "__main__":</code> justo antes del cuerpo principal, indicando qué líneas quedarían "dentro" de esa protección.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="seccion-e">
+    <h2>e) Variables</h2>
+
+    <p>Una <strong>variable</strong> es un espacio de memoria identificado por un nombre (identificador) que almacena un valor susceptible de cambiar durante la ejecución del programa. Toda variable tiene tres elementos: un <strong>nombre</strong>, un <strong>valor</strong> y, de forma asociada al valor, un <strong>tipo de dato</strong>.</p>
+
+    <p>En Python las variables se crean en el momento en que se les asigna un valor por primera vez (no es necesario declararlas previamente como en otros lenguajes), mediante el operador de asignación <code>=</code>:</p>
+
+    <pre><code class="language-python">edad = <span class="tok-num">17</span>
+nombre = <span class="tok-str">"Laura"</span></code></pre>
+
+    <p>Python es un lenguaje de <strong>tipado dinámico</strong>: no hace falta indicar el tipo al declarar la variable (el intérprete lo deduce del valor asignado) y, además, una misma variable puede cambiar de tipo si se le asigna un valor de otro tipo en otro punto del programa.</p>
+
+    <p><strong>Reglas para nombrar variables (identificadores) en Python:</strong></p>
+    <ul>
+      <li>Pueden contener letras, números y guion bajo (<code>_</code>), pero no pueden empezar por un número.</li>
+      <li>Distinguen mayúsculas de minúsculas (<code>edad</code> y <code>Edad</code> son variables distintas).</li>
+      <li>No pueden coincidir con una palabra reservada del lenguaje (<code>if</code>, <code>for</code>, <code>class</code>, <code>import</code>...).</li>
+      <li>Por convenio (PEP 8), se escriben en minúsculas con guion bajo entre palabras (<code>snake_case</code>): <code>nombre_completo</code>, <code>precio_final</code>.</li>
+    </ul>
+
+    <p><strong>Tipos de variables según su ámbito (utilidad específica de cada una):</strong></p>
+
+    <table>
+      <thead><tr><th>Tipo de variable</th><th>Dónde se define</th><th>Utilidad</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Local</strong></td><td>Dentro de una función</td><td>Solo existe y es accesible mientras se ejecuta esa función; evita interferencias entre distintas partes del programa.</td></tr>
+        <tr><td><strong>Global</strong></td><td>Fuera de cualquier función, a nivel de módulo</td><td>Accesible desde cualquier punto del programa; útil para configuración o datos compartidos, aunque su abuso dificulta el mantenimiento del código.</td></tr>
+        <tr><td><strong>De instancia / atributo</strong></td><td>Dentro de una clase, asociada a <code>self</code></td><td>Almacena el estado propio de cada objeto creado a partir de esa clase (programación orientada a objetos).</td></tr>
+        <tr><td><strong>De parámetro</strong></td><td>En la cabecera de una función</td><td>Recibe el valor con el que se invoca la función y solo vive durante esa llamada.</td></tr>
+      </tbody>
+    </table>
+
+    <p>Las variables locales y de parámetro solo pueden practicarse de forma completa a partir de la unidad de trabajado correspondiente al estudio de las funciones y las variables de instancia a partir de la unidad de trabajo correspondiente a la programación orientada a objetos; esta unidad se centra en las variables globales, definidas directamente en el cuerpo principal del programa.</p>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code class="language-python">nombre = <span class="tok-str">"Laura"</span>      <span class="tok-com"># variable global, creada al asignarle un valor por primera vez</span>
+edad = <span class="tok-num">17</span>
+
+<span class="tok-builtin">print</span>(nombre, edad)
+
+edad = edad + <span class="tok-num">1</span>        <span class="tok-com"># se modifica el valor de la variable 'edad'</span>
+<span class="tok-builtin">print</span>(edad)             <span class="tok-com"># 18</span>
+
+nombre = <span class="tok-str">"Laura García"</span>   <span class="tok-com"># una misma variable puede recibir un nuevo valor en cualquier momento</span>
+<span class="tok-builtin">print</span>(nombre)</code></pre>
+
+    <div class="activity">
+      <h3>Actividad propuesta</h3>
+      <ol>
+        <li>Crea un script <code>variables.py</code> que declare variables para modelar los datos de un alumno: <code>nombre</code>, <code>apellidos</code>, <code>edad</code>, <code>nota_media</code>.</li>
+        <li>Modifica el valor de <code>nota_media</code> tras "aprobar un examen" (súmale un punto) y muestra el resultado con <code>print()</code>, comprobando así el criterio de <strong>modificar el código de un programa para crear y utilizar variables</strong>.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="seccion-f">
+    <h2>f) Tipos de datos</h2>
+
+    <p>El <strong>tipo de dato</strong> determina qué valores puede almacenar una variable y qué operaciones se pueden realizar con ella. Python incorpora, entre otros, los siguientes <strong>tipos de datos básicos</strong>:</p>
+
+    <table>
+      <thead><tr><th>Tipo</th><th>Nombre en Python</th><th>Descripción</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td>Entero</td><td><code>int</code></td><td>Números enteros, positivos o negativos, sin decimales</td><td><code>edad = 17</code></td></tr>
+        <tr><td>Real / flotante</td><td><code>float</code></td><td>Números con parte decimal</td><td><code>altura = 1.75</code></td></tr>
+        <tr><td>Complejo</td><td><code>complex</code></td><td>Números complejos (parte real e imaginaria)</td><td><code>z = 3 + 4j</code></td></tr>
+        <tr><td>Cadena de texto</td><td><code>str</code></td><td>Secuencia de caracteres</td><td><code>nombre = "Ana"</code></td></tr>
+        <tr><td>Booleano</td><td><code>bool</code></td><td>Valor lógico: <code>True</code> o <code>False</code></td><td><code>activo = True</code></td></tr>
+        <tr><td>Lista</td><td><code>list</code></td><td>Colección ordenada y <strong>mutable</strong> de elementos</td><td><code>notas = [5, 7, 9]</code></td></tr>
+        <tr><td>Tupla</td><td><code>tuple</code></td><td>Colección ordenada e <strong>inmutable</strong> de elementos</td><td><code>punto = (2, 3)</code></td></tr>
+        <tr><td>Conjunto</td><td><code>set</code></td><td>Colección <strong>no ordenada</strong> de elementos únicos</td><td><code>letras = {"a", "b"}</code></td></tr>
+        <tr><td>Diccionario</td><td><code>dict</code></td><td>Colección de pares clave-valor</td><td><code>alumno = {"nombre": "Ana", "edad": 17}</code></td></tr>
+        <tr><td>Nulo</td><td><code>NoneType</code></td><td>Representa la ausencia de valor</td><td><code>dato = None</code></td></tr>
+      </tbody>
+    </table>
+
+    <p>Se distingue entre <strong>tipos simples</strong> (o escalares: <code>int</code>, <code>float</code>, <code>complex</code>, <code>bool</code>) que almacenan un único valor, y <strong>tipos compuestos o estructurados</strong> (<code>str</code>, <code>list</code>, <code>tuple</code>, <code>set</code>, <code>dict</code>) que agrupan varios valores.</p>
+
+    <p>Python permite conocer el tipo de una variable en tiempo de ejecución con la función <code>type()</code>, lo cual resulta muy útil al depurar programas de tipado dinámico:</p>
+
+    <pre><code class="language-python">edad = <span class="tok-num">17</span>
+<span class="tok-builtin">print</span>(<span class="tok-builtin">type</span>(edad))       <span class="tok-com"># &lt;class 'int'&gt;</span></code></pre>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code class="language-python">entero = <span class="tok-num">10</span>
+real = <span class="tok-num">3.14</span>
+texto = <span class="tok-str">"Instituto"</span>
+booleano = <span class="tok-kw">True</span>
+lista = [<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>]
+tupla = (<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>)
+conjunto = {<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>}      <span class="tok-com"># el 2 duplicado se elimina</span>
+diccionario = {<span class="tok-str">"curso"</span>: <span class="tok-str">"DAM"</span>, <span class="tok-str">"año"</span>: <span class="tok-num">2</span>}
+nulo = <span class="tok-kw">None</span>
+
+<span class="tok-builtin">print</span>(entero, <span class="tok-str">"-&gt;"</span>, <span class="tok-builtin">type</span>(entero))
+<span class="tok-builtin">print</span>(real, <span class="tok-str">"-&gt;"</span>, <span class="tok-builtin">type</span>(real))
+<span class="tok-builtin">print</span>(texto, <span class="tok-str">"-&gt;"</span>, <span class="tok-builtin">type</span>(texto))
+<span class="tok-builtin">print</span>(booleano, <span class="tok-str">"-&gt;"</span>, <span class="tok-builtin">type</span>(booleano))
+<span class="tok-builtin">print</span>(lista, <span class="tok-str">"-&gt;"</span>, <span class="tok-builtin">type</span>(lista))
+<span class="tok-builtin">print</span>(tupla, <span class="tok-str">"-&gt;"</span>, <span class="tok-builtin">type</span>(tupla))
+<span class="tok-builtin">print</span>(conjunto, <span class="tok-str">"-&gt;"</span>, <span class="tok-builtin">type</span>(conjunto))
+<span class="tok-builtin">print</span>(diccionario, <span class="tok-str">"-&gt;"</span>, <span class="tok-builtin">type</span>(diccionario))
+<span class="tok-builtin">print</span>(nulo, <span class="tok-str">"-&gt;"</span>, <span class="tok-builtin">type</span>(nulo))</code></pre>
+
+    <div class="activity">
+      <h3>Actividad propuesta</h3>
+      <ol>
+        <li>Declara una variable de cada tipo de dato visto en la tabla (<code>int</code>, <code>float</code>, <code>str</code>, <code>bool</code>, <code>list</code>, <code>tuple</code>, <code>set</code>, <code>dict</code>).</li>
+        <li>Usa <code>type()</code> sobre cada una y comprueba que el resultado coincide con lo esperado.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="seccion-g">
+    <h2>g) Entrada de datos por teclado: la función <code>input()</code></h2>
+
+    <p><strong>¿Qué es <code>input()</code>?</strong></p>
+
+    <p>Es una <strong>función incorporada</strong> (<em>built-in</em>) del lenguaje, disponible siempre, sin necesidad de importar ningún módulo. Su finalidad es permitir que un programa <strong>se detenga durante su ejecución</strong> y quede a la espera de que la persona que lo está usando escriba algo por teclado.</p>
+
+    <p><strong>¿Para qué sirve?</strong></p>
+
+    <p>Hasta ahora, los programas de esta unidad han trabajado siempre con los mismos datos fijos, escritos directamente en el código (literales). Gracias a <code>input()</code>, un programa puede <strong>interactuar con quien lo ejecuta</strong> y trabajar con datos que cambian cada vez: su nombre, una cantidad, una respuesta... Es la forma más sencilla de hacer que un programa sea <strong>interactivo</strong> en lugar de repetir siempre el mismo resultado.</p>
+
+    <p><strong>¿Cómo funciona?</strong></p>
+
+    <p>El funcionamiento de <code>input()</code> sigue siempre estos pasos:</p>
+    <ol>
+      <li>Se invoca <code>input()</code>, opcionalmente con un texto entre paréntesis: ese texto es el <strong>mensaje o <em>prompt</em></strong> que se muestra en pantalla para indicar a la persona usuaria qué se espera que escriba (por ejemplo, <code>input("¿Cómo te llamas? ")</code>).</li>
+      <li>La ejecución del programa <strong>se detiene</strong> en esa línea, esperando a que el usuario escriba algo y pulse la tecla Intro.</li>
+      <li>Todo lo que el usuario ha escrito (sin incluir el salto de línea de Intro) se devuelve como <strong>resultado de la función</strong>, y habitualmente se guarda en una variable mediante <code>=</code> para poder usarlo después.</li>
+      <li><strong>Detalle fundamental:</strong> <code>input()</code> <strong>siempre</strong> devuelve el dato como una <strong>cadena de texto (<code>str</code>)</strong>, sin importar lo que la persona usuaria haya escrito, aunque solo haya tecleado dígitos. Si el dato introducido se necesita como número para hacer cálculos con él, habrá que <strong>convertirlo explícitamente</strong>; esto se estudiará con detalle en el apartado k) Conversiones de tipo de esta misma unidad.</li>
+    </ol>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code class="language-python">nombre = <span class="tok-builtin">input</span>(<span class="tok-str">"¿Cómo te llamas? "</span>)
+<span class="tok-builtin">print</span>(<span class="tok-str">"Hola,"</span>, nombre)
+
+edad_texto = <span class="tok-builtin">input</span>(<span class="tok-str">"¿Qué edad tienes? "</span>)
+<span class="tok-builtin">print</span>(<span class="tok-str">"Has escrito:"</span>, edad_texto)
+<span class="tok-builtin">print</span>(<span class="tok-str">"El tipo de dato que ha devuelto input() es:"</span>, <span class="tok-builtin">type</span>(edad_texto))
+<span class="tok-com"># El tipo de dato que ha devuelto input() es: &lt;class 'str'&gt;</span>
+<span class="tok-com"># (aunque se haya introducido, por ejemplo, "17")</span></code></pre>
+
+    <div class="activity">
+      <h3>Actividad propuesta</h3>
+      <ol>
+        <li>Escribe un programa que pregunte el nombre y el color favorito de la persona usuaria mediante dos llamadas a <code>input()</code>, y muestre con <code>print()</code> un mensaje que combine ambos datos.</li>
+        <li>Pide con <code>input()</code> un número cualquiera y comprueba con <code>type()</code> que, aunque solo se hayan escrito dígitos, Python lo ha guardado como <code>str</code> y no como <code>int</code>.</li>
+        <li>Investiga (probándolo) qué ocurre si, al llegar a un <code>input()</code>, se pulsa la tecla Intro sin escribir nada. ¿Qué valor queda guardado en la variable? Compruébalo mostrándolo con <code>print()</code> y <code>type()</code>.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="seccion-h">
+    <h2>h) Literales</h2>
+
+    <p>Un <strong>literal</strong> es la representación fija y directa de un valor tal y como se escribe en el código fuente, sin necesidad de calcularlo ni de asignarlo previamente a una variable. Es, dicho de otro modo, el "valor tal cual" que aparece escrito en el programa.</p>
+
+    <p>Cada tipo de dato tiene su propia forma de expresarse como literal en Python:</p>
+
+    <table>
+      <thead><tr><th>Tipo de literal</th><th>Ejemplos</th></tr></thead>
+      <tbody>
+        <tr><td>Entero</td><td><code>10</code>, <code>-5</code>, <code>0</code>, <code>1_000_000</code> (guion bajo como separador de miles)</td></tr>
+        <tr><td>Entero en otras bases</td><td><code>0b1010</code> (binario), <code>0o17</code> (octal), <code>0x1F</code> (hexadecimal)</td></tr>
+        <tr><td>Real (flotante)</td><td><code>3.14</code>, <code>-0.5</code>, <code>2.5e3</code> (notación científica)</td></tr>
+        <tr><td>Cadena de texto</td><td><code>"hola"</code>, <code>'hola'</code>, <code>"""texto multilínea"""</code></td></tr>
+        <tr><td>Booleano</td><td><code>True</code>, <code>False</code></td></tr>
+        <tr><td>Lista</td><td><code>[1, 2, 3]</code></td></tr>
+        <tr><td>Tupla</td><td><code>(1, 2, 3)</code></td></tr>
+        <tr><td>Diccionario</td><td><code>{"clave": "valor"}</code></td></tr>
+        <tr><td>Nulo</td><td><code>None</code></td></tr>
+      </tbody>
+    </table>
+
+    <p>Es importante no confundir un literal con una variable: en la instrucción <code>edad = 17</code>, <code>17</code> es el <strong>literal</strong> (el valor fijo escrito directamente) y <code>edad</code> es la <strong>variable</strong> que lo almacena.</p>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code class="language-python"><span class="tok-builtin">print</span>(<span class="tok-num">25</span>)              <span class="tok-com"># literal entero</span>
+<span class="tok-builtin">print</span>(<span class="tok-num">3.1416</span>)          <span class="tok-com"># literal real</span>
+<span class="tok-builtin">print</span>(<span class="tok-str">"Hola mundo"</span>)    <span class="tok-com"># literal cadena</span>
+<span class="tok-builtin">print</span>(<span class="tok-kw">True</span>)            <span class="tok-com"># literal booleano</span>
+<span class="tok-builtin">print</span>([<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>])       <span class="tok-com"># literal lista</span>
+<span class="tok-builtin">print</span>(<span class="tok-num">0x1F</span>)             <span class="tok-com"># literal entero en hexadecimal (equivale a 31)</span>
+
+radio = <span class="tok-num">5</span>               <span class="tok-com"># 5 es un literal asignado a la variable 'radio'</span>
+area = <span class="tok-num">3.1416</span> * radio ** <span class="tok-num">2</span>   <span class="tok-com"># 3.1416 y 2 son literales dentro de una expresión</span>
+<span class="tok-builtin">print</span>(area)</code></pre>
+
+    <div class="activity">
+      <h3>Actividad propuesta</h3>
+      <ol>
+        <li>Escribe un programa que imprima, en líneas separadas, un literal de cada tipo estudiado (entero, real, cadena, booleano, lista, tupla, diccionario).</li>
+        <li>Reescribe el literal <code>100</code> como binario, octal y hexadecimal usando la notación de Python (<code>0b</code>, <code>0o</code>, <code>0x</code>) y comprueba con <code>print()</code> que representan el mismo valor.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="seccion-i">
+    <h2>i) Constantes</h2>
+
+    <p>Una <strong>constante</strong> es un valor con nombre que, a diferencia de una variable, <strong>no debe cambiar durante la ejecución del programa</strong>. Se usan para valores fijos y significativos que aparecen varias veces en el código (el número π, el IVA, el número máximo de intentos permitidos, una ruta de configuración, etc.), evitando así los llamados "números mágicos" y facilitando el mantenimiento: si el valor cambia, solo hay que modificarlo en un sitio.</p>
+
+    <p>Python <strong>no dispone de una palabra reservada específica para declarar constantes</strong> (a diferencia de <code>final</code> en Java o <code>const</code> en C++ o JavaScript). Se trata, por tanto, de una <strong>convención</strong>: se declaran como variables normales, pero su nombre se escribe <strong>en mayúsculas con guiones bajos</strong> (<code>SNAKE_CASE</code> en mayúsculas), indicando a quien lea el código que ese valor no debe reasignarse:</p>
+
+    <pre><code class="language-python">PI = <span class="tok-num">3.14159</span>
+IVA = <span class="tok-num">0.21</span>
+MAX_INTENTOS = <span class="tok-num">3</span></code></pre>
+
+    <p>Aunque el intérprete no impide técnicamente reasignar una "constante" en Python, buenas prácticas y herramientas de análisis de código (linters) alertan de ello. Cuando se necesita una constante realmente inmutable a nivel de lenguaje, puede recurrirse al módulo <code>enum</code> o, desde Python 3.8, a <code>typing.Final</code> como anotación de intención.</p>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code class="language-python">PI = <span class="tok-num">3.14159</span>
+IVA = <span class="tok-num">0.21</span>
+
+radio = <span class="tok-num">4</span>
+area = PI * radio ** <span class="tok-num">2</span>
+<span class="tok-builtin">print</span>(area)
+
+precio_base = <span class="tok-num">50</span>
+precio_final = precio_base * (<span class="tok-num">1</span> + IVA)
+<span class="tok-builtin">print</span>(precio_final)
+
+<span class="tok-com"># Ejemplo de mal uso (evitar): reasignar una "constante"</span>
+<span class="tok-com"># PI = 3   # técnicamente posible, pero rompe la convención y el sentido del programa</span></code></pre>
+
+    <div class="activity">
+      <h3>Actividad propuesta</h3>
+      <ol>
+        <li>Reescribe el programa de la actividad del apartado c) sustituyendo cualquier valor fijo repetido (por ejemplo, el <code>IVA</code>) por una constante bien nombrada en mayúsculas.</li>
+        <li>Crea una constante <code>MAX_INTENTOS = 3</code> y, sin usar todavía ningún bucle, calcula y muestra con <code>print()</code> cuántos intentos quedarían disponibles tras haber fallado 2 veces (<code>MAX_INTENTOS - intentos_fallidos</code>).</li>
+        <li>Explica, en un par de líneas, qué diferencia existe entre una constante y una variable a nivel de <strong>intención del programador</strong>, ya que Python no impone dicha diferencia a nivel de lenguaje.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="seccion-j">
+    <h2>j) Operadores y expresiones</h2>
+
+    <p>Una <strong>expresión</strong> es una combinación de literales, variables, constantes y <strong>operadores</strong> que el intérprete evalúa para producir un valor. Los <strong>operadores</strong> son los símbolos que indican qué operación debe realizarse sobre uno o varios <strong>operandos</strong>. Se clasifican en:</p>
+
+    <p><strong>1. Operadores aritméticos</strong> — realizan cálculos numéricos:</p>
+
+    <table>
+      <thead><tr><th>Operador</th><th>Significado</th><th>Ejemplo</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td><code>+</code></td><td>Suma</td><td><code>5 + 2</code></td><td><code>7</code></td></tr>
+        <tr><td><code>-</code></td><td>Resta</td><td><code>5 - 2</code></td><td><code>3</code></td></tr>
+        <tr><td><code>*</code></td><td>Multiplicación</td><td><code>5 * 2</code></td><td><code>10</code></td></tr>
+        <tr><td><code>/</code></td><td>División (siempre devuelve <code>float</code>)</td><td><code>5 / 2</code></td><td><code>2.5</code></td></tr>
+        <tr><td><code>//</code></td><td>División entera</td><td><code>5 // 2</code></td><td><code>2</code></td></tr>
+        <tr><td><code>%</code></td><td>Módulo (resto)</td><td><code>5 % 2</code></td><td><code>1</code></td></tr>
+        <tr><td><code>**</code></td><td>Potencia</td><td><code>5 ** 2</code></td><td><code>25</code></td></tr>
+      </tbody>
+    </table>
+
+    <p><strong>2. Operadores relacionales o de comparación</strong> — comparan dos valores y devuelven un <code>bool</code>:</p>
+
+    <p><code>==</code> (igual a), <code>!=</code> (distinto de), <code>&gt;</code> (mayor que), <code>&lt;</code> (menor que), <code>&gt;=</code> (mayor o igual), <code>&lt;=</code> (menor o igual).</p>
+
+    <p><strong>3. Operadores lógicos</strong> — combinan expresiones booleanas: <code>and</code>, <code>or</code>, <code>not</code>.</p>
+
+    <p><strong>4. Operadores de asignación</strong> — asignan (y opcionalmente calculan) un valor: <code>=</code>, <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>//=</code>, <code>%=</code>, <code>**=</code>.</p>
+
+    <p><strong>5. Operadores de identidad y pertenencia</strong> (propios de Python): <code>is</code> / <code>is not</code> (comparan si dos referencias apuntan al mismo objeto en memoria) y <code>in</code> / <code>not in</code> (comprueban si un valor pertenece a una colección).</p>
+
+    <p><strong>Precedencia de operadores:</strong> cuando una expresión combina varios operadores, Python los evalúa siguiendo un orden de prioridad (potencia, luego multiplicación/división, luego suma/resta, luego comparaciones, luego operadores lógicos), que puede alterarse mediante paréntesis <code>()</code>.</p>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code class="language-python">a, b = <span class="tok-num">7</span>, <span class="tok-num">2</span>
+
+<span class="tok-builtin">print</span>(a + b, a - b, a * b, a / b, a // b, a % b, a ** b)
+<span class="tok-com"># 9 5 14 3.5 3 1 49</span>
+
+edad = <span class="tok-num">17</span>
+es_adulto = edad &gt;= <span class="tok-num">18</span>            <span class="tok-com"># operador relacional -&gt; False</span>
+tiene_permiso = edad &gt;= <span class="tok-num">16</span> <span class="tok-kw">and</span> edad &lt; <span class="tok-num">18</span>   <span class="tok-com"># operadores lógicos -&gt; True</span>
+
+numeros = [<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>]
+<span class="tok-builtin">print</span>(<span class="tok-num">2</span> <span class="tok-kw">in</span> numeros)                <span class="tok-com"># operador de pertenencia -&gt; True</span>
+
+total = <span class="tok-num">0</span>
+total += <span class="tok-num">10</span>   <span class="tok-com"># equivale a total = total + 10</span>
+<span class="tok-builtin">print</span>(total)  <span class="tok-com"># 10</span>
+
+<span class="tok-com"># Precedencia: la multiplicación se evalúa antes que la suma</span>
+resultado = <span class="tok-num">2</span> + <span class="tok-num">3</span> * <span class="tok-num">4</span>      <span class="tok-com"># 14, no 20</span>
+resultado_con_parentesis = (<span class="tok-num">2</span> + <span class="tok-num">3</span>) * <span class="tok-num">4</span>   <span class="tok-com"># 20</span></code></pre>
+
+    <div class="activity">
+      <h3>Actividad propuesta</h3>
+      <ol>
+        <li>Escribe expresiones que utilicen al menos un operador de cada categoría (aritmético, relacional, lógico, asignación, pertenencia) y predice su resultado antes de ejecutarlas.</li>
+        <li>Dada la expresión <code>3 + 4 * 2 - 6 / 2</code>, calcula el resultado a mano aplicando la precedencia de operadores y compruébalo después ejecutando el código.</li>
+        <li>Clasifica en una tabla los operadores usados en el ejemplo del apartado e) (variables), indicando a qué categoría pertenece cada uno.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="seccion-k">
+    <h2>k) Conversiones de tipo</h2>
+
+    <p>Una <strong>conversión de tipo</strong> consiste en transformar un valor de un tipo de dato en otro. En Python existen dos formas de conversión:</p>
+    <ul>
+      <li><strong>Conversión implícita (coerción automática)</strong>: el propio intérprete convierte un tipo en otro de forma automática cuando una operación combina tipos compatibles, sin que el programador lo solicite expresamente. Suele producirse al mezclar <code>int</code> y <code>float</code> en una operación aritmética, en cuyo caso el resultado se "amplía" al tipo más general (<code>float</code>) para no perder información.</li>
+      <li><strong>Conversión explícita (casting)</strong>: el programador solicita expresamente la conversión mediante una función de conversión: <code>int()</code>, <code>float()</code>, <code>str()</code>, <code>bool()</code>, <code>list()</code>, <code>tuple()</code>, <code>set()</code>, etc.</li>
+    </ul>
+
+    <p><strong>Funciones de conversión explícita más habituales:</strong></p>
+
+    <table>
+      <thead><tr><th>Función</th><th>Convierte a</th><th>Ejemplo</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td><code>int()</code></td><td>Entero</td><td><code>int("25")</code></td><td><code>25</code></td></tr>
+        <tr><td><code>int()</code></td><td>Entero (trunca decimales)</td><td><code>int(3.9)</code></td><td><code>3</code></td></tr>
+        <tr><td><code>float()</code></td><td>Real</td><td><code>float("3.14")</code></td><td><code>3.14</code></td></tr>
+        <tr><td><code>str()</code></td><td>Cadena</td><td><code>str(25)</code></td><td><code>"25"</code></td></tr>
+        <tr><td><code>bool()</code></td><td>Booleano</td><td><code>bool(0)</code></td><td><code>False</code></td></tr>
+        <tr><td><code>list()</code></td><td>Lista</td><td><code>list("abc")</code></td><td><code>['a', 'b', 'c']</code></td></tr>
+      </tbody>
+    </table>
+
+    <p>No todas las conversiones son posibles: intentar convertir una cadena que no representa un número (<code>int("hola")</code>) provoca un error en tiempo de ejecución (<code>ValueError</code>), algo especialmente relevante al leer datos introducidos por el usuario con <code>input()</code> que <strong>siempre</strong> devuelve una cadena de texto.</p>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code class="language-python"><span class="tok-com"># Conversión implícita</span>
+entero = <span class="tok-num">5</span>
+real = <span class="tok-num">2.5</span>
+suma = entero + real          <span class="tok-com"># Python convierte 'entero' a float automáticamente</span>
+<span class="tok-builtin">print</span>(suma, <span class="tok-builtin">type</span>(suma))       <span class="tok-com"># 7.5 &lt;class 'float'&gt;</span>
+
+<span class="tok-com"># Conversión explícita</span>
+texto_edad = <span class="tok-builtin">input</span>(<span class="tok-str">"Introduce tu edad: "</span>)   <span class="tok-com"># input() siempre devuelve str</span>
+edad = <span class="tok-builtin">int</span>(texto_edad)                       <span class="tok-com"># conversión explícita a int</span>
+<span class="tok-builtin">print</span>(<span class="tok-str">"El año que viene tendrás"</span>, edad + <span class="tok-num">1</span>, <span class="tok-str">"años"</span>)
+
+<span class="tok-com"># Conversión explícita con riesgo de error</span>
+<span class="tok-com"># numero = int("veinte")   # si se ejecutara, provocaría un ValueError:</span>
+                            <span class="tok-com"># "veinte" no representa un número válido.</span>
+                            <span class="tok-com"># A partir de la siguiente unidad se aprenderá</span>
+                            <span class="tok-com"># a controlar este tipo de errores con try/except.</span>
+
+<span class="tok-com"># bool() y sus casos especiales</span>
+<span class="tok-builtin">print</span>(<span class="tok-builtin">bool</span>(<span class="tok-num">0</span>), <span class="tok-builtin">bool</span>(<span class="tok-num">1</span>), <span class="tok-builtin">bool</span>(<span class="tok-str">""</span>), <span class="tok-builtin">bool</span>(<span class="tok-str">"hola"</span>), <span class="tok-builtin">bool</span>([]), <span class="tok-builtin">bool</span>([<span class="tok-num">1</span>]))
+<span class="tok-com"># False True False True False True</span></code></pre>
+
+    <div class="activity">
+      <h3>Actividad propuesta</h3>
+      <ol>
+        <li>Escribe un programa que pida al usuario dos números mediante <code>input()</code> (recuerda que llegan como <code>str</code>), los convierta explícitamente a <code>float</code> y muestre su suma, comprobando el resultado con <code>type()</code>.</li>
+        <li>Comprueba y explica qué ocurre al ejecutar <code>"3" + 3</code> (sin conversión) frente a <code>int("3") + 3</code>, relacionándolo con la diferencia entre conversión implícita y explícita.</li>
+        <li>Investiga y anota qué valores se consideran "falsos" (<code>False</code>) al convertirlos con <code>bool()</code> en Python (0, cadena vacía, lista vacía, <code>None</code>...) y cuáles se consideran "verdaderos".</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="seccion-l">
+    <h2>l) Comentarios</h2>
+
+    <p>Un <strong>comentario</strong> es un fragmento de texto incluido en el código fuente que el intérprete <strong>ignora por completo</strong> durante la ejecución. Su finalidad es exclusivamente documentar el programa: explicar qué hace una parte del código, por qué se ha tomado una decisión concreta, dejar pendientes (<code>TODO</code>) o facilitar que otra persona —o uno mismo en el futuro— entienda el programa sin tener que descifrar cada línea.</p>
+
+    <p>En Python existen dos formas de comentar código:</p>
+    <ul>
+      <li><strong>Comentario de una línea</strong>: comienza por el símbolo almohadilla <code>#</code>. Todo lo que sigue en esa línea es ignorado por el intérprete.</li>
+      <li><strong>Comentario multilínea / docstring</strong>: se delimita con triple comilla (<code>"""..."""</code> o <code>'''...'''</code>). Aunque técnicamente es una cadena de texto (no un comentario "puro" del lenguaje), si no se asigna a ninguna variable ni se usa su valor, el intérprete la evalúa y descarta, funcionando en la práctica como un comentario de varias líneas. Cuando esta cadena triple se coloca justo debajo de la definición de un módulo, función, clase o método, se denomina <strong>docstring</strong> y sirve para documentar automáticamente ese elemento (accesible mediante <code>help()</code> o el atributo <code>__doc__</code>).</li>
+    </ul>
+
+    <p><strong>Buenas prácticas al comentar código:</strong></p>
+    <ul>
+      <li>Comentar el <em>por qué</em> de una decisión, no simplemente repetir lo que el código ya dice de forma evidente.</li>
+      <li>Mantener los comentarios actualizados: un comentario que no coincide con el código que describe es peor que no tener comentario.</li>
+      <li>Usar docstrings para documentar módulos, funciones y clases.</li>
+      <li>No abusar de los comentarios hasta el punto de saturar la lectura del código.</li>
+    </ul>
+
+    <h3>Ejemplo en Python</h3>
+    <pre><code class="language-python"><span class="tok-str">"""
+Programa que calcula el área de un rectángulo.
+Este docstring, al inicio del archivo, documenta el propósito del módulo.
+"""</span>
+
+<span class="tok-com"># TODO: en el futuro, extraer este cálculo a una función area_rectangulo()</span>
+
+base = <span class="tok-num">5</span>       <span class="tok-com"># longitud de la base del rectángulo</span>
+altura = <span class="tok-num">3</span>     <span class="tok-com"># longitud de la altura del rectángulo</span>
+
+area = base * altura   <span class="tok-com"># fórmula del área: base x altura</span>
+<span class="tok-builtin">print</span>(area)              <span class="tok-com"># se espera 15</span>
+
+<span class="tok-str">'''
+Este bloque, delimitado con comillas triples,
+actúa como un comentario multilínea aunque
+técnicamente es una cadena de texto no utilizada.
+'''</span></code></pre>
+
+    <div class="activity">
+      <h3>Actividad propuesta</h3>
+      <ol>
+        <li>Toma el programa de la actividad del apartado c) y añade, al principio del archivo, un docstring de módulo que describa qué hace el programa.</li>
+        <li>Añade comentarios de una línea (<code>#</code>) explicando el <em>porqué</em> de al menos dos decisiones de diseño del programa (por ejemplo, por qué se usa una constante en vez de un valor literal).</li>
+        <li>Comenta el programa del apartado i) (Constantes) indicando, con <code>#</code>, qué hace cada bloque de cálculo, y añade un <code>TODO</code> señalando una mejora pendiente para unidades futuras.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section id="seccion-m">
+    <h2>m) Actividad práctica</h2>
+
+    <div class="activity">
+      <p>Deberás desarrollar, dentro de un <strong>proyecto nuevo creado y ejecutado en Visual Studio Code, con su propio entorno virtual asociado</strong> (configurado según los apartados a) y b), un pequeño programa secuencial (por ejemplo, una "calculadora de presupuesto de la compra") que integre <strong>todos</strong> los elementos trabajados:</p>
+      <ul>
+        <li>los bloques de estructura vistos en el apartado c) (marcados con comentarios, incluida una nota de dónde irían en el futuro las funciones),</li>
+        <li>el comentario indicativo del <code>if __name__ == "__main__":</code> visto en el apartado d),</li>
+        <li>variables globales bien organizadas,</li>
+        <li>al menos un dato introducido por teclado con <code>input()</code> (apartado f)),</li>
+        <li>distintos tipos de datos, literales, al menos una constante,</li>
+        <li>operadores de varias categorías,</li>
+        <li>una conversión de tipo explícita sobre el dato introducido con <code>input()</code>,</li>
+        <li>y comentarios y un docstring de módulo que documenten el código.</li>
+        <li>la salida del programa deberá ser similar al siguiente ejemplo de ejecución:</li>
+      </ul>
+      <pre><code>--- Mercadillo Python ---
+Calculadora de presupuesto de la compra
+
+¿Cuántas unidades vas a comprar? 10
+Precio unitario del artículo, en euros: 2.5
+
+Resumen de la compra
+Tienda: Mercadillo Python
+Unidades: 10   (tipo: &lt;class 'int'&gt; )
+Precio unitario: 2.5 €  (tipo: &lt;class 'float'&gt; )
+Subtotal (sin IVA): 25.0 €
+IVA aplicado: 21.0 %
+Total con IVA: 30.25 €
+Descuento fijo aplicado: 2.5 €
+TOTAL A PAGAR: 27.75 €
+¿Es una compra grande (10 unidades o más)? True</code></pre>
+    </div>
+  </section>
+
+</div>
+</main>
+
+
+<script>
+  (function () {
+    var sidebar = document.getElementById('sidebar');
+    var toggleBtn = document.getElementById('sidebarToggle');
+    var overlay = document.getElementById('overlay');
+
+    function openSidebar() {
+      sidebar.classList.add('open');
+      overlay.classList.add('visible');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeSidebar() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('visible');
+      toggleBtn.setAttribute('aria-expanded', 'false');
+    }
+
+    toggleBtn.addEventListener('click', function () {
+      if (sidebar.classList.contains('open')) {
+        closeSidebar();
+      } else {
+        openSidebar();
+      }
+    });
+
+    overlay.addEventListener('click', closeSidebar);
+
+    var navLinks = sidebar.querySelectorAll('a');
+    navLinks.forEach(function (link) {
+      link.addEventListener('click', function () {
+        if (window.matchMedia('(max-width: 900px)').matches) {
+          closeSidebar();
+        }
+      });
+    });
+
+    // Toggle solutions
+    var solutionButtons = document.querySelectorAll('.solution-toggle');
+    solutionButtons.forEach(function (btn) {
+      var content = btn.nextElementSibling;
+      btn.addEventListener('click', function () {
+        var expanded = btn.getAttribute('aria-expanded') === 'true';
+        if (expanded) {
+          content.hidden = true;
+          btn.setAttribute('aria-expanded', 'false');
+          btn.innerHTML = '<span class="icon">▶</span> Ver solución';
+        } else {
+          content.hidden = false;
+          btn.setAttribute('aria-expanded', 'true');
+          btn.innerHTML = '<span class="icon">▶</span> Ocultar solución';
+        }
+      });
+    });
+
+    // Scrollspy: highlight the current section in the sidebar
+    var sections = document.querySelectorAll('main section[id]');
+    var linkMap = {};
+    navLinks.forEach(function (link) {
+      linkMap[link.getAttribute('href').substring(1)] = link;
+    });
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          var link = linkMap[entry.target.id];
+          if (!link) return;
+          if (entry.isIntersecting) {
+            navLinks.forEach(function (l) { l.classList.remove('active'); });
+            link.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+      sections.forEach(function (section) { observer.observe(section); });
+    }
+
+    // Syntax highlighting for Python code blocks
+    var PY_KEYWORDS = new Set(['False','None','True','and','as','assert','async','await',
+      'break','class','continue','def','del','elif','else','except','finally','for','from',
+      'global','if','import','in','is','lambda','nonlocal','not','or','pass','raise',
+      'return','try','while','with','yield']);
+    var PY_BUILTINS = new Set(['print','input','type','int','float','str','bool','complex',
+      'len','range','list','tuple','dict','set','abs','min','max','sum','round','open',
+      'isinstance','super','object']);
+    var PY_TOKEN_RE = /(#[^\n]*)|("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(\b\d+\.?\d*(?:[eE][+-]?\d+)?\b|\b0[xX][0-9a-fA-F_]+\b|\b0[bB][01_]+\b|\b0[oO][0-7_]+\b)|(\b[A-Za-z_][A-Za-z0-9_]*\b)/g;
+
+    function escapeHtml(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    function highlightPython(code) {
+      var result = '';
+      var lastIndex = 0;
+      var m;
+      PY_TOKEN_RE.lastIndex = 0;
+      while ((m = PY_TOKEN_RE.exec(code)) !== null) {
+        result += escapeHtml(code.slice(lastIndex, m.index));
+        lastIndex = PY_TOKEN_RE.lastIndex;
+        if (m[1] !== undefined) {
+          result += '<span class="tok-com">' + escapeHtml(m[1]) + '</span>';
+        } else if (m[2] !== undefined) {
+          result += '<span class="tok-str">' + escapeHtml(m[2]) + '</span>';
+        } else if (m[3] !== undefined) {
+          result += '<span class="tok-num">' + escapeHtml(m[3]) + '</span>';
+        } else if (m[4] !== undefined) {
+          var word = m[4];
+          if (PY_KEYWORDS.has(word)) {
+            result += '<span class="tok-kw">' + escapeHtml(word) + '</span>';
+          } else if (PY_BUILTINS.has(word)) {
+            result += '<span class="tok-builtin">' + escapeHtml(word) + '</span>';
+          } else {
+            result += escapeHtml(word);
+          }
+        }
+      }
+      result += escapeHtml(code.slice(lastIndex));
+      return result;
+    }
+
+    document.querySelectorAll('code.language-python').forEach(function (block) {
+      block.innerHTML = highlightPython(block.textContent);
+    });
+  })();
+</script>
+
+
+
+</body></html>
