@@ -1,0 +1,191 @@
+:root {
+    color-scheme: light;
+    --page-bg: #eef2f6;
+    --surface: #ffffff;
+    --surface-soft: #f7f9fc;
+    --text: #202631;
+    --muted: #5f6b7a;
+    --border: #d9e0e8;
+    --accent: #1c5d99;
+    --accent-hover: #124777;
+    --code-bg: #111827;
+    --code-text: #e5e7eb;
+    --code-border: #263244;
+    --token-keyword: #c792ea;
+    --token-string: #c3e88d;
+    --token-comment: #8b9cb3;
+    --token-number: #f78c6c;
+    --token-annotation: #ffcb6b;
+    --shadow: 0 12px 35px rgb(26 39 57 / 10%);
+}
+
+html[data-study-theme="dark"] {
+    color-scheme: dark;
+    --page-bg: #0d1117;
+    --surface: #161b22;
+    --surface-soft: #1d2430;
+    --text: #dce3ec;
+    --muted: #9ba8b8;
+    --border: #303946;
+    --accent: #78b7f0;
+    --accent-hover: #a8d4fa;
+    --code-bg: #090d13;
+    --code-text: #d7deea;
+    --code-border: #344052;
+    --token-keyword: #d2a8ff;
+    --token-string: #a5d6a7;
+    --token-comment: #8291a7;
+    --token-number: #ff9e7d;
+    --token-annotation: #ffd580;
+    --shadow: 0 16px 40px rgb(0 0 0 / 35%);
+}
+
+html[data-study-theme="dark"],
+html[data-study-theme="dark"] body,
+html[data-study-theme="dark"] #page-mod-book-print,
+html[data-study-theme="dark"] #page,
+html[data-study-theme="dark"] .embedded-main {
+    background: var(--page-bg) !important;
+    color: var(--text) !important;
+    filter: none !important;
+}
+
+html[data-study-theme="dark"] .book,
+html[data-study-theme="dark"] .book_chapter,
+html[data-study-theme="dark"] .book_description,
+html[data-study-theme="dark"] .book_description > div,
+html[data-study-theme="dark"] .book_info,
+html[data-study-theme="dark"] .book_toc_numbered {
+    background: var(--surface) !important;
+    color: var(--text) !important;
+    filter: none !important;
+}
+
+html,
+body,
+#page-mod-book-print,
+#page,
+.embedded-main {
+    background: var(--page-bg) !important;
+    color: var(--text) !important;
+    filter: none !important;
+}
+
+body {
+    transition: background-color 160ms ease, color 160ms ease;
+}
+
+.book {
+    max-width: 1180px;
+    margin: 24px auto !important;
+    color: var(--text) !important;
+    background: var(--surface) !important;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+}
+
+.book_chapter,
+.book_description,
+.book_description > div,
+.book_info,
+.book_toc_numbered {
+    color: var(--text) !important;
+    background: var(--surface) !important;
+}
+
+.book_chapter {
+    border-top: 1px solid var(--border);
+}
+
+body, p, li, td, th, span, div {
+    color: inherit;
+}
+
+a { color: var(--accent) !important; }
+a:hover, a:focus-visible { color: var(--accent-hover) !important; }
+table, td, th { border-color: var(--border) !important; }
+img { max-width: 100%; height: auto; filter: none !important; }
+
+.study-theme-toggle {
+    position: fixed;
+    z-index: 10000;
+    top: 16px;
+    right: 18px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 42px;
+    padding: 9px 14px;
+    color: var(--text);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    box-shadow: var(--shadow);
+    font: 600 14px/1 system-ui, sans-serif;
+    cursor: pointer;
+}
+
+.study-theme-toggle:hover { background: var(--surface-soft); }
+.study-theme-toggle:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+pre.study-code {
+    position: relative;
+    display: block;
+    max-width: 100%;
+    margin: 18px 0 !important;
+    padding: 42px 20px 20px !important;
+    overflow-x: auto;
+    color: var(--code-text) !important;
+    background: var(--code-bg) !important;
+    border: 1px solid var(--code-border) !important;
+    border-radius: 12px;
+    box-shadow: inset 0 1px rgb(255 255 255 / 4%);
+    white-space: pre !important;
+    tab-size: 4;
+    font: 14px/1.65 "Cascadia Code", "JetBrains Mono", Consolas, monospace !important;
+}
+
+pre.study-code::before {
+    content: attr(data-language);
+    position: absolute;
+    top: 10px;
+    right: 14px;
+    color: var(--muted);
+    font: 700 11px/1 system-ui, sans-serif;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+pre.study-code code {
+    display: block;
+    min-width: max-content;
+    padding: 0 !important;
+    color: inherit !important;
+    background: transparent !important;
+    border: 0 !important;
+    white-space: inherit !important;
+    font: inherit !important;
+}
+
+.token-keyword { color: var(--token-keyword) !important; font-weight: 650; }
+.token-string { color: var(--token-string) !important; }
+.token-comment { color: var(--token-comment) !important; font-style: italic; }
+.token-number { color: var(--token-number) !important; }
+.token-annotation { color: var(--token-annotation) !important; }
+.token-tag { color: var(--token-keyword) !important; }
+.token-entity { color: var(--token-annotation) !important; }
+
+@media (max-width: 720px) {
+    .book { margin: 0 !important; padding: 18px !important; border: 0; border-radius: 0; }
+    .book_info > div { width: 100% !important; float: none !important; }
+    .study-theme-toggle { top: 10px; right: 10px; }
+    pre.study-code { margin-inline: -8px !important; border-radius: 8px; font-size: 12.5px !important; }
+}
+
+@media print {
+    .study-theme-toggle { display: none !important; }
+    html, body, #page, .book { color: #000 !important; background: #fff !important; }
+    .book { max-width: none; margin: 0 !important; border: 0; box-shadow: none; }
+    pre.study-code { white-space: pre-wrap !important; color: #111 !important; background: #f4f4f4 !important; }
+}

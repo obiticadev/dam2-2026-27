@@ -11,6 +11,7 @@ Imágenes correspondientes al temario interactivo y documento oficial PDF de **M
 | `5.png` | Pág. 8 | 2.2. Clases asociadas a los flujos | Flujos de bytes: jerarquía de clases derivadas de `InputStream` y `OutputStream` |
 | `6.png` | Pág. 8 | 2.2. Clases asociadas a los flujos | Flujos de caracteres: jerarquía de clases derivadas de `Reader` y `Writer` |
 | `7.png` | Pág. 26 | 2.12. Operaciones básicas sobre ficheros de acceso aleatorio | Comparativa visual entre acceso secuencial y acceso aleatorio (`RandomAccessFile`) |
+| `8.png` | Sin referencia | 3. java.nio | Jerarquía de clases e interfaces de `java.nio` para operaciones con ficheros |
 | `book.svg` | Cabecera | Cabecera de impresión | Icono oficial de Moodle para la utilidad de impresión |
 | `cm.png` | Pie de página | Pie de página | Logotipo de la Comunidad de Madrid (Educación) |
 | `em.png` | Pie de página | Pie de página | Logotipo de EducaMadrid Plataforma Educativa |
