@@ -4,8 +4,6 @@
 > **Unidad:** UT02 - Persistencia en ficheros y XML
 > **Tema:** 2B - Librerías de tratamiento de XML en Java (DOM, SAX, StAX, JAXB)
 > **Documento oficial PDF:** [`2B Librerías de tratamiento de XML en Java. _ AulaVirtual.pdf`](../recursos/2B%20Librer%C3%ADas%20de%20tratamiento%20de%20XML%20en%20Java.%20_%20AulaVirtual/2B%20Librer%C3%ADas%20de%20tratamiento%20de%20XML%20en%20Java.%20_%20AulaVirtual.pdf)
-> **Versión web HTML:** [`2B Librerías de tratamiento de XML en Java. _ AulaVirtual.html`](../recursos/2B%20Librer%C3%ADas%20de%20tratamiento%20de%20XML%20en%20Java.%20_%20AulaVirtual/2B%20Librer%C3%ADas%20de%20tratamiento%20de%20XML%20en%20Java.%20_%20AulaVirtual.html)
-
 ---
 
 ## 1. Introducción

@@ -4,8 +4,6 @@
 > **Unidad:** UT02 - Persistencia en ficheros y XML
 > **Tema:** 2A - Manejo de ficheros (`java.io`)
 > **Documento oficial PDF:** [`2A Manejo de ficheros _ AulaVirtual.pdf`](../recursos/2A%20Manejo%20de%20ficheros%20_%20AulaVirtual/2A%20Manejo%20de%20ficheros%20_%20AulaVirtual.pdf)
-> **Versión web HTML:** [`2A Manejo de ficheros _ AulaVirtual.html`](../recursos/2A%20Manejo%20de%20ficheros%20_%20AulaVirtual/2A%20Manejo%20de%20ficheros%20_%20AulaVirtual.html)
-
 ---
 
 ## 1. Introducción

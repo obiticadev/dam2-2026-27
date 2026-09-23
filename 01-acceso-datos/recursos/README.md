@@ -1,10 +1,10 @@
 # Recursos
 
-PDF, enunciados, imágenes y archivos auxiliares publicables de Acceso a Datos.
+Documentos PDF oficiales y material gráfico de apoyo de Acceso a Datos. Los apuntes editados en Markdown se encuentran en [`temario/`](../temario/README.md).
 
-## Material Docente Oficial (Aula Virtual)
+## Material docente (Aula Virtual)
 
-| Unidad / Tema | Documento PDF | Versión Web (HTML) | Galería de Imágenes | Descripción |
+| Unidad / Tema | Documento PDF oficial | Apuntes Markdown | Imágenes | Contenido |
 |---|---|---|---|---|
-| **Tema 2A: Manejo de ficheros** | [2A Manejo de ficheros.pdf](./2A%20Manejo%20de%20ficheros%20_%20AulaVirtual/2A%20Manejo%20de%20ficheros%20_%20AulaVirtual.pdf) | [2A Manejo de ficheros.html](./2A%20Manejo%20de%20ficheros%20_%20AulaVirtual/2A%20Manejo%20de%20ficheros%20_%20AulaVirtual.html) | [img/](./2A%20Manejo%20de%20ficheros%20_%20AulaVirtual/img/) | Paquete `java.io`, flujos de bytes y de caracteres, `RandomAccessFile`. |
-| **Tema 2B: Librerías de tratamiento de XML en Java** | [2B Librerías XML en Java.pdf](./2B%20Librerías%20de%20tratamiento%20de%20XML%20en%20Java.%20_%20AulaVirtual/2B%20Librerías%20de%20tratamiento%20de%20XML%20en%20Java.%20_%20AulaVirtual.pdf) | [2B Librerías XML en Java.html](./2B%20Librerías%20de%20tratamiento%20de%20XML%20en%20Java.%20_%20AulaVirtual/2B%20Librerías%20de%20tratamiento%20de%20XML%20en%20Java.%20_%20AulaVirtual.html) | [img/](./2B%20Librerías%20de%20tratamiento%20de%20XML%20en%20Java.%20_%20AulaVirtual/img/) | Tratamiento de XML: DOM (`javax.xml.parsers`, `org.w3c.dom`), SAX y JAXB. |
+| **Tema 2A: Manejo de ficheros** | [PDF](./2A%20Manejo%20de%20ficheros%20_%20AulaVirtual/2A%20Manejo%20de%20ficheros%20_%20AulaVirtual.pdf) | [Apuntes](../temario/UT02-A-manejo-de-ficheros.md) | [Galería](./2A%20Manejo%20de%20ficheros%20_%20AulaVirtual/img/) | `java.io`, flujos de bytes y caracteres, serialización, acceso secuencial y `RandomAccessFile`; introducción a `java.nio`. |
+| **Tema 2B: Librerías de tratamiento de XML en Java** | [PDF](./2B%20Librerías%20de%20tratamiento%20de%20XML%20en%20Java.%20_%20AulaVirtual/2B%20Librerías%20de%20tratamiento%20de%20XML%20en%20Java.%20_%20AulaVirtual.pdf) | [Apuntes](../temario/UT02-B-librerias-xml-java.md) | [Galería](./2B%20Librerías%20de%20tratamiento%20de%20XML%20en%20Java.%20_%20AulaVirtual/img/) | Procesamiento de XML con DOM, SAX y StAX, y enlace de datos con JAXB. |
