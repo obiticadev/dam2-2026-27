@@ -1,0 +1,2526 @@
+<html lang="es">
+
+<head>
+    <style>
+        body {
+            transition: opacity ease-in 0.2s;
+        }
+
+        body[unresolved] {
+            opacity: 0;
+            display: block;
+            overflow: hidden;
+            position: relative;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UT3. Ejercicios adicionales</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg-alt: #f5f7fa;
+            --text: #1a1d21;
+            --text-muted2: #5a6169;
+            --border: #e1e4e8;
+            --accent: #0b5fff;
+            --accent-hover: #0847c4;
+            --code-bg: #f4f4f4;
+            --code-text: #24292e;
+            --code-border: #e1e4e8;
+            --table-header-bg: #eef2f7;
+            --table-row-alt: #fafbfc;
+            --solution-bg: #eef8f0;
+            --solution-border: #a9d8b8;
+            --solution-btn-bg: #2f9e52;
+            --solution-btn-text: #ffffff;
+            --sidebar-bg: #f7f8fa;
+            --sidebar-border: #e1e4e8;
+            --link-active-bg: #e6efff;
+            --shadow: rgba(0, 0, 0, 0.10);
+            --diagram-bg: #f4f4f4;
+            --code-keyword: #a626a4;
+            --code-string: #22863a;
+            --code-comment: #6a737d;
+            --code-number: #b35900;
+            --code-builtin: #0b5fff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #14171c;
+                --bg-alt: #1b1f26;
+                --text: #e6e8eb;
+                --text-muted2: #a0a6b0;
+                --border: #2b3038;
+                --accent: #5b9dff;
+                --accent-hover: #85b7ff;
+                --code-bg: #1e2229;
+                --code-text: #d6dbe1;
+                --code-border: #2b3038;
+                --table-header-bg: #232830;
+                --table-row-alt: #191c22;
+                --solution-bg: #17251c;
+                --solution-border: #2f5c3d;
+                --solution-btn-bg: #2f9e52;
+                --solution-btn-text: #06120a;
+                --sidebar-bg: #101317;
+                --sidebar-border: #262b33;
+                --link-active-bg: #1d2c44;
+                --shadow: rgba(0, 0, 0, 0.4);
+                --diagram-bg: #1e2229;
+                --code-keyword: #c792ea;
+                --code-string: #7ee787;
+                --code-comment: #7f8b98;
+                --code-number: #f2c078;
+                --code-builtin: #5b9dff;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* ---------- Sidebar ---------- */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 290px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--sidebar-border);
+            overflow-y: auto;
+            padding: 1.25rem 0 2rem;
+            z-index: 40;
+            transition: transform 0.25s ease;
+        }
+
+        .sidebar-header {
+            padding: 0 1.25rem 1rem;
+            border-bottom: 1px solid var(--sidebar-border);
+            margin-bottom: 0.75rem;
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted2);
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar nav a {
+            display: block;
+            padding: 0.55rem 1.25rem;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.92rem;
+            border-left: 3px solid transparent;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .sidebar nav a:hover {
+            background: var(--link-active-bg);
+        }
+
+        .sidebar nav a.active {
+            background: var(--link-active-bg);
+            border-left-color: var(--accent);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar nav li.nav-bloque {
+            margin-top: 0.9rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid var(--sidebar-border);
+        }
+
+        .sidebar nav li.nav-bloque a {
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.76rem;
+            letter-spacing: 0.05em;
+            color: var(--text-muted2);
+        }
+
+        .sidebar nav li.nav-bloque a:hover {
+            color: var(--accent);
+        }
+
+        .sidebar nav li.nav-bloque a.active {
+            color: var(--accent);
+        }
+
+        .sidebar nav li.nav-ejercicio a {
+            padding-left: 2.1rem;
+            font-size: 0.88rem;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 0.85rem;
+            left: 1rem;
+            z-index: 60;
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px var(--shadow);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 30;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ---------- Content ---------- */
+        .content {
+            margin-left: 290px;
+            display: flex;
+            justify-content: center;
+            padding: 0 1.5rem;
+            width: auto;
+        }
+
+        .content-inner {
+            width: 100%;
+            max-width: 1024px;
+            padding: 2.5rem 0 5rem;
+            min-width: 0;
+        }
+
+        .content-inner h1 {
+            font-size: 2rem;
+            margin-top: 0;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.5rem;
+        }
+
+        section {
+            margin-bottom: 1.5rem;
+            padding-top: 0.25rem;
+        }
+
+        section h2 {
+            font-size: 1.5rem;
+            margin-top: 1.1rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .bloque-section {
+            margin-top: 2.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .bloque-section h2 {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: 0.9rem 1.25rem;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 1.1rem;
+            color: var(--accent);
+        }
+
+        section h3 {
+            font-size: 1.15rem;
+            color: var(--accent);
+            margin-top: 1.75rem;
+        }
+
+        p {
+            margin: 0.85em 0;
+        }
+
+        strong {
+            color: var(--text);
+        }
+
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.88em;
+            border: 1px solid var(--code-border);
+            overflow-wrap: anywhere;
+        }
+
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            padding: 1rem 1.1rem;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 1em;
+        }
+
+        .diagram pre {
+            background: var(--diagram-bg);
+        }
+
+        /* ---------- Syntax highlighting (Python code blocks) ---------- */
+        .tok-kw {
+            color: var(--code-keyword);
+            font-weight: 600;
+        }
+
+        .tok-str {
+            color: var(--code-string);
+        }
+
+        .tok-com {
+            color: var(--code-comment);
+            font-style: italic;
+        }
+
+        .tok-num {
+            color: var(--code-number);
+        }
+
+        .tok-builtin {
+            color: var(--code-builtin);
+        }
+
+        table {
+            display: block;
+            overflow-x: auto;
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.25em 0;
+            font-size: 0.92rem;
+            max-width: 100%;
+        }
+
+        caption {
+            text-align: left;
+            margin-bottom: 0.5em;
+            color: var(--text-muted2);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 0.55em 0.75em;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: var(--table-header-bg);
+            font-weight: 600;
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--table-row-alt);
+        }
+
+        ul,
+        ol {
+            padding-left: 1.4rem;
+        }
+
+        li {
+            margin: 0.3em 0;
+        }
+
+        .exercise {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .exercise> :first-child {
+            margin-top: 0;
+        }
+
+        .activity {
+            background: var(--bg-alt);
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .activity h3 {
+            margin-top: 0;
+        }
+
+        /* ---------- Solutions (hidden by default, toggled by button) ---------- */
+        .solution-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4em;
+            background: var(--solution-btn-bg);
+            color: var(--solution-btn-text);
+            border: none;
+            border-radius: 999px;
+            padding: 0.5em 1.1em;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: filter 0.15s ease;
+        }
+
+        .solution-toggle:hover {
+            filter: brightness(1.08);
+        }
+
+        .solution-toggle .icon {
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+
+        .solution-toggle[aria-expanded="true"] .icon {
+            transform: rotate(90deg);
+        }
+
+        .solution-content {
+            background: var(--solution-bg);
+            border: 1px solid var(--solution-border);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-top: 0.75rem;
+        }
+
+        .solution-content[hidden] {
+            display: none;
+        }
+
+        .solution-content> :first-child {
+            margin-top: 0;
+        }
+
+        .solution-content> :last-child {
+            margin-bottom: 0;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 82%;
+                max-width: 320px;
+                box-shadow: 4px 0 18px var(--shadow);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: flex;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 0 1.25rem;
+            }
+
+            .content-inner {
+                padding: 4.5rem 0 3rem;
+            }
+
+            .content-inner h1 {
+                font-size: 1.5rem;
+            }
+
+            section h2 {
+                font-size: 1.25rem;
+            }
+
+            table {
+                font-size: 0.82rem;
+            }
+
+            th,
+            td {
+                padding: 0.4em 0.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 0 0.9rem;
+            }
+
+            .content-inner {
+                padding: 4.5rem 0 2.5rem;
+            }
+
+            pre {
+                font-size: 0.76rem;
+                padding: 0.75rem;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <button id="sidebarToggle" class="sidebar-toggle" aria-label="Abrir menú de contenidos"
+        aria-expanded="false">☰</button>
+    <div id="overlay" class="overlay"></div>
+
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2>Contenidos</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#introduccion" class="active">Introducción</a></li>
+                <li class="nav-bloque"><a href="#bloque-1">Bloque 1: Programación modular</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-1">Ejercicio 1: Conversor de Celsius a Fahrenheit</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-2">Ejercicio 2: Calculadora de precio con IVA</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-3">Ejercicio 3: Comprobador de mayoría de edad</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-4">Ejercicio 4: Contador de consonantes</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-5">Ejercicio 5: Perímetro y área de un rectángulo</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-6">Ejercicio 6: Saludo personalizado multiidioma</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-7">Ejercicio 7: Incremento de la puntuación de una
+                        partida</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-8">Ejercicio 8: Reinicio del marcador de una partida</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-9">Ejercicio 9: Comprobador de triángulo rectángulo</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-10">Ejercicio 10: Ámbito de las variables locales y
+                        globales</a></li>
+                <li class="nav-bloque"><a href="#bloque-2">Bloque 2: Desarrollo de módulos Python</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-11">Ejercicio 11: Módulo ejecutable con bloque
+                        <code>if __name__ == "__main__":</code></a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-12">Ejercicio 12: Módulo de operaciones aritméticas
+                        básicas</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-13">Ejercicio 13: Módulo de conversión de unidades</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-14">Ejercicio 14: Módulo de validación de correos
+                        electrónicos</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-15">Ejercicio 15: Módulo de figuras geométricas</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-16">Ejercicio 16: Módulo de utilidades de texto</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-17">Ejercicio 17: Módulo de estadística sencilla</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-18">Ejercicio 18: Módulo de validación de fechas</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-19">Ejercicio 19: Módulo de cálculos financieros</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-20">Ejercicio 20: Módulo con funciones que reutilizan
+                        otras del mismo módulo</a></li>
+                <li class="nav-bloque"><a href="#bloque-3">Bloque 3: Programación recursiva</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-21">Ejercicio 21: Suma recursiva de los primeros números
+                        naturales</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-22">Ejercicio 22: Comprobador recursivo de paridad</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-23">Ejercicio 23: Producto recursivo mediante sumas
+                        sucesivas</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-24">Ejercicio 24: Contador recursivo de dígitos</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-25">Ejercicio 25: Conversor recursivo de decimal a
+                        binario</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-26">Ejercicio 26: Suma recursiva de los números pares
+                        hasta n</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-27">Ejercicio 27: Inversor recursivo de los dígitos de un
+                        número</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-28">Ejercicio 28: Suma recursiva de una serie armónica</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-29">Ejercicio 29: Cálculo recursivo del interés
+                        compuesto</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-30">Ejercicio 30: Contador recursivo de ocurrencias de un
+                        dígito</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main id="content" class="content">
+        <div class="content-inner">
+
+            <h1>UT3. Ejercicios adicionales</h1>
+
+            <section id="introduccion">
+                <h2>Introducción</h2>
+                <p>Este documento recoge treinta ejercicios pensados para practicar los contenidos de la UT3,
+                    organizados en tres bloques: diez ejercicios de <strong>programación modular</strong> (definición de
+                    funciones, parámetros con valor por defecto, documentación con docstrings, y paso de parámetros por
+                    valor y por referencia), diez ejercicios de <strong>desarrollo de módulos Python</strong> (crear
+                    varias funciones en un archivo independiente e importarlas y utilizarlas desde un programa principal
+                    distinto, incluyendo en todos los casos un bloque de autoprueba protegido con
+                    <code>if __name__ == "__main__":</code>), y diez ejercicios más de <strong>programación
+                        recursiva</strong> (funciones que se llaman a sí mismas, identificando en cada caso el caso base
+                    y el caso recursivo).</p>
+                <p>Todos los ejercicios utilizan únicamente elementos ya trabajados hasta esta unidad (no se emplean
+                    listas, tuplas, sets ni diccionarios, salvo el uso puntual de <code>.append()</code> sobre una lista
+                    ya creada, necesario para practicar el paso de parámetros por referencia, y el uso de una tupla como
+                    valor de retorno, ya visto como tipo inmutable).</p>
+            </section>
+
+            <section id="bloque-1" class="bloque-section">
+                <h2>Bloque 1: Programación modular</h2>
+            </section>
+
+            <section id="ejercicio-1">
+                <h2>Ejercicio 1: Conversor de Celsius a Fahrenheit</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función <code>celsius_a_fahrenheit(celsius)</code> que convierta
+                        una temperatura de grados Celsius a grados Fahrenheit, aplicando la fórmula F = C · 9/5 + 32.
+                    </p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Conversor de grados Celsius a Fahrenheit.
+
+Módulo con una función que convierte una temperatura de grados Celsius a
+grados Fahrenheit, aplicando la fórmula F = C * 9/5 + 32.
+"""</span>
+
+<span class="tok-kw">def</span> celsius_a_fahrenheit(celsius):
+    <span class="tok-str">"""Convierte una temperatura de grados Celsius a grados Fahrenheit.
+
+    Parámetros:
+        celsius (float): temperatura en grados Celsius.
+    Devuelve:
+        float: la temperatura equivalente en grados Fahrenheit.
+    """</span>
+    fahrenheit = celsius * <span class="tok-num">9</span> / <span class="tok-num">5</span> + <span class="tok-num">32</span>
+    <span class="tok-kw">return</span> fahrenheit
+
+
+<span class="tok-builtin">print</span>(celsius_a_fahrenheit(<span class="tok-num">0</span>))     <span class="tok-com"># 32.0</span>
+<span class="tok-builtin">print</span>(celsius_a_fahrenheit(<span class="tok-num">100</span>))   <span class="tok-com"># 212.0</span>
+<span class="tok-builtin">print</span>(celsius_a_fahrenheit(<span class="tok-num">37</span>))    <span class="tok-com"># 98.6</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>32.0
+212.0
+98.6</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-2">
+                <h2>Ejercicio 2: Calculadora de precio con IVA</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función <code>calcular_precio_con_iva(precio, iva=21)</code>,
+                        con un parámetro por defecto, que calcule el precio final de un producto aplicando el porcentaje
+                        de IVA indicado (21 % si no se especifica otro).</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Calculadora de precio con IVA.
+
+Módulo con una función que calcula el precio final de un producto aplicando
+un porcentaje de IVA, que por defecto es del 21 %.
+"""</span>
+
+<span class="tok-kw">def</span> calcular_precio_con_iva(precio, iva=<span class="tok-num">21</span>):
+    <span class="tok-str">"""Calcula el precio final de un producto aplicando un porcentaje de IVA.
+
+    Parámetros:
+        precio (float): precio del producto sin IVA.
+        iva (float): porcentaje de IVA a aplicar (por defecto, 21).
+    Devuelve:
+        float: el precio final, con el IVA ya incluido.
+    """</span>
+    precio_final = precio + (precio * iva / <span class="tok-num">100</span>)
+    <span class="tok-kw">return</span> precio_final
+
+
+<span class="tok-builtin">print</span>(calcular_precio_con_iva(<span class="tok-num">100</span>))       <span class="tok-com"># 121.0</span>
+<span class="tok-builtin">print</span>(calcular_precio_con_iva(<span class="tok-num">100</span>, <span class="tok-num">10</span>))   <span class="tok-com"># 110.0</span>
+<span class="tok-builtin">print</span>(calcular_precio_con_iva(<span class="tok-num">50</span>, <span class="tok-num">4</span>))     <span class="tok-com"># 52.0</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>121.0
+110.0
+52.0</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-3">
+                <h2>Ejercicio 3: Comprobador de mayoría de edad</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función <code>es_mayor_de_edad(edad)</code> que devuelva
+                        <code>True</code> o <code>False</code> según si la edad recibida corresponde a una persona mayor
+                        de edad (18 años o más).</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Comprobador de mayoría de edad.
+
+Módulo con una función que indica si una persona es mayor de edad a partir
+de su edad, tomando 18 años como edad mínima.
+"""</span>
+
+EDAD_MINIMA = <span class="tok-num">18</span>
+
+<span class="tok-kw">def</span> es_mayor_de_edad(edad):
+    <span class="tok-str">"""Indica si una edad corresponde a una persona mayor de edad.
+
+    Parámetros:
+        edad (int): edad de la persona, en años.
+    Devuelve:
+        bool: True si 'edad' es mayor o igual que la edad mínima, False en
+        caso contrario.
+    """</span>
+    <span class="tok-kw">return</span> edad &gt;= EDAD_MINIMA
+
+
+<span class="tok-builtin">print</span>(es_mayor_de_edad(<span class="tok-num">20</span>))   <span class="tok-com"># True</span>
+<span class="tok-builtin">print</span>(es_mayor_de_edad(<span class="tok-num">15</span>))   <span class="tok-com"># False</span>
+<span class="tok-builtin">print</span>(es_mayor_de_edad(<span class="tok-num">18</span>))   <span class="tok-com"># True</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>True
+False
+True</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-4">
+                <h2>Ejercicio 4: Contador de consonantes</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función <code>contar_consonantes(palabra)</code> que recorra una
+                        palabra letra a letra, con un bucle <code>for</code>, y devuelva cuántas consonantes contiene.
+                    </p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Contador de consonantes de una palabra.
+
+Módulo con una función que cuenta cuántas consonantes contiene una palabra,
+recorriéndola letra a letra con un bucle for.
+"""</span>
+
+VOCALES = <span class="tok-str">"aeiouAEIOUáéíóúÁÉÍÓÚ"</span>
+
+<span class="tok-kw">def</span> contar_consonantes(palabra):
+    <span class="tok-str">"""Cuenta cuántas consonantes contiene una palabra.
+
+    Parámetros:
+        palabra (str): la palabra o texto a analizar.
+    Devuelve:
+        int: el número de letras que no son vocales ni espacios.
+    """</span>
+    contador = <span class="tok-num">0</span>
+    <span class="tok-kw">for</span> letra <span class="tok-kw">in</span> palabra:
+        <span class="tok-kw">if</span> letra.isalpha() <span class="tok-kw">and</span> letra <span class="tok-kw">not</span> <span class="tok-kw">in</span> VOCALES:
+            contador += <span class="tok-num">1</span>
+    <span class="tok-kw">return</span> contador
+
+
+<span class="tok-builtin">print</span>(contar_consonantes(<span class="tok-str">"ordenador"</span>))       <span class="tok-com"># 5</span>
+<span class="tok-builtin">print</span>(contar_consonantes(<span class="tok-str">"Python"</span>))          <span class="tok-com"># 5</span>
+<span class="tok-builtin">print</span>(contar_consonantes(<span class="tok-str">"aeiou"</span>))           <span class="tok-com"># 0</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>5
+5
+0</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-5">
+                <h2>Ejercicio 5: Perímetro y área de un rectángulo</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función
+                        <code>calcular_perimetro_area_rectangulo(base, altura)</code> que calcule a la vez el perímetro
+                        y el área de un rectángulo, devolviendo ambos valores en una tupla.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Perímetro y área de un rectángulo.
+
+Módulo con una función que calcula, a la vez, el perímetro y el área de un
+rectángulo, devolviendo ambos valores en una tupla.
+"""</span>
+
+<span class="tok-kw">def</span> calcular_perimetro_area_rectangulo(base, altura):
+    <span class="tok-str">"""Calcula el perímetro y el área de un rectángulo.
+
+    Parámetros:
+        base (float): longitud de la base del rectángulo.
+        altura (float): longitud de la altura del rectángulo.
+    Devuelve:
+        tuple: una tupla (perimetro, area) con los dos valores calculados.
+    """</span>
+    perimetro = <span class="tok-num">2</span> * (base + altura)
+    area = base * altura
+    <span class="tok-kw">return</span> (perimetro, area)
+
+
+perimetro, area = calcular_perimetro_area_rectangulo(<span class="tok-num">5</span>, <span class="tok-num">3</span>)
+<span class="tok-builtin">print</span>(perimetro)   <span class="tok-com"># 16</span>
+<span class="tok-builtin">print</span>(area)         <span class="tok-com"># 15</span>
+
+<span class="tok-builtin">print</span>(calcular_perimetro_area_rectangulo(<span class="tok-num">4</span>, <span class="tok-num">4</span>))   <span class="tok-com"># (16, 16)</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>16
+15
+(16, 16)</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-6">
+                <h2>Ejercicio 6: Saludo personalizado multiidioma</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función <code>saludo_personalizado(nombre, idioma="es")</code>,
+                        con un parámetro por defecto, que devuelva un saludo con el nombre recibido en español, inglés o
+                        francés según el código de idioma indicado.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Saludo personalizado en varios idiomas.
+
+Módulo con una función que devuelve un saludo personalizado con el nombre
+recibido, en el idioma indicado (español por defecto).
+"""</span>
+
+<span class="tok-kw">def</span> saludo_personalizado(nombre, idioma=<span class="tok-str">"es"</span>):
+    <span class="tok-str">"""Devuelve un saludo personalizado en el idioma indicado.
+
+    Parámetros:
+        nombre (str): nombre de la persona a saludar.
+        idioma (str): código del idioma del saludo ("es", "en" o "fr"),
+            por defecto "es".
+    Devuelve:
+        str: el saludo completo en el idioma solicitado, o un mensaje de
+        aviso si el idioma no está disponible.
+    """</span>
+    <span class="tok-kw">if</span> idioma == <span class="tok-str">"es"</span>:
+        saludo = <span class="tok-str">"Hola, "</span> + nombre + <span class="tok-str">"!"</span>
+    <span class="tok-kw">elif</span> idioma == <span class="tok-str">"en"</span>:
+        saludo = <span class="tok-str">"Hello, "</span> + nombre + <span class="tok-str">"!"</span>
+    <span class="tok-kw">elif</span> idioma == <span class="tok-str">"fr"</span>:
+        saludo = <span class="tok-str">"Bonjour, "</span> + nombre + <span class="tok-str">"!"</span>
+    <span class="tok-kw">else</span>:
+        saludo = <span class="tok-str">"Idioma no disponible para "</span> + nombre
+    <span class="tok-kw">return</span> saludo
+
+
+<span class="tok-builtin">print</span>(saludo_personalizado(<span class="tok-str">"Marta"</span>))            <span class="tok-com"># Hola, Marta!</span>
+<span class="tok-builtin">print</span>(saludo_personalizado(<span class="tok-str">"John"</span>, <span class="tok-str">"en"</span>))       <span class="tok-com"># Hello, John!</span>
+<span class="tok-builtin">print</span>(saludo_personalizado(<span class="tok-str">"Marie"</span>, <span class="tok-str">"fr"</span>))      <span class="tok-com"># Bonjour, Marie!</span>
+<span class="tok-builtin">print</span>(saludo_personalizado(<span class="tok-str">"Karl"</span>, <span class="tok-str">"de"</span>))       <span class="tok-com"># Idioma no disponible para Karl</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>Hola, Marta!
+Hello, John!
+Bonjour, Marie!
+Idioma no disponible para Karl</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-7">
+                <h2>Ejercicio 7: Incremento de la puntuación de una partida</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función
+                        <code>incrementar_puntuacion(lista_puntuaciones, puntos)</code> que reciba una lista de
+                        puntuaciones de una partida y le añada, con <code>.append()</code>, una nueva puntuación;
+                        comprueba que la lista original queda modificada tras la llamada.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Incremento de la puntuación de una partida.
+
+Módulo con una función que añade puntos a una lista de puntuaciones de una
+partida, modificando directamente la lista original (paso por referencia).
+"""</span>
+
+<span class="tok-kw">def</span> incrementar_puntuacion(lista_puntuaciones, puntos):
+    <span class="tok-str">"""Añade una nueva puntuación a una lista de puntuaciones de partida.
+
+    Parámetros:
+        lista_puntuaciones (list): lista de puntuaciones que se va a
+            modificar directamente.
+        puntos (int): la puntuación que se quiere añadir.
+    Devuelve:
+        None (la función modifica la lista recibida, no devuelve nada).
+    """</span>
+    lista_puntuaciones.append(puntos)
+
+
+puntuaciones = [<span class="tok-num">120</span>, <span class="tok-num">95</span>]
+incrementar_puntuacion(puntuaciones, <span class="tok-num">150</span>)
+<span class="tok-builtin">print</span>(puntuaciones)   <span class="tok-com"># [120, 95, 150]  -&gt; la lista original ha quedado modificada</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>[120, 95, 150]</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-8">
+                <h2>Ejercicio 8: Reinicio del marcador de una partida</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función <code>reiniciar_marcador(marcador)</code> que reciba un
+                        <code>int</code> con el marcador de una partida e intente ponerlo a cero; comprueba que, tras la
+                        llamada, la variable original <strong>no</strong> ha cambiado, por tratarse de un tipo
+                        inmutable.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Reinicio del marcador de una partida.
+
+Módulo con una función que intenta poner a cero el marcador de una partida,
+para comprobar que un int, al ser inmutable, no se modifica fuera de la
+función.
+"""</span>
+
+<span class="tok-kw">def</span> reiniciar_marcador(marcador):
+    <span class="tok-str">"""Intenta poner a cero el marcador de una partida.
+
+    Parámetros:
+        marcador (int): puntuación actual del marcador.
+    Devuelve:
+        int: siempre 0 (un valor nuevo y local, que no afecta al
+        argumento original con el que se llamó a la función).
+    """</span>
+    marcador = <span class="tok-num">0</span>
+    <span class="tok-kw">return</span> marcador
+
+
+marcador_actual = <span class="tok-num">340</span>
+reiniciar_marcador(marcador_actual)
+<span class="tok-builtin">print</span>(marcador_actual)   <span class="tok-com"># 340  -&gt; la variable original NO ha cambiado</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>340</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-9">
+                <h2>Ejercicio 9: Comprobador de triángulo rectángulo</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función <code>es_triangulo_rectangulo(a, b, c)</code> que, a
+                        partir de las longitudes de los tres lados de un triángulo, determine si es rectángulo aplicando
+                        el teorema de Pitágoras (usa el módulo <code>math</code>).</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Comprobador de triángulo rectángulo.
+
+Módulo con una función que determina si un triángulo, dados los tres lados,
+es rectángulo, aplicando el teorema de Pitágoras.
+"""</span>
+
+<span class="tok-kw">import</span> math
+
+<span class="tok-kw">def</span> es_triangulo_rectangulo(a, b, c):
+    <span class="tok-str">"""Determina si un triángulo de lados a, b y c es rectángulo.
+
+    Aplica el teorema de Pitágoras: el cuadrado del lado mayor (hipotenusa)
+    debe ser igual a la suma de los cuadrados de los otros dos lados
+    (catetos).
+
+    Parámetros:
+        a, b, c (float): las longitudes de los tres lados del triángulo.
+    Devuelve:
+        bool: True si el triángulo es rectángulo, False en caso contrario.
+    """</span>
+    hipotenusa = <span class="tok-builtin">max</span>(a, b, c)
+    suma_cuadrados_catetos = a ** <span class="tok-num">2</span> + b ** <span class="tok-num">2</span> + c ** <span class="tok-num">2</span> - hipotenusa ** <span class="tok-num">2</span>
+    <span class="tok-kw">return</span> math.isclose(hipotenusa ** <span class="tok-num">2</span>, suma_cuadrados_catetos)
+
+
+<span class="tok-builtin">print</span>(es_triangulo_rectangulo(<span class="tok-num">3</span>, <span class="tok-num">4</span>, <span class="tok-num">5</span>))    <span class="tok-com"># True</span>
+<span class="tok-builtin">print</span>(es_triangulo_rectangulo(<span class="tok-num">5</span>, <span class="tok-num">6</span>, <span class="tok-num">7</span>))    <span class="tok-com"># False</span>
+<span class="tok-builtin">print</span>(es_triangulo_rectangulo(<span class="tok-num">6</span>, <span class="tok-num">8</span>, <span class="tok-num">10</span>))   <span class="tok-com"># True</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>True
+False
+True</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-10">
+                <h2>Ejercicio 10: Ámbito de las variables locales y globales</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función <code>mostrar_ambito_variables()</code>, sin parámetros,
+                        que cree una variable local con el mismo nombre que una variable global ya existente, y
+                        demuestre por pantalla que ambas son independientes y que la función no modifica la variable
+                        global.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Ámbito de las variables locales y globales.
+
+Módulo que demuestra la diferencia entre una variable global y una variable
+local con el mismo nombre dentro de una función.
+"""</span>
+
+version = <span class="tok-str">"1.0"</span>   <span class="tok-com"># variable global</span>
+
+<span class="tok-kw">def</span> mostrar_ambito_variables():
+    <span class="tok-str">"""Muestra el valor de una variable local que "oculta" a la global.
+
+    Crea, dentro de la función, una variable local llamada igual que la
+    variable global 'version', para comprobar que ambas son independientes
+    y que la función no modifica la variable global.
+
+    Devuelve:
+        None (solo muestra información por pantalla).
+    """</span>
+    version = <span class="tok-str">"2.0-beta"</span>   <span class="tok-com"># variable local: NO es la misma que la global</span>
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Dentro de la función, 'version' vale:"</span>, version)
+
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Antes de llamar a la función, 'version' vale:"</span>, version)
+mostrar_ambito_variables()
+<span class="tok-builtin">print</span>(<span class="tok-str">"Después de llamar a la función, 'version' vale:"</span>, version)</code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>Antes de llamar a la función, 'version' vale: 1.0
+Dentro de la función, 'version' vale: 2.0-beta
+Después de llamar a la función, 'version' vale: 1.0</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="bloque-2" class="bloque-section">
+                <h2>Bloque 2: Desarrollo de módulos Python</h2>
+            </section>
+
+            <p>En este bloque cada módulo define <strong>más de una función</strong> relacionada entre sí (en algunos
+                casos, una función reutiliza internamente otra del mismo módulo) y se utiliza desde un <strong>programa
+                    principal</strong> que la importa, en lugar de definir las funciones en el mismo archivo donde se
+                usan, tal y como se ha hecho en el bloque 1. Además, cada módulo incluye al final un bloque de código
+                protegido con <code>if __name__ == "__main__":</code> que prueba sus propias funciones: ese bloque
+                <strong>no</strong> se ejecuta cuando el módulo se importa desde <code>principal.py</code>, pero
+                <strong>sí</strong> se ejecuta cuando el archivo del módulo se ejecuta directamente. Por eso, para cada
+                ejercicio se muestran las dos salidas posibles. Ambos archivos deben guardarse en la misma carpeta del
+                proyecto.</p>
+
+            <section id="ejercicio-11">
+                <h2>Ejercicio 11: Módulo ejecutable con bloque <code>if __name__ == "__main__":</code></h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Crea un módulo <code>modulo_saludo.py</code> con <strong>dos</strong>
+                        funciones, <code>saludar(nombre)</code> y <code>despedir(nombre)</code>, y, al final del
+                        archivo, un bloque de código de prueba protegido con <code>if __name__ == "__main__":</code> que
+                        pruebe ambas funciones y que solo debe ejecutarse cuando el archivo se ejecuta directamente.
+                        Crea un programa principal <code>principal.py</code> que importe las dos funciones y las use;
+                        comprueba también qué ocurre al ejecutar <code>modulo_saludo.py</code> directamente.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <p><strong>Módulo <code>modulo_saludo.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Módulo de saludo y despedida, con bloque de pruebas propio.
+
+Contiene las funciones saludar(nombre) y despedir(nombre) y, al final, un
+bloque de código de prueba que solo se ejecuta cuando este archivo se
+ejecuta directamente, no cuando se importa desde otro programa.
+"""</span>
+
+<span class="tok-kw">def</span> saludar(nombre):
+    <span class="tok-str">"""Devuelve un saludo personalizado con el nombre recibido."""</span>
+    <span class="tok-kw">return</span> <span class="tok-str">"¡Hola, "</span> + nombre + <span class="tok-str">"!"</span>
+
+
+<span class="tok-kw">def</span> despedir(nombre):
+    <span class="tok-str">"""Devuelve una despedida personalizada con el nombre recibido."""</span>
+    <span class="tok-kw">return</span> <span class="tok-str">"¡Hasta pronto, "</span> + nombre + <span class="tok-str">"!"</span>
+
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Este mensaje SOLO aparece si se ejecuta este archivo directamente."</span>)
+    <span class="tok-builtin">print</span>(saludar(<span class="tok-str">"modo de prueba"</span>))
+    <span class="tok-builtin">print</span>(despedir(<span class="tok-str">"modo de prueba"</span>))</code></pre>
+
+                        <p><strong>Programa principal <code>principal.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Programa principal que usa el módulo 'modulo_saludo'.
+
+Al importar el módulo, el bloque protegido por
+'if __name__ == "__main__":' NO se ejecuta: solo se ejecuta el código de
+nivel superior del módulo (las definiciones de las funciones) y, después,
+se llama a saludar() y despedir() explícitamente desde aquí.
+"""</span>
+
+<span class="tok-kw">from</span> modulo_saludo <span class="tok-kw">import</span> saludar, despedir
+
+<span class="tok-builtin">print</span>(saludar(<span class="tok-str">"Inés"</span>))
+<span class="tok-builtin">print</span>(despedir(<span class="tok-str">"Inés"</span>))</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>principal.py</code> (importa el módulo)</strong></p>
+                        <pre><code>¡Hola, Inés!
+¡Hasta pronto, Inés!</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>modulo_saludo.py</code> directamente</strong></p>
+                        <pre><code>Este mensaje SOLO aparece si se ejecuta este archivo directamente.
+¡Hola, modo de prueba!
+¡Hasta pronto, modo de prueba!</code></pre>
+                        <p>Se observa que, al ejecutar el módulo directamente, sí se ejecuta el bloque protegido por
+                            <code>if __name__ == "__main__":</code>, mientras que al importarlo desde
+                            <code>principal.py</code> ese bloque se omite por completo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-12">
+                <h2>Ejercicio 12: Módulo de operaciones aritméticas básicas</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Crea un módulo <code>operaciones.py</code> con <strong>cuatro</strong>
+                        funciones: <code>sumar(a, b)</code>, <code>restar(a, b)</code>, <code>multiplicar(a, b)</code> y
+                        <code>dividir(a, b)</code> (esta última debe controlar con <code>try</code>/<code>except</code>
+                        la división entre cero, devolviendo <code>None</code> en ese caso). Añade al final del módulo un
+                        bloque de pruebas protegido con <code>if __name__ == "__main__":</code> que compruebe las cuatro
+                        funciones. Crea un programa principal <code>principal.py</code> que importe las cuatro funciones
+                        con <code>from operaciones import sumar, restar, multiplicar, dividir</code> y las utilice.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <p><strong>Módulo <code>operaciones.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Módulo de operaciones aritméticas básicas.
+
+Contiene funciones para sumar, restar, multiplicar y dividir dos números,
+pensadas para ser reutilizadas desde otros programas.
+"""</span>
+
+<span class="tok-kw">def</span> sumar(a, b):
+    <span class="tok-str">"""Devuelve la suma de dos números."""</span>
+    <span class="tok-kw">return</span> a + b
+
+
+<span class="tok-kw">def</span> restar(a, b):
+    <span class="tok-str">"""Devuelve la resta de dos números (a - b)."""</span>
+    <span class="tok-kw">return</span> a - b
+
+
+<span class="tok-kw">def</span> multiplicar(a, b):
+    <span class="tok-str">"""Devuelve el producto de dos números."""</span>
+    <span class="tok-kw">return</span> a * b
+
+
+<span class="tok-kw">def</span> dividir(a, b):
+    <span class="tok-str">"""Devuelve la división de dos números (a / b).
+
+    Controla con try/except el caso de que 'b' sea 0.
+
+    Devuelve:
+        float: el resultado de a / b, o None si b es 0.
+    """</span>
+    <span class="tok-kw">try</span>:
+        <span class="tok-kw">return</span> a / b
+    <span class="tok-kw">except</span> ZeroDivisionError:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Error: no se puede dividir entre cero."</span>)
+        <span class="tok-kw">return</span> <span class="tok-kw">None</span>
+
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"--- Pruebas del módulo operaciones ---"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"sumar(8, 3) -&gt;"</span>, sumar(<span class="tok-num">8</span>, <span class="tok-num">3</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"restar(8, 3) -&gt;"</span>, restar(<span class="tok-num">8</span>, <span class="tok-num">3</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"multiplicar(8, 3) -&gt;"</span>, multiplicar(<span class="tok-num">8</span>, <span class="tok-num">3</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"dividir(8, 3) -&gt;"</span>, <span class="tok-builtin">round</span>(dividir(<span class="tok-num">8</span>, <span class="tok-num">3</span>), <span class="tok-num">2</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"dividir(8, 0) -&gt;"</span>, dividir(<span class="tok-num">8</span>, <span class="tok-num">0</span>))</code></pre>
+
+                        <p><strong>Programa principal <code>principal.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Programa principal que usa el módulo 'operaciones'.
+
+Importa las cuatro funciones del módulo operaciones.py mediante
+'from ... import ...' y las utiliza directamente.
+"""</span>
+
+<span class="tok-kw">from</span> operaciones <span class="tok-kw">import</span> sumar, restar, multiplicar, dividir
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"8 + 3 ="</span>, sumar(<span class="tok-num">8</span>, <span class="tok-num">3</span>))
+<span class="tok-builtin">print</span>(<span class="tok-str">"8 - 3 ="</span>, restar(<span class="tok-num">8</span>, <span class="tok-num">3</span>))
+<span class="tok-builtin">print</span>(<span class="tok-str">"8 * 3 ="</span>, multiplicar(<span class="tok-num">8</span>, <span class="tok-num">3</span>))
+<span class="tok-builtin">print</span>(<span class="tok-str">"8 / 3 ="</span>, <span class="tok-builtin">round</span>(dividir(<span class="tok-num">8</span>, <span class="tok-num">3</span>), <span class="tok-num">2</span>))</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>principal.py</code> (importa el módulo)</strong></p>
+                        <pre><code>8 + 3 = 11
+8 - 3 = 5
+8 * 3 = 24
+8 / 3 = 2.67</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>operaciones.py</code> directamente</strong></p>
+                        <pre><code>--- Pruebas del módulo operaciones ---
+sumar(8, 3) -&gt; 11
+restar(8, 3) -&gt; 5
+multiplicar(8, 3) -&gt; 24
+dividir(8, 3) -&gt; 2.67
+Error: no se puede dividir entre cero.
+dividir(8, 0) -&gt; None</code></pre>
+                        <p>Se observa que, al ejecutar el módulo directamente, sí se ejecuta el bloque protegido por
+                            <code>if __name__ == "__main__":</code>, mientras que al importarlo desde
+                            <code>principal.py</code> ese bloque se omite por completo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-13">
+                <h2>Ejercicio 13: Módulo de conversión de unidades</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Crea un módulo <code>conversiones.py</code> con <strong>tres</strong>
+                        funciones: <code>metros_a_pies(metros)</code>, <code>pies_a_metros(pies)</code> (la conversión
+                        inversa) y <code>kilometros_a_millas(kilometros)</code>. Añade un bloque de pruebas protegido
+                        con <code>if __name__ == "__main__":</code> que compruebe las tres funciones. Crea un programa
+                        principal <code>principal.py</code> que importe el módulo completo con
+                        <code>import conversiones</code> y llame a las funciones anteponiendo el nombre del módulo
+                        (<code>conversiones.metros_a_pies(...)</code>).</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <p><strong>Módulo <code>conversiones.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Módulo de conversión de unidades.
+
+Contiene funciones para convertir distancias entre metros, pies y
+kilómetros/millas.
+"""</span>
+
+METROS_A_PIES = <span class="tok-num">3.28084</span>
+KM_A_MILLAS = <span class="tok-num">0.621371</span>
+
+<span class="tok-kw">def</span> metros_a_pies(metros):
+    <span class="tok-str">"""Convierte una distancia de metros a pies."""</span>
+    <span class="tok-kw">return</span> metros * METROS_A_PIES
+
+
+<span class="tok-kw">def</span> pies_a_metros(pies):
+    <span class="tok-str">"""Convierte una distancia de pies a metros."""</span>
+    <span class="tok-kw">return</span> pies / METROS_A_PIES
+
+
+<span class="tok-kw">def</span> kilometros_a_millas(kilometros):
+    <span class="tok-str">"""Convierte una distancia de kilómetros a millas."""</span>
+    <span class="tok-kw">return</span> kilometros * KM_A_MILLAS
+
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"--- Pruebas del módulo conversiones ---"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"metros_a_pies(10) -&gt;"</span>, <span class="tok-builtin">round</span>(metros_a_pies(<span class="tok-num">10</span>), <span class="tok-num">2</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"pies_a_metros(32.8084) -&gt;"</span>, <span class="tok-builtin">round</span>(pies_a_metros(<span class="tok-num">32.8084</span>), <span class="tok-num">2</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"kilometros_a_millas(42) -&gt;"</span>, <span class="tok-builtin">round</span>(kilometros_a_millas(<span class="tok-num">42</span>), <span class="tok-num">2</span>))</code></pre>
+
+                        <p><strong>Programa principal <code>principal.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Programa principal que usa el módulo 'conversiones'.
+
+Importa el módulo completo con 'import conversiones' y accede a sus
+funciones anteponiendo el nombre del módulo.
+"""</span>
+
+<span class="tok-kw">import</span> conversiones
+
+distancia_metros = <span class="tok-num">10</span>
+distancia_pies = conversiones.metros_a_pies(distancia_metros)
+distancia_km = <span class="tok-num">42</span>
+
+<span class="tok-builtin">print</span>(distancia_metros, <span class="tok-str">"metros equivalen a"</span>, <span class="tok-builtin">round</span>(distancia_pies, <span class="tok-num">2</span>), <span class="tok-str">"pies"</span>)
+<span class="tok-builtin">print</span>(<span class="tok-builtin">round</span>(conversiones.pies_a_metros(distancia_pies), <span class="tok-num">2</span>), <span class="tok-str">"pies equivalen a"</span>, distancia_metros, <span class="tok-str">"metros"</span>)
+<span class="tok-builtin">print</span>(distancia_km, <span class="tok-str">"km equivalen a"</span>, <span class="tok-builtin">round</span>(conversiones.kilometros_a_millas(distancia_km), <span class="tok-num">2</span>), <span class="tok-str">"millas"</span>)</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>principal.py</code> (importa el módulo)</strong></p>
+                        <pre><code>10 metros equivalen a 32.81 pies
+10.0 pies equivalen a 10 metros
+42 km equivalen a 26.1 millas</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>conversiones.py</code> directamente</strong></p>
+                        <pre><code>--- Pruebas del módulo conversiones ---
+metros_a_pies(10) -&gt; 32.81
+pies_a_metros(32.8084) -&gt; 10.0
+kilometros_a_millas(42) -&gt; 26.1</code></pre>
+                        <p>Se observa que, al ejecutar el módulo directamente, sí se ejecuta el bloque protegido por
+                            <code>if __name__ == "__main__":</code>, mientras que al importarlo desde
+                            <code>principal.py</code> ese bloque se omite por completo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-14">
+                <h2>Ejercicio 14: Módulo de validación de correos electrónicos</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Crea un módulo <code>validaciones.py</code> con <strong>tres</strong>
+                        funciones: <code>es_email_valido(texto)</code> (comprueba que contiene un '@' y un '.'),
+                        <code>es_telefono_valido(texto)</code> (comprueba, con <code>.isdigit()</code>, que el texto
+                        tiene exactamente 9 dígitos) y <code>es_contrasena_segura(texto)</code> (comprueba que tiene al
+                        menos 8 caracteres). Añade un bloque de pruebas protegido con
+                        <code>if __name__ == "__main__":</code>. Crea un programa principal <code>principal.py</code>
+                        que importe el módulo con un alias (<code>import validaciones as val</code>) y use las tres
+                        funciones.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <p><strong>Módulo <code>validaciones.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Módulo de validaciones.
+
+Contiene funciones que comprueban, de forma sencilla, si un correo
+electrónico, un teléfono o una contraseña tienen un formato mínimamente
+válido.
+"""</span>
+
+LONGITUD_TELEFONO = <span class="tok-num">9</span>
+LONGITUD_MINIMA_CONTRASENA = <span class="tok-num">8</span>
+
+<span class="tok-kw">def</span> es_email_valido(texto):
+    <span class="tok-str">"""Comprueba si un texto tiene un formato mínimo de correo electrónico.
+
+    Devuelve:
+        bool: True si el texto contiene '@' y '.', False en caso contrario.
+    """</span>
+    <span class="tok-kw">return</span> <span class="tok-str">"@"</span> <span class="tok-kw">in</span> texto <span class="tok-kw">and</span> <span class="tok-str">"."</span> <span class="tok-kw">in</span> texto
+
+
+<span class="tok-kw">def</span> es_telefono_valido(texto):
+    <span class="tok-str">"""Comprueba si un texto es un teléfono válido de 9 dígitos.
+
+    Devuelve:
+        bool: True si el texto está formado solo por dígitos y tiene
+        exactamente 9 caracteres, False en caso contrario.
+    """</span>
+    <span class="tok-kw">return</span> texto.isdigit() <span class="tok-kw">and</span> <span class="tok-builtin">len</span>(texto) == LONGITUD_TELEFONO
+
+
+<span class="tok-kw">def</span> es_contrasena_segura(texto):
+    <span class="tok-str">"""Comprueba si una contraseña tiene una longitud mínima segura.
+
+    Devuelve:
+        bool: True si el texto tiene al menos 8 caracteres, False en caso
+        contrario.
+    """</span>
+    <span class="tok-kw">return</span> <span class="tok-builtin">len</span>(texto) &gt;= LONGITUD_MINIMA_CONTRASENA
+
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"--- Pruebas del módulo validaciones ---"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"es_email_valido('ines@ies.es') -&gt;"</span>, es_email_valido(<span class="tok-str">"ines@ies.es"</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"es_telefono_valido('612345678') -&gt;"</span>, es_telefono_valido(<span class="tok-str">"612345678"</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"es_contrasena_segura('abc123') -&gt;"</span>, es_contrasena_segura(<span class="tok-str">"abc123"</span>))</code></pre>
+
+                        <p><strong>Programa principal <code>principal.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Programa principal que usa el módulo 'validaciones'.
+
+Importa el módulo con un alias ('import ... as ...').
+"""</span>
+
+<span class="tok-kw">import</span> validaciones <span class="tok-kw">as</span> val
+
+correo = <span class="tok-str">"ines@instituto.es"</span>
+telefono = <span class="tok-str">"612345678"</span>
+contrasena = <span class="tok-str">"clave1234"</span>
+
+<span class="tok-builtin">print</span>(correo, <span class="tok-str">"-&gt;"</span>, val.es_email_valido(correo))
+<span class="tok-builtin">print</span>(telefono, <span class="tok-str">"-&gt;"</span>, val.es_telefono_valido(telefono))
+<span class="tok-builtin">print</span>(contrasena, <span class="tok-str">"-&gt;"</span>, val.es_contrasena_segura(contrasena))</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>principal.py</code> (importa el módulo)</strong></p>
+                        <pre><code>ines@instituto.es -&gt; True
+612345678 -&gt; True
+clave1234 -&gt; True</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>validaciones.py</code> directamente</strong></p>
+                        <pre><code>--- Pruebas del módulo validaciones ---
+es_email_valido('ines@ies.es') -&gt; True
+es_telefono_valido('612345678') -&gt; True
+es_contrasena_segura('abc123') -&gt; False</code></pre>
+                        <p>Se observa que, al ejecutar el módulo directamente, sí se ejecuta el bloque protegido por
+                            <code>if __name__ == "__main__":</code>, mientras que al importarlo desde
+                            <code>principal.py</code> ese bloque se omite por completo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-15">
+                <h2>Ejercicio 15: Módulo de figuras geométricas</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Crea un módulo <code>geometria.py</code> con una constante <code>PI</code> y
+                        <strong>tres</strong> funciones: <code>area_circulo(radio)</code>,
+                        <code>perimetro_circulo(radio)</code> y <code>area_cuadrado(lado)</code>. Añade un bloque de
+                        pruebas protegido con <code>if __name__ == "__main__":</code>. Crea un programa principal
+                        <code>principal.py</code> que importe a la vez las tres funciones y la constante con una única
+                        sentencia <code>from geometria import ...</code>.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <p><strong>Módulo <code>geometria.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Módulo de figuras geométricas.
+
+Contiene una constante y funciones para calcular el área y el perímetro
+de un círculo, y el área de un cuadrado.
+"""</span>
+
+PI = <span class="tok-num">3.14159</span>
+
+<span class="tok-kw">def</span> area_circulo(radio):
+    <span class="tok-str">"""Calcula el área de un círculo a partir de su radio."""</span>
+    <span class="tok-kw">return</span> PI * radio ** <span class="tok-num">2</span>
+
+
+<span class="tok-kw">def</span> perimetro_circulo(radio):
+    <span class="tok-str">"""Calcula el perímetro (longitud) de un círculo a partir de su radio."""</span>
+    <span class="tok-kw">return</span> <span class="tok-num">2</span> * PI * radio
+
+
+<span class="tok-kw">def</span> area_cuadrado(lado):
+    <span class="tok-str">"""Calcula el área de un cuadrado a partir de su lado."""</span>
+    <span class="tok-kw">return</span> lado ** <span class="tok-num">2</span>
+
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"--- Pruebas del módulo geometria ---"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"area_circulo(3) -&gt;"</span>, <span class="tok-builtin">round</span>(area_circulo(<span class="tok-num">3</span>), <span class="tok-num">2</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"perimetro_circulo(3) -&gt;"</span>, <span class="tok-builtin">round</span>(perimetro_circulo(<span class="tok-num">3</span>), <span class="tok-num">2</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"area_cuadrado(5) -&gt;"</span>, area_cuadrado(<span class="tok-num">5</span>))</code></pre>
+
+                        <p><strong>Programa principal <code>principal.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Programa principal que usa el módulo 'geometria'.
+
+Importa a la vez varias funciones y una constante del módulo geometria.py.
+"""</span>
+
+<span class="tok-kw">from</span> geometria <span class="tok-kw">import</span> area_circulo, perimetro_circulo, area_cuadrado, PI
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"El valor de PI usado es"</span>, PI)
+<span class="tok-builtin">print</span>(<span class="tok-str">"Área del círculo de radio 3:"</span>, <span class="tok-builtin">round</span>(area_circulo(<span class="tok-num">3</span>), <span class="tok-num">2</span>))
+<span class="tok-builtin">print</span>(<span class="tok-str">"Perímetro del círculo de radio 3:"</span>, <span class="tok-builtin">round</span>(perimetro_circulo(<span class="tok-num">3</span>), <span class="tok-num">2</span>))
+<span class="tok-builtin">print</span>(<span class="tok-str">"Área del cuadrado de lado 5:"</span>, area_cuadrado(<span class="tok-num">5</span>))</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>principal.py</code> (importa el módulo)</strong></p>
+                        <pre><code>El valor de PI usado es 3.14159
+Área del círculo de radio 3: 28.27
+Perímetro del círculo de radio 3: 18.85
+Área del cuadrado de lado 5: 25</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>geometria.py</code> directamente</strong></p>
+                        <pre><code>--- Pruebas del módulo geometria ---
+area_circulo(3) -&gt; 28.27
+perimetro_circulo(3) -&gt; 18.85
+area_cuadrado(5) -&gt; 25</code></pre>
+                        <p>Se observa que, al ejecutar el módulo directamente, sí se ejecuta el bloque protegido por
+                            <code>if __name__ == "__main__":</code>, mientras que al importarlo desde
+                            <code>principal.py</code> ese bloque se omite por completo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-16">
+                <h2>Ejercicio 16: Módulo de utilidades de texto</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Crea un módulo <code>textos.py</code> con <strong>tres</strong> funciones:
+                        <code>contar_apariciones(frase, palabra)</code> (usa <code>.count()</code>),
+                        <code>contar_vocales(frase)</code> (recorre la frase letra a letra con un bucle
+                        <code>for</code>) y <code>longitud_sin_espacios(frase)</code> (cuenta, también con un bucle
+                        <code>for</code>, los caracteres que no son espacios). Añade un bloque de pruebas protegido con
+                        <code>if __name__ == "__main__":</code>. Crea un programa principal <code>principal.py</code>
+                        que importe las tres funciones y las use sobre una misma frase de ejemplo.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <p><strong>Módulo <code>textos.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Módulo de utilidades de texto.
+
+Contiene funciones para contar apariciones de una palabra, contar vocales
+y calcular la longitud de una frase sin contar los espacios.
+"""</span>
+
+VOCALES = <span class="tok-str">"aeiouAEIOUáéíóúÁÉÍÓÚ"</span>
+
+<span class="tok-kw">def</span> contar_apariciones(frase, palabra):
+    <span class="tok-str">"""Cuenta cuántas veces aparece una palabra dentro de una frase."""</span>
+    <span class="tok-kw">return</span> frase.count(palabra)
+
+
+<span class="tok-kw">def</span> contar_vocales(frase):
+    <span class="tok-str">"""Cuenta cuántas vocales contiene una frase, recorriéndola letra a
+    letra."""</span>
+    contador = <span class="tok-num">0</span>
+    <span class="tok-kw">for</span> letra <span class="tok-kw">in</span> frase:
+        <span class="tok-kw">if</span> letra <span class="tok-kw">in</span> VOCALES:
+            contador += <span class="tok-num">1</span>
+    <span class="tok-kw">return</span> contador
+
+
+<span class="tok-kw">def</span> longitud_sin_espacios(frase):
+    <span class="tok-str">"""Cuenta cuántos caracteres tiene una frase, sin contar los
+    espacios."""</span>
+    contador = <span class="tok-num">0</span>
+    <span class="tok-kw">for</span> caracter <span class="tok-kw">in</span> frase:
+        <span class="tok-kw">if</span> caracter != <span class="tok-str">" "</span>:
+            contador += <span class="tok-num">1</span>
+    <span class="tok-kw">return</span> contador
+
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"--- Pruebas del módulo textos ---"</span>)
+    frase_prueba = <span class="tok-str">"hola mundo"</span>
+    <span class="tok-builtin">print</span>(<span class="tok-str">"contar_apariciones('hola mundo', 'o') -&gt;"</span>, contar_apariciones(frase_prueba, <span class="tok-str">"o"</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"contar_vocales('hola mundo') -&gt;"</span>, contar_vocales(frase_prueba))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"longitud_sin_espacios('hola mundo') -&gt;"</span>, longitud_sin_espacios(frase_prueba))</code></pre>
+
+                        <p><strong>Programa principal <code>principal.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Programa principal que usa el módulo 'textos'.
+"""</span>
+
+<span class="tok-kw">from</span> textos <span class="tok-kw">import</span> contar_apariciones, contar_vocales, longitud_sin_espacios
+
+frase = <span class="tok-str">"el perro persigue al gato y el gato persigue al raton"</span>
+
+<span class="tok-builtin">print</span>(contar_apariciones(frase, <span class="tok-str">"persigue"</span>))
+<span class="tok-builtin">print</span>(contar_vocales(frase))
+<span class="tok-builtin">print</span>(longitud_sin_espacios(frase))</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>principal.py</code> (importa el módulo)</strong></p>
+                        <pre><code>2
+20
+43</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>textos.py</code> directamente</strong></p>
+                        <pre><code>--- Pruebas del módulo textos ---
+contar_apariciones('hola mundo', 'o') -&gt; 2
+contar_vocales('hola mundo') -&gt; 4
+longitud_sin_espacios('hola mundo') -&gt; 9</code></pre>
+                        <p>Se observa que, al ejecutar el módulo directamente, sí se ejecuta el bloque protegido por
+                            <code>if __name__ == "__main__":</code>, mientras que al importarlo desde
+                            <code>principal.py</code> ese bloque se omite por completo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-17">
+                <h2>Ejercicio 17: Módulo de estadística sencilla</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Crea un módulo <code>estadistica.py</code> con <strong>tres</strong>
+                        funciones: <code>calcular_media(a, b, c)</code>, <code>calcular_maximo(a, b, c)</code> (con la
+                        función <code>max()</code>) y <code>calcular_minimo(a, b, c)</code> (con la función
+                        <code>min()</code>). Añade un bloque de pruebas protegido con
+                        <code>if __name__ == "__main__":</code>. Crea un programa principal <code>principal.py</code>
+                        que importe las tres funciones y las use sobre tres notas.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <p><strong>Módulo <code>estadistica.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Módulo de estadística sencilla.
+
+Contiene funciones que calculan la media, el máximo y el mínimo de tres
+números.
+"""</span>
+
+<span class="tok-kw">def</span> calcular_media(a, b, c):
+    <span class="tok-str">"""Calcula la media aritmética de tres números."""</span>
+    <span class="tok-kw">return</span> (a + b + c) / <span class="tok-num">3</span>
+
+
+<span class="tok-kw">def</span> calcular_maximo(a, b, c):
+    <span class="tok-str">"""Devuelve el mayor de tres números."""</span>
+    <span class="tok-kw">return</span> <span class="tok-builtin">max</span>(a, b, c)
+
+
+<span class="tok-kw">def</span> calcular_minimo(a, b, c):
+    <span class="tok-str">"""Devuelve el menor de tres números."""</span>
+    <span class="tok-kw">return</span> <span class="tok-builtin">min</span>(a, b, c)
+
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"--- Pruebas del módulo estadistica ---"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"calcular_media(7, 5, 9) -&gt;"</span>, <span class="tok-builtin">round</span>(calcular_media(<span class="tok-num">7</span>, <span class="tok-num">5</span>, <span class="tok-num">9</span>), <span class="tok-num">2</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"calcular_maximo(7, 5, 9) -&gt;"</span>, calcular_maximo(<span class="tok-num">7</span>, <span class="tok-num">5</span>, <span class="tok-num">9</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"calcular_minimo(7, 5, 9) -&gt;"</span>, calcular_minimo(<span class="tok-num">7</span>, <span class="tok-num">5</span>, <span class="tok-num">9</span>))</code></pre>
+
+                        <p><strong>Programa principal <code>principal.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Programa principal que usa el módulo 'estadistica'.
+"""</span>
+
+<span class="tok-kw">from</span> estadistica <span class="tok-kw">import</span> calcular_media, calcular_maximo, calcular_minimo
+
+nota1, nota2, nota3 = <span class="tok-num">7</span>, <span class="tok-num">5</span>, <span class="tok-num">9</span>
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Media:"</span>, <span class="tok-builtin">round</span>(calcular_media(nota1, nota2, nota3), <span class="tok-num">2</span>))
+<span class="tok-builtin">print</span>(<span class="tok-str">"Máxima:"</span>, calcular_maximo(nota1, nota2, nota3))
+<span class="tok-builtin">print</span>(<span class="tok-str">"Mínima:"</span>, calcular_minimo(nota1, nota2, nota3))</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>principal.py</code> (importa el módulo)</strong></p>
+                        <pre><code>Media: 7.0
+Máxima: 9
+Mínima: 5</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>estadistica.py</code> directamente</strong></p>
+                        <pre><code>--- Pruebas del módulo estadistica ---
+calcular_media(7, 5, 9) -&gt; 7.0
+calcular_maximo(7, 5, 9) -&gt; 9
+calcular_minimo(7, 5, 9) -&gt; 5</code></pre>
+                        <p>Se observa que, al ejecutar el módulo directamente, sí se ejecuta el bloque protegido por
+                            <code>if __name__ == "__main__":</code>, mientras que al importarlo desde
+                            <code>principal.py</code> ese bloque se omite por completo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-18">
+                <h2>Ejercicio 18: Módulo de validación de fechas</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Crea un módulo <code>modulo_fecha.py</code> con <strong>tres</strong>
+                        funciones: <code>es_fecha_valida(dia, mes)</code>, <code>es_bisiesto(anio)</code> (aplicando la
+                        regla del calendario gregoriano) y <code>edad_en_anios(anio_nacimiento, anio_actual)</code>.
+                        Añade un bloque de pruebas protegido con <code>if __name__ == "__main__":</code>. Crea un
+                        programa principal <code>principal.py</code> que importe TODOS los nombres del módulo con
+                        <code>from modulo_fecha import *</code>.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <p><strong>Módulo <code>modulo_fecha.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Módulo de validación de fechas.
+
+Contiene funciones para comprobar si una fecha o un año son válidos, y
+para calcular la edad de una persona en años.
+"""</span>
+
+DIA_MINIMO = <span class="tok-num">1</span>
+DIA_MAXIMO = <span class="tok-num">31</span>
+MES_MINIMO = <span class="tok-num">1</span>
+MES_MAXIMO = <span class="tok-num">12</span>
+
+<span class="tok-kw">def</span> es_fecha_valida(dia, mes):
+    <span class="tok-str">"""Comprueba si un día y un mes forman una fecha válida."""</span>
+    dia_valido = DIA_MINIMO &lt;= dia &lt;= DIA_MAXIMO
+    mes_valido = MES_MINIMO &lt;= mes &lt;= MES_MAXIMO
+    <span class="tok-kw">return</span> dia_valido <span class="tok-kw">and</span> mes_valido
+
+
+<span class="tok-kw">def</span> es_bisiesto(anio):
+    <span class="tok-str">"""Comprueba si un año es bisiesto, según el calendario gregoriano."""</span>
+    <span class="tok-kw">return</span> (anio % <span class="tok-num">4</span> == <span class="tok-num">0</span> <span class="tok-kw">and</span> anio % <span class="tok-num">100</span> != <span class="tok-num">0</span>) <span class="tok-kw">or</span> (anio % <span class="tok-num">400</span> == <span class="tok-num">0</span>)
+
+
+<span class="tok-kw">def</span> edad_en_anios(anio_nacimiento, anio_actual):
+    <span class="tok-str">"""Calcula la edad, en años, a partir del año de nacimiento."""</span>
+    <span class="tok-kw">return</span> anio_actual - anio_nacimiento
+
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"--- Pruebas del módulo modulo_fecha ---"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"es_fecha_valida(15, 6) -&gt;"</span>, es_fecha_valida(<span class="tok-num">15</span>, <span class="tok-num">6</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"es_bisiesto(2024) -&gt;"</span>, es_bisiesto(<span class="tok-num">2024</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"edad_en_anios(2005, 2026) -&gt;"</span>, edad_en_anios(<span class="tok-num">2005</span>, <span class="tok-num">2026</span>))</code></pre>
+
+                        <p><strong>Programa principal <code>principal.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Programa principal que usa el módulo 'modulo_fecha'.
+
+Importa TODOS los nombres públicos del módulo con 'from ... import *'.
+"""</span>
+
+<span class="tok-kw">from</span> modulo_fecha <span class="tok-kw">import</span> *
+
+<span class="tok-builtin">print</span>(es_fecha_valida(<span class="tok-num">15</span>, <span class="tok-num">6</span>))     <span class="tok-com"># True</span>
+<span class="tok-builtin">print</span>(es_fecha_valida(<span class="tok-num">32</span>, <span class="tok-num">6</span>))     <span class="tok-com"># False</span>
+<span class="tok-builtin">print</span>(es_bisiesto(<span class="tok-num">1900</span>))          <span class="tok-com"># False</span>
+<span class="tok-builtin">print</span>(edad_en_anios(<span class="tok-num">2005</span>, <span class="tok-num">2026</span>))  <span class="tok-com"># 21</span></code></pre>
+
+                        <p><strong>Salida al ejecutar <code>principal.py</code> (importa el módulo)</strong></p>
+                        <pre><code>True
+False
+False
+21</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>modulo_fecha.py</code> directamente</strong></p>
+                        <pre><code>--- Pruebas del módulo modulo_fecha ---
+es_fecha_valida(15, 6) -&gt; True
+es_bisiesto(2024) -&gt; True
+edad_en_anios(2005, 2026) -&gt; 21</code></pre>
+                        <p>Se observa que, al ejecutar el módulo directamente, sí se ejecuta el bloque protegido por
+                            <code>if __name__ == "__main__":</code>, mientras que al importarlo desde
+                            <code>principal.py</code> ese bloque se omite por completo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-19">
+                <h2>Ejercicio 19: Módulo de cálculos financieros</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Crea un módulo <code>financiero.py</code> con <strong>tres</strong>
+                        funciones: <code>calcular_interes_simple(capital, tasa, tiempo)</code>,
+                        <code>calcular_capital_final_simple(capital, tasa, tiempo)</code> (que debe reutilizar
+                        internamente <code>calcular_interes_simple</code>) y
+                        <code>calcular_descuento(precio, porcentaje)</code>. Añade un bloque de pruebas protegido con
+                        <code>if __name__ == "__main__":</code>. Crea un programa principal <code>principal.py</code>
+                        que importe las tres funciones y las use.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <p><strong>Módulo <code>financiero.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Módulo de cálculos financieros.
+
+Contiene funciones para calcular el interés simple, el capital final tras
+aplicarlo, y el importe de un descuento.
+"""</span>
+
+<span class="tok-kw">def</span> calcular_interes_simple(capital, tasa, tiempo):
+    <span class="tok-str">"""Calcula el interés simple generado por un capital.
+
+    Parámetros:
+        capital (float): capital inicial.
+        tasa (float): tasa de interés anual, en tanto por uno.
+        tiempo (float): tiempo en años.
+    Devuelve:
+        float: el interés generado (no incluye el capital inicial).
+    """</span>
+    <span class="tok-kw">return</span> capital * tasa * tiempo
+
+
+<span class="tok-kw">def</span> calcular_capital_final_simple(capital, tasa, tiempo):
+    <span class="tok-str">"""Calcula el capital final tras aplicar un interés simple.
+
+    Reutiliza internamente calcular_interes_simple.
+
+    Devuelve:
+        float: el capital inicial más el interés generado.
+    """</span>
+    <span class="tok-kw">return</span> capital + calcular_interes_simple(capital, tasa, tiempo)
+
+
+<span class="tok-kw">def</span> calcular_descuento(precio, porcentaje):
+    <span class="tok-str">"""Calcula el importe de un descuento sobre un precio.
+
+    Parámetros:
+        precio (float): precio original.
+        porcentaje (float): porcentaje de descuento, en tanto por cien.
+    Devuelve:
+        float: el importe que se descuenta del precio original.
+    """</span>
+    <span class="tok-kw">return</span> precio * porcentaje / <span class="tok-num">100</span>
+
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"--- Pruebas del módulo financiero ---"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"calcular_interes_simple(1000, 0.05, 3) -&gt;"</span>, calcular_interes_simple(<span class="tok-num">1000</span>, <span class="tok-num">0.05</span>, <span class="tok-num">3</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"calcular_capital_final_simple(1000, 0.05, 3) -&gt;"</span>, calcular_capital_final_simple(<span class="tok-num">1000</span>, <span class="tok-num">0.05</span>, <span class="tok-num">3</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"calcular_descuento(80, 25) -&gt;"</span>, calcular_descuento(<span class="tok-num">80</span>, <span class="tok-num">25</span>))</code></pre>
+
+                        <p><strong>Programa principal <code>principal.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Programa principal que usa el módulo 'financiero'.
+"""</span>
+
+<span class="tok-kw">from</span> financiero <span class="tok-kw">import</span> calcular_interes_simple, calcular_capital_final_simple, calcular_descuento
+
+capital_inicial = <span class="tok-num">1000</span>
+interes_generado = calcular_interes_simple(capital_inicial, <span class="tok-num">0.05</span>, <span class="tok-num">3</span>)
+capital_final = calcular_capital_final_simple(capital_inicial, <span class="tok-num">0.05</span>, <span class="tok-num">3</span>)
+descuento = calcular_descuento(<span class="tok-num">80</span>, <span class="tok-num">25</span>)
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Interés generado:"</span>, interes_generado)
+<span class="tok-builtin">print</span>(<span class="tok-str">"Capital final:"</span>, capital_final)
+<span class="tok-builtin">print</span>(<span class="tok-str">"Descuento sobre 80 €:"</span>, descuento, <span class="tok-str">"€"</span>)</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>principal.py</code> (importa el módulo)</strong></p>
+                        <pre><code>Interés generado: 150.0
+Capital final: 1150.0
+Descuento sobre 80 €: 20.0 €</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>financiero.py</code> directamente</strong></p>
+                        <pre><code>--- Pruebas del módulo financiero ---
+calcular_interes_simple(1000, 0.05, 3) -&gt; 150.0
+calcular_capital_final_simple(1000, 0.05, 3) -&gt; 1150.0
+calcular_descuento(80, 25) -&gt; 20.0</code></pre>
+                        <p>Se observa que, al ejecutar el módulo directamente, sí se ejecuta el bloque protegido por
+                            <code>if __name__ == "__main__":</code>, mientras que al importarlo desde
+                            <code>principal.py</code> ese bloque se omite por completo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-20">
+                <h2>Ejercicio 20: Módulo con funciones que reutilizan otras del mismo módulo</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Crea un módulo <code>geometria2.py</code> con <strong>cuatro</strong>
+                        funciones: <code>area_rectangulo(base, altura)</code>,
+                        <code>perimetro_rectangulo(base, altura)</code>, <code>area_cuadrado(lado)</code> (que debe
+                        reutilizar internamente <code>area_rectangulo</code>) y <code>perimetro_cuadrado(lado)</code>
+                        (que debe reutilizar internamente <code>perimetro_rectangulo</code>). Añade un bloque de pruebas
+                        protegido con <code>if __name__ == "__main__":</code>. Crea un programa principal
+                        <code>principal.py</code> que importe únicamente <code>area_cuadrado</code> y
+                        <code>perimetro_cuadrado</code>, y comprueba que funcionan correctamente.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <p><strong>Módulo <code>geometria2.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Módulo de figuras geométricas (con reutilización interna de funciones).
+
+Contiene funciones para calcular el área y el perímetro de un rectángulo,
+y funciones equivalentes para un cuadrado que reutilizan internamente las
+anteriores (un cuadrado es un caso particular de rectángulo con los dos
+lados iguales).
+"""</span>
+
+<span class="tok-kw">def</span> area_rectangulo(base, altura):
+    <span class="tok-str">"""Calcula el área de un rectángulo."""</span>
+    <span class="tok-kw">return</span> base * altura
+
+
+<span class="tok-kw">def</span> perimetro_rectangulo(base, altura):
+    <span class="tok-str">"""Calcula el perímetro de un rectángulo."""</span>
+    <span class="tok-kw">return</span> <span class="tok-num">2</span> * (base + altura)
+
+
+<span class="tok-kw">def</span> area_cuadrado(lado):
+    <span class="tok-str">"""Calcula el área de un cuadrado, reutilizando area_rectangulo."""</span>
+    <span class="tok-kw">return</span> area_rectangulo(lado, lado)
+
+
+<span class="tok-kw">def</span> perimetro_cuadrado(lado):
+    <span class="tok-str">"""Calcula el perímetro de un cuadrado, reutilizando
+    perimetro_rectangulo."""</span>
+    <span class="tok-kw">return</span> perimetro_rectangulo(lado, lado)
+
+
+<span class="tok-kw">if</span> __name__ == <span class="tok-str">"__main__"</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"--- Pruebas del módulo geometria2 ---"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"area_rectangulo(4, 6) -&gt;"</span>, area_rectangulo(<span class="tok-num">4</span>, <span class="tok-num">6</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"perimetro_rectangulo(4, 6) -&gt;"</span>, perimetro_rectangulo(<span class="tok-num">4</span>, <span class="tok-num">6</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"area_cuadrado(6) -&gt;"</span>, area_cuadrado(<span class="tok-num">6</span>))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"perimetro_cuadrado(6) -&gt;"</span>, perimetro_cuadrado(<span class="tok-num">6</span>))</code></pre>
+
+                        <p><strong>Programa principal <code>principal.py</code>:</strong></p>
+                        <pre><code class="language-python"><span class="tok-str">"""
+Programa principal que usa el módulo 'geometria2'.
+
+Solo se importan area_cuadrado y perimetro_cuadrado, aunque internamente
+estas reutilicen también area_rectangulo y perimetro_rectangulo,
+definidas en el mismo módulo: Python resuelve esas llamadas sin
+necesidad de importarlas también en el programa principal.
+"""</span>
+
+<span class="tok-kw">from</span> geometria2 <span class="tok-kw">import</span> area_cuadrado, perimetro_cuadrado
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Área del cuadrado de lado 6:"</span>, area_cuadrado(<span class="tok-num">6</span>))
+<span class="tok-builtin">print</span>(<span class="tok-str">"Perímetro del cuadrado de lado 6:"</span>, perimetro_cuadrado(<span class="tok-num">6</span>))</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>principal.py</code> (importa el módulo)</strong></p>
+                        <pre><code>Área del cuadrado de lado 6: 36
+Perímetro del cuadrado de lado 6: 24</code></pre>
+
+                        <p><strong>Salida al ejecutar <code>geometria2.py</code> directamente</strong></p>
+                        <pre><code>--- Pruebas del módulo geometria2 ---
+area_rectangulo(4, 6) -&gt; 24
+perimetro_rectangulo(4, 6) -&gt; 20
+area_cuadrado(6) -&gt; 36
+perimetro_cuadrado(6) -&gt; 24</code></pre>
+                        <p>Se observa que, al ejecutar el módulo directamente, sí se ejecuta el bloque protegido por
+                            <code>if __name__ == "__main__":</code>, mientras que al importarlo desde
+                            <code>principal.py</code> ese bloque se omite por completo.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="bloque-3" class="bloque-section">
+                <h2>Bloque 3: Programación recursiva</h2>
+            </section>
+
+            <section id="ejercicio-21">
+                <h2>Ejercicio 21: Suma recursiva de los primeros números naturales</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función recursiva <code>suma_recursiva(n)</code> que calcule la
+                        suma de los n primeros números naturales (1 + 2 + ... + n), identificando claramente el caso
+                        base y el caso recursivo.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Suma recursiva de los primeros números naturales.
+
+Módulo con una función recursiva que calcula la suma de los n primeros
+números naturales (1 + 2 + ... + n).
+"""</span>
+
+<span class="tok-kw">def</span> suma_recursiva(n):
+    <span class="tok-str">"""Calcula la suma de los n primeros números naturales, de forma
+    recursiva.
+
+    Parámetros:
+        n (int): número entero no negativo.
+    Devuelve:
+        int: la suma 1 + 2 + ... + n (0 si n es 0).
+    """</span>
+    <span class="tok-kw">if</span> n == <span class="tok-num">0</span>:                        <span class="tok-com"># caso base</span>
+        <span class="tok-kw">return</span> <span class="tok-num">0</span>
+    <span class="tok-kw">return</span> n + suma_recursiva(n - <span class="tok-num">1</span>)  <span class="tok-com"># caso recursivo</span>
+
+
+<span class="tok-builtin">print</span>(suma_recursiva(<span class="tok-num">5</span>))    <span class="tok-com"># 15</span>
+<span class="tok-builtin">print</span>(suma_recursiva(<span class="tok-num">10</span>))   <span class="tok-com"># 55</span>
+<span class="tok-builtin">print</span>(suma_recursiva(<span class="tok-num">0</span>))    <span class="tok-com"># 0</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>15
+55
+0</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-22">
+                <h2>Ejercicio 22: Comprobador recursivo de paridad</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función recursiva <code>es_par_recursivo(numero)</code> que
+                        determine si un número entero no negativo es par, reduciéndolo de 2 en 2 en cada llamada hasta
+                        llegar a un caso base.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Comprobador recursivo de paridad.
+
+Módulo con una función recursiva que determina si un número es par,
+reduciéndolo de 2 en 2 hasta llegar a un caso base.
+"""</span>
+
+<span class="tok-kw">def</span> es_par_recursivo(numero):
+    <span class="tok-str">"""Determina si un número entero no negativo es par, de forma
+    recursiva, restando 2 en cada llamada.
+
+    Parámetros:
+        numero (int): número entero no negativo a comprobar.
+    Devuelve:
+        bool: True si 'numero' es par, False si es impar.
+    """</span>
+    <span class="tok-kw">if</span> numero == <span class="tok-num">0</span>:                          <span class="tok-com"># caso base: par</span>
+        <span class="tok-kw">return</span> <span class="tok-kw">True</span>
+    <span class="tok-kw">if</span> numero == <span class="tok-num">1</span>:                          <span class="tok-com"># caso base: impar</span>
+        <span class="tok-kw">return</span> <span class="tok-kw">False</span>
+    <span class="tok-kw">return</span> es_par_recursivo(numero - <span class="tok-num">2</span>)      <span class="tok-com"># caso recursivo</span>
+
+
+<span class="tok-builtin">print</span>(es_par_recursivo(<span class="tok-num">8</span>))    <span class="tok-com"># True</span>
+<span class="tok-builtin">print</span>(es_par_recursivo(<span class="tok-num">7</span>))    <span class="tok-com"># False</span>
+<span class="tok-builtin">print</span>(es_par_recursivo(<span class="tok-num">0</span>))    <span class="tok-com"># True</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>True
+False
+True</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-23">
+                <h2>Ejercicio 23: Producto recursivo mediante sumas sucesivas</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función recursiva <code>producto_recursivo(a, b)</code> que
+                        calcule el producto de dos números mediante sumas sucesivas, sin usar el operador <code>*</code>
+                        en el caso recursivo.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Producto recursivo mediante sumas sucesivas.
+
+Módulo con una función recursiva que calcula el producto de dos números
+enteros a base de sumas sucesivas, en lugar de usar el operador *.
+"""</span>
+
+<span class="tok-kw">def</span> producto_recursivo(a, b):
+    <span class="tok-str">"""Calcula el producto de a por b mediante sumas sucesivas recursivas.
+
+    Parámetros:
+        a (int/float): primer factor.
+        b (int): segundo factor (entero no negativo, número de sumas).
+    Devuelve:
+        El resultado de multiplicar a por b.
+    """</span>
+    <span class="tok-kw">if</span> b == <span class="tok-num">0</span>:                                <span class="tok-com"># caso base</span>
+        <span class="tok-kw">return</span> <span class="tok-num">0</span>
+    <span class="tok-kw">return</span> a + producto_recursivo(a, b - <span class="tok-num">1</span>)   <span class="tok-com"># caso recursivo</span>
+
+
+<span class="tok-builtin">print</span>(producto_recursivo(<span class="tok-num">4</span>, <span class="tok-num">5</span>))    <span class="tok-com"># 20</span>
+<span class="tok-builtin">print</span>(producto_recursivo(<span class="tok-num">7</span>, <span class="tok-num">0</span>))    <span class="tok-com"># 0</span>
+<span class="tok-builtin">print</span>(producto_recursivo(<span class="tok-num">3</span>, <span class="tok-num">6</span>))    <span class="tok-com"># 18</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>20
+0
+18</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-24">
+                <h2>Ejercicio 24: Contador recursivo de dígitos</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función recursiva <code>cuenta_digitos_recursivo(numero)</code>
+                        que cuente cuántos dígitos tiene un número entero positivo.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Contador recursivo de dígitos.
+
+Módulo con una función recursiva que cuenta cuántos dígitos tiene un
+número entero positivo.
+"""</span>
+
+<span class="tok-kw">def</span> cuenta_digitos_recursivo(numero):
+    <span class="tok-str">"""Cuenta cuántos dígitos tiene un número entero positivo, de forma
+    recursiva.
+
+    Parámetros:
+        numero (int): número entero positivo.
+    Devuelve:
+        int: la cantidad de dígitos que componen 'numero'.
+    """</span>
+    <span class="tok-kw">if</span> numero &lt; <span class="tok-num">10</span>:                                <span class="tok-com"># caso base: un solo dígito</span>
+        <span class="tok-kw">return</span> <span class="tok-num">1</span>
+    <span class="tok-kw">return</span> <span class="tok-num">1</span> + cuenta_digitos_recursivo(numero // <span class="tok-num">10</span>)   <span class="tok-com"># caso recursivo</span>
+
+
+<span class="tok-builtin">print</span>(cuenta_digitos_recursivo(<span class="tok-num">7</span>))       <span class="tok-com"># 1</span>
+<span class="tok-builtin">print</span>(cuenta_digitos_recursivo(<span class="tok-num">482</span>))     <span class="tok-com"># 3</span>
+<span class="tok-builtin">print</span>(cuenta_digitos_recursivo(<span class="tok-num">100000</span>))  <span class="tok-com"># 6</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>1
+3
+6</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-25">
+                <h2>Ejercicio 25: Conversor recursivo de decimal a binario</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función recursiva
+                        <code>decimal_a_binario_recursivo(numero)</code> que devuelva, como cadena de texto, la
+                        representación en binario de un número entero no negativo escrito en decimal.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Conversor recursivo de decimal a binario.
+
+Módulo con una función recursiva que devuelve la representación binaria
+(como texto) de un número entero no negativo escrito en decimal.
+"""</span>
+
+<span class="tok-kw">def</span> decimal_a_binario_recursivo(numero):
+    <span class="tok-str">"""Convierte un número entero no negativo de decimal a binario, de
+    forma recursiva.
+
+    Parámetros:
+        numero (int): número entero no negativo en base 10.
+    Devuelve:
+        str: la representación de 'numero' en binario.
+    """</span>
+    <span class="tok-kw">if</span> numero &lt; <span class="tok-num">2</span>:                                            <span class="tok-com"># caso base</span>
+        <span class="tok-kw">return</span> <span class="tok-builtin">str</span>(numero)
+    <span class="tok-kw">return</span> decimal_a_binario_recursivo(numero // <span class="tok-num">2</span>) + <span class="tok-builtin">str</span>(numero % <span class="tok-num">2</span>)  <span class="tok-com"># caso recursivo</span>
+
+
+<span class="tok-builtin">print</span>(decimal_a_binario_recursivo(<span class="tok-num">0</span>))    <span class="tok-com"># 0</span>
+<span class="tok-builtin">print</span>(decimal_a_binario_recursivo(<span class="tok-num">5</span>))    <span class="tok-com"># 101</span>
+<span class="tok-builtin">print</span>(decimal_a_binario_recursivo(<span class="tok-num">42</span>))   <span class="tok-com"># 101010</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>0
+101
+101010</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-26">
+                <h2>Ejercicio 26: Suma recursiva de los números pares hasta n</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función recursiva <code>suma_pares_recursivo(n)</code> que
+                        calcule la suma de todos los números pares comprendidos entre 0 y n (ambos incluidos).</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Suma recursiva de los números pares hasta n.
+
+Módulo con una función recursiva que calcula la suma de todos los números
+pares entre 0 y n (ambos incluidos).
+"""</span>
+
+<span class="tok-kw">def</span> suma_pares_recursivo(n):
+    <span class="tok-str">"""Calcula la suma de los números pares entre 0 y n, de forma
+    recursiva.
+
+    Parámetros:
+        n (int): número entero no negativo (límite superior).
+    Devuelve:
+        int: la suma de todos los números pares entre 0 y n.
+    """</span>
+    <span class="tok-kw">if</span> n &lt;= <span class="tok-num">0</span>:                                    <span class="tok-com"># caso base</span>
+        <span class="tok-kw">return</span> <span class="tok-num">0</span>
+    <span class="tok-kw">if</span> n % <span class="tok-num">2</span> != <span class="tok-num">0</span>:                                <span class="tok-com"># n impar: se ignora y se sigue con n - 1</span>
+        <span class="tok-kw">return</span> suma_pares_recursivo(n - <span class="tok-num">1</span>)
+    <span class="tok-kw">return</span> n + suma_pares_recursivo(n - <span class="tok-num">2</span>)        <span class="tok-com"># caso recursivo (n par)</span>
+
+
+<span class="tok-builtin">print</span>(suma_pares_recursivo(<span class="tok-num">10</span>))   <span class="tok-com"># 30  (2+4+6+8+10)</span>
+<span class="tok-builtin">print</span>(suma_pares_recursivo(<span class="tok-num">7</span>))    <span class="tok-com"># 12  (2+4+6)</span>
+<span class="tok-builtin">print</span>(suma_pares_recursivo(<span class="tok-num">0</span>))    <span class="tok-com"># 0</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>30
+12
+0</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-27">
+                <h2>Ejercicio 27: Inversor recursivo de los dígitos de un número</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función recursiva
+                        <code>invertir_numero_recursivo(numero, invertido=0)</code> que invierta el orden de los dígitos
+                        de un número entero positivo, usando un parámetro acumulador con valor por defecto.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Inversor recursivo de los dígitos de un número.
+
+Módulo con una función recursiva que invierte el orden de los dígitos de
+un número entero positivo, usando un parámetro acumulador con valor por
+defecto.
+"""</span>
+
+<span class="tok-kw">def</span> invertir_numero_recursivo(numero, invertido=<span class="tok-num">0</span>):
+    <span class="tok-str">"""Invierte el orden de los dígitos de un número entero positivo.
+
+    Parámetros:
+        numero (int): número entero positivo a invertir.
+        invertido (int): acumulador con el resultado parcial ya invertido
+            (por defecto, 0; no debe indicarse en la llamada inicial).
+    Devuelve:
+        int: el número resultante de invertir los dígitos de 'numero'.
+    """</span>
+    <span class="tok-kw">if</span> numero == <span class="tok-num">0</span>:                                                   <span class="tok-com"># caso base</span>
+        <span class="tok-kw">return</span> invertido
+    <span class="tok-kw">return</span> invertir_numero_recursivo(numero // <span class="tok-num">10</span>, invertido * <span class="tok-num">10</span> + numero % <span class="tok-num">10</span>)  <span class="tok-com"># caso recursivo</span>
+
+
+<span class="tok-builtin">print</span>(invertir_numero_recursivo(<span class="tok-num">1234</span>))   <span class="tok-com"># 4321</span>
+<span class="tok-builtin">print</span>(invertir_numero_recursivo(<span class="tok-num">500</span>))    <span class="tok-com"># 5</span>
+<span class="tok-builtin">print</span>(invertir_numero_recursivo(<span class="tok-num">7</span>))      <span class="tok-com"># 7</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>4321
+5
+7</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-28">
+                <h2>Ejercicio 28: Suma recursiva de una serie armónica</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función recursiva <code>suma_serie_armonica_recursivo(n)</code>
+                        que calcule la suma de los n primeros términos de la serie armónica: 1 + 1/2 + 1/3 + ... + 1/n.
+                    </p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Suma recursiva de una serie armónica.
+
+Módulo con una función recursiva que calcula la suma de los n primeros
+términos de la serie armónica: 1 + 1/2 + 1/3 + ... + 1/n.
+"""</span>
+
+<span class="tok-kw">def</span> suma_serie_armonica_recursivo(n):
+    <span class="tok-str">"""Calcula la suma de los n primeros términos de la serie armónica,
+    de forma recursiva.
+
+    Parámetros:
+        n (int): número entero positivo de términos a sumar.
+    Devuelve:
+        float: la suma 1 + 1/2 + 1/3 + ... + 1/n.
+    """</span>
+    <span class="tok-kw">if</span> n == <span class="tok-num">1</span>:                                               <span class="tok-com"># caso base</span>
+        <span class="tok-kw">return</span> <span class="tok-num">1.0</span>
+    <span class="tok-kw">return</span> <span class="tok-num">1</span> / n + suma_serie_armonica_recursivo(n - <span class="tok-num">1</span>)      <span class="tok-com"># caso recursivo</span>
+
+
+<span class="tok-builtin">print</span>(<span class="tok-builtin">round</span>(suma_serie_armonica_recursivo(<span class="tok-num">1</span>), <span class="tok-num">4</span>))   <span class="tok-com"># 1.0</span>
+<span class="tok-builtin">print</span>(<span class="tok-builtin">round</span>(suma_serie_armonica_recursivo(<span class="tok-num">4</span>), <span class="tok-num">4</span>))   <span class="tok-com"># 2.0833</span>
+<span class="tok-builtin">print</span>(<span class="tok-builtin">round</span>(suma_serie_armonica_recursivo(<span class="tok-num">10</span>), <span class="tok-num">4</span>))  <span class="tok-com"># 2.929</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>1.0
+2.0833
+2.929</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-29">
+                <h2>Ejercicio 29: Cálculo recursivo del interés compuesto</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función recursiva
+                        <code>interes_compuesto_recursivo(capital, tasa, anios)</code> que calcule el capital final tras
+                        aplicar un interés compuesto anual durante el número de años indicado.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Cálculo recursivo del interés compuesto.
+
+Módulo con una función recursiva que calcula el capital final tras aplicar
+un interés compuesto durante un número determinado de años.
+"""</span>
+
+<span class="tok-kw">def</span> interes_compuesto_recursivo(capital, tasa, anios):
+    <span class="tok-str">"""Calcula el capital final tras aplicar un interés compuesto anual
+    durante un número de años, de forma recursiva.
+
+    Parámetros:
+        capital (float): capital inicial.
+        tasa (float): tasa de interés anual, en tanto por uno (por
+            ejemplo, 0.05 para un 5 %).
+        anios (int): número de años durante los que se aplica el interés.
+    Devuelve:
+        float: el capital final tras aplicar el interés compuesto.
+    """</span>
+    <span class="tok-kw">if</span> anios == <span class="tok-num">0</span>:                                                        <span class="tok-com"># caso base</span>
+        <span class="tok-kw">return</span> capital
+    <span class="tok-kw">return</span> interes_compuesto_recursivo(capital * (<span class="tok-num">1</span> + tasa), tasa, anios - <span class="tok-num">1</span>)  <span class="tok-com"># caso recursivo</span>
+
+
+<span class="tok-builtin">print</span>(<span class="tok-builtin">round</span>(interes_compuesto_recursivo(<span class="tok-num">1000</span>, <span class="tok-num">0.05</span>, <span class="tok-num">1</span>), <span class="tok-num">2</span>))    <span class="tok-com"># 1050.0</span>
+<span class="tok-builtin">print</span>(<span class="tok-builtin">round</span>(interes_compuesto_recursivo(<span class="tok-num">1000</span>, <span class="tok-num">0.05</span>, <span class="tok-num">3</span>), <span class="tok-num">2</span>))    <span class="tok-com"># 1157.62</span>
+<span class="tok-builtin">print</span>(<span class="tok-builtin">round</span>(interes_compuesto_recursivo(<span class="tok-num">2000</span>, <span class="tok-num">0.10</span>, <span class="tok-num">0</span>), <span class="tok-num">2</span>))    <span class="tok-com"># 2000</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>1050.0
+1157.62
+2000</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-30">
+                <h2>Ejercicio 30: Contador recursivo de ocurrencias de un dígito</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Codifica una función recursiva
+                        <code>contar_ocurrencias_digito_recursivo(numero, digito)</code> que cuente cuántas veces
+                        aparece un dígito concreto dentro de un número entero positivo.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Contador recursivo de ocurrencias de un dígito.
+
+Módulo con una función recursiva que cuenta cuántas veces aparece un
+dígito concreto dentro de un número entero positivo.
+"""</span>
+
+<span class="tok-kw">def</span> contar_ocurrencias_digito_recursivo(numero, digito):
+    <span class="tok-str">"""Cuenta cuántas veces aparece un dígito dentro de un número, de
+    forma recursiva.
+
+    Parámetros:
+        numero (int): número entero positivo en el que buscar.
+        digito (int): dígito a contar (de 0 a 9).
+    Devuelve:
+        int: el número de veces que 'digito' aparece en 'numero'.
+    """</span>
+    <span class="tok-kw">if</span> numero == <span class="tok-num">0</span>:                                                       <span class="tok-com"># caso base</span>
+        <span class="tok-kw">return</span> <span class="tok-num">0</span>
+    resto_cuenta = contar_ocurrencias_digito_recursivo(numero // <span class="tok-num">10</span>, digito)  <span class="tok-com"># caso recursivo</span>
+    <span class="tok-kw">if</span> numero % <span class="tok-num">10</span> == digito:
+        <span class="tok-kw">return</span> <span class="tok-num">1</span> + resto_cuenta
+    <span class="tok-kw">return</span> resto_cuenta
+
+
+<span class="tok-builtin">print</span>(contar_ocurrencias_digito_recursivo(<span class="tok-num">55251</span>, <span class="tok-num">5</span>))   <span class="tok-com"># 3</span>
+<span class="tok-builtin">print</span>(contar_ocurrencias_digito_recursivo(<span class="tok-num">4839</span>, <span class="tok-num">9</span>))    <span class="tok-com"># 1</span>
+<span class="tok-builtin">print</span>(contar_ocurrencias_digito_recursivo(<span class="tok-num">1234</span>, <span class="tok-num">7</span>))    <span class="tok-com"># 0</span></code></pre>
+
+                        <p><strong>Salida</strong></p>
+                        <pre><code>3
+1
+0</code></pre>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+
+    <script>
+        (function () {
+            var sidebar = document.getElementById('sidebar');
+            var toggleBtn = document.getElementById('sidebarToggle');
+            var overlay = document.getElementById('overlay');
+
+            function openSidebar() {
+                sidebar.classList.add('open');
+                overlay.classList.add('visible');
+                toggleBtn.setAttribute('aria-expanded', 'true');
+            }
+
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('visible');
+                toggleBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            toggleBtn.addEventListener('click', function () {
+                if (sidebar.classList.contains('open')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            });
+
+            overlay.addEventListener('click', closeSidebar);
+
+            var navLinks = sidebar.querySelectorAll('a');
+            navLinks.forEach(function (link) {
+                link.addEventListener('click', function () {
+                    if (window.matchMedia('(max-width: 900px)').matches) {
+                        closeSidebar();
+                    }
+                });
+            });
+
+            // Toggle solutions
+            var solutionButtons = document.querySelectorAll('.solution-toggle');
+            solutionButtons.forEach(function (btn) {
+                var content = btn.nextElementSibling;
+                btn.addEventListener('click', function () {
+                    var expanded = btn.getAttribute('aria-expanded') === 'true';
+                    if (expanded) {
+                        content.hidden = true;
+                        btn.setAttribute('aria-expanded', 'false');
+                        btn.innerHTML = '<span class="icon">▶</span> Ver solución';
+                    } else {
+                        content.hidden = false;
+                        btn.setAttribute('aria-expanded', 'true');
+                        btn.innerHTML = '<span class="icon">▶</span> Ocultar solución';
+                    }
+                });
+            });
+
+            // Scrollspy: highlight the current section in the sidebar
+            var sections = document.querySelectorAll('main section[id]');
+            var linkMap = {};
+            navLinks.forEach(function (link) {
+                linkMap[link.getAttribute('href').substring(1)] = link;
+            });
+
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        var link = linkMap[entry.target.id];
+                        if (!link) return;
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(function (l) {l.classList.remove('active');});
+                            link.classList.add('active');
+                        }
+                    });
+                }, {rootMargin: '-20% 0px -70% 0px', threshold: 0});
+
+                sections.forEach(function (section) {observer.observe(section);});
+            }
+
+            // Syntax highlighting for Python code blocks
+            var PY_KEYWORDS = new Set(['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await',
+                'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from',
+                'global', 'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise',
+                'return', 'try', 'while', 'with', 'yield']);
+            var PY_BUILTINS = new Set(['print', 'input', 'type', 'int', 'float', 'str', 'bool', 'complex',
+                'len', 'range', 'list', 'tuple', 'dict', 'set', 'abs', 'min', 'max', 'sum', 'round', 'open',
+                'isinstance', 'super', 'object']);
+            var PY_TOKEN_RE = /(#[^\n]*)|("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(\b\d+\.?\d*(?:[eE][+-]?\d+)?\b|\b0[xX][0-9a-fA-F_]+\b|\b0[bB][01_]+\b|\b0[oO][0-7_]+\b)|(\b[A-Za-z_][A-Za-z0-9_]*\b)/g;
+
+            function escapeHtml(s) {
+                return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            function highlightPython(code) {
+                var result = '';
+                var lastIndex = 0;
+                var m;
+                PY_TOKEN_RE.lastIndex = 0;
+                while ((m = PY_TOKEN_RE.exec(code)) !== null) {
+                    result += escapeHtml(code.slice(lastIndex, m.index));
+                    lastIndex = PY_TOKEN_RE.lastIndex;
+                    if (m[1] !== undefined) {
+                        result += '<span class="tok-com">' + escapeHtml(m[1]) + '</span>';
+                    } else if (m[2] !== undefined) {
+                        result += '<span class="tok-str">' + escapeHtml(m[2]) + '</span>';
+                    } else if (m[3] !== undefined) {
+                        result += '<span class="tok-num">' + escapeHtml(m[3]) + '</span>';
+                    } else if (m[4] !== undefined) {
+                        var word = m[4];
+                        if (PY_KEYWORDS.has(word)) {
+                            result += '<span class="tok-kw">' + escapeHtml(word) + '</span>';
+                        } else if (PY_BUILTINS.has(word)) {
+                            result += '<span class="tok-builtin">' + escapeHtml(word) + '</span>';
+                        } else {
+                            result += escapeHtml(word);
+                        }
+                    }
+                }
+                result += escapeHtml(code.slice(lastIndex));
+                return result;
+            }
+
+            document.querySelectorAll('code.language-python').forEach(function (block) {
+                block.innerHTML = highlightPython(block.textContent);
+            });
+        })();
+    </script>
+
+
+
+
+</body>
+
+</html>

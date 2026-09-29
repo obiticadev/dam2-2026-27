@@ -1,0 +1,1250 @@
+<html lang="es">
+
+<head>
+    <style>
+        body {
+            transition: opacity ease-in 0.2s;
+        }
+
+        body[unresolved] {
+            opacity: 0;
+            display: block;
+            overflow: hidden;
+            position: relative;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UT3. Funciones. Definición de funciones por el programador y recursividad</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg-alt: #f5f7fa;
+            --text: #1a1d21;
+            --text-muted2: #5a6169;
+            --border: #e1e4e8;
+            --accent: #0b5fff;
+            --accent-hover: #0847c4;
+            --code-bg: #f4f4f4;
+            --code-text: #24292e;
+            --code-border: #e1e4e8;
+            --table-header-bg: #eef2f7;
+            --table-row-alt: #fafbfc;
+            --solution-bg: #eef8f0;
+            --solution-border: #a9d8b8;
+            --solution-btn-bg: #2f9e52;
+            --solution-btn-text: #ffffff;
+            --sidebar-bg: #f7f8fa;
+            --sidebar-border: #e1e4e8;
+            --link-active-bg: #e6efff;
+            --shadow: rgba(0, 0, 0, 0.10);
+            --diagram-bg: #f4f4f4;
+            --code-keyword: #a626a4;
+            --code-string: #22863a;
+            --code-comment: #6a737d;
+            --code-number: #b35900;
+            --code-builtin: #0b5fff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #14171c;
+                --bg-alt: #1b1f26;
+                --text: #e6e8eb;
+                --text-muted2: #a0a6b0;
+                --border: #2b3038;
+                --accent: #5b9dff;
+                --accent-hover: #85b7ff;
+                --code-bg: #1e2229;
+                --code-text: #d6dbe1;
+                --code-border: #2b3038;
+                --table-header-bg: #232830;
+                --table-row-alt: #191c22;
+                --solution-bg: #17251c;
+                --solution-border: #2f5c3d;
+                --solution-btn-bg: #2f9e52;
+                --solution-btn-text: #06120a;
+                --sidebar-bg: #101317;
+                --sidebar-border: #262b33;
+                --link-active-bg: #1d2c44;
+                --shadow: rgba(0, 0, 0, 0.4);
+                --diagram-bg: #1e2229;
+                --code-keyword: #c792ea;
+                --code-string: #7ee787;
+                --code-comment: #7f8b98;
+                --code-number: #f2c078;
+                --code-builtin: #5b9dff;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* ---------- Sidebar ---------- */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 290px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--sidebar-border);
+            overflow-y: auto;
+            padding: 1.25rem 0 2rem;
+            z-index: 40;
+            transition: transform 0.25s ease;
+        }
+
+        .sidebar-header {
+            padding: 0 1.25rem 1rem;
+            border-bottom: 1px solid var(--sidebar-border);
+            margin-bottom: 0.75rem;
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted2);
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar nav a {
+            display: block;
+            padding: 0.55rem 1.25rem;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.92rem;
+            border-left: 3px solid transparent;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .sidebar nav a:hover {
+            background: var(--link-active-bg);
+        }
+
+        .sidebar nav a.active {
+            background: var(--link-active-bg);
+            border-left-color: var(--accent);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 0.85rem;
+            left: 1rem;
+            z-index: 60;
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px var(--shadow);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 30;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ---------- Content ---------- */
+        .content {
+            margin-left: 290px;
+            display: flex;
+            justify-content: center;
+            padding: 0 1.5rem;
+            width: auto;
+        }
+
+        .content-inner {
+            width: 100%;
+            max-width: 1024px;
+            padding: 2.5rem 0 5rem;
+            min-width: 0;
+        }
+
+        .content-inner h1 {
+            font-size: 2rem;
+            margin-top: 0;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.5rem;
+        }
+
+        section {
+            margin-bottom: 1.5rem;
+            padding-top: 0.25rem;
+        }
+
+        section h2 {
+            font-size: 1.5rem;
+            margin-top: 1.1rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        section h3 {
+            font-size: 1.15rem;
+            color: var(--accent);
+            margin-top: 1.75rem;
+        }
+
+        p {
+            margin: 0.85em 0;
+        }
+
+        strong {
+            color: var(--text);
+        }
+
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.88em;
+            border: 1px solid var(--code-border);
+            overflow-wrap: anywhere;
+        }
+
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            padding: 1rem 1.1rem;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 1em;
+        }
+
+        .diagram pre {
+            background: var(--diagram-bg);
+        }
+
+        /* ---------- Syntax highlighting (Python code blocks) ---------- */
+        .tok-kw {
+            color: var(--code-keyword);
+            font-weight: 600;
+        }
+
+        .tok-str {
+            color: var(--code-string);
+        }
+
+        .tok-com {
+            color: var(--code-comment);
+            font-style: italic;
+        }
+
+        .tok-num {
+            color: var(--code-number);
+        }
+
+        .tok-builtin {
+            color: var(--code-builtin);
+        }
+
+        table {
+            display: block;
+            overflow-x: auto;
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.25em 0;
+            font-size: 0.92rem;
+            max-width: 100%;
+        }
+
+        caption {
+            text-align: left;
+            margin-bottom: 0.5em;
+            color: var(--text-muted2);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 0.55em 0.75em;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: var(--table-header-bg);
+            font-weight: 600;
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--table-row-alt);
+        }
+
+        .tabla-col1-ajustada th:first-child,
+        .tabla-col1-ajustada td:first-child {
+            width: 1%;
+            white-space: nowrap;
+        }
+
+        ul,
+        ol {
+            padding-left: 1.4rem;
+        }
+
+        li {
+            margin: 0.3em 0;
+        }
+
+        .exercise {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .exercise> :first-child {
+            margin-top: 0;
+        }
+
+        .activity {
+            background: var(--bg-alt);
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .activity h3 {
+            margin-top: 0;
+        }
+
+        /* ---------- Solutions (hidden by default, toggled by button) ---------- */
+        .solution-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4em;
+            background: var(--solution-btn-bg);
+            color: var(--solution-btn-text);
+            border: none;
+            border-radius: 999px;
+            padding: 0.5em 1.1em;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: filter 0.15s ease;
+        }
+
+        .solution-toggle:hover {
+            filter: brightness(1.08);
+        }
+
+        .solution-toggle .icon {
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+
+        .solution-toggle[aria-expanded="true"] .icon {
+            transform: rotate(90deg);
+        }
+
+        .solution-content {
+            background: var(--solution-bg);
+            border: 1px solid var(--solution-border);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-top: 0.75rem;
+        }
+
+        .solution-content[hidden] {
+            display: none;
+        }
+
+        .solution-content> :first-child {
+            margin-top: 0;
+        }
+
+        .solution-content> :last-child {
+            margin-bottom: 0;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 82%;
+                max-width: 320px;
+                box-shadow: 4px 0 18px var(--shadow);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: flex;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 0 1.25rem;
+            }
+
+            .content-inner {
+                padding: 4.5rem 0 3rem;
+            }
+
+            .content-inner h1 {
+                font-size: 1.5rem;
+            }
+
+            section h2 {
+                font-size: 1.25rem;
+            }
+
+            table {
+                font-size: 0.82rem;
+            }
+
+            th,
+            td {
+                padding: 0.4em 0.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 0 0.9rem;
+            }
+
+            .content-inner {
+                padding: 4.5rem 0 2.5rem;
+            }
+
+            pre {
+                font-size: 0.76rem;
+                padding: 0.75rem;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <button id="sidebarToggle" class="sidebar-toggle" aria-label="Abrir menú de contenidos"
+        aria-expanded="false">☰</button>
+    <div id="overlay" class="overlay"></div>
+
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2>Contenidos</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#introduccion" class="active">Introducción</a></li>
+                <li><a href="#seccion-a">a) Programación modular y definición de funciones</a></li>
+                <li><a href="#seccion-b">b) Paso de parámetros: por valor y por referencia</a></li>
+                <li><a href="#seccion-c">c) Recursividad</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main id="content" class="content">
+        <div class="content-inner">
+
+            <h1>UT3. Funciones. Definición de funciones por el programador y recursividad</h1>
+
+            <section id="introduccion">
+                <h2>Introducción</h2>
+                <p>En las unidades anteriores se ha trabajado con programas escritos como una única secuencia de
+                    instrucciones (con sus estructuras de selección, repetición, salto y control de excepciones). A
+                    medida que un programa crece, escribirlo todo "de un tirón" se vuelve difícil de leer, de probar y
+                    de reutilizar.</p>
+                <p>La <strong>programación modular</strong> resuelve este problema dividiendo el programa en piezas más
+                    pequeñas e independientes —los <strong>módulos</strong>— siendo la <strong>función</strong> la
+                    unidad básica de modularización dentro de un mismo archivo o módulo Python.</p>
+                <p>Esta unidad de trabajo presenta cómo definir funciones propias en Python, cómo se les pasan los datos
+                    con los que trabajan (y la diferencia clave entre el <strong>paso de parámetros por valor y por
+                        referencia</strong>), y una técnica muy ligada al uso de funciones: la
+                    <strong>recursividad</strong>, es decir, la capacidad de una función para llamarse a sí misma.</p>
+            </section>
+
+            <section id="seccion-a">
+                <h2>a) Programación modular y definición de funciones</h2>
+                <p>La <strong>programación modular</strong> consiste en dividir un programa en partes más pequeñas,
+                    independientes y con una responsabilidad concreta, denominadas <strong>módulos</strong>, que después
+                    se combinan para formar el programa completo. Sus principales ventajas son:</p>
+                <ul>
+                    <li><strong>Reutilización</strong>: una misma función puede invocarse tantas veces como se necesite,
+                        desde distintos puntos del programa, sin reescribir el código.</li>
+                    <li><strong>Legibilidad</strong>: un programa dividido en funciones con nombres descriptivos es más
+                        fácil de leer y de entender.</li>
+                    <li><strong>Mantenimiento</strong>: si hay que corregir o mejorar una funcionalidad, basta con
+                        modificar la función correspondiente, sin tocar el resto del programa.</li>
+                    <li><strong>División del trabajo</strong>: distintas personas de un equipo pueden encargarse de
+                        programar funciones diferentes de un mismo proyecto.</li>
+                    <li><strong>Prueba y depuración</strong>: cada función puede probarse de forma aislada, lo que
+                        facilita localizar errores.</li>
+                </ul>
+                <p>Una <strong>función</strong> es un bloque de código con nombre propio que realiza una tarea concreta,
+                    que puede recibir datos de entrada (<strong>parámetros</strong>) y que puede devolver un resultado
+                    (<strong>valor de retorno</strong>). En Python, una función se define con la palabra reservada
+                    <code>def</code>:</p>
+                <pre><code class="language-python"><span class="tok-kw">def</span> nombre_funcion(parametro1, parametro2):
+    <span class="tok-str">"""Docstring: qué hace la función, sus parámetros y qué devuelve."""</span>
+    <span class="tok-com"># cuerpo de la función</span>
+    resultado = parametro1 + parametro2
+    <span class="tok-kw">return</span> resultado           <span class="tok-com"># sentencia de retorno (opcional)</span></code></pre>
+                <p><strong>Elementos de una función:</strong></p>
+                <ul>
+                    <li><strong>Cabecera</strong>: <code>def</code> + nombre de la función + lista de
+                        <strong>parámetros</strong> entre paréntesis + dos puntos. Los parámetros son las variables que
+                        recibe la función; los <strong>argumentos</strong> son los valores concretos con los que se la
+                        invoca en cada llamada.</li>
+                    <li><strong>Cuerpo</strong>: el bloque de instrucciones indentado que se ejecuta cada vez que se
+                        llama a la función.</li>
+                    <li><strong><code>return</code></strong> (opcional): finaliza la función y devuelve un valor al
+                        punto donde se la invocó (ya visto en la unidad anterior, apartado de estructuras de salto). Si
+                        una función no tiene <code>return</code>, devuelve implícitamente <code>None</code>.</li>
+                    <li><strong>Llamada o invocación</strong>: la instrucción
+                        <code>nombre_funcion(argumento1, argumento2)</code> que ejecuta el código de la función con esos
+                        valores concretos.</li>
+                </ul>
+                <p><strong>Parámetros con valor por defecto</strong>: permiten que un argumento sea opcional en la
+                    llamada, tomando un valor predeterminado si no se indica:</p>
+                <pre><code class="language-python"><span class="tok-kw">def</span> saludar(nombre, saludo=<span class="tok-str">"Hola"</span>):
+    <span class="tok-kw">return</span> saludo + <span class="tok-str">", "</span> + nombre
+
+<span class="tok-builtin">print</span>(saludar(<span class="tok-str">"Ana"</span>))            <span class="tok-com"># Hola, Ana</span>
+<span class="tok-builtin">print</span>(saludar(<span class="tok-str">"Luis"</span>, <span class="tok-str">"Buenas"</span>)) <span class="tok-com"># Buenas, Luis</span></code></pre>
+                <p><strong>Ámbito de las variables</strong>: las variables definidas dentro de una función son
+                    <strong>locales</strong> (solo existen mientras se ejecuta la función), mientras que las definidas
+                    fuera son <strong>globales</strong>.</p>
+                <p>Python es especialmente adecuado para resolver problemas de <strong>matemática elemental</strong>
+                    mediante funciones, ya que dispone del módulo <code>math</code> y permite encapsular fácilmente
+                    fórmulas (áreas, ecuaciones, series, comprobación de primos, máximo común divisor...) como funciones
+                    reutilizables.</p>
+                <h3>Ejemplo en Python</h3>
+                <pre><code class="language-python"><span class="tok-kw">import</span> math
+
+<span class="tok-kw">def</span> es_primo(n):
+    <span class="tok-str">"""Determina si un número entero n es primo."""</span>
+    <span class="tok-kw">if</span> n &lt; <span class="tok-num">2</span>:
+        <span class="tok-kw">return</span> <span class="tok-kw">False</span>
+    <span class="tok-kw">for</span> divisor <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">2</span>, <span class="tok-builtin">int</span>(math.sqrt(n)) + <span class="tok-num">1</span>):
+        <span class="tok-kw">if</span> n % divisor == <span class="tok-num">0</span>:
+            <span class="tok-kw">return</span> <span class="tok-kw">False</span>
+    <span class="tok-kw">return</span> <span class="tok-kw">True</span>
+
+<span class="tok-kw">def</span> area_triangulo(base, altura):
+    <span class="tok-str">"""Calcula el área de un triángulo a partir de su base y altura."""</span>
+    <span class="tok-kw">return</span> (base * altura) / <span class="tok-num">2</span>
+
+<span class="tok-kw">def</span> maximo_comun_divisor(a, b):
+    <span class="tok-str">"""Calcula el m.c.d. de dos números mediante el algoritmo de Euclides."""</span>
+    <span class="tok-kw">while</span> b != <span class="tok-num">0</span>:
+        a, b = b, a % b
+    <span class="tok-kw">return</span> a
+
+<span class="tok-builtin">print</span>(es_primo(<span class="tok-num">17</span>))                 <span class="tok-com"># True</span>
+<span class="tok-builtin">print</span>(area_triangulo(<span class="tok-num">6</span>, <span class="tok-num">4</span>))         <span class="tok-com"># 12.0</span>
+<span class="tok-builtin">print</span>(maximo_comun_divisor(<span class="tok-num">48</span>, <span class="tok-num">18</span>)) <span class="tok-com"># 6</span></code></pre>
+                <div class="activity">
+                    <h3>Actividad propuesta</h3>
+                    <ol>
+                        <li>
+                            <p>Codifica una función <code>es_par(numero)</code> que devuelva <code>True</code> o
+                                <code>False</code> según si el número recibido es par.</p>
+                            <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                                solución</button>
+                            <div class="solution-content" hidden="">
+                                <pre><code class="language-python"><span class="tok-kw">def</span> es_par(numero):
+    <span class="tok-str">"""Indica si un número entero es par.
+
+    Parámetros:
+        numero (int): número a comprobar.
+    Devuelve:
+        bool: True si 'numero' es par, False si es impar.
+    """</span>
+    <span class="tok-kw">return</span> numero % <span class="tok-num">2</span> == <span class="tok-num">0</span>
+
+
+<span class="tok-builtin">print</span>(es_par(<span class="tok-num">4</span>))   <span class="tok-com"># True</span>
+<span class="tok-builtin">print</span>(es_par(<span class="tok-num">7</span>))   <span class="tok-com"># False</span></code></pre>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Codifica una función <code>factorial(n)</code> (versión <strong>iterativa</strong>, con
+                                un bucle) que calcule el factorial de un número.</p>
+                            <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                                solución</button>
+                            <div class="solution-content" hidden="">
+                                <pre><code class="language-python"><span class="tok-kw">def</span> factorial(n):
+    <span class="tok-str">"""Calcula el factorial de un número de forma iterativa.
+
+    Parámetros:
+        n (int): número entero no negativo.
+    Devuelve:
+        int: el factorial de n (n!).
+    """</span>
+    resultado = <span class="tok-num">1</span>
+    <span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">2</span>, n + <span class="tok-num">1</span>):
+        resultado *= i
+    <span class="tok-kw">return</span> resultado
+
+
+<span class="tok-builtin">print</span>(factorial(<span class="tok-num">5</span>))   <span class="tok-com"># 120</span>
+<span class="tok-builtin">print</span>(factorial(<span class="tok-num">0</span>))   <span class="tok-com"># 1</span></code></pre>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Codifica una función <code>calcular_velocidad_media(distancia, tiempo)</code> que
+                                devuelva la velocidad media (distancia entre tiempo), controlando con
+                                <code>try/except</code> el caso de que el tiempo sea 0 (división entre cero).</p>
+                            <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                                solución</button>
+                            <div class="solution-content" hidden="">
+                                <pre><code class="language-python"><span class="tok-kw">def</span> calcular_velocidad_media(distancia, tiempo):
+    <span class="tok-str">"""Calcula la velocidad media a partir de una distancia y un tiempo.
+
+    Parámetros:
+        distancia (float): distancia recorrida (por ejemplo, en km).
+        tiempo (float): tiempo empleado en recorrerla (por ejemplo, en horas).
+    Devuelve:
+        float: la velocidad media (distancia / tiempo), o None si el
+        tiempo es 0 (no se puede calcular la velocidad).
+    """</span>
+    <span class="tok-kw">try</span>:
+        velocidad = distancia / tiempo
+        <span class="tok-kw">return</span> velocidad
+    <span class="tok-kw">except</span> ZeroDivisionError:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Error: el tiempo no puede ser 0, no se puede calcular la velocidad"</span>)
+        <span class="tok-kw">return</span> <span class="tok-kw">None</span>
+
+
+<span class="tok-builtin">print</span>(calcular_velocidad_media(<span class="tok-num">120</span>, <span class="tok-num">2</span>))   <span class="tok-com"># 60.0</span>
+<span class="tok-builtin">print</span>(calcular_velocidad_media(<span class="tok-num">120</span>, <span class="tok-num">0</span>))   <span class="tok-com"># Error: el tiempo no puede ser 0... -&gt; None</span></code></pre>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Codifica una función <code>perimetro_circunferencia(radio, unidades="cm")</code> con un
+                                parámetro por defecto, que devuelva un texto como <code>"31.4 cm"</code>.</p>
+                            <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                                solución</button>
+                            <div class="solution-content" hidden="">
+                                <pre><code class="language-python"><span class="tok-kw">def</span> perimetro_circunferencia(radio, unidades=<span class="tok-str">"cm"</span>):
+    <span class="tok-str">"""Calcula el perímetro (longitud) de una circunferencia.
+
+    Parámetros:
+        radio (float): radio de la circunferencia.
+        unidades (str): unidad de longitud a mostrar (por defecto, "cm").
+    Devuelve:
+        str: el perímetro con un decimal seguido de la unidad, por
+        ejemplo "31.4 cm".
+    """</span>
+    PI = <span class="tok-num">3.14159</span>
+    perimetro = <span class="tok-num">2</span> * PI * radio
+    <span class="tok-kw">return</span> <span class="tok-builtin">str</span>(<span class="tok-builtin">round</span>(perimetro, <span class="tok-num">1</span>)) + <span class="tok-str">" "</span> + unidades
+
+
+<span class="tok-builtin">print</span>(perimetro_circunferencia(<span class="tok-num">5</span>))        <span class="tok-com"># 31.4 cm</span>
+<span class="tok-builtin">print</span>(perimetro_circunferencia(<span class="tok-num">5</span>, <span class="tok-str">"m"</span>))   <span class="tok-com"># 31.4 m</span></code></pre>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="seccion-b">
+                <h2>b) Paso de parámetros: por valor y por referencia</h2>
+                <p>Cuando se invoca una función con argumentos, es fundamental entender <strong>qué le llega realmente a
+                        la función</strong>: una copia del valor, o una referencia al mismo objeto en memoria que la
+                    variable original. De ello depende si los cambios que la función hace sobre el parámetro afectan o
+                    no a la variable que se pasó desde fuera.</p>
+                <ul>
+                    <li><strong>Paso por valor</strong>: la función recibe una <strong>copia independiente</strong> del
+                        valor. Cualquier modificación que la función haga sobre el parámetro <strong>no afecta</strong>
+                        a la variable original, porque son dos espacios de memoria distintos.</li>
+                    <li><strong>Paso por referencia</strong>: la función recibe una <strong>referencia</strong> (un
+                        "enlace") al mismo objeto que la variable original. Si la función modifica el
+                        <strong>contenido</strong> de ese objeto, el cambio <strong>sí es visible</strong> desde fuera
+                        de la función, porque no hay copia: ambas variables apuntan al mismo objeto en memoria.</li>
+                </ul>
+                <p><strong>¿Cómo funciona esto en Python?</strong> Python no distingue "por valor" y "por referencia" de
+                    forma explícita como otros lenguajes (por ejemplo, C++ con <code>&amp;</code>); lo que ocurre
+                    depende de si el <strong>tipo de dato</strong> del argumento es <strong>mutable</strong> o
+                    <strong>inmutable</strong>:</p>
+                <ul>
+                    <li>Los tipos <strong>inmutables</strong> (<code>int</code>, <code>float</code>, <code>bool</code>,
+                        <code>str</code>, <code>tuple</code>) se comportan, en la práctica, <strong>como paso por
+                            valor</strong>: dentro de la función se puede <em>reasignar</em> el parámetro a un nuevo
+                        valor, pero eso no cambia el objeto original, solo hace que el nombre local apunte a otro objeto
+                        distinto.</li>
+                    <li>Los tipos <strong>mutables</strong> (<code>list</code>, <code>dict</code>, <code>set</code>, y
+                        en general los objetos definidos por el programador) se comportan, en la práctica, <strong>como
+                            paso por referencia</strong>: si dentro de la función se modifica el contenido del objeto
+                        (por ejemplo, añadiendo un elemento a una lista, o asignando a una posición del objeto), ese
+                        cambio sí se observa fuera de la función, porque el parámetro y la variable original apuntan al
+                        mismo objeto en memoria. Los métodos y operaciones concretas de las listas
+                        (<code>.append()</code>, <code>.pop()</code>, indexación...) se estudiarán en detalle en la
+                        siguiente unidad; en el ejemplo siguiente se usa únicamente <code>.append()</code>, de forma
+                        anticipada, porque es imprescindible para poder ilustrar el paso por referencia.</li>
+                </ul>
+                <p>Esta distinción, que suele llamarse <em>"paso por asignación de objetos"</em>
+                    (<em>pass-by-object-reference</em>), es una de las fuentes de errores más habituales en
+                    programadores que empiezan con Python, por lo que conviene practicarla con cuidado.</p>
+                <h3>Ejemplo en Python</h3>
+                <pre><code class="language-python"><span class="tok-com"># --- Tipo inmutable: se comporta como paso por valor ---</span>
+<span class="tok-kw">def</span> incrementar(numero):
+    numero = numero + <span class="tok-num">1</span>   <span class="tok-com"># esto NO modifica la variable original: crea un valor local nuevo</span>
+    <span class="tok-kw">return</span> numero
+
+x = <span class="tok-num">5</span>
+resultado = incrementar(x)
+<span class="tok-builtin">print</span>(x, resultado)   <span class="tok-com"># 5 6  -&gt; 'x' no ha cambiado</span>
+
+<span class="tok-com"># --- Tipo mutable: se comporta como paso por referencia ---</span>
+<span class="tok-kw">def</span> añadir_elemento(lista):
+    lista.append(<span class="tok-num">100</span>)   <span class="tok-com"># esto SÍ modifica el objeto original, porque es el mismo objeto en memoria</span>
+
+numeros = [<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>]
+añadir_elemento(numeros)
+<span class="tok-builtin">print</span>(numeros)   <span class="tok-com"># [1, 2, 3, 100]  -&gt; la lista original SÍ ha cambiado</span>
+
+<span class="tok-com"># --- Cuidado: reasignar un parámetro mutable NO afecta al original ---</span>
+<span class="tok-kw">def</span> sustituir_lista(lista):
+    lista = [<span class="tok-num">0</span>, <span class="tok-num">0</span>, <span class="tok-num">0</span>]   <span class="tok-com"># esto crea un objeto nuevo y local; NO afecta a la lista original</span>
+
+datos = [<span class="tok-num">1</span>, <span class="tok-num">2</span>, <span class="tok-num">3</span>]
+sustituir_lista(datos)
+<span class="tok-builtin">print</span>(datos)   <span class="tok-com"># [1, 2, 3]  -&gt; no ha cambiado, porque 'lista' pasó a apuntar a OTRO objeto</span></code></pre>
+                <div class="activity">
+                    <h3>Actividad propuesta</h3>
+                    <ol>
+                        <li>
+                            <p>Escribe una función <code>poner_en_mayusculas(texto)</code> que reciba una cadena de
+                                texto y devuelva una copia convertida a mayúsculas (con <code>.upper()</code>);
+                                comprueba que, tras la llamada, la variable original conserva su valor sin cambios, y
+                                explica brevemente por qué ocurre esto siendo <code>str</code> un tipo inmutable.</p>
+                            <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                                solución</button>
+                            <div class="solution-content" hidden="">
+                                <pre><code class="language-python"><span class="tok-kw">def</span> poner_en_mayusculas(texto):
+    <span class="tok-str">"""Devuelve una copia de un texto convertida a mayúsculas, sin
+    modificar la variable original (paso por valor, ya que 'str' es
+    un tipo inmutable).
+
+    Parámetros:
+        texto (str): la cadena de texto original.
+    Devuelve:
+        str: una copia de 'texto' en mayúsculas.
+    """</span>
+    texto_mayusculas = texto.upper()
+    <span class="tok-kw">return</span> texto_mayusculas
+
+
+nombre = <span class="tok-str">"ana"</span>
+nombre_en_mayusculas = poner_en_mayusculas(nombre)
+<span class="tok-builtin">print</span>(nombre)                 <span class="tok-com"># ana  -&gt; la variable original NO ha cambiado</span>
+<span class="tok-builtin">print</span>(nombre_en_mayusculas)   <span class="tok-com"># ANA  -&gt; se ha devuelto una copia nueva</span></code></pre>
+                                <p>Explicación: <code>str</code> es un tipo inmutable, así que no se puede modificar
+                                    "por dentro": <code>texto.upper()</code> no cambia el objeto original, sino que crea
+                                    y devuelve una cadena nueva. Por eso la función necesita un <code>return</code> para
+                                    poder aprovechar el resultado, y la variable <code>nombre</code> conserva su valor
+                                    original tras la llamada.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Escribe una función <code>añadir_aprobado(lista_notas)</code> que reciba una lista de
+                                notas y le añada, con <code>.append()</code>, la nota 5 (aprobado); comprueba que la
+                                lista original queda modificada tras la llamada. (El resto de operaciones sobre listas
+                                —recorrer y modificar cada posición— se practicará en profundidad en la siguiente
+                                unidad.)</p>
+                            <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                                solución</button>
+                            <div class="solution-content" hidden="">
+                                <pre><code class="language-python"><span class="tok-kw">def</span> añadir_aprobado(lista_notas):
+    <span class="tok-str">"""Añade la nota 5 (aprobado) a una lista de notas, modificándola
+    directamente (paso por referencia, al ser 'list' un tipo mutable).
+
+    Parámetros:
+        lista_notas (list): lista de notas que se va a modificar.
+    Devuelve:
+        None (la función modifica la lista recibida, no devuelve nada).
+    """</span>
+    lista_notas.append(<span class="tok-num">5</span>)
+
+
+notas = [<span class="tok-num">7</span>, <span class="tok-num">3</span>, <span class="tok-num">9</span>]
+añadir_aprobado(notas)
+<span class="tok-builtin">print</span>(notas)   <span class="tok-com"># [7, 3, 9, 5]  -&gt; la lista original ha quedado modificada</span></code></pre>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Escribe una función <code>resetear_contador(contador)</code> que reciba un
+                                <code>int</code> y "lo ponga a cero"; comprueba que, tras invocarla, la variable
+                                original <strong>no</strong> ha cambiado, y explica por escrito por qué ocurre esto con
+                                los tipos inmutables.</p>
+                            <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                                solución</button>
+                            <div class="solution-content" hidden="">
+                                <pre><code class="language-python"><span class="tok-kw">def</span> resetear_contador(contador):
+    <span class="tok-str">"""Intenta poner a cero un contador, pero NO modifica la variable
+    original, porque 'int' es un tipo inmutable (paso por valor).
+
+    Parámetros:
+        contador (int): valor del contador.
+    Devuelve:
+        int: siempre 0 (un valor nuevo y local, que no afecta al
+        argumento original con el que se llamó a la función).
+    """</span>
+    contador = <span class="tok-num">0</span>
+    <span class="tok-kw">return</span> contador
+
+
+mi_contador = <span class="tok-num">10</span>
+resetear_contador(mi_contador)
+<span class="tok-builtin">print</span>(mi_contador)   <span class="tok-com"># 10  -&gt; la variable original NO ha cambiado</span></code></pre>
+                                <p>Explicación: <code>contador</code> es un parámetro de tipo <code>int</code>, que es
+                                    inmutable. Al ejecutar <code>contador = 0</code> dentro de la función, Python no
+                                    modifica el objeto <code>10</code> que había en memoria: simplemente hace que el
+                                    nombre local <code>contador</code> pase a apuntar a un objeto distinto (el
+                                    <code>0</code>). La variable <code>mi_contador</code>, fuera de la función, sigue
+                                    apuntando al objeto original (<code>10</code>), así que la reasignación interna no
+                                    le afecta en absoluto.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Explica con tus propias palabras, apoyándote en un ejemplo propio, la diferencia práctica
+                                entre pasar una <code>list</code> y pasar un <code>int</code> como argumento de una
+                                función en Python.</p>
+                            <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                                solución</button>
+                            <div class="solution-content" hidden="">
+                                <p>La diferencia práctica es que, al pasar una <code>list</code> (tipo mutable) como
+                                    argumento, la función recibe una referencia al mismo objeto en memoria que la
+                                    variable original; por tanto, si dentro de la función se modifica el
+                                    <strong>contenido</strong> de esa lista (por ejemplo, con <code>.append()</code>),
+                                    el cambio es visible también fuera de la función. En cambio, al pasar un
+                                    <code>int</code> (tipo inmutable), aunque la función también recibe una referencia
+                                    al mismo objeto, como los <code>int</code> no se pueden modificar "por dentro",
+                                    cualquier operación que parezca cambiar su valor (como <code>precio = 0</code>) en
+                                    realidad crea un objeto nuevo y hace que el nombre local apunte a él, sin afectar a
+                                    la variable original. Ejemplo propio:</p>
+                                <pre><code class="language-python"><span class="tok-kw">def</span> anadir_producto(carrito):
+    carrito.append(<span class="tok-str">"café"</span>)   <span class="tok-com"># modifica la lista original (mutable)</span>
+
+<span class="tok-kw">def</span> poner_precio_a_cero(precio):
+    precio = <span class="tok-num">0</span>                 <span class="tok-com"># NO modifica la variable original (inmutable)</span>
+
+carrito_compra = [<span class="tok-str">"pan"</span>, <span class="tok-str">"leche"</span>]
+anadir_producto(carrito_compra)
+<span class="tok-builtin">print</span>(carrito_compra)          <span class="tok-com"># ["pan", "leche", "café"]  -&gt; sí ha cambiado</span>
+
+precio_producto = <span class="tok-num">25</span>
+poner_precio_a_cero(precio_producto)
+<span class="tok-builtin">print</span>(precio_producto)         <span class="tok-com"># 25  -&gt; no ha cambiado</span></code></pre>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="seccion-c">
+                <h2>c) Recursividad</h2>
+                <p>Una función es <strong>recursiva</strong> cuando, en su propio cuerpo, contiene una llamada a
+                    <strong>sí misma</strong>. La recursividad es una alternativa a la <strong>iteración</strong>
+                    (bucles <code>for</code>/<code>while</code>) para resolver problemas que pueden descomponerse en
+                    subproblemas más pequeños <strong>del mismo tipo</strong> que el problema original.</p>
+                <p>Toda función recursiva bien construida necesita dos elementos:</p>
+                <ol>
+                    <li><strong>Caso base</strong>: la condición en la que la función deja de llamarse a sí misma y
+                        devuelve un resultado directo. Es imprescindible: sin caso base, la función se llamaría a sí
+                        misma indefinidamente hasta agotar la memoria disponible (error <code>RecursionError</code> en
+                        Python).</li>
+                    <li><strong>Caso recursivo</strong>: la llamada de la función a sí misma con un argumento "más
+                        cercano" al caso base (por ejemplo, un número más pequeño), de forma que la sucesión de llamadas
+                        converja finalmente hacia el caso base.</li>
+                </ol>
+                <p><strong>Relación entre iteración y recursividad</strong>: cualquier problema resoluble con
+                    recursividad puede resolverse también con iteración, y viceversa; la elección entre una y otra suele
+                    ser una cuestión de claridad del código (algunos problemas, como recorrer estructuras jerárquicas o
+                    dividir un problema en mitades, se expresan de forma mucho más natural con recursividad) y de
+                    eficiencia (una solución iterativa suele consumir menos memoria, ya que la recursividad utiliza la
+                    <strong>pila de llamadas</strong> —<em>call stack</em>— y cada llamada recursiva ocupa espacio en
+                    memoria hasta que se resuelve).</p>
+                <table>
+                    <thead>
+                        <tr>
+                            <th></th>
+                            <th>Iteración</th>
+                            <th>Recursividad</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mecanismo</td>
+                            <td>Bucle (<code>for</code>/<code>while</code>) que repite un bloque</td>
+                            <td>Función que se llama a sí misma</td>
+                        </tr>
+                        <tr>
+                            <td>Control de la repetición</td>
+                            <td>Condición del bucle</td>
+                            <td>Caso base</td>
+                        </tr>
+                        <tr>
+                            <td>Uso de memoria</td>
+                            <td>Generalmente constante</td>
+                            <td>Crece con cada llamada (pila de llamadas)</td>
+                        </tr>
+                        <tr>
+                            <td>Legibilidad</td>
+                            <td>Más directa en problemas "planos"</td>
+                            <td>Más natural en problemas definidos de forma recursiva (factorial, Fibonacci, árboles...)
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h3>Ejemplo en Python</h3>
+                <pre><code class="language-python"><span class="tok-com"># Factorial: versión iterativa (ya vista en el apartado a) y versión recursiva</span>
+<span class="tok-kw">def</span> factorial_iterativo(n):
+    resultado = <span class="tok-num">1</span>
+    <span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">2</span>, n + <span class="tok-num">1</span>):
+        resultado *= i
+    <span class="tok-kw">return</span> resultado
+
+<span class="tok-kw">def</span> factorial_recursivo(n):
+    <span class="tok-kw">if</span> n <span class="tok-kw">in</span> (<span class="tok-num">0</span>, <span class="tok-num">1</span>):        <span class="tok-com"># caso base</span>
+        <span class="tok-kw">return</span> <span class="tok-num">1</span>
+    <span class="tok-kw">return</span> n * factorial_recursivo(n - <span class="tok-num">1</span>)   <span class="tok-com"># caso recursivo</span>
+
+<span class="tok-builtin">print</span>(factorial_iterativo(<span class="tok-num">5</span>))   <span class="tok-com"># 120</span>
+<span class="tok-builtin">print</span>(factorial_recursivo(<span class="tok-num">5</span>))   <span class="tok-com"># 120</span>
+
+<span class="tok-com"># Sucesión de Fibonacci de forma recursiva</span>
+<span class="tok-kw">def</span> fibonacci(n):
+    <span class="tok-str">"""Devuelve el n-ésimo término de la sucesión de Fibonacci (0, 1, 1, 2, 3, 5, 8...)."""</span>
+    <span class="tok-kw">if</span> n &lt;= <span class="tok-num">1</span>:              <span class="tok-com"># caso base</span>
+        <span class="tok-kw">return</span> n
+    <span class="tok-kw">return</span> fibonacci(n - <span class="tok-num">1</span>) + fibonacci(n - <span class="tok-num">2</span>)   <span class="tok-com"># caso recursivo (dos llamadas)</span>
+
+<span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">8</span>):
+    <span class="tok-builtin">print</span>(fibonacci(i))   <span class="tok-com"># 0, 1, 1, 2, 3, 5, 8, 13 (uno por línea)</span>
+
+<span class="tok-com"># Suma de los dígitos de un número de forma recursiva</span>
+<span class="tok-kw">def</span> suma_digitos(numero):
+    <span class="tok-str">"""Suma los dígitos de un número entero positivo, de forma recursiva."""</span>
+    <span class="tok-kw">if</span> numero &lt; <span class="tok-num">10</span>:                       <span class="tok-com"># caso base: un solo dígito</span>
+        <span class="tok-kw">return</span> numero
+    <span class="tok-kw">return</span> numero % <span class="tok-num">10</span> + suma_digitos(numero // <span class="tok-num">10</span>)   <span class="tok-com"># caso recursivo</span>
+
+<span class="tok-builtin">print</span>(suma_digitos(<span class="tok-num">1234</span>))   <span class="tok-com"># 10  (1 + 2 + 3 + 4)</span></code></pre>
+                <div class="activity">
+                    <h3>Actividad propuesta</h3>
+                    <ol>
+                        <li>
+                            <p>Codifica una función recursiva <code>potencia(base, exponente)</code> que calcule
+                                <code>base</code> elevado a <code>exponente</code> sin usar el operador <code>**</code>,
+                                identificando claramente el caso base y el caso recursivo.</p>
+                            <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                                solución</button>
+                            <div class="solution-content" hidden="">
+                                <pre><code class="language-python"><span class="tok-kw">def</span> potencia(base, exponente):
+    <span class="tok-str">"""Calcula 'base' elevado a 'exponente' de forma recursiva, sin usar **.
+
+    Parámetros:
+        base (int/float): la base de la potencia.
+        exponente (int): el exponente (entero no negativo).
+    Devuelve:
+        El resultado de elevar 'base' a 'exponente'.
+    """</span>
+    <span class="tok-kw">if</span> exponente == <span class="tok-num">0</span>:                           <span class="tok-com"># caso base</span>
+        <span class="tok-kw">return</span> <span class="tok-num">1</span>
+    <span class="tok-kw">return</span> base * potencia(base, exponente - <span class="tok-num">1</span>)  <span class="tok-com"># caso recursivo</span>
+
+
+<span class="tok-builtin">print</span>(potencia(<span class="tok-num">2</span>, <span class="tok-num">5</span>))   <span class="tok-com"># 32</span>
+<span class="tok-builtin">print</span>(potencia(<span class="tok-num">5</span>, <span class="tok-num">0</span>))   <span class="tok-com"># 1</span></code></pre>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Codifica la versión <strong>iterativa</strong> de la función <code>fibonacci(n)</code>
+                                del ejemplo (con un bucle) y compárala con la versión recursiva: ejecuta ambas con
+                                <code>n = 30</code> cronometrando el tiempo de ejecución con el módulo
+                                <code>time</code>, y explica la diferencia observada.</p>
+                            <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                                solución</button>
+                            <div class="solution-content" hidden="">
+                                <pre><code class="language-python"><span class="tok-kw">import</span> time
+
+<span class="tok-kw">def</span> fibonacci_recursivo(n):
+    <span class="tok-str">"""Versión recursiva de Fibonacci (la misma del ejemplo)."""</span>
+    <span class="tok-kw">if</span> n &lt;= <span class="tok-num">1</span>:
+        <span class="tok-kw">return</span> n
+    <span class="tok-kw">return</span> fibonacci_recursivo(n - <span class="tok-num">1</span>) + fibonacci_recursivo(n - <span class="tok-num">2</span>)
+
+<span class="tok-kw">def</span> fibonacci_iterativo(n):
+    <span class="tok-str">"""Versión iterativa de Fibonacci, con un bucle."""</span>
+    anterior, actual = <span class="tok-num">0</span>, <span class="tok-num">1</span>
+    <span class="tok-kw">for</span> _ <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(n):
+        anterior, actual = actual, anterior + actual
+    <span class="tok-kw">return</span> anterior
+
+
+inicio = time.time()
+resultado_iterativo = fibonacci_iterativo(<span class="tok-num">30</span>)
+fin = time.time()
+<span class="tok-builtin">print</span>(<span class="tok-str">"Iterativo:"</span>, resultado_iterativo, <span class="tok-str">"- tiempo:"</span>, fin - inicio, <span class="tok-str">"segundos"</span>)
+
+inicio = time.time()
+resultado_recursivo = fibonacci_recursivo(<span class="tok-num">30</span>)
+fin = time.time()
+<span class="tok-builtin">print</span>(<span class="tok-str">"Recursivo:"</span>, resultado_recursivo, <span class="tok-str">"- tiempo:"</span>, fin - inicio, <span class="tok-str">"segundos"</span>)</code></pre>
+                                <p>Explicación: la versión iterativa es muchísimo más rápida que la recursiva para
+                                    <code>n = 30</code>. La versión recursiva de Fibonacci, tal y como está escrita,
+                                    vuelve a calcular muchas veces los mismos subproblemas (por ejemplo,
+                                    <code>fibonacci(28)</code> se calcula varias veces de forma independiente dentro del
+                                    árbol de llamadas), mientras que la versión iterativa calcula cada término una sola
+                                    vez, con un coste que crece linealmente con <code>n</code>.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Provoca deliberadamente un error de recursividad infinita (una función recursiva sin caso
+                                base, o con un caso base que nunca se alcanza) y observa el mensaje
+                                <code>RecursionError</code> que muestra Python; corrígelo después.</p>
+                            <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                                solución</button>
+                            <div class="solution-content" hidden="">
+                                <pre><code class="language-python"><span class="tok-com"># Versión con el error: no hay caso base, así que nunca deja de llamarse</span>
+<span class="tok-kw">def</span> cuenta_atras_erronea(n):
+    <span class="tok-builtin">print</span>(n)
+    <span class="tok-kw">return</span> cuenta_atras_erronea(n - <span class="tok-num">1</span>)
+
+<span class="tok-com"># cuenta_atras_erronea(5)   # al ejecutarla, Python eleva:</span>
+                            <span class="tok-com"># RecursionError: maximum recursion depth exceeded</span>
+
+<span class="tok-com"># Versión corregida: se añade el caso base que faltaba</span>
+<span class="tok-kw">def</span> cuenta_atras_correcta(n):
+    <span class="tok-kw">if</span> n &lt; <span class="tok-num">0</span>:                        <span class="tok-com"># caso base</span>
+        <span class="tok-kw">return</span>
+    <span class="tok-builtin">print</span>(n)
+    cuenta_atras_correcta(n - <span class="tok-num">1</span>)     <span class="tok-com"># caso recursivo, se acerca al caso base</span>
+
+cuenta_atras_correcta(<span class="tok-num">5</span>)   <span class="tok-com"># 5, 4, 3, 2, 1, 0</span></code></pre>
+                            </div>
+                        </li>
+                        <li>
+                            <p>Codifica una función recursiva <code>mcd_recursivo(a, b)</code> que calcule el máximo
+                                común divisor de dos números aplicando el algoritmo de Euclides de forma recursiva, en
+                                lugar de iterativa como en el apartado a).</p>
+                            <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                                solución</button>
+                            <div class="solution-content" hidden="">
+                                <pre><code class="language-python"><span class="tok-kw">def</span> mcd_recursivo(a, b):
+    <span class="tok-str">"""Calcula el máximo común divisor de dos números mediante el
+    algoritmo de Euclides, de forma recursiva.
+
+    Parámetros:
+        a, b (int): los dos números.
+    Devuelve:
+        int: el máximo común divisor de a y b.
+    """</span>
+    <span class="tok-kw">if</span> b == <span class="tok-num">0</span>:                       <span class="tok-com"># caso base</span>
+        <span class="tok-kw">return</span> a
+    <span class="tok-kw">return</span> mcd_recursivo(b, a % b)   <span class="tok-com"># caso recursivo</span>
+
+
+<span class="tok-builtin">print</span>(mcd_recursivo(<span class="tok-num">48</span>, <span class="tok-num">18</span>))   <span class="tok-com"># 6</span></code></pre>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+
+    <script>
+        (function () {
+            var sidebar = document.getElementById('sidebar');
+            var toggleBtn = document.getElementById('sidebarToggle');
+            var overlay = document.getElementById('overlay');
+
+            function openSidebar() {
+                sidebar.classList.add('open');
+                overlay.classList.add('visible');
+                toggleBtn.setAttribute('aria-expanded', 'true');
+            }
+
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('visible');
+                toggleBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            toggleBtn.addEventListener('click', function () {
+                if (sidebar.classList.contains('open')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            });
+
+            overlay.addEventListener('click', closeSidebar);
+
+            var navLinks = sidebar.querySelectorAll('a');
+            navLinks.forEach(function (link) {
+                link.addEventListener('click', function () {
+                    if (window.matchMedia('(max-width: 900px)').matches) {
+                        closeSidebar();
+                    }
+                });
+            });
+
+            // Toggle solutions
+            var solutionButtons = document.querySelectorAll('.solution-toggle');
+            solutionButtons.forEach(function (btn) {
+                var content = btn.nextElementSibling;
+                btn.addEventListener('click', function () {
+                    var expanded = btn.getAttribute('aria-expanded') === 'true';
+                    if (expanded) {
+                        content.hidden = true;
+                        btn.setAttribute('aria-expanded', 'false');
+                        btn.innerHTML = '<span class="icon">▶</span> Ver solución';
+                    } else {
+                        content.hidden = false;
+                        btn.setAttribute('aria-expanded', 'true');
+                        btn.innerHTML = '<span class="icon">▶</span> Ocultar solución';
+                    }
+                });
+            });
+
+            // Scrollspy: highlight the current section in the sidebar
+            var sections = document.querySelectorAll('main section[id]');
+            var linkMap = {};
+            navLinks.forEach(function (link) {
+                linkMap[link.getAttribute('href').substring(1)] = link;
+            });
+
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        var link = linkMap[entry.target.id];
+                        if (!link) return;
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(function (l) { l.classList.remove('active'); });
+                            link.classList.add('active');
+                        }
+                    });
+                }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+                sections.forEach(function (section) { observer.observe(section); });
+            }
+
+            // Syntax highlighting for Python code blocks
+            var PY_KEYWORDS = new Set(['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await',
+                'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from',
+                'global', 'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise',
+                'return', 'try', 'while', 'with', 'yield']);
+            var PY_BUILTINS = new Set(['print', 'input', 'type', 'int', 'float', 'str', 'bool', 'complex',
+                'len', 'range', 'list', 'tuple', 'dict', 'set', 'abs', 'min', 'max', 'sum', 'round', 'open',
+                'isinstance', 'super', 'object']);
+            var PY_TOKEN_RE = /(#[^\n]*)|("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(\b\d+\.?\d*(?:[eE][+-]?\d+)?\b|\b0[xX][0-9a-fA-F_]+\b|\b0[bB][01_]+\b|\b0[oO][0-7_]+\b)|(\b[A-Za-z_][A-Za-z0-9_]*\b)/g;
+
+            function escapeHtml(s) {
+                return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            function highlightPython(code) {
+                var result = '';
+                var lastIndex = 0;
+                var m;
+                PY_TOKEN_RE.lastIndex = 0;
+                while ((m = PY_TOKEN_RE.exec(code)) !== null) {
+                    result += escapeHtml(code.slice(lastIndex, m.index));
+                    lastIndex = PY_TOKEN_RE.lastIndex;
+                    if (m[1] !== undefined) {
+                        result += '<span class="tok-com">' + escapeHtml(m[1]) + '</span>';
+                    } else if (m[2] !== undefined) {
+                        result += '<span class="tok-str">' + escapeHtml(m[2]) + '</span>';
+                    } else if (m[3] !== undefined) {
+                        result += '<span class="tok-num">' + escapeHtml(m[3]) + '</span>';
+                    } else if (m[4] !== undefined) {
+                        var word = m[4];
+                        if (PY_KEYWORDS.has(word)) {
+                            result += '<span class="tok-kw">' + escapeHtml(word) + '</span>';
+                        } else if (PY_BUILTINS.has(word)) {
+                            result += '<span class="tok-builtin">' + escapeHtml(word) + '</span>';
+                        } else {
+                            result += escapeHtml(word);
+                        }
+                    }
+                }
+                result += escapeHtml(code.slice(lastIndex));
+                return result;
+            }
+
+            document.querySelectorAll('code.language-python').forEach(function (block) {
+                block.innerHTML = highlightPython(block.textContent);
+            });
+        })();
+    </script>
+
+
+
+</body>
+
+</html>

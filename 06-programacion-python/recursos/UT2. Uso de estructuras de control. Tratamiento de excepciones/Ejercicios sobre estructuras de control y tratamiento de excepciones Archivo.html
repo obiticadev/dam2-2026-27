@@ -1,0 +1,1947 @@
+<html lang="es">
+
+<head>
+    <style>
+        body {
+            transition: opacity ease-in 0.2s;
+        }
+
+        body[unresolved] {
+            opacity: 0;
+            display: block;
+            overflow: hidden;
+            position: relative;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UT2. Ejercicios adicionales</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg-alt: #f5f7fa;
+            --text: #1a1d21;
+            --text-muted2: #5a6169;
+            --border: #e1e4e8;
+            --accent: #0b5fff;
+            --accent-hover: #0847c4;
+            --code-bg: #f4f4f4;
+            --code-text: #24292e;
+            --code-border: #e1e4e8;
+            --table-header-bg: #eef2f7;
+            --table-row-alt: #fafbfc;
+            --solution-bg: #eef8f0;
+            --solution-border: #a9d8b8;
+            --solution-btn-bg: #2f9e52;
+            --solution-btn-text: #ffffff;
+            --sidebar-bg: #f7f8fa;
+            --sidebar-border: #e1e4e8;
+            --link-active-bg: #e6efff;
+            --shadow: rgba(0, 0, 0, 0.10);
+            --diagram-bg: #f4f4f4;
+            --code-keyword: #a626a4;
+            --code-string: #22863a;
+            --code-comment: #6a737d;
+            --code-number: #b35900;
+            --code-builtin: #0b5fff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #14171c;
+                --bg-alt: #1b1f26;
+                --text: #e6e8eb;
+                --text-muted2: #a0a6b0;
+                --border: #2b3038;
+                --accent: #5b9dff;
+                --accent-hover: #85b7ff;
+                --code-bg: #1e2229;
+                --code-text: #d6dbe1;
+                --code-border: #2b3038;
+                --table-header-bg: #232830;
+                --table-row-alt: #191c22;
+                --solution-bg: #17251c;
+                --solution-border: #2f5c3d;
+                --solution-btn-bg: #2f9e52;
+                --solution-btn-text: #06120a;
+                --sidebar-bg: #101317;
+                --sidebar-border: #262b33;
+                --link-active-bg: #1d2c44;
+                --shadow: rgba(0, 0, 0, 0.4);
+                --diagram-bg: #1e2229;
+                --code-keyword: #c792ea;
+                --code-string: #7ee787;
+                --code-comment: #7f8b98;
+                --code-number: #f2c078;
+                --code-builtin: #5b9dff;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* ---------- Sidebar ---------- */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 290px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--sidebar-border);
+            overflow-y: auto;
+            padding: 1.25rem 0 2rem;
+            z-index: 40;
+            transition: transform 0.25s ease;
+        }
+
+        .sidebar-header {
+            padding: 0 1.25rem 1rem;
+            border-bottom: 1px solid var(--sidebar-border);
+            margin-bottom: 0.75rem;
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted2);
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar nav a {
+            display: block;
+            padding: 0.55rem 1.25rem;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.92rem;
+            border-left: 3px solid transparent;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .sidebar nav a:hover {
+            background: var(--link-active-bg);
+        }
+
+        .sidebar nav a.active {
+            background: var(--link-active-bg);
+            border-left-color: var(--accent);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar nav li.nav-bloque {
+            margin-top: 0.9rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid var(--sidebar-border);
+        }
+
+        .sidebar nav li.nav-bloque a {
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.76rem;
+            letter-spacing: 0.05em;
+            color: var(--text-muted2);
+        }
+
+        .sidebar nav li.nav-bloque a:hover {
+            color: var(--accent);
+        }
+
+        .sidebar nav li.nav-bloque a.active {
+            color: var(--accent);
+        }
+
+        .sidebar nav li.nav-ejercicio a {
+            padding-left: 2.1rem;
+            font-size: 0.88rem;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 0.85rem;
+            left: 1rem;
+            z-index: 60;
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px var(--shadow);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 30;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ---------- Content ---------- */
+        .content {
+            margin-left: 290px;
+            display: flex;
+            justify-content: center;
+            padding: 0 1.5rem;
+            width: auto;
+        }
+
+        .content-inner {
+            width: 100%;
+            max-width: 1024px;
+            padding: 2.5rem 0 5rem;
+            min-width: 0;
+        }
+
+        .content-inner h1 {
+            font-size: 2rem;
+            margin-top: 0;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.5rem;
+        }
+
+        section {
+            margin-bottom: 1.5rem;
+            padding-top: 0.25rem;
+        }
+
+        section h2 {
+            font-size: 1.5rem;
+            margin-top: 1.1rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .bloque-section {
+            margin-top: 2.75rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .bloque-section h2 {
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: 0.9rem 1.25rem;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 1.1rem;
+            color: var(--accent);
+        }
+
+        section h3 {
+            font-size: 1.15rem;
+            color: var(--accent);
+            margin-top: 1.75rem;
+        }
+
+        p {
+            margin: 0.85em 0;
+        }
+
+        strong {
+            color: var(--text);
+        }
+
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.88em;
+            border: 1px solid var(--code-border);
+            overflow-wrap: anywhere;
+        }
+
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            padding: 1rem 1.1rem;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 1em;
+        }
+
+        .diagram pre {
+            background: var(--diagram-bg);
+        }
+
+        /* ---------- Syntax highlighting (Python code blocks) ---------- */
+        .tok-kw {
+            color: var(--code-keyword);
+            font-weight: 600;
+        }
+
+        .tok-str {
+            color: var(--code-string);
+        }
+
+        .tok-com {
+            color: var(--code-comment);
+            font-style: italic;
+        }
+
+        .tok-num {
+            color: var(--code-number);
+        }
+
+        .tok-builtin {
+            color: var(--code-builtin);
+        }
+
+        table {
+            display: block;
+            overflow-x: auto;
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.25em 0;
+            font-size: 0.92rem;
+            max-width: 100%;
+        }
+
+        caption {
+            text-align: left;
+            margin-bottom: 0.5em;
+            color: var(--text-muted2);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 0.55em 0.75em;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: var(--table-header-bg);
+            font-weight: 600;
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--table-row-alt);
+        }
+
+        ul,
+        ol {
+            padding-left: 1.4rem;
+        }
+
+        li {
+            margin: 0.3em 0;
+        }
+
+        .exercise {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .exercise> :first-child {
+            margin-top: 0;
+        }
+
+        .activity {
+            background: var(--bg-alt);
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .activity h3 {
+            margin-top: 0;
+        }
+
+        /* ---------- Solutions (hidden by default, toggled by button) ---------- */
+        .solution-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4em;
+            background: var(--solution-btn-bg);
+            color: var(--solution-btn-text);
+            border: none;
+            border-radius: 999px;
+            padding: 0.5em 1.1em;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: filter 0.15s ease;
+        }
+
+        .solution-toggle:hover {
+            filter: brightness(1.08);
+        }
+
+        .solution-toggle .icon {
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+
+        .solution-toggle[aria-expanded="true"] .icon {
+            transform: rotate(90deg);
+        }
+
+        .solution-content {
+            background: var(--solution-bg);
+            border: 1px solid var(--solution-border);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-top: 0.75rem;
+        }
+
+        .solution-content[hidden] {
+            display: none;
+        }
+
+        .solution-content> :first-child {
+            margin-top: 0;
+        }
+
+        .solution-content> :last-child {
+            margin-bottom: 0;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 82%;
+                max-width: 320px;
+                box-shadow: 4px 0 18px var(--shadow);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: flex;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 0 1.25rem;
+            }
+
+            .content-inner {
+                padding: 4.5rem 0 3rem;
+            }
+
+            .content-inner h1 {
+                font-size: 1.5rem;
+            }
+
+            section h2 {
+                font-size: 1.25rem;
+            }
+
+            table {
+                font-size: 0.82rem;
+            }
+
+            th,
+            td {
+                padding: 0.4em 0.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 0 0.9rem;
+            }
+
+            .content-inner {
+                padding: 4.5rem 0 2.5rem;
+            }
+
+            pre {
+                font-size: 0.76rem;
+                padding: 0.75rem;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <button id="sidebarToggle" class="sidebar-toggle" aria-label="Abrir menú de contenidos"
+        aria-expanded="false">☰</button>
+    <div id="overlay" class="overlay"></div>
+
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2>Contenidos</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#introduccion" class="active">Introducción</a></li>
+                <li class="nav-bloque"><a href="#bloque-1">Bloque 1: Estructuras de selección (<code>if</code> /
+                        <code>elif</code> / <code>else</code>)</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-1">Ejercicio 1: Comprobador de triángulos</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-2">Ejercicio 2: Tarifa eléctrica por tramos</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-3">Ejercicio 3: Comprobador de año bisiesto</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-4">Ejercicio 4: Comprobador de acceso a una atracción de
+                        feria</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-5">Ejercicio 5: Clasificador de cuadrante de un punto</a>
+                </li>
+                <li class="nav-bloque"><a href="#bloque-2">Bloque 2: Estructuras de repetición (<code>while</code> y
+                        <code>for</code>)</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-6">Ejercicio 6: Suma de los primeros números pares</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-7">Ejercicio 7: Adivina el número secreto</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-8">Ejercicio 8: Tabla de multiplicar en orden inverso</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-9">Ejercicio 9: Validación de un número dentro de un
+                        rango</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-10">Ejercicio 10: Contador de vocales en una frase</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-11">Ejercicio 11: Cálculo del factorial de un número</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-12">Ejercicio 12: Suma y promedio de varios números</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-13">Ejercicio 13: Menú repetido hasta elegir salir</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-14">Ejercicio 14: Pirámide de asteriscos</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-15">Ejercicio 15: Serie de Fibonacci hasta un límite</a>
+                </li>
+                <li class="nav-bloque"><a href="#bloque-3">Bloque 3: Estructuras de salto y control de excepciones</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-16">Ejercicio 16: Buscador de una letra en una palabra</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-17">Ejercicio 17: Filtrado de múltiplos con continue</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-18">Ejercicio 18: Menú con salida inmediata del
+                        programa</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-19">Ejercicio 19: Registro de tareas pendientes</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-20">Ejercicio 20: Análisis de una serie de
+                        temperaturas</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-21">Ejercicio 21: Divisor seguro de dos números</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-22">Ejercicio 22: Acceso seguro a un carácter de una
+                        palabra</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-23">Ejercicio 23: Validador de una nota mediante raise</a>
+                </li>
+                <li class="nav-ejercicio"><a href="#ejercicio-24">Ejercicio 24: Comprobación de un número con else y
+                        finally</a></li>
+                <li class="nav-ejercicio"><a href="#ejercicio-25">Ejercicio 25: Bucle de reintento hasta introducir un
+                        número válido</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main id="content" class="content">
+        <div class="content-inner">
+
+            <h1>UT2. Ejercicios adicionales</h1>
+
+            <section id="introduccion">
+                <h2>Introducción</h2>
+                <p>Este documento recoge veinticinco ejercicios pensados para practicar las estructuras de control
+                    estudiadas en la UT2: cinco ejercicios de <strong>estructuras de selección</strong> (<code>if</code>
+                    / <code>elif</code> / <code>else</code>), diez ejercicios de <strong>estructuras de
+                        repetición</strong> (<code>while</code> y <code>for</code>), y diez ejercicios más de
+                    <strong>estructuras de salto</strong> (<code>break</code>, <code>continue</code>, <code>pass</code>,
+                    <code>sys.exit()</code>) y de <strong>control de excepciones</strong> (<code>try</code> /
+                    <code>except</code> / <code>else</code> / <code>finally</code>, <code>raise</code>).</p>
+                <p>Cada ejercicio es un programa secuencial completo, comentado y probado, que utiliza únicamente
+                    elementos ya trabajados hasta la UT2 (variables, tipos de datos, operadores, <code>input()</code>,
+                    estructuras de selección, de repetición, de salto y control de excepciones). Para cada uno se
+                    incluyen el enunciado, la solución comentada y uno o varios ejemplos de ejecución ya comprobados.
+                </p>
+            </section>
+
+            <section id="bloque-1" class="bloque-section">
+                <h2>Bloque 1: Estructuras de selección (<code>if</code> / <code>elif</code> / <code>else</code>)</h2>
+            </section>
+
+            <section id="ejercicio-1">
+                <h2>Ejercicio 1: Comprobador de triángulos</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida por teclado las longitudes de los tres lados de
+                        un triángulo y compruebe, usando operadores lógicos, si esos tres lados son válidos para formar
+                        un triángulo (la suma de dos lados cualesquiera debe ser siempre mayor que el tercero). Si son
+                        válidos, el programa debe indicar además si el triángulo es equilátero (los tres lados iguales),
+                        isósceles (dos lados iguales) o escaleno (los tres lados distintos).</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Comprobador de triángulos.
+
+Programa secuencial que, a partir de las longitudes de los tres lados de un
+triángulo introducidas por teclado, comprueba si son válidas para formar un
+triángulo y, si lo son, indica de qué tipo es (equilátero, isósceles o
+escaleno).
+"""</span>
+
+lado_a = <span class="tok-builtin">float</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce la longitud del lado A: "</span>))
+lado_b = <span class="tok-builtin">float</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce la longitud del lado B: "</span>))
+lado_c = <span class="tok-builtin">float</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce la longitud del lado C: "</span>))
+
+es_triangulo_valido = (lado_a + lado_b &gt; lado_c) <span class="tok-kw">and</span> (lado_a + lado_c &gt; lado_b) <span class="tok-kw">and</span> (lado_b + lado_c &gt; lado_a)
+
+<span class="tok-kw">if</span> <span class="tok-kw">not</span> es_triangulo_valido:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Esos tres lados no forman un triángulo válido."</span>)
+<span class="tok-kw">elif</span> lado_a == lado_b == lado_c:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Es un triángulo EQUILÁTERO (sus tres lados son iguales)."</span>)
+<span class="tok-kw">elif</span> lado_a == lado_b <span class="tok-kw">or</span> lado_a == lado_c <span class="tok-kw">or</span> lado_b == lado_c:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Es un triángulo ISÓSCELES (dos lados iguales)."</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Es un triángulo ESCALENO (los tres lados son distintos)."</span>)</code></pre>
+
+                        <p><strong>Ejemplos de ejecución</strong></p>
+                        <pre><code>Introduce la longitud del lado A: 3
+Introduce la longitud del lado B: 4
+Introduce la longitud del lado C: 5
+Es un triángulo ESCALENO (los tres lados son distintos).</code></pre>
+                        <pre><code>Introduce la longitud del lado A: 5
+Introduce la longitud del lado B: 5
+Introduce la longitud del lado C: 5
+Es un triángulo EQUILÁTERO (sus tres lados son iguales).</code></pre>
+                        <pre><code>Introduce la longitud del lado A: 2
+Introduce la longitud del lado B: 2
+Introduce la longitud del lado C: 5
+Esos tres lados no forman un triángulo válido.</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-2">
+                <h2>Ejercicio 2: Tarifa eléctrica por tramos</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida por teclado el consumo eléctrico mensual, en
+                        kWh, y calcule el importe a pagar aplicando un precio por kWh distinto según el tramo de
+                        consumo: un precio para consumos de hasta 200 kWh, otro precio (más caro) para consumos entre
+                        200 y 400 kWh, y un tercer precio (el más caro) para consumos superiores a 400 kWh. Los precios
+                        y los límites de cada tramo deben definirse como constantes.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Calculadora de la factura eléctrica por tramos de consumo.
+
+Programa secuencial que calcula el importe a pagar según el consumo mensual
+introducido por teclado, aplicando un precio por kWh distinto según el tramo
+de consumo (tarifa progresiva por tramos).
+"""</span>
+
+PRECIO_TRAMO_1 = <span class="tok-num">0.15</span>   <span class="tok-com"># €/kWh hasta 200 kWh</span>
+PRECIO_TRAMO_2 = <span class="tok-num">0.20</span>   <span class="tok-com"># €/kWh entre 200 y 400 kWh</span>
+PRECIO_TRAMO_3 = <span class="tok-num">0.28</span>   <span class="tok-com"># €/kWh a partir de 400 kWh</span>
+LIMITE_TRAMO_1 = <span class="tok-num">200</span>
+LIMITE_TRAMO_2 = <span class="tok-num">400</span>
+
+consumo_kwh = <span class="tok-builtin">float</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce el consumo del mes, en kWh: "</span>))
+
+<span class="tok-kw">if</span> consumo_kwh &lt;= LIMITE_TRAMO_1:
+    importe = consumo_kwh * PRECIO_TRAMO_1
+    tramo = <span class="tok-num">1</span>
+<span class="tok-kw">elif</span> consumo_kwh &lt;= LIMITE_TRAMO_2:
+    importe = consumo_kwh * PRECIO_TRAMO_2
+    tramo = <span class="tok-num">2</span>
+<span class="tok-kw">else</span>:
+    importe = consumo_kwh * PRECIO_TRAMO_3
+    tramo = <span class="tok-num">3</span>
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Consumo:"</span>, consumo_kwh, <span class="tok-str">"kWh"</span>)
+<span class="tok-builtin">print</span>(<span class="tok-str">"Tramo aplicado:"</span>, tramo)
+<span class="tok-builtin">print</span>(<span class="tok-str">"Importe a pagar:"</span>, <span class="tok-builtin">round</span>(importe, <span class="tok-num">2</span>), <span class="tok-str">"€"</span>)</code></pre>
+
+                        <p><strong>Ejemplos de ejecución</strong></p>
+                        <pre><code>Introduce el consumo del mes, en kWh: 150
+Consumo: 150.0 kWh
+Tramo aplicado: 1
+Importe a pagar: 22.5 €</code></pre>
+                        <pre><code>Introduce el consumo del mes, en kWh: 300
+Consumo: 300.0 kWh
+Tramo aplicado: 2
+Importe a pagar: 60.0 €</code></pre>
+                        <pre><code>Introduce el consumo del mes, en kWh: 500
+Consumo: 500.0 kWh
+Tramo aplicado: 3
+Importe a pagar: 140.0 €</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-3">
+                <h2>Ejercicio 3: Comprobador de año bisiesto</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida por teclado un año y compruebe si es bisiesto,
+                        aplicando la regla del calendario gregoriano: un año es bisiesto si es divisible entre 4,
+                        excepto si es divisible entre 100 (en cuyo caso no lo es), salvo que además sea divisible entre
+                        400 (en cuyo caso sí lo es). Combina estas condiciones con operadores lógicos (<code>and</code>,
+                        <code>or</code>) en una única expresión booleana.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Comprobador de año bisiesto.
+
+Programa secuencial que indica si el año introducido por teclado es
+bisiesto, aplicando la regla del calendario gregoriano mediante operadores
+lógicos.
+"""</span>
+
+anio = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce un año: "</span>))
+
+es_bisiesto = (anio % <span class="tok-num">4</span> == <span class="tok-num">0</span> <span class="tok-kw">and</span> anio % <span class="tok-num">100</span> != <span class="tok-num">0</span>) <span class="tok-kw">or</span> (anio % <span class="tok-num">400</span> == <span class="tok-num">0</span>)
+
+<span class="tok-kw">if</span> es_bisiesto:
+    <span class="tok-builtin">print</span>(anio, <span class="tok-str">"es un año bisiesto."</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(anio, <span class="tok-str">"no es un año bisiesto."</span>)</code></pre>
+
+                        <p><strong>Ejemplos de ejecución</strong></p>
+                        <pre><code>Introduce un año: 2024
+2024 es un año bisiesto.</code></pre>
+                        <pre><code>Introduce un año: 1900
+1900 no es un año bisiesto.</code></pre>
+                        <pre><code>Introduce un año: 2023
+2023 no es un año bisiesto.</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-4">
+                <h2>Ejercicio 4: Comprobador de acceso a una atracción de feria</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida por teclado la edad y la altura (en cm) de una
+                        persona y determine si puede acceder a una atracción de feria que exige una edad mínima y una
+                        altura mínima, definidas como constantes. Si no cumple la edad mínima pero sí una edad y una
+                        altura reducidas (también definidas como constantes), el acceso debe permitirse igualmente, pero
+                        acompañada de una persona adulta. En cualquier otro caso, el acceso debe denegarse.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Comprobador de acceso a una atracción de feria.
+
+Programa secuencial que, a partir de la edad y la altura de una persona
+introducidas por teclado, determina si puede acceder a una atracción que
+exige una edad y una altura mínimas, o si necesita ir acompañada de una
+persona adulta.
+"""</span>
+
+EDAD_MINIMA = <span class="tok-num">12</span>
+ALTURA_MINIMA_CM = <span class="tok-num">140</span>
+EDAD_ACOMPANANTE = <span class="tok-num">8</span>
+
+edad = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce tu edad: "</span>))
+altura_cm = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce tu altura, en cm: "</span>))
+
+<span class="tok-kw">if</span> edad &gt;= EDAD_MINIMA <span class="tok-kw">and</span> altura_cm &gt;= ALTURA_MINIMA_CM:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Acceso permitido sin restricciones."</span>)
+<span class="tok-kw">elif</span> edad &gt;= EDAD_ACOMPANANTE <span class="tok-kw">and</span> altura_cm &gt;= ALTURA_MINIMA_CM:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Acceso permitido, pero acompañado de una persona adulta."</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Acceso no permitido: no cumples los requisitos mínimos."</span>)</code></pre>
+
+                        <p><strong>Ejemplos de ejecución</strong></p>
+                        <pre><code>Introduce tu edad: 14
+Introduce tu altura, en cm: 150
+Acceso permitido sin restricciones.</code></pre>
+                        <pre><code>Introduce tu edad: 9
+Introduce tu altura, en cm: 145
+Acceso permitido, pero acompañado de una persona adulta.</code></pre>
+                        <pre><code>Introduce tu edad: 6
+Introduce tu altura, en cm: 130
+Acceso no permitido: no cumples los requisitos mínimos.</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-5">
+                <h2>Ejercicio 5: Clasificador de cuadrante de un punto</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida por teclado las coordenadas x e y de un punto y
+                        determine en qué cuadrante del plano cartesiano se encuentra (primero, segundo, tercero o
+                        cuarto), o si está sobre alguno de los ejes o en el origen de coordenadas.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Clasificador del cuadrante de un punto en el plano cartesiano.
+
+Programa secuencial que, a partir de las coordenadas x e y de un punto
+introducidas por teclado, indica en qué cuadrante se encuentra, o si el
+punto está sobre alguno de los ejes o en el origen.
+"""</span>
+
+x = <span class="tok-builtin">float</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce la coordenada x: "</span>))
+y = <span class="tok-builtin">float</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce la coordenada y: "</span>))
+
+<span class="tok-kw">if</span> x == <span class="tok-num">0</span> <span class="tok-kw">and</span> y == <span class="tok-num">0</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"El punto está en el origen de coordenadas."</span>)
+<span class="tok-kw">elif</span> x == <span class="tok-num">0</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"El punto está sobre el eje Y."</span>)
+<span class="tok-kw">elif</span> y == <span class="tok-num">0</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"El punto está sobre el eje X."</span>)
+<span class="tok-kw">elif</span> x &gt; <span class="tok-num">0</span> <span class="tok-kw">and</span> y &gt; <span class="tok-num">0</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"El punto está en el primer cuadrante."</span>)
+<span class="tok-kw">elif</span> x &lt; <span class="tok-num">0</span> <span class="tok-kw">and</span> y &gt; <span class="tok-num">0</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"El punto está en el segundo cuadrante."</span>)
+<span class="tok-kw">elif</span> x &lt; <span class="tok-num">0</span> <span class="tok-kw">and</span> y &lt; <span class="tok-num">0</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"El punto está en el tercer cuadrante."</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"El punto está en el cuarto cuadrante."</span>)</code></pre>
+
+                        <p><strong>Ejemplos de ejecución</strong></p>
+                        <pre><code>Introduce la coordenada x: 3
+Introduce la coordenada y: 4
+El punto está en el primer cuadrante.</code></pre>
+                        <pre><code>Introduce la coordenada x: -2
+Introduce la coordenada y: 5
+El punto está en el segundo cuadrante.</code></pre>
+                        <pre><code>Introduce la coordenada x: 0
+Introduce la coordenada y: 3
+El punto está sobre el eje Y.</code></pre>
+                        <pre><code>Introduce la coordenada x: 0
+Introduce la coordenada y: 0
+El punto está en el origen de coordenadas.</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="bloque-2" class="bloque-section">
+                <h2>Bloque 2: Estructuras de repetición (<code>while</code> y <code>for</code>)</h2>
+            </section>
+
+            <section id="ejercicio-6">
+                <h2>Ejercicio 6: Suma de los primeros números pares</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida por teclado una cantidad N y calcule, usando un
+                        bucle <code>for</code> con <code>range()</code>, la suma de los N primeros números pares (2, 4,
+                        6...).</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Suma de los primeros números pares.
+
+Programa secuencial que, a partir de una cantidad N introducida por teclado,
+calcula la suma de los N primeros números pares (2, 4, 6...) usando un
+bucle for con range().
+"""</span>
+
+n = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"¿Cuántos números pares quieres sumar? "</span>))
+
+suma = <span class="tok-num">0</span>
+<span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">1</span>, n + <span class="tok-num">1</span>):
+    numero_par = i * <span class="tok-num">2</span>
+    suma += numero_par
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"La suma de los"</span>, n, <span class="tok-str">"primeros números pares es:"</span>, suma)</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>¿Cuántos números pares quieres sumar? 5
+La suma de los 5 primeros números pares es: 30</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-7">
+                <h2>Ejercicio 7: Adivina el número secreto</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que genere un número secreto al azar entre 1 y 100 (con
+                        el módulo <code>random</code>) y repita la petición de un intento al usuario, mediante un bucle
+                        <code>while</code>, hasta que lo acierte. En cada intento fallido, el programa debe indicar si
+                        el número secreto es mayor o menor que el intento introducido, y al final debe mostrar en
+                        cuántos intentos se ha acertado.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Adivina el número secreto.
+
+Programa secuencial que genera un número secreto al azar entre 1 y 100 y
+repite la petición al usuario, mediante un bucle while, hasta que acierta,
+indicando en cada intento si el número buscado es mayor o menor.
+"""</span>
+
+<span class="tok-kw">import</span> random
+
+LIMITE_INFERIOR = <span class="tok-num">1</span>
+LIMITE_SUPERIOR = <span class="tok-num">100</span>
+
+numero_secreto = random.randint(LIMITE_INFERIOR, LIMITE_SUPERIOR)
+intentos = <span class="tok-num">0</span>
+acertado = <span class="tok-kw">False</span>
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Adivina el número secreto entre"</span>, LIMITE_INFERIOR, <span class="tok-str">"y"</span>, LIMITE_SUPERIOR)
+
+<span class="tok-kw">while</span> <span class="tok-kw">not</span> acertado:
+    intento = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce tu intento: "</span>))
+    intentos += <span class="tok-num">1</span>
+
+    <span class="tok-kw">if</span> intento == numero_secreto:
+        acertado = <span class="tok-kw">True</span>
+    <span class="tok-kw">elif</span> intento &lt; numero_secreto:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"El número secreto es MAYOR que"</span>, intento)
+    <span class="tok-kw">else</span>:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"El número secreto es MENOR que"</span>, intento)
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"¡Acertaste! El número era"</span>, numero_secreto)
+<span class="tok-builtin">print</span>(<span class="tok-str">"Lo has conseguido en"</span>, intentos, <span class="tok-str">"intentos"</span>)</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>Adivina el número secreto entre 1 y 100
+Introduce tu intento: 50
+El número secreto es MENOR que 50
+Introduce tu intento: 25
+El número secreto es MAYOR que 25
+Introduce tu intento: 37
+El número secreto es MAYOR que 37
+Introduce tu intento: 43
+El número secreto es MENOR que 43
+Introduce tu intento: 42
+¡Acertaste! El número era 42
+Lo has conseguido en 5 intentos</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-8">
+                <h2>Ejercicio 8: Tabla de multiplicar en orden inverso</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida por teclado un número y muestre su tabla de
+                        multiplicar recorriendo los multiplicadores del 10 al 1 (en orden descendente), usando un bucle
+                        <code>for</code> con <code>range()</code> y un salto negativo.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Tabla de multiplicar en orden inverso.
+
+Programa secuencial que muestra la tabla de multiplicar de un número
+introducido por teclado, recorriendo los multiplicadores del 10 al 1
+mediante un bucle for con range() y un salto negativo.
+"""</span>
+
+numero = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"¿De qué número quieres ver la tabla? "</span>))
+
+<span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">10</span>, <span class="tok-num">0</span>, -<span class="tok-num">1</span>):
+    <span class="tok-builtin">print</span>(numero, <span class="tok-str">"x"</span>, i, <span class="tok-str">"="</span>, numero * i)</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>¿De qué número quieres ver la tabla? 7
+7 x 10 = 70
+7 x 9 = 63
+7 x 8 = 56
+7 x 7 = 49
+7 x 6 = 42
+7 x 5 = 35
+7 x 4 = 28
+7 x 3 = 21
+7 x 2 = 14
+7 x 1 = 7</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-9">
+                <h2>Ejercicio 9: Validación de un número dentro de un rango</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que, mediante un bucle <code>while</code>, repita la
+                        petición de un número por teclado mientras el valor introducido esté fuera de un rango permitido
+                        (definido mediante dos constantes, valor mínimo y valor máximo), mostrando un aviso en cada
+                        intento fallido y el número finalmente válido al terminar.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Validación de un número dentro de un rango.
+
+Programa secuencial que, mediante un bucle while, repite la petición de un
+número por teclado hasta que el usuario introduce un valor dentro del rango
+permitido, definido mediante constantes.
+"""</span>
+
+VALOR_MINIMO = <span class="tok-num">1</span>
+VALOR_MAXIMO = <span class="tok-num">10</span>
+
+numero = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce un número entre "</span> + <span class="tok-builtin">str</span>(VALOR_MINIMO) + <span class="tok-str">" y "</span> + <span class="tok-builtin">str</span>(VALOR_MAXIMO) + <span class="tok-str">": "</span>))
+
+<span class="tok-kw">while</span> numero &lt; VALOR_MINIMO <span class="tok-kw">or</span> numero &gt; VALOR_MAXIMO:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Valor fuera de rango. Inténtalo de nuevo."</span>)
+    numero = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce un número entre "</span> + <span class="tok-builtin">str</span>(VALOR_MINIMO) + <span class="tok-str">" y "</span> + <span class="tok-builtin">str</span>(VALOR_MAXIMO) + <span class="tok-str">": "</span>))
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Número válido:"</span>, numero)</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>Introduce un número entre 1 y 10: 15
+Valor fuera de rango. Inténtalo de nuevo.
+Introduce un número entre 1 y 10: 3
+Número válido: 3</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-10">
+                <h2>Ejercicio 10: Contador de vocales en una frase</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida por teclado una frase y cuente, recorriéndola
+                        letra a letra con un bucle <code>for</code>, cuántas vocales contiene.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Contador de vocales en una frase.
+
+Programa secuencial que recorre, letra a letra mediante un bucle for, una
+frase introducida por teclado y cuenta cuántas vocales contiene.
+"""</span>
+
+VOCALES = <span class="tok-str">"aeiouAEIOUáéíóúÁÉÍÓÚ"</span>
+
+frase = <span class="tok-builtin">input</span>(<span class="tok-str">"Introduce una frase: "</span>)
+
+contador_vocales = <span class="tok-num">0</span>
+<span class="tok-kw">for</span> letra <span class="tok-kw">in</span> frase:
+    <span class="tok-kw">if</span> letra <span class="tok-kw">in</span> VOCALES:
+        contador_vocales += <span class="tok-num">1</span>
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"La frase contiene"</span>, contador_vocales, <span class="tok-str">"vocales"</span>)</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>Introduce una frase: El rápido zorro marrón salta
+La frase contiene 10 vocales</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-11">
+                <h2>Ejercicio 11: Cálculo del factorial de un número</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida por teclado un número entero y calcule su
+                        factorial (el producto de todos los enteros positivos desde 1 hasta ese número) usando un bucle
+                        <code>while</code>.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Cálculo del factorial de un número.
+
+Programa secuencial que calcula, mediante un bucle while, el factorial del
+número introducido por teclado (el producto de todos los enteros positivos
+desde 1 hasta ese número).
+"""</span>
+
+numero = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce un número para calcular su factorial: "</span>))
+
+factorial = <span class="tok-num">1</span>
+contador = <span class="tok-num">1</span>
+
+<span class="tok-kw">while</span> contador &lt;= numero:
+    factorial *= contador
+    contador += <span class="tok-num">1</span>
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"El factorial de"</span>, numero, <span class="tok-str">"es"</span>, factorial)</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>Introduce un número para calcular su factorial: 5
+El factorial de 5 es 120</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-12">
+                <h2>Ejercicio 12: Suma y promedio de varios números</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida por teclado una cantidad N y, a continuación, N
+                        números uno a uno (usando un bucle <code>for</code> con <code>range()</code>), calculando y
+                        mostrando al final su suma total y su promedio.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Suma y promedio de varios números.
+
+Programa secuencial que, a partir de una cantidad N introducida por
+teclado, pide N números uno a uno mediante un bucle for con range() y
+calcula su suma y su promedio.
+"""</span>
+
+n = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"¿Cuántos números vas a introducir? "</span>))
+
+suma = <span class="tok-num">0</span>
+<span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">1</span>, n + <span class="tok-num">1</span>):
+    numero = <span class="tok-builtin">float</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce el número "</span> + <span class="tok-builtin">str</span>(i) + <span class="tok-str">": "</span>))
+    suma += numero
+
+promedio = suma / n
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Suma total:"</span>, suma)
+<span class="tok-builtin">print</span>(<span class="tok-str">"Promedio:"</span>, promedio)</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>¿Cuántos números vas a introducir? 3
+Introduce el número 1: 4
+Introduce el número 2: 8
+Introduce el número 3: 6
+Suma total: 18.0
+Promedio: 6.0</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-13">
+                <h2>Ejercicio 13: Menú repetido hasta elegir salir</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que muestre un menú con varias opciones y lo repita
+                        indefinidamente mediante un bucle <code>while</code>, terminando únicamente (con
+                        <code>break</code>) cuando el usuario elige la opción de salir. Las opciones no válidas deben
+                        mostrar un aviso y volver a mostrar el menú.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Menú repetido hasta elegir salir.
+
+Programa secuencial que muestra un menú de opciones y lo repite mediante un
+bucle while, terminando (break) únicamente cuando el usuario elige la
+opción de salir.
+"""</span>
+
+OPCION_SALIR = <span class="tok-str">"0"</span>
+
+<span class="tok-kw">while</span> <span class="tok-kw">True</span>:
+    <span class="tok-builtin">print</span>()
+    <span class="tok-builtin">print</span>(<span class="tok-str">"--- MENÚ ---"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"1) Saludar"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"2) Mostrar la hora prevista de cierre"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"0) Salir"</span>)
+
+    opcion = <span class="tok-builtin">input</span>(<span class="tok-str">"Elige una opción: "</span>)
+
+    <span class="tok-kw">if</span> opcion == <span class="tok-str">"1"</span>:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"¡Hola! Bienvenido al programa."</span>)
+    <span class="tok-kw">elif</span> opcion == <span class="tok-str">"2"</span>:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"El programa cierra a las 22:00."</span>)
+    <span class="tok-kw">elif</span> opcion == OPCION_SALIR:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Saliendo del programa..."</span>)
+        <span class="tok-kw">break</span>
+    <span class="tok-kw">else</span>:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Opción no válida, inténtalo de nuevo."</span>)
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Programa finalizado."</span>)</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>
+--- MENÚ ---
+1) Saludar
+2) Mostrar la hora prevista de cierre
+0) Salir
+Elige una opción: 1
+¡Hola! Bienvenido al programa.
+
+--- MENÚ ---
+1) Saludar
+2) Mostrar la hora prevista de cierre
+0) Salir
+Elige una opción: 2
+El programa cierra a las 22:00.
+
+--- MENÚ ---
+1) Saludar
+2) Mostrar la hora prevista de cierre
+0) Salir
+Elige una opción: 0
+Saliendo del programa...
+Programa finalizado.</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-14">
+                <h2>Ejercicio 14: Pirámide de asteriscos</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida por teclado la altura de una pirámide (número de
+                        filas) y la dibuje con asteriscos, usando un bucle <code>for</code> anidado dentro de otro bucle
+                        <code>for</code>: el bucle exterior recorre cada fila y el bucle interior añade tantos
+                        asteriscos como indica el número de fila.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Pirámide de asteriscos.
+
+Programa secuencial que dibuja una pirámide de asteriscos de la altura
+indicada por teclado, usando un bucle for anidado dentro de otro bucle
+for.
+"""</span>
+
+altura = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"¿Cuántas filas tiene que tener la pirámide? "</span>))
+
+<span class="tok-kw">for</span> fila <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">1</span>, altura + <span class="tok-num">1</span>):
+    linea = <span class="tok-str">""</span>
+    <span class="tok-kw">for</span> columna <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(fila):
+        linea += <span class="tok-str">"*"</span>
+    <span class="tok-builtin">print</span>(linea)</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>¿Cuántas filas tiene que tener la pirámide? 5
+*
+**
+***
+****
+*****</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-15">
+                <h2>Ejercicio 15: Serie de Fibonacci hasta un límite</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida por teclado un número límite y muestre, mediante
+                        un bucle <code>while</code>, los términos de la serie de Fibonacci (cada término es la suma de
+                        los dos anteriores, empezando por 0 y 1) hasta que se supera ese límite.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Serie de Fibonacci hasta un límite.
+
+Programa secuencial que muestra, mediante un bucle while, los términos de
+la serie de Fibonacci (cada término es la suma de los dos anteriores) hasta
+que se supera un límite introducido por teclado.
+"""</span>
+
+limite = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Muestra la serie de Fibonacci hasta superar: "</span>))
+
+anterior = <span class="tok-num">0</span>
+actual = <span class="tok-num">1</span>
+
+<span class="tok-builtin">print</span>(anterior)
+<span class="tok-kw">while</span> actual &lt;= limite:
+    <span class="tok-builtin">print</span>(actual)
+    siguiente = anterior + actual
+    anterior = actual
+    actual = siguiente</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>Muestra la serie de Fibonacci hasta superar: 100
+0
+1
+1
+2
+3
+5
+8
+13
+21
+34
+55
+89</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="bloque-3" class="bloque-section">
+                <h2>Bloque 3: Estructuras de salto y control de excepciones</h2>
+            </section>
+
+            <section id="ejercicio-16">
+                <h2>Ejercicio 16: Buscador de una letra en una palabra</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que recorra, con un bucle <code>for</code>, los
+                        caracteres de una palabra ya creada y busque una letra introducida por teclado, deteniéndose con
+                        <code>break</code> en cuanto la encuentra. Usa la cláusula <code>else</code> del bucle para
+                        mostrar un mensaje distinto si se ha recorrido toda la palabra sin encontrarla.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Buscador de una letra en una palabra.
+
+Programa secuencial que recorre los caracteres de una palabra con un bucle
+for y busca una letra introducida por teclado, deteniéndose (break) en
+cuanto la encuentra. La cláusula else del bucle se ejecuta solo si se ha
+recorrido toda la palabra sin encontrarla.
+"""</span>
+
+palabra = <span class="tok-str">"ordenador"</span>
+
+letra_buscada = <span class="tok-builtin">input</span>(<span class="tok-str">"Introduce la letra que quieres buscar: "</span>)
+
+<span class="tok-kw">for</span> letra <span class="tok-kw">in</span> palabra:
+    <span class="tok-kw">if</span> letra == letra_buscada:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Encontrada la letra"</span>, letra, <span class="tok-str">"en la palabra"</span>, palabra)
+        <span class="tok-kw">break</span>
+<span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"No se ha encontrado la letra"</span>, letra_buscada, <span class="tok-str">"en la palabra"</span>, palabra)</code></pre>
+
+                        <p><strong>Ejemplos de ejecución</strong></p>
+                        <pre><code>Introduce la letra que quieres buscar: d
+Encontrada la letra d en la palabra ordenador</code></pre>
+                        <pre><code>Introduce la letra que quieres buscar: z
+No se ha encontrado la letra z en la palabra ordenador</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-17">
+                <h2>Ejercicio 17: Filtrado de múltiplos con continue</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que recorra, con un bucle <code>for</code>, los números
+                        del 1 al 50 y muestre únicamente los que son múltiplos de un divisor introducido por teclado,
+                        usando <code>continue</code> para saltar los que no lo son.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Filtrado de múltiplos con continue.
+
+Programa secuencial que recorre los números del 1 al 50 y, usando
+continue, muestra únicamente los que son múltiplos de un divisor
+introducido por teclado, saltando el resto.
+"""</span>
+
+divisor = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce un divisor: "</span>))
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Múltiplos de"</span>, divisor, <span class="tok-str">"entre 1 y 50:"</span>)
+<span class="tok-kw">for</span> numero <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">1</span>, <span class="tok-num">51</span>):
+    <span class="tok-kw">if</span> numero % divisor != <span class="tok-num">0</span>:
+        <span class="tok-kw">continue</span>
+    <span class="tok-builtin">print</span>(numero)</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>Introduce un divisor: 7
+Múltiplos de 7 entre 1 y 50:
+7
+14
+21
+28
+35
+42
+49</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-18">
+                <h2>Ejercicio 18: Menú con salida inmediata del programa</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que muestre un menú de opciones dentro de un bucle
+                        <code>while True</code> y que, cuando el usuario elija la opción de salir, termine el programa
+                        por completo con <code>sys.exit()</code> (a diferencia de <code>break</code>, que solo termina
+                        el bucle).</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Menú con salida inmediata del programa.
+
+Programa secuencial que muestra un menú y, si el usuario elige la opción de
+salir, termina el programa por completo con sys.exit(), en lugar de salir
+solo del bucle con break.
+"""</span>
+
+<span class="tok-kw">import</span> sys
+
+<span class="tok-kw">while</span> <span class="tok-kw">True</span>:
+    <span class="tok-builtin">print</span>()
+    <span class="tok-builtin">print</span>(<span class="tok-str">"--- MENÚ ---"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"1) Mostrar mensaje"</span>)
+    <span class="tok-builtin">print</span>(<span class="tok-str">"2) Salir del programa"</span>)
+
+    opcion = <span class="tok-builtin">input</span>(<span class="tok-str">"Elige una opción: "</span>)
+
+    <span class="tok-kw">if</span> opcion == <span class="tok-str">"1"</span>:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Este es un mensaje de ejemplo."</span>)
+    <span class="tok-kw">elif</span> opcion == <span class="tok-str">"2"</span>:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Cerrando el programa con sys.exit()..."</span>)
+        sys.exit()
+    <span class="tok-kw">else</span>:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Opción no válida."</span>)
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Esta línea nunca se llega a ejecutar tras salir con la opción 2."</span>)</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>
+--- MENÚ ---
+1) Mostrar mensaje
+2) Salir del programa
+Elige una opción: 1
+Este es un mensaje de ejemplo.
+
+--- MENÚ ---
+1) Mostrar mensaje
+2) Salir del programa
+Elige una opción: 2
+Cerrando el programa con sys.exit()...</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-19">
+                <h2>Ejercicio 19: Registro de tareas pendientes</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pregunte cuántas tareas se quieren registrar y, para
+                        cada una, pida su nombre y si está completada. Para las tareas completadas, muestra un mensaje
+                        de confirmación. Para las pendientes, no hagas nada todavía: usa <code>pass</code> como marcador
+                        de posición, dejando ese caso preparado para implementarlo más adelante, y usa
+                        <code>continue</code> para saltar el aviso de "tarea procesada" y contarla como pendiente. Al
+                        final, muestra cuántas tareas han quedado pendientes.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Registro de tareas pendientes.
+
+Programa secuencial que pregunta cuántas tareas se quieren registrar y,
+para cada una, pide su nombre y si está completada ("s"/"n"). Si está
+completada se muestra un mensaje de confirmación y se registra como
+procesada; si no, se usa pass como marcador de una futura ampliación (por
+ejemplo, mostrar un recordatorio) y, mediante continue, se salta el aviso
+de "tarea procesada" y se contabiliza como pendiente.
+"""</span>
+
+numero_tareas = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"¿Cuántas tareas quieres registrar? "</span>))
+
+pendientes = <span class="tok-num">0</span>
+
+<span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">1</span>, numero_tareas + <span class="tok-num">1</span>):
+    nombre_tarea = <span class="tok-builtin">input</span>(<span class="tok-str">"Nombre de la tarea "</span> + <span class="tok-builtin">str</span>(i) + <span class="tok-str">": "</span>)
+    completada = <span class="tok-builtin">input</span>(<span class="tok-str">"¿Está completada? (s/n): "</span>)
+
+    <span class="tok-kw">if</span> completada == <span class="tok-str">"s"</span>:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"✔"</span>, nombre_tarea, <span class="tok-str">"- ¡Tarea completada!"</span>)
+    <span class="tok-kw">else</span>:
+        <span class="tok-kw">pass</span>   <span class="tok-com"># TODO: en el futuro, mostrar aquí un recordatorio de la tarea pendiente</span>
+        pendientes += <span class="tok-num">1</span>
+        <span class="tok-kw">continue</span>
+
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Tarea"</span>, i, <span class="tok-str">"procesada."</span>)
+
+<span class="tok-builtin">print</span>()
+<span class="tok-builtin">print</span>(<span class="tok-str">"Tareas pendientes:"</span>, pendientes)</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>¿Cuántas tareas quieres registrar? 3
+Nombre de la tarea 1: Comprar pan
+¿Está completada? (s/n): s
+✔ Comprar pan - ¡Tarea completada!
+Tarea 1 procesada.
+Nombre de la tarea 2: Estudiar Python
+¿Está completada? (s/n): n
+Nombre de la tarea 3: Hacer la compra
+¿Está completada? (s/n): s
+✔ Hacer la compra - ¡Tarea completada!
+Tarea 3 procesada.
+
+Tareas pendientes: 1</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-20">
+                <h2>Ejercicio 20: Análisis de una serie de temperaturas</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que, mediante un bucle <code>while</code>, pida
+                        temperaturas por teclado una a una hasta que el usuario escriba <code>"fin"</code>. Usa
+                        <code>continue</code> para saltar las lecturas erróneas (marcadas con el valor centinela
+                        <code>-999</code>) y <code>break</code> para detener el análisis en cuanto aparezca una
+                        temperatura que supere un umbral de alarma definido como constante.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Análisis de una serie de temperaturas.
+
+Programa secuencial que, mediante un bucle while, pide temperaturas por
+teclado una a una hasta que el usuario escribe "fin". Con continue se
+descartan las lecturas erróneas (el valor centinela -999) y con break se
+detiene el análisis en cuanto una temperatura supera el umbral de alarma.
+"""</span>
+
+LECTURA_ERRONEA = -<span class="tok-num">999</span>
+UMBRAL_ALARMA = <span class="tok-num">40</span>
+
+<span class="tok-kw">while</span> <span class="tok-kw">True</span>:
+    entrada = <span class="tok-builtin">input</span>(<span class="tok-str">"Introduce una temperatura (o 'fin' para terminar): "</span>)
+
+    <span class="tok-kw">if</span> entrada == <span class="tok-str">"fin"</span>:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Análisis terminado por el usuario."</span>)
+        <span class="tok-kw">break</span>
+
+    temperatura = <span class="tok-builtin">int</span>(entrada)
+
+    <span class="tok-kw">if</span> temperatura == LECTURA_ERRONEA:
+        <span class="tok-kw">continue</span>
+
+    <span class="tok-kw">if</span> temperatura &gt; UMBRAL_ALARMA:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"¡ALARMA! Temperatura"</span>, temperatura, <span class="tok-str">"supera el umbral. Deteniendo el análisis."</span>)
+        <span class="tok-kw">break</span>
+
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Temperatura registrada:"</span>, temperatura)</code></pre>
+
+                        <p><strong>Ejemplos de ejecución</strong></p>
+                        <pre><code>Introduce una temperatura (o 'fin' para terminar): 21
+Temperatura registrada: 21
+Introduce una temperatura (o 'fin' para terminar): 23
+Temperatura registrada: 23
+Introduce una temperatura (o 'fin' para terminar): -999
+Introduce una temperatura (o 'fin' para terminar): 25
+Temperatura registrada: 25
+Introduce una temperatura (o 'fin' para terminar): 19
+Temperatura registrada: 19
+Introduce una temperatura (o 'fin' para terminar): fin
+Análisis terminado por el usuario.</code></pre>
+                        <pre><code>Introduce una temperatura (o 'fin' para terminar): 21
+Temperatura registrada: 21
+Introduce una temperatura (o 'fin' para terminar): 23
+Temperatura registrada: 23
+Introduce una temperatura (o 'fin' para terminar): 41
+¡ALARMA! Temperatura 41 supera el umbral. Deteniendo el análisis.</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-21">
+                <h2>Ejercicio 21: Divisor seguro de dos números</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida dos números por teclado y calcule su división,
+                        controlando con <code>try</code>/<code>except</code> tanto el caso de que el texto introducido
+                        no sea un número válido (<code>ValueError</code>) como el de una división entre cero
+                        (<code>ZeroDivisionError</code>), mostrando el resultado en la cláusula <code>else</code> solo
+                        si no se ha producido ningún error.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Divisor seguro de dos números.
+
+Programa secuencial que pide dos números por teclado y calcula su división,
+controlando con try/except tanto el caso de que el texto introducido no
+sea un número válido (ValueError) como el de una división entre cero
+(ZeroDivisionError).
+"""</span>
+
+<span class="tok-kw">try</span>:
+    numerador = <span class="tok-builtin">float</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce el numerador: "</span>))
+    denominador = <span class="tok-builtin">float</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce el denominador: "</span>))
+    resultado = numerador / denominador
+<span class="tok-kw">except</span> ValueError:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Error: debes introducir un número válido."</span>)
+<span class="tok-kw">except</span> ZeroDivisionError:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Error: no se puede dividir entre cero."</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Resultado:"</span>, resultado)</code></pre>
+
+                        <p><strong>Ejemplos de ejecución</strong></p>
+                        <pre><code>Introduce el numerador: 10
+Introduce el denominador: 2
+Resultado: 5.0</code></pre>
+                        <pre><code>Introduce el numerador: 10
+Introduce el denominador: 0
+Error: no se puede dividir entre cero.</code></pre>
+                        <pre><code>Introduce el numerador: hola
+Error: debes introducir un número válido.</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-22">
+                <h2>Ejercicio 22: Acceso seguro a un carácter de una palabra</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que, dada una palabra ya creada, pida por teclado una
+                        posición e intente acceder a ese carácter de la palabra, controlando con
+                        <code>try</code>/<code>except</code> un posible <code>IndexError</code> si la posición no
+                        existe.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Acceso seguro a un carácter de una palabra.
+
+Programa secuencial que, dada una palabra ya creada, intenta acceder al
+carácter que ocupa la posición introducida por teclado, controlando con
+try/except un posible IndexError si la posición no existe en la palabra.
+"""</span>
+
+palabra = <span class="tok-str">"programacion"</span>
+
+posicion = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce una posición (0 a "</span> + <span class="tok-builtin">str</span>(<span class="tok-builtin">len</span>(palabra) - <span class="tok-num">1</span>) + <span class="tok-str">"): "</span>))
+
+<span class="tok-kw">try</span>:
+    caracter = palabra[posicion]
+<span class="tok-kw">except</span> IndexError:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Error: esa posición no existe en la palabra."</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"El carácter en la posición"</span>, posicion, <span class="tok-str">"es"</span>, caracter)</code></pre>
+
+                        <p><strong>Ejemplos de ejecución</strong></p>
+                        <pre><code>Introduce una posición (0 a 11): 3
+El carácter en la posición 3 es g</code></pre>
+                        <pre><code>Introduce una posición (0 a 11): 20
+Error: esa posición no existe en la palabra.</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-23">
+                <h2>Ejercicio 23: Validador de una nota mediante raise</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida una nota por teclado (0-10) y, si está fuera de
+                        ese rango, lance (<code>raise</code>) un <code>ValueError</code> con un mensaje descriptivo.
+                        Captura después ese error con <code>try</code>/<code>except</code> para mostrar el mensaje al
+                        usuario.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Validador de una nota mediante raise.
+
+Programa secuencial que pide una nota por teclado (0-10) y, si está fuera
+de ese rango, lanza (raise) un ValueError con un mensaje descriptivo, que
+se captura después con try/except para mostrar el mensaje de error.
+"""</span>
+
+NOTA_MINIMA = <span class="tok-num">0</span>
+NOTA_MAXIMA = <span class="tok-num">10</span>
+
+<span class="tok-kw">try</span>:
+    nota = <span class="tok-builtin">float</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce una nota (0-10): "</span>))
+    <span class="tok-kw">if</span> nota &lt; NOTA_MINIMA <span class="tok-kw">or</span> nota &gt; NOTA_MAXIMA:
+        <span class="tok-kw">raise</span> ValueError(<span class="tok-str">"La nota debe estar entre "</span> + <span class="tok-builtin">str</span>(NOTA_MINIMA) + <span class="tok-str">" y "</span> + <span class="tok-builtin">str</span>(NOTA_MAXIMA))
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Nota registrada correctamente:"</span>, nota)
+<span class="tok-kw">except</span> ValueError <span class="tok-kw">as</span> error:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Error:"</span>, error)</code></pre>
+
+                        <p><strong>Ejemplos de ejecución</strong></p>
+                        <pre><code>Introduce una nota (0-10): 7
+Nota registrada correctamente: 7.0</code></pre>
+                        <pre><code>Introduce una nota (0-10): 15
+Error: La nota debe estar entre 0 y 10</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-24">
+                <h2>Ejercicio 24: Comprobación de un número con else y finally</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que pida un número entero por teclado y calcule su
+                        cuadrado. Muestra el resultado en la cláusula <code>else</code> del <code>try</code> (solo si no
+                        se ha producido ninguna excepción) y un mensaje final en la cláusula <code>finally</code>, que
+                        debe ejecutarse siempre, haya habido error o no.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Comprobación de un número con else y finally.
+
+Programa secuencial que pide un número por teclado y muestra un mensaje de
+éxito en la cláusula else del try (solo si no se ha producido ninguna
+excepción) y un mensaje final en la cláusula finally, que se ejecuta
+siempre, haya habido error o no.
+"""</span>
+
+<span class="tok-kw">try</span>:
+    numero = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce un número entero: "</span>))
+    cuadrado = numero ** <span class="tok-num">2</span>
+<span class="tok-kw">except</span> ValueError:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Error: eso no es un número entero válido."</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"El cuadrado de"</span>, numero, <span class="tok-str">"es"</span>, cuadrado)
+<span class="tok-kw">finally</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Fin de la comprobación."</span>)</code></pre>
+
+                        <p><strong>Ejemplos de ejecución</strong></p>
+                        <pre><code>Introduce un número entero: 6
+El cuadrado de 6 es 36
+Fin de la comprobación.</code></pre>
+                        <pre><code>Introduce un número entero: hola
+Error: eso no es un número entero válido.
+Fin de la comprobación.</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ejercicio-25">
+                <h2>Ejercicio 25: Bucle de reintento hasta introducir un número válido</h2>
+
+                <div class="exercise">
+                    <p><em>Enunciado:</em> Escribe un programa que combine un bucle <code>while</code> con
+                        <code>try</code>/<code>except</code>: debe repetir la petición de un número entero positivo por
+                        teclado hasta que el usuario introduzca un valor correcto, terminando el bucle con
+                        <code>break</code>. Controla tanto los textos no numéricos (capturando el
+                        <code>ValueError</code> que genera <code>int()</code>) como los números negativos, lanzando en
+                        ese caso un <code>ValueError</code> propio con <code>raise</code>.</p>
+
+                    <button class="solution-toggle" aria-expanded="false"><span class="icon">▶</span> Ver
+                        solución</button>
+                    <div class="solution-content" hidden="">
+                        <pre><code class="language-python"><span class="tok-str">"""
+Bucle de reintento hasta introducir un número válido.
+
+Programa secuencial que repite, mediante un bucle while, la petición de un
+número entero positivo por teclado hasta que el usuario introduce un valor
+correcto, controlando con try/except tanto los textos no numéricos como
+los números negativos (mediante raise).
+"""</span>
+
+<span class="tok-kw">while</span> <span class="tok-kw">True</span>:
+    <span class="tok-kw">try</span>:
+        numero = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce un número entero positivo: "</span>))
+        <span class="tok-kw">if</span> numero &lt; <span class="tok-num">0</span>:
+            <span class="tok-kw">raise</span> ValueError(<span class="tok-str">"El número no puede ser negativo"</span>)
+        <span class="tok-kw">break</span>
+    <span class="tok-kw">except</span> ValueError <span class="tok-kw">as</span> error:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Entrada no válida:"</span>, error, <span class="tok-str">"- Inténtalo de nuevo."</span>)
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Número válido introducido:"</span>, numero)</code></pre>
+
+                        <p><strong>Ejemplo de ejecución</strong></p>
+                        <pre><code>Introduce un número entero positivo: -5
+Entrada no válida: El número no puede ser negativo - Inténtalo de nuevo.
+Introduce un número entero positivo: hola
+Entrada no válida: invalid literal for int() with base 10: 'hola' - Inténtalo de nuevo.
+Introduce un número entero positivo: 8
+Número válido introducido: 8</code></pre>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+
+    <script>
+        (function () {
+            var sidebar = document.getElementById('sidebar');
+            var toggleBtn = document.getElementById('sidebarToggle');
+            var overlay = document.getElementById('overlay');
+
+            function openSidebar() {
+                sidebar.classList.add('open');
+                overlay.classList.add('visible');
+                toggleBtn.setAttribute('aria-expanded', 'true');
+            }
+
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('visible');
+                toggleBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            toggleBtn.addEventListener('click', function () {
+                if (sidebar.classList.contains('open')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            });
+
+            overlay.addEventListener('click', closeSidebar);
+
+            var navLinks = sidebar.querySelectorAll('a');
+            navLinks.forEach(function (link) {
+                link.addEventListener('click', function () {
+                    if (window.matchMedia('(max-width: 900px)').matches) {
+                        closeSidebar();
+                    }
+                });
+            });
+
+            // Toggle solutions
+            var solutionButtons = document.querySelectorAll('.solution-toggle');
+            solutionButtons.forEach(function (btn) {
+                var content = btn.nextElementSibling;
+                btn.addEventListener('click', function () {
+                    var expanded = btn.getAttribute('aria-expanded') === 'true';
+                    if (expanded) {
+                        content.hidden = true;
+                        btn.setAttribute('aria-expanded', 'false');
+                        btn.innerHTML = '<span class="icon">▶</span> Ver solución';
+                    } else {
+                        content.hidden = false;
+                        btn.setAttribute('aria-expanded', 'true');
+                        btn.innerHTML = '<span class="icon">▶</span> Ocultar solución';
+                    }
+                });
+            });
+
+            // Scrollspy: highlight the current section in the sidebar
+            var sections = document.querySelectorAll('main section[id]');
+            var linkMap = {};
+            navLinks.forEach(function (link) {
+                linkMap[link.getAttribute('href').substring(1)] = link;
+            });
+
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        var link = linkMap[entry.target.id];
+                        if (!link) return;
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(function (l) { l.classList.remove('active'); });
+                            link.classList.add('active');
+                        }
+                    });
+                }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+                sections.forEach(function (section) { observer.observe(section); });
+            }
+
+            // Syntax highlighting for Python code blocks
+            var PY_KEYWORDS = new Set(['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await',
+                'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from',
+                'global', 'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise',
+                'return', 'try', 'while', 'with', 'yield']);
+            var PY_BUILTINS = new Set(['print', 'input', 'type', 'int', 'float', 'str', 'bool', 'complex',
+                'len', 'range', 'list', 'tuple', 'dict', 'set', 'abs', 'min', 'max', 'sum', 'round', 'open',
+                'isinstance', 'super', 'object']);
+            var PY_TOKEN_RE = /(#[^\n]*)|("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(\b\d+\.?\d*(?:[eE][+-]?\d+)?\b|\b0[xX][0-9a-fA-F_]+\b|\b0[bB][01_]+\b|\b0[oO][0-7_]+\b)|(\b[A-Za-z_][A-Za-z0-9_]*\b)/g;
+
+            function escapeHtml(s) {
+                return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            function highlightPython(code) {
+                var result = '';
+                var lastIndex = 0;
+                var m;
+                PY_TOKEN_RE.lastIndex = 0;
+                while ((m = PY_TOKEN_RE.exec(code)) !== null) {
+                    result += escapeHtml(code.slice(lastIndex, m.index));
+                    lastIndex = PY_TOKEN_RE.lastIndex;
+                    if (m[1] !== undefined) {
+                        result += '<span class="tok-com">' + escapeHtml(m[1]) + '</span>';
+                    } else if (m[2] !== undefined) {
+                        result += '<span class="tok-str">' + escapeHtml(m[2]) + '</span>';
+                    } else if (m[3] !== undefined) {
+                        result += '<span class="tok-num">' + escapeHtml(m[3]) + '</span>';
+                    } else if (m[4] !== undefined) {
+                        var word = m[4];
+                        if (PY_KEYWORDS.has(word)) {
+                            result += '<span class="tok-kw">' + escapeHtml(word) + '</span>';
+                        } else if (PY_BUILTINS.has(word)) {
+                            result += '<span class="tok-builtin">' + escapeHtml(word) + '</span>';
+                        } else {
+                            result += escapeHtml(word);
+                        }
+                    }
+                }
+                result += escapeHtml(code.slice(lastIndex));
+                return result;
+            }
+
+            document.querySelectorAll('code.language-python').forEach(function (block) {
+                block.innerHTML = highlightPython(block.textContent);
+            });
+        })();
+    </script>
+
+
+
+
+</body>
+
+</html>

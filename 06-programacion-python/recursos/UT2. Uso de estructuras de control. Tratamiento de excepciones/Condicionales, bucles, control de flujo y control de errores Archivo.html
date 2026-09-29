@@ -1,0 +1,1130 @@
+<html lang="es">
+
+<head>
+    <style>
+        body {
+            transition: opacity ease-in 0.2s;
+        }
+
+        body[unresolved] {
+            opacity: 0;
+            display: block;
+            overflow: hidden;
+            position: relative;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UT2. Uso de estructuras de control. Tratamiento de excepciones</title>
+    <style>
+        :root {
+            --bg: #ffffff;
+            --bg-alt: #f5f7fa;
+            --text: #1a1d21;
+            --text-muted2: #5a6169;
+            --border: #e1e4e8;
+            --accent: #0b5fff;
+            --accent-hover: #0847c4;
+            --code-bg: #f4f4f4;
+            --code-text: #24292e;
+            --code-border: #e1e4e8;
+            --table-header-bg: #eef2f7;
+            --table-row-alt: #fafbfc;
+            --solution-bg: #eef8f0;
+            --solution-border: #a9d8b8;
+            --solution-btn-bg: #2f9e52;
+            --solution-btn-text: #ffffff;
+            --sidebar-bg: #f7f8fa;
+            --sidebar-border: #e1e4e8;
+            --link-active-bg: #e6efff;
+            --shadow: rgba(0, 0, 0, 0.10);
+            --diagram-bg: #f4f4f4;
+            --code-keyword: #a626a4;
+            --code-string: #22863a;
+            --code-comment: #6a737d;
+            --code-number: #b35900;
+            --code-builtin: #0b5fff;
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #14171c;
+                --bg-alt: #1b1f26;
+                --text: #e6e8eb;
+                --text-muted2: #a0a6b0;
+                --border: #2b3038;
+                --accent: #5b9dff;
+                --accent-hover: #85b7ff;
+                --code-bg: #1e2229;
+                --code-text: #d6dbe1;
+                --code-border: #2b3038;
+                --table-header-bg: #232830;
+                --table-row-alt: #191c22;
+                --solution-bg: #17251c;
+                --solution-border: #2f5c3d;
+                --solution-btn-bg: #2f9e52;
+                --solution-btn-text: #06120a;
+                --sidebar-bg: #101317;
+                --sidebar-border: #262b33;
+                --link-active-bg: #1d2c44;
+                --shadow: rgba(0, 0, 0, 0.4);
+                --diagram-bg: #1e2229;
+                --code-keyword: #c792ea;
+                --code-string: #7ee787;
+                --code-comment: #7f8b98;
+                --code-number: #f2c078;
+                --code-builtin: #5b9dff;
+            }
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            color: var(--accent);
+        }
+
+        a:hover {
+            color: var(--accent-hover);
+        }
+
+        /* ---------- Sidebar ---------- */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 290px;
+            background: var(--sidebar-bg);
+            border-right: 1px solid var(--sidebar-border);
+            overflow-y: auto;
+            padding: 1.25rem 0 2rem;
+            z-index: 40;
+            transition: transform 0.25s ease;
+        }
+
+        .sidebar-header {
+            padding: 0 1.25rem 1rem;
+            border-bottom: 1px solid var(--sidebar-border);
+            margin-bottom: 0.75rem;
+        }
+
+        .sidebar-header h2 {
+            margin: 0;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--text-muted2);
+        }
+
+        .sidebar nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .sidebar nav a {
+            display: block;
+            padding: 0.55rem 1.25rem;
+            text-decoration: none;
+            color: var(--text);
+            font-size: 0.92rem;
+            border-left: 3px solid transparent;
+            transition: background 0.15s ease, border-color 0.15s ease;
+        }
+
+        .sidebar nav a:hover {
+            background: var(--link-active-bg);
+        }
+
+        .sidebar nav a.active {
+            background: var(--link-active-bg);
+            border-left-color: var(--accent);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .sidebar-toggle {
+            position: fixed;
+            top: 0.85rem;
+            left: 1rem;
+            z-index: 60;
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            color: var(--text);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 6px var(--shadow);
+        }
+
+        .overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.45);
+            z-index: 30;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* ---------- Content ---------- */
+        .content {
+            margin-left: 290px;
+            display: flex;
+            justify-content: center;
+            padding: 0 1.5rem;
+            width: auto;
+        }
+
+        .content-inner {
+            width: 100%;
+            max-width: 1024px;
+            padding: 2.5rem 0 5rem;
+            min-width: 0;
+        }
+
+        .content-inner h1 {
+            font-size: 2rem;
+            margin-top: 0;
+            border-bottom: 3px solid var(--accent);
+            padding-bottom: 0.5rem;
+        }
+
+        section {
+            margin-bottom: 1.5rem;
+            padding-top: 0.25rem;
+        }
+
+        section h2 {
+            font-size: 1.5rem;
+            margin-top: 1.1rem;
+            margin-bottom: 0.75rem;
+            padding-bottom: 0.3rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        section h3 {
+            font-size: 1.15rem;
+            color: var(--accent);
+            margin-top: 1.75rem;
+        }
+
+        p {
+            margin: 0.85em 0;
+        }
+
+        strong {
+            color: var(--text);
+        }
+
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            background: var(--code-bg);
+            color: var(--code-text);
+            padding: 0.15em 0.4em;
+            border-radius: 4px;
+            font-size: 0.88em;
+            border: 1px solid var(--code-border);
+            overflow-wrap: anywhere;
+        }
+
+        pre {
+            background: var(--code-bg);
+            border: 1px solid var(--code-border);
+            border-radius: 8px;
+            padding: 1rem 1.1rem;
+            overflow-x: auto;
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        pre code {
+            background: none;
+            border: none;
+            padding: 0;
+            font-size: 1em;
+        }
+
+        .diagram pre {
+            background: var(--diagram-bg);
+        }
+
+        /* ---------- Syntax highlighting (Python code blocks) ---------- */
+        .tok-kw {
+            color: var(--code-keyword);
+            font-weight: 600;
+        }
+
+        .tok-str {
+            color: var(--code-string);
+        }
+
+        .tok-com {
+            color: var(--code-comment);
+            font-style: italic;
+        }
+
+        .tok-num {
+            color: var(--code-number);
+        }
+
+        .tok-builtin {
+            color: var(--code-builtin);
+        }
+
+        table {
+            display: block;
+            overflow-x: auto;
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.25em 0;
+            font-size: 0.92rem;
+            max-width: 100%;
+        }
+
+        caption {
+            text-align: left;
+            margin-bottom: 0.5em;
+            color: var(--text-muted2);
+        }
+
+        th,
+        td {
+            border: 1px solid var(--border);
+            padding: 0.55em 0.75em;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: var(--table-header-bg);
+            font-weight: 600;
+        }
+
+        tbody tr:nth-child(even) {
+            background: var(--table-row-alt);
+        }
+
+        .tabla-col1-ajustada th:first-child,
+        .tabla-col1-ajustada td:first-child {
+            width: 1%;
+            white-space: nowrap;
+        }
+
+        ul,
+        ol {
+            padding-left: 1.4rem;
+        }
+
+        li {
+            margin: 0.3em 0;
+        }
+
+        .exercise {
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--accent);
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .exercise> :first-child {
+            margin-top: 0;
+        }
+
+        .activity {
+            background: var(--bg-alt);
+            border: 1px dashed var(--border);
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            margin: 1.25rem 0;
+        }
+
+        .activity h3 {
+            margin-top: 0;
+        }
+
+        /* ---------- Solutions (hidden by default, toggled by button) ---------- */
+        .solution-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4em;
+            background: var(--solution-btn-bg);
+            color: var(--solution-btn-text);
+            border: none;
+            border-radius: 999px;
+            padding: 0.5em 1.1em;
+            font-size: 0.88rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.5rem;
+            transition: filter 0.15s ease;
+        }
+
+        .solution-toggle:hover {
+            filter: brightness(1.08);
+        }
+
+        .solution-toggle .icon {
+            transition: transform 0.2s ease;
+            display: inline-block;
+        }
+
+        .solution-toggle[aria-expanded="true"] .icon {
+            transform: rotate(90deg);
+        }
+
+        .solution-content {
+            background: var(--solution-bg);
+            border: 1px solid var(--solution-border);
+            border-radius: 8px;
+            padding: 1rem 1.25rem;
+            margin-top: 0.75rem;
+        }
+
+        .solution-content[hidden] {
+            display: none;
+        }
+
+        .solution-content> :first-child {
+            margin-top: 0;
+        }
+
+        .solution-content> :last-child {
+            margin-bottom: 0;
+        }
+
+        /* ---------- Responsive ---------- */
+        @media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 82%;
+                max-width: 320px;
+                box-shadow: 4px 0 18px var(--shadow);
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-toggle {
+                display: flex;
+            }
+
+            .content {
+                margin-left: 0;
+                padding: 0 1.25rem;
+            }
+
+            .content-inner {
+                padding: 4.5rem 0 3rem;
+            }
+
+            .content-inner h1 {
+                font-size: 1.5rem;
+            }
+
+            section h2 {
+                font-size: 1.25rem;
+            }
+
+            table {
+                font-size: 0.82rem;
+            }
+
+            th,
+            td {
+                padding: 0.4em 0.5em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content {
+                padding: 0 0.9rem;
+            }
+
+            .content-inner {
+                padding: 4.5rem 0 2.5rem;
+            }
+
+            pre {
+                font-size: 0.76rem;
+                padding: 0.75rem;
+            }
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <button id="sidebarToggle" class="sidebar-toggle" aria-label="Abrir menú de contenidos"
+        aria-expanded="false">☰</button>
+    <div id="overlay" class="overlay"></div>
+
+    <aside id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <h2>Contenidos</h2>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#introduccion" class="active">Introducción</a></li>
+                <li><a href="#seccion-a">a) Estructuras de selección</a></li>
+                <li><a href="#seccion-b">b) Estructuras de repetición</a></li>
+                <li><a href="#seccion-c">c) Estructuras de salto</a></li>
+                <li><a href="#seccion-d">d) Control de excepciones</a></li>
+                <li><a href="#seccion-e">e) Prueba y depuración del código</a></li>
+                <li><a href="#seccion-f">f) Actividad práctica</a></li>
+            </ul>
+        </nav>
+    </aside>
+
+    <main id="content" class="content">
+        <div class="content-inner">
+
+            <h1>UT2. Uso de estructuras de control. Tratamiento de excepciones</h1>
+
+            <section id="introduccion">
+                <h2>Introducción</h2>
+                <p>En la unidad anterior se identificaron los elementos básicos de un programa (variables, tipos de
+                    datos, operadores...). Con esos elementos ya es posible construir expresiones y realizar cálculos,
+                    pero un programa útil necesita además <strong>decidir</strong> qué camino seguir según una
+                    condición, <strong>repetir</strong> tareas varias veces y <strong>reaccionar</strong> ante
+                    situaciones inesperadas durante la ejecución. De eso se ocupan las <strong>estructuras de
+                        control</strong>: instrucciones que alteran el orden secuencial por defecto en que se ejecutan
+                    las sentencias de un programa.</p>
+                <p>Esta unidad de trabajo desarrolla las cuatro grandes familias de estructuras de control en Python: de
+                    <strong>selección</strong>, de <strong>repetición</strong>, de <strong>salto</strong> y de
+                    <strong>control de excepciones</strong>, combinando teoría, ejemplos y actividades prácticas de
+                    escritura, prueba y depuración de código.</p>
+            </section>
+
+            <section id="seccion-a">
+                <h2>a) Estructuras de selección</h2>
+
+                <p>Las <strong>estructuras de selección</strong> (también llamadas condicionales o de decisión) permiten
+                    que el programa ejecute uno u otro bloque de instrucciones en función de si se cumple o no una
+                    condición, es decir, del resultado de evaluar una expresión booleana (<code>True</code> o
+                    <code>False</code>).</p>
+
+                <p><strong>1. Selección simple — <code>if</code></strong></p>
+
+                <p>Ejecuta un bloque de código solo si la condición es verdadera:</p>
+
+                <pre><code class="language-python">edad = <span class="tok-num">20</span>
+<span class="tok-kw">if</span> edad &gt;= <span class="tok-num">18</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Eres mayor de edad"</span>)</code></pre>
+
+                <p><strong>2. Selección doble — <code>if / else</code></strong></p>
+
+                <p>Ofrece un camino alternativo cuando la condición es falsa:</p>
+
+                <pre><code class="language-python">edad = <span class="tok-num">15</span>
+<span class="tok-kw">if</span> edad &gt;= <span class="tok-num">18</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Eres mayor de edad"</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Eres menor de edad"</span>)</code></pre>
+
+                <p><strong>3. Selección múltiple — <code>if / elif / else</code></strong></p>
+
+                <p>Permite encadenar varias condiciones excluyentes entre sí; se evalúan en orden y se ejecuta el primer
+                    bloque cuya condición sea verdadera:</p>
+
+                <pre><code class="language-python">nota = <span class="tok-num">6</span>
+<span class="tok-kw">if</span> nota &gt;= <span class="tok-num">9</span>:
+    calificacion = <span class="tok-str">"Sobresaliente"</span>
+<span class="tok-kw">elif</span> nota &gt;= <span class="tok-num">7</span>:
+    calificacion = <span class="tok-str">"Notable"</span>
+<span class="tok-kw">elif</span> nota &gt;= <span class="tok-num">5</span>:
+    calificacion = <span class="tok-str">"Aprobado"</span>
+<span class="tok-kw">else</span>:
+    calificacion = <span class="tok-str">"Suspenso"</span>
+<span class="tok-builtin">print</span>(calificacion)</code></pre>
+
+                <p><strong>4. Selección anidada</strong></p>
+
+                <p>Una estructura <code>if</code> puede colocarse dentro de otra, para evaluar condiciones dependientes
+                    entre sí. Debe usarse con moderación, ya que un anidamiento excesivo dificulta la lectura del
+                    código.</p>
+
+                <p><strong>5. Expresión condicional (operador ternario)</strong></p>
+
+                <p>Python permite escribir una selección simple/doble en una sola línea, útil para asignaciones breves:
+                </p>
+
+                <pre><code class="language-python">edad = <span class="tok-num">17</span>
+estado = <span class="tok-str">"adulto"</span> <span class="tok-kw">if</span> edad &gt;= <span class="tok-num">18</span> <span class="tok-kw">else</span> <span class="tok-str">"menor"</span></code></pre>
+
+                <p><strong>6. Selección por coincidencia de patrones — <code>match / case</code> (desde Python
+                        3.10)</strong></p>
+
+                <p>Alternativa al encadenamiento de varios <code>if/elif</code> cuando se comparan los posibles valores
+                    de una misma variable, similar al <code>switch</code> de otros lenguajes:</p>
+
+                <pre><code class="language-python">dia = <span class="tok-num">3</span>
+match dia:
+    case <span class="tok-num">1</span> | <span class="tok-num">7</span>:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Fin de semana"</span>)
+    case <span class="tok-num">2</span> | <span class="tok-num">3</span> | <span class="tok-num">4</span> | <span class="tok-num">5</span> | <span class="tok-num">6</span>:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Día laborable"</span>)
+    case _:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Día no válido"</span>)   <span class="tok-com"># 'case _' es el caso por defecto</span></code></pre>
+
+                <p>Es fundamental recordar que en Python los bloques de cada rama se delimitan mediante
+                    <strong>indentación</strong>, no con llaves, y que la condición del <code>if</code> debe terminar
+                    siempre con dos puntos (<code>:</code>).</p>
+
+                <h3>Ejemplo en Python</h3>
+                <pre><code class="language-python">peso = <span class="tok-num">70</span>
+altura = <span class="tok-num">1.75</span>
+imc = peso / altura ** <span class="tok-num">2</span>
+
+<span class="tok-kw">if</span> imc &lt; <span class="tok-num">18.5</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Bajo peso"</span>)
+<span class="tok-kw">elif</span> imc &lt; <span class="tok-num">25</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Peso normal"</span>)
+<span class="tok-kw">elif</span> imc &lt; <span class="tok-num">30</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Sobrepeso"</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Obesidad"</span>)</code></pre>
+
+                <div class="activity">
+                    <h3>Actividad propuesta</h3>
+                    <ol>
+                        <li>Escribe un programa que pida al usuario un número entero e indique, usando
+                            <code>if / elif / else</code>, si es positivo, negativo o cero.</li>
+                        <li>Reescribe el mismo programa utilizando <code>match / case</code> para comprobar si el número
+                            introducido corresponde a un día de la semana (1 a 7), mostrando el nombre del día.</li>
+                        <li>Depura el siguiente fragmento de código, que contiene un error de indentación y una
+                            condición mal planteada, y explica por escrito qué corregiste:
+                            <pre><code class="language-python">edad = <span class="tok-num">16</span>
+<span class="tok-kw">if</span> edad &gt; <span class="tok-num">18</span>
+    <span class="tok-builtin">print</span>(<span class="tok-str">"mayor"</span>)
+  <span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"menor"</span>)</code></pre>
+                        </li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="seccion-b">
+                <h2>b) Estructuras de repetición</h2>
+
+                <p>Las <strong>estructuras de repetición</strong> (o bucles) permiten ejecutar un mismo bloque de
+                    instrucciones varias veces, evitando repetir código de forma manual. Python dispone de dos
+                    sentencias de repetición:</p>
+
+                <p><strong>1. Bucle <code>while</code> (repetición controlada por condición)</strong></p>
+
+                <p>Repite el bloque de código <strong>mientras</strong> una condición se mantenga verdadera. La
+                    condición se comprueba antes de cada repetición, por lo que el bloque puede no ejecutarse ni una
+                    sola vez si la condición es falsa desde el principio. Se utiliza cuando <strong>no se sabe de
+                        antemano</strong> cuántas veces hay que repetir el bloque.</p>
+
+                <pre><code class="language-python">contador = <span class="tok-num">0</span>
+<span class="tok-kw">while</span> contador &lt; <span class="tok-num">5</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Repetición"</span>, contador)
+    contador += <span class="tok-num">1</span>     <span class="tok-com"># imprescindible actualizar la condición para evitar un bucle infinito</span></code></pre>
+
+                <p><strong>2. Bucle <code>for</code> (repetición controlada por recorrido)</strong></p>
+
+                <p>Recorre los elementos de una secuencia (cadena, lista, tupla, diccionario...) o de un objeto
+                    iterable, ejecutando el bloque una vez por cada elemento. Se utiliza cuando <strong>sí se
+                        conoce</strong> la colección o el número de repeticiones.</p>
+
+                <pre><code class="language-python"><span class="tok-kw">for</span> letra <span class="tok-kw">in</span> <span class="tok-str">"DAM"</span>:
+    <span class="tok-builtin">print</span>(letra)
+
+<span class="tok-kw">for</span> elemento <span class="tok-kw">in</span> [<span class="tok-num">10</span>, <span class="tok-num">20</span>, <span class="tok-num">30</span>]:
+    <span class="tok-builtin">print</span>(elemento)</code></pre>
+
+                <p><strong>La función <code>range()</code></strong> genera una secuencia de números y se combina muy a
+                    menudo con <code>for</code> para repetir un bloque un número determinado de veces:</p>
+
+                <pre><code class="language-python"><span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">5</span>):        <span class="tok-com"># 0, 1, 2, 3, 4</span>
+    <span class="tok-builtin">print</span>(i)
+
+<span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">2</span>, <span class="tok-num">10</span>, <span class="tok-num">2</span>): <span class="tok-com"># de 2 a 8, de 2 en 2: 2, 4, 6, 8</span>
+    <span class="tok-builtin">print</span>(i)</code></pre>
+
+                <p><strong>Bucles anidados</strong>: un bucle puede contener otro bucle en su interior, muy habitual al
+                    recorrer estructuras bidimensionales (por ejemplo, una tabla o matriz).</p>
+
+                <p><strong>Elección entre <code>while</code> y <code>for</code></strong>: como regla general, se usa
+                    <code>for</code> cuando se recorre una colección conocida o un rango de valores, y
+                    <code>while</code> cuando la repetición depende de una condición que puede cambiar de forma
+                    impredecible en tiempo de ejecución (por ejemplo, hasta que el usuario introduzca un dato válido).
+                </p>
+
+                <h3>Ejemplo en Python</h3>
+                <pre><code class="language-python">numero = <span class="tok-num">7</span>
+<span class="tok-kw">for</span> i <span class="tok-kw">in</span> <span class="tok-builtin">range</span>(<span class="tok-num">1</span>, <span class="tok-num">11</span>):
+    <span class="tok-builtin">print</span>(numero, <span class="tok-str">"x"</span>, i, <span class="tok-str">"="</span>, numero * i)
+
+<span class="tok-com"># while: repetición hasta que el usuario introduce un valor válido</span>
+intentos = <span class="tok-num">0</span>
+MAX_INTENTOS = <span class="tok-num">3</span>
+clave_correcta = <span class="tok-str">"1234"</span>
+coincide = <span class="tok-kw">False</span>
+<span class="tok-kw">while</span> intentos &lt; MAX_INTENTOS <span class="tok-kw">and</span> <span class="tok-kw">not</span> coincide:
+    clave = <span class="tok-builtin">input</span>(<span class="tok-str">"Introduce la clave: "</span>)
+    <span class="tok-kw">if</span> clave == clave_correcta:
+        coincide = <span class="tok-kw">True</span>
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Acceso concedido"</span>)
+    intentos += <span class="tok-num">1</span>
+
+<span class="tok-kw">if</span> <span class="tok-kw">not</span> coincide:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Acceso denegado: máximo de intentos alcanzado"</span>)</code></pre>
+
+                <div class="activity">
+                    <h3>Actividad propuesta</h3>
+                    <ol>
+                        <li>Escribe un programa con un bucle <code>for</code> y <code>range()</code> que calcule la suma
+                            de los números del 1 al 100.</li>
+                        <li>Escribe un programa con un bucle <code>while</code> que pida números al usuario y los vaya
+                            sumando hasta que introduzca un <code>0</code>, momento en el que debe mostrar la suma
+                            total.</li>
+                        <li>Usando bucles <code>for</code> anidados, genera e imprime por pantalla las tablas de
+                            multiplicar del 1 al 5.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="seccion-c">
+                <h2>c) Estructuras de salto</h2>
+
+                <p>Las <strong>sentencias de salto</strong> alteran el flujo normal de una estructura de repetición o de
+                    una función, "saltando" a otro punto del programa antes de que dicha estructura termine de forma
+                    natural. Python incorpora las siguientes:</p>
+
+                <table class="tabla-col1-ajustada">
+                    <thead>
+                        <tr>
+                            <th>Sentencia</th>
+                            <th>Efecto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>break</code></td>
+                            <td>Termina <strong>inmediatamente</strong> el bucle (<code>for</code> o <code>while</code>)
+                                en el que se encuentra, saltando a la primera instrucción posterior al bucle.</td>
+                        </tr>
+                        <tr>
+                            <td><code>continue</code></td>
+                            <td>Interrumpe la iteración <strong>actual</strong> del bucle y salta directamente a la
+                                siguiente repetición, sin ejecutar el resto de instrucciones de esa vuelta.</td>
+                        </tr>
+                        <tr>
+                            <td><code>pass</code></td>
+                            <td>No hace absolutamente nada; es una instrucción "vacía" que se usa como marcador de
+                                posición allí donde la sintaxis exige una instrucción (por ejemplo, en una función o un
+                                bloque <code>if</code> aún sin implementar).</td>
+                        </tr>
+                        <tr>
+                            <td><code>return</code></td>
+                            <td>Finaliza la ejecución de una <strong>función</strong> y, opcionalmente, devuelve un
+                                valor al punto donde se la llamó. Como solo tiene sentido dentro de una función, su uso
+                                práctico se retomará en la siguiente, junto con la definición de funciones.</td>
+                        </tr>
+                        <tr>
+                            <td><code>sys.exit()</code></td>
+                            <td>Finaliza la ejecución de <strong>todo el programa</strong> (requiere
+                                <code>import sys</code>).</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>Una particularidad de Python es la cláusula <strong><code>else</code> asociada a un bucle</strong>
+                    (<code>for...else</code> / <code>while...else</code>, ya usada en el ejemplo del apartado b): el
+                    bloque <code>else</code> se ejecuta únicamente si el bucle ha terminado <strong>de forma
+                        natural</strong>, es decir, si <strong>no</strong> se ha interrumpido con <code>break</code>.
+                    Esto resulta muy útil para distinguir, por ejemplo, entre "se ha encontrado el elemento buscado" (se
+                    sale con <code>break</code>) y "se ha recorrido toda la colección sin encontrarlo" (el bucle termina
+                    solo y se ejecuta el <code>else</code>).</p>
+
+                <h3>Ejemplo en Python</h3>
+                <pre><code class="language-python"><span class="tok-com"># while: repetición hasta que el usuario introduce un valor válido</span>
+intentos = <span class="tok-num">0</span>
+MAX_INTENTOS = <span class="tok-num">3</span>
+clave_correcta = <span class="tok-str">"1234"</span>
+<span class="tok-kw">while</span> intentos &lt; MAX_INTENTOS:
+    clave = <span class="tok-builtin">input</span>(<span class="tok-str">"Introduce la clave: "</span>)
+    <span class="tok-kw">if</span> clave == clave_correcta:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Acceso concedido"</span>)
+        <span class="tok-kw">break</span>
+    intentos += <span class="tok-num">1</span>
+<span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Acceso denegado: máximo de intentos alcanzado"</span>)
+
+<span class="tok-com"># pass: instrucción vacía, usada como marcador de posición</span>
+respuesta = <span class="tok-builtin">input</span>(<span class="tok-str">"¿Aplicar descuento especial? (s/n): "</span>)
+<span class="tok-kw">if</span> respuesta == <span class="tok-str">"s"</span>:
+    <span class="tok-kw">pass</span>   <span class="tok-com"># TODO: implementar el cálculo del descuento más adelante</span>
+<span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Sin descuento"</span>)</code></pre>
+            </section>
+
+            <section id="seccion-d">
+                <h2>d) Control de excepciones</h2>
+
+                <p>Una <strong>excepción</strong> es un error que se produce <strong>durante la ejecución</strong> de un
+                    programa (a diferencia de los errores de sintaxis, que impiden incluso que el programa llegue a
+                    ejecutarse) y que, si no se gestiona, provoca que el programa termine de forma abrupta mostrando un
+                    mensaje de error (<em>traceback</em>). Ejemplos típicos: dividir entre cero, convertir a
+                    <code>int</code> un texto no numérico, acceder a un índice de lista que no existe, o intentar abrir
+                    un archivo que no existe.</p>
+
+                <p>El <strong>control de excepciones</strong> consiste en anticipar esos posibles errores y decidir cómo
+                    debe reaccionar el programa, en lugar de dejar que se detenga de forma descontrolada. Python
+                    gestiona las excepciones mediante el bloque <code>try / except</code>:</p>
+
+                <pre><code class="language-python"><span class="tok-kw">try</span>:
+    numero = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce un número: "</span>))
+    resultado = <span class="tok-num">10</span> / numero
+<span class="tok-kw">except</span> ValueError:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Eso no es un número válido"</span>)
+<span class="tok-kw">except</span> ZeroDivisionError:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"No se puede dividir entre cero"</span>)
+<span class="tok-kw">else</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Resultado:"</span>, resultado)
+<span class="tok-kw">finally</span>:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Fin del programa"</span>)</code></pre>
+
+                <ul>
+                    <li><strong><code>try</code></strong>: contiene el bloque de código que puede provocar una
+                        excepción.</li>
+                    <li><strong><code>except</code></strong>: contiene el bloque que se ejecuta <strong>solo si</strong>
+                        se produce la excepción indicada. Puede haber varios bloques <code>except</code>, cada uno para
+                        un tipo de excepción distinto, lo que permite dar una respuesta específica a cada error.</li>
+                    <li><strong><code>else</code></strong> (opcional): se ejecuta únicamente si el bloque
+                        <code>try</code> <strong>no</strong> ha producido ninguna excepción.</li>
+                    <li><strong><code>finally</code></strong> (opcional): se ejecuta <strong>siempre</strong>, se haya
+                        producido o no una excepción; se usa habitualmente para tareas de limpieza (cerrar un archivo,
+                        liberar una conexión...).</li>
+                </ul>
+
+                <p><strong>Algunas excepciones habituales (jerarquía de la clase <code>Exception</code>):</strong></p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Excepción</th>
+                            <th>Se produce cuando...</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>ValueError</code></td>
+                            <td>Un valor tiene el tipo correcto pero no es válido (<code>int("hola")</code>)</td>
+                        </tr>
+                        <tr>
+                            <td><code>TypeError</code></td>
+                            <td>Se opera con tipos incompatibles (<code>"5" + 5</code>)</td>
+                        </tr>
+                        <tr>
+                            <td><code>ZeroDivisionError</code></td>
+                            <td>Se divide entre cero</td>
+                        </tr>
+                        <tr>
+                            <td><code>IndexError</code></td>
+                            <td>Se accede a un índice de lista/tupla que no existe</td>
+                        </tr>
+                        <tr>
+                            <td><code>KeyError</code></td>
+                            <td>Se accede a una clave de diccionario que no existe</td>
+                        </tr>
+                        <tr>
+                            <td><code>FileNotFoundError</code></td>
+                            <td>Se intenta abrir un archivo que no existe</td>
+                        </tr>
+                        <tr>
+                            <td><code>AttributeError</code></td>
+                            <td>Se accede a un atributo o método que no existe en un objeto</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><strong>Lanzar excepciones propias</strong>: además de capturarlas, un programa puede provocar una
+                    excepción de forma deliberada con la sentencia <code>raise</code>, por ejemplo para validar los
+                    datos de entrada de una función:</p>
+
+                <pre><code class="language-python">edad = -<span class="tok-num">5</span>
+
+<span class="tok-kw">try</span>:
+    <span class="tok-kw">if</span> edad &lt; <span class="tok-num">0</span>:
+        <span class="tok-kw">raise</span> ValueError(<span class="tok-str">"La edad no puede ser negativa"</span>)
+<span class="tok-kw">except</span> ValueError <span class="tok-kw">as</span> error:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Error:"</span>, error)</code></pre>
+
+                <p><em>(En la siguiente unidad, al estudiar las funciones, este mismo <code>raise</code> se colocará
+                        dentro de una función <code>establecer_edad(edad)</code>, que es su ubicación más
+                        habitual.)</em></p>
+
+                <p>Capturar excepciones de forma demasiado genérica (<code>except:</code> a secas, o
+                    <code>except Exception:</code>) suele considerarse una mala práctica, ya que oculta errores
+                    inesperados y dificulta la depuración; siempre que sea posible, es preferible capturar el tipo de
+                    excepción concreto que se espera.</p>
+
+                <h3>Ejemplo en Python</h3>
+                <pre><code class="language-python"><span class="tok-com"># División segura, controlando la división entre cero</span>
+a, b = <span class="tok-num">10</span>, <span class="tok-num">0</span>
+<span class="tok-kw">try</span>:
+    resultado = a / b
+<span class="tok-kw">except</span> ZeroDivisionError:
+    <span class="tok-builtin">print</span>(<span class="tok-str">"Error: no se puede dividir entre cero"</span>)
+    resultado = <span class="tok-kw">None</span>
+<span class="tok-builtin">print</span>(resultado)
+
+<span class="tok-com"># Bucle que repite la petición hasta que el usuario introduce un entero válido</span>
+<span class="tok-kw">while</span> <span class="tok-kw">True</span>:
+    <span class="tok-kw">try</span>:
+        edad = <span class="tok-builtin">int</span>(<span class="tok-builtin">input</span>(<span class="tok-str">"Introduce tu edad: "</span>))
+        <span class="tok-kw">if</span> edad &lt; <span class="tok-num">0</span>:
+            <span class="tok-kw">raise</span> ValueError(<span class="tok-str">"La edad no puede ser negativa"</span>)
+        <span class="tok-kw">break</span>
+    <span class="tok-kw">except</span> ValueError <span class="tok-kw">as</span> error:
+        <span class="tok-builtin">print</span>(<span class="tok-str">"Entrada no válida:"</span>, error, <span class="tok-str">"- Inténtalo de nuevo."</span>)
+
+<span class="tok-builtin">print</span>(<span class="tok-str">"Tu edad es"</span>, edad)</code></pre>
+
+                <p><em>(En la siguiente unidad se reorganizarán estos dos bloques como funciones
+                        <code>dividir_seguro(a, b)</code> y <code>leer_edad()</code>, reutilizables desde cualquier
+                        parte de un programa.)</em></p>
+
+                <div class="activity">
+                    <h3>Actividad propuesta</h3>
+                    <ol>
+                        <li>Escribe un programa (sin usar funciones todavía, se estudiarán en la siguiente unidad) que
+                            pida dos números por teclado con <code>input()</code> y controle, mediante
+                            <code>try/except</code>, tanto el caso de que el texto no sea un número válido
+                            (<code>ValueError</code>) como el de una división entre cero
+                            (<code>ZeroDivisionError</code>).</li>
+                        <li>Escribe un programa que pida por teclado una nota (0-10) y lance (<code>raise</code>) un
+                            <code>ValueError</code> con un mensaje descriptivo si el valor está fuera de rango,
+                            capturando después ese error con <code>try/except</code> para mostrar el mensaje.</li>
+                        <li>Ejecuta un programa que provoque una excepción no controlada y analiza el <em>traceback</em>
+                            que muestra Python: identifica la línea del error y el tipo de excepción.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="seccion-e">
+                <h2>e) Prueba y depuración del código</h2>
+
+                <p>Escribir código con estructuras de control no es suficiente: programar exige también <strong>probar y
+                        depurar</strong> los programas, es decir, comprobar que funcionan correctamente para distintos
+                    casos (incluidos los casos límite) y localizar y corregir los errores que aparezcan. Algunas
+                    técnicas básicas:</p>
+
+                <ul>
+                    <li><strong>Depuración mediante <code>print()</code></strong>: la forma más sencilla de inspeccionar
+                        el valor de una variable o el punto del programa al que se ha llegado, insertando temporalmente
+                        instrucciones <code>print()</code> de control.</li>
+                    <li><strong>Depurador del IDE (debugger)</strong>: herramienta integrada en PyCharm o VS Code que
+                        permite colocar <strong>puntos de interrupción</strong> (<em>breakpoints</em>), ejecutar el
+                        programa paso a paso (<em>step over</em> / <em>step into</em>) y examinar en cada momento el
+                        valor de todas las variables, mucho más eficaz que ir añadiendo y quitando <code>print()</code>.
+                    </li>
+                    <li><strong>Prueba con distintos casos de entrada</strong>: comprobar el comportamiento del programa
+                        no solo con datos "normales", sino también con los llamados <strong>casos límite</strong>
+                        (valores extremos, cero, negativos, cadenas vacías, entradas no numéricas...), que son
+                        precisamente los que suelen poner a prueba las estructuras de selección, repetición y control de
+                        excepciones.</li>
+                    <li><strong>Comentarios y documentación</strong>: como ya se trabajó en la unidad anterior, comentar
+                        (<code>#</code>) y documentar (docstrings) el código ayuda tanto a quien lo lee como al propio
+                        programador durante la depuración, dejando constancia de qué se esperaba que hiciera cada
+                        bloque.</li>
+                </ul>
+
+                <div class="activity">
+                    <h3>Actividad propuesta</h3>
+                    <ol>
+                        <li>Toma el bucle de validación de la edad del apartado d) y ejecútalo paso a paso con el
+                            depurador de tu IDE, colocando un punto de interrupción dentro del bloque
+                            <code>except</code>, observando cómo cambian las variables en cada iteración del
+                            <code>while</code>.</li>
+                        <li>Diseña una tabla de casos de prueba (valor de entrada esperado, resultado esperado,
+                            resultado obtenido) para el código de clasificación del IMC del apartado a), incluyendo al
+                            menos un caso límite (por ejemplo, un IMC exactamente igual a 25).</li>
+                        <li>Añade comentarios explicativos a los programas que hayas creado en las actividades de esta
+                            unidad, indicando con <code>#</code> qué hace cada bloque de código.</li>
+                    </ol>
+                </div>
+            </section>
+
+            <section id="seccion-f">
+                <h2>f) Actividad práctica</h2>
+
+                <div class="activity">
+                    <p>Desarrolla un programa que muestre un menú con las cuatro operaciones aritméticas básicas (sumar,
+                        restar, multiplicar, dividir) y las repite mediante un bucle <code>while</code>, hasta que el
+                        usuario elige salir. Controla con <code>try/except</code> los errores de entrada del usuario
+                        (textos no numéricos y división entre cero) y usa <code>break</code> y <code>continue</code>
+                        donde tiene sentido.</p>
+                    <p>El programa debe entregarse <strong>probado</strong> (con varios casos de entrada, incluidos
+                        casos límite) y <strong>comentado</strong>, con un docstring de módulo al principio del archivo
+                        que describa su propósito y los comentarios que sean necesarios para detallar el código.</p>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+
+    <script>
+        (function () {
+            var sidebar = document.getElementById('sidebar');
+            var toggleBtn = document.getElementById('sidebarToggle');
+            var overlay = document.getElementById('overlay');
+
+            function openSidebar() {
+                sidebar.classList.add('open');
+                overlay.classList.add('visible');
+                toggleBtn.setAttribute('aria-expanded', 'true');
+            }
+
+            function closeSidebar() {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('visible');
+                toggleBtn.setAttribute('aria-expanded', 'false');
+            }
+
+            toggleBtn.addEventListener('click', function () {
+                if (sidebar.classList.contains('open')) {
+                    closeSidebar();
+                } else {
+                    openSidebar();
+                }
+            });
+
+            overlay.addEventListener('click', closeSidebar);
+
+            var navLinks = sidebar.querySelectorAll('a');
+            navLinks.forEach(function (link) {
+                link.addEventListener('click', function () {
+                    if (window.matchMedia('(max-width: 900px)').matches) {
+                        closeSidebar();
+                    }
+                });
+            });
+
+            // Toggle solutions
+            var solutionButtons = document.querySelectorAll('.solution-toggle');
+            solutionButtons.forEach(function (btn) {
+                var content = btn.nextElementSibling;
+                btn.addEventListener('click', function () {
+                    var expanded = btn.getAttribute('aria-expanded') === 'true';
+                    if (expanded) {
+                        content.hidden = true;
+                        btn.setAttribute('aria-expanded', 'false');
+                        btn.innerHTML = '<span class="icon">▶</span> Ver solución';
+                    } else {
+                        content.hidden = false;
+                        btn.setAttribute('aria-expanded', 'true');
+                        btn.innerHTML = '<span class="icon">▶</span> Ocultar solución';
+                    }
+                });
+            });
+
+            // Scrollspy: highlight the current section in the sidebar
+            var sections = document.querySelectorAll('main section[id]');
+            var linkMap = {};
+            navLinks.forEach(function (link) {
+                linkMap[link.getAttribute('href').substring(1)] = link;
+            });
+
+            if ('IntersectionObserver' in window) {
+                var observer = new IntersectionObserver(function (entries) {
+                    entries.forEach(function (entry) {
+                        var link = linkMap[entry.target.id];
+                        if (!link) return;
+                        if (entry.isIntersecting) {
+                            navLinks.forEach(function (l) { l.classList.remove('active'); });
+                            link.classList.add('active');
+                        }
+                    });
+                }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+
+                sections.forEach(function (section) { observer.observe(section); });
+            }
+
+            // Syntax highlighting for Python code blocks
+            var PY_KEYWORDS = new Set(['False', 'None', 'True', 'and', 'as', 'assert', 'async', 'await',
+                'break', 'class', 'continue', 'def', 'del', 'elif', 'else', 'except', 'finally', 'for', 'from',
+                'global', 'if', 'import', 'in', 'is', 'lambda', 'nonlocal', 'not', 'or', 'pass', 'raise',
+                'return', 'try', 'while', 'with', 'yield']);
+            var PY_BUILTINS = new Set(['print', 'input', 'type', 'int', 'float', 'str', 'bool', 'complex',
+                'len', 'range', 'list', 'tuple', 'dict', 'set', 'abs', 'min', 'max', 'sum', 'round', 'open',
+                'isinstance', 'super', 'object']);
+            var PY_TOKEN_RE = /(#[^\n]*)|("""[\s\S]*?"""|'''[\s\S]*?'''|"(?:\\.|[^"\\\n])*"|'(?:\\.|[^'\\\n])*')|(\b\d+\.?\d*(?:[eE][+-]?\d+)?\b|\b0[xX][0-9a-fA-F_]+\b|\b0[bB][01_]+\b|\b0[oO][0-7_]+\b)|(\b[A-Za-z_][A-Za-z0-9_]*\b)/g;
+
+            function escapeHtml(s) {
+                return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+            }
+
+            function highlightPython(code) {
+                var result = '';
+                var lastIndex = 0;
+                var m;
+                PY_TOKEN_RE.lastIndex = 0;
+                while ((m = PY_TOKEN_RE.exec(code)) !== null) {
+                    result += escapeHtml(code.slice(lastIndex, m.index));
+                    lastIndex = PY_TOKEN_RE.lastIndex;
+                    if (m[1] !== undefined) {
+                        result += '<span class="tok-com">' + escapeHtml(m[1]) + '</span>';
+                    } else if (m[2] !== undefined) {
+                        result += '<span class="tok-str">' + escapeHtml(m[2]) + '</span>';
+                    } else if (m[3] !== undefined) {
+                        result += '<span class="tok-num">' + escapeHtml(m[3]) + '</span>';
+                    } else if (m[4] !== undefined) {
+                        var word = m[4];
+                        if (PY_KEYWORDS.has(word)) {
+                            result += '<span class="tok-kw">' + escapeHtml(word) + '</span>';
+                        } else if (PY_BUILTINS.has(word)) {
+                            result += '<span class="tok-builtin">' + escapeHtml(word) + '</span>';
+                        } else {
+                            result += escapeHtml(word);
+                        }
+                    }
+                }
+                result += escapeHtml(code.slice(lastIndex));
+                return result;
+            }
+
+            document.querySelectorAll('code.language-python').forEach(function (block) {
+                block.innerHTML = highlightPython(block.textContent);
+            });
+        })();
+    </script>
+
+
+
+</body>
+
+</html>
