@@ -1,6 +1,8 @@
-# RissyTech — De la máquina al dato
+# RissyTech — La fábrica a ciegas
 
-Presentación de la UT1 de Digitalización: **13 diapositivas principales + un anexo**, con diagramas SVG propios, arquitectura OT–IT por zonas y dos demos interactivas. Duración orientativa: **15–17 minutos**.
+Presentación de la UT1 de Digitalización: **13 diapositivas principales y un anexo conservado pero desactivado**, con diagramas SVG propios, arquitectura OT–IT por zonas y dos demos interactivas. Tema claro editorial. Duración orientativa: **15–17 minutos**.
+
+Dirección creativa, alternativas distópicas, guion de apertura y fuentes de investigación: [DIRECCION-CREATIVA.md](./DIRECCION-CREATIVA.md). «La fábrica a ciegas» es una metáfora narrativa, no un incidente real.
 
 ## Ver y presentar
 
@@ -74,14 +76,14 @@ No se ha realizado ningún despliegue ni configurado una cuenta de Cloudflare.
 `playwright-chromium` ya está en las dependencias de desarrollo. En esta máquina se utiliza Chromium del sistema:
 
 ```bash
-npm run export -- --executable-path /usr/bin/chromium --dark --per-slide
+npm run export -- --per-slide
 ```
 
-Genera `rissytech-transformacion-digital.pdf` (ignorado por Git). En otros equipos puedes instalar el navegador con `npx playwright install chromium` y omitir `--executable-path`.
+Genera `rissytech-transformacion-digital.pdf` (ignorado por Git). Puedes instalar el navegador con `npx playwright install chromium`. En Linux, si se usa Chromium del sistema, añadir `--executable-path /usr/bin/chromium`. Se exporta en claro, de acuerdo con `colorSchema: light`.
 
 El PDF muestra todos los pasos de los diagramas y una alerta de presión activa. Las demos se convierten en representaciones estáticas; no sustituyen a la web interactiva. El `wait: 1000` de exportación permite terminar las transiciones antes de capturar.
 
-La exportación puede emitir un aviso interno de TwoSlash/FloatingVue de Slidev («Failed to patch FloatingVue»). No impidió generar ni revisar el PDF de 14 páginas. El verificador lo informa por separado de los errores de la presentación.
+La exportación puede emitir un aviso interno de TwoSlash/FloatingVue de Slidev («Failed to patch FloatingVue»). El verificador lo informa por separado de los errores de la presentación.
 
 ## Verificación
 
@@ -97,13 +99,13 @@ Para comprobar el build estático, arranca `npm run preview -- --port 4173` y ej
 SLIDEV_URL=http://localhost:4173 npm run check
 ```
 
-Se comprueban 14 diapositivas, límites del contenido, pasos de arquitectura, escalado y confirmación de alertas, bloqueo/validación/arranque, revocación de seguridad y un viewport móvil. Guarda capturas e informe en `.qa/`, ignorado por Git.
+Se comprueban 13 diapositivas, límites del contenido (incluidos textos SVG), pasos de arquitectura, escalado y confirmación de alertas, bloqueo/validación/arranque, revocación de seguridad y un viewport móvil. Guarda capturas e informe en `.qa/`, ignorado por Git.
 
-El script utiliza `/usr/bin/chromium`; admite otra ruta con `CHROMIUM_PATH`. También verifica que no haya errores de JavaScript ni solicitudes a recursos externos.
+El script utiliza el Chromium de Playwright en Windows y `/usr/bin/chromium` en Linux; admite otra ruta con `CHROMIUM_PATH`. También verifica que no haya errores de JavaScript ni solicitudes a recursos externos.
 
 ## Criterios editoriales
 
-- Azul noche y turquesa; naranja para control, azul para IT y morado para registros/almacén.
+- Blanco dominante y tinta azul noche; turquesa para control físico, naranja para regulación, azul para IT y morado para registros/almacén. Rojo reservado a anomalías.
 - Manrope para titulares e Inter para lectura, empaquetadas localmente mediante Fontsource. Sus licencias SIL OFL se distribuyen en `public/licenses/`.
 - Diagramas inspirados en el lenguaje visual de arquitectura cloud, **sin iconos oficiales ni servicios AWS**. No se presupone infraestructura de ningún proveedor.
 - Animaciones de revelación y trazado de conexiones, no movimiento continuo. Respeto de `prefers-reduced-motion`.

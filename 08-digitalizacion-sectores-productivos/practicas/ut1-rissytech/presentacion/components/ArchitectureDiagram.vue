@@ -7,8 +7,8 @@ defineProps({ stage: { type: Number, default: 3 } })
   <svg viewBox="0 0 1000 335" class="architecture" role="img" aria-labelledby="architecture-title">
     <title id="architecture-title">Arquitectura propuesta. Sensores, PLC y actuadores dentro de OT. Una pasarela conecta con eventos, base de datos y app dentro de IT. La acción física permanece local.</title>
     <defs>
-      <marker id="arch-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="m0 0 10 5-10 5Z" fill="#63ddc1" /></marker>
-      <marker id="arch-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="m0 0 10 5-10 5Z" fill="#8aaeff" /></marker>
+      <marker id="arch-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="m0 0 10 5-10 5Z" fill="#11777a" /></marker>
+      <marker id="arch-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="m0 0 10 5-10 5Z" fill="#335faa" /></marker>
     </defs>
     <rect x="1" y="1" width="428" height="326" rx="12" class="zone zone-ot" />
     <text x="20" y="29" class="zone-label teal">OT / CONTROL LOCAL</text>

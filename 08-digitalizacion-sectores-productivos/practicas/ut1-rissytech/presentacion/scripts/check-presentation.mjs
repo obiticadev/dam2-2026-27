@@ -7,7 +7,7 @@ const base = process.env.SLIDEV_URL || 'http://localhost:3030'
 const output = '.qa'
 await mkdir(output, { recursive: true })
 const browser = await chromium.launch({
-  executablePath: process.env.CHROMIUM_PATH || '/usr/bin/chromium',
+  executablePath: process.env.CHROMIUM_PATH || (process.platform === 'win32' ? chromium.executablePath() : '/usr/bin/chromium'),
   headless: true,
 })
 const page = await browser.newPage({ viewport: { width: 1600, height: 900 }, reducedMotion: 'reduce' })
@@ -44,7 +44,7 @@ async function assertContained(root, containerSelector) {
   assert.deepEqual(overflows, [], `Content escaped ${containerSelector}`)
 }
 try {
-  for (let n = 1; n <= 14; n++) {
+  for (let n = 1; n <= 13; n++) {
     const slide = await go(n, n === 2 ? 2 : n === 6 || n === 7 ? 3 : 0)
     const geometry = await slide.evaluate(root => {
       const scale = root.getBoundingClientRect().width / 1100
@@ -52,7 +52,7 @@ try {
       const footerTop = root.parentElement.querySelector('.deck-footer')?.getBoundingClientRect().top || bounds.bottom - 55 * scale
       const warnings = []
       for (const element of root.querySelectorAll('*')) {
-        if (element.closest('svg') || element.closest('.slidev-vclick-hidden') || element.children.length || !element.textContent.trim()) continue
+        if ((element.closest('svg') && element.tagName.toLowerCase() !== 'text') || element.closest('.slidev-vclick-hidden') || element.children.length || !element.textContent.trim()) continue
         const r = element.getBoundingClientRect()
         if (!r.width || !r.height || getComputedStyle(element).opacity === '0') continue
         if (r.right > bounds.right - 25 * scale || r.left < bounds.left + 25 * scale || r.bottom > footerTop - 7 * scale) warnings.push({ text: element.textContent.trim().slice(0, 90), x: Math.round((r.left - bounds.left) / scale), y: Math.round((r.top - bounds.top) / scale), bottom: Math.round((r.bottom - bounds.top) / scale) })

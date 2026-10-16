@@ -1,6 +1,6 @@
 ---
 theme: default
-title: RissyTech — De la máquina al dato
+title: RissyTech — La fábrica a ciegas
 titleTemplate: '%s'
 info: Plan de transformación digital de una fábrica de patatas fritas. Actividad UT1, Digitalización aplicada a los sistemas productivos, DAM.
 author: Nathalia Piñera Molina, Ruben Barrado Pastor y Oliver Bitica
@@ -8,7 +8,7 @@ keywords: digitalización, IT, OT, industria 4.0, RissyTech, DAM
 favicon: /favicon.svg
 aspectRatio: 16/9
 canvasWidth: 1100
-colorSchema: dark
+colorSchema: light
 transition: fade
 duration: 17min
 routerMode: hash
@@ -22,9 +22,9 @@ fonts:
 htmlAttrs:
   lang: es
 seoMeta:
-  ogTitle: RissyTech — De la máquina al dato
+  ogTitle: RissyTech — La fábrica a ciegas
   ogDescription: Una propuesta de transformación digital que conecta sensores, control local y personas.
-  themeColor: '#0c1720'
+  themeColor: '#ffffff'
 exportFilename: rissytech-transformacion-digital
 export:
   format: pdf
@@ -37,20 +37,20 @@ defaults:
 class: cover-slide
 ---
 
-<div class="cover-top"><span class="pill">CONSULTORES DE LA FÁBRICA DEL FUTURO</span><span class="edition">DIGITALIZACIÓN / UT1</span></div>
+<div class="cover-top"><span class="pill">RISSYTECH / EXPEDIENTE DE TRANSFORMACIÓN</span><span class="edition">DIGITALIZACIÓN / UT1</span></div>
 <div class="cover-grid">
   <div class="cover-copy">
     <div class="eyebrow">PLAN DE TRANSFORMACIÓN DIGITAL</div>
-    <h1>De la máquina<br>al <span class="accent">dato.</span></h1>
-    <p class="cover-subtitle">RissyTech: una fábrica de patatas fritas<br>que aprende a escuchar su planta.</p>
+    <h1>La fábrica<br><span class="accent">a ciegas.</span></h1>
+    <p class="cover-subtitle">De la máquina al dato.<br>Un plan para ver, comprender y actuar.</p>
     <div class="cover-tags"><span>OT + IT</span><span>EDGE COMPUTING</span><span>MOVILIDAD</span></div>
   </div>
-  <div class="cover-art"><div class="art-label"><span class="status-dot"></span>RISSYTECH / PLANTA CONECTADA</div><FactoryArt /></div>
+  <div class="cover-art"><div class="art-label">PLANO CONCEPTUAL / NO ES TELEMETRÍA REAL</div><PlantBlueprint /></div>
 </div>
 <div class="cover-team"><span>EQUIPO CONSULTOR</span><b>Nathalia Piñera Molina</b><b>Ruben Barrado Pastor</b><b>Oliver Bitica</b><em>DAM · 2026–2027</em></div>
 
 <!--
-Abrir con una idea: no proponemos sustituir toda la fábrica, sino conectar las máquinas con información útil para actuar a tiempo. Este trabajo es un diseño conceptual, no una implantación real ni un gemelo digital validado. Presentar al equipo y el módulo. Fuente: documento del equipo, páginas 1–2 de contenido.
+Abrir con una pregunta: «¿Puede una fábrica seguir produciendo sin saber que está fabricando mal?». «La fábrica a ciegas» es una metáfora narrativa del vacío de información descrito en el caso, no el nombre de un incidente real. No proponemos sustituir toda la fábrica, sino conectar las máquinas con información útil para actuar a tiempo. Este trabajo es un diseño conceptual, no una implantación real ni un gemelo digital validado. Presentar al equipo y el módulo. Fuente: documento del equipo, páginas 1–2 de contenido.
 Duración orientativa: 45 segundos.
 -->
 
@@ -112,12 +112,7 @@ Duración: 60 segundos.
 
 <p class="lead">Cada sensor responde a una pregunta concreta.</p>
 
-<div class="sensor-grid">
-  <article class="sensor-card"><div class="card-kicker"><TechIcon name="wave" :size="25" /><span>01 / LAVADO Y PELADO</span></div><h2>¿Funciona bien<br>la máquina?</h2><div class="sensor-measure"><b>Vibración</b><span>Golpes, atascos y funcionamiento anómalo.</span></div><div class="sensor-measure"><b>Caudal de agua</b><span>Consumo excesivo o falta de suministro.</span></div></article>
-  <article class="sensor-card orange"><div class="card-kicker"><TechIcon name="heat" :size="25" /><span>02 / FRITURA</span></div><h2>¿Está el aceite<br>en su intervalo?</h2><div class="sensor-measure"><b>Sonda PT100</b><span>Temperatura continua del aceite.</span></div><div class="temperature-band"><span>170 °C</span><b>INTERVALO DEL CASO</b><span>190 °C</span></div></article>
-  <article class="sensor-card blue"><div class="card-kicker"><TechIcon name="pressure" :size="25" /><span>03 / EMBOLSADO</span></div><h2>¿Hay presión<br>para sellar?</h2><div class="sensor-measure"><b>Sensor de presión</b><span>Presión del aire comprimido.</span></div><div class="mini-note">El límite operativo lo define la máquina, no la app.</div></article>
-  <article class="sensor-card purple"><div class="card-kicker"><TechIcon name="scan" :size="25" /><span>04 / ALMACÉN</span></div><h2>¿Qué palé<br>entra o sale?</h2><div class="sensor-measure"><b>Lector RFID</b><span>Identificación de etiquetas electrónicas.</span></div><div class="mini-note">Identifica objetos; no mide una variable física como la presión.</div></article>
-</div>
+<SignalMap />
 
 <!--
 Responder explícitamente a la pregunta de los sensores. En lavado hay dos: vibración y caudal. Un sensor de vibración detecta indicios de funcionamiento anómalo, no clasifica piedras. La PT100 mide temperatura; el controlador interpreta la medida. RFID es identificación automática y se incluye en la captura de datos, aunque no mida una magnitud física de proceso. No se ha inventado un umbral de presión. Fuente: página 3.
@@ -131,7 +126,7 @@ Duración: 75 segundos.
 
 # El dato solo aporta valor si permite actuar.
 
-<div class="control-loop"><span><TechIcon name="wave" />Medir</span><TechIcon name="arrow" /><span class="loop-controller"><TechIcon name="chip" />Decidir en el controlador</span><TechIcon name="arrow" /><span><TechIcon name="valve" />Actuar físicamente</span></div>
+<ControlLoop />
 
 <div class="actuator-grid">
   <article><TechIcon name="motor" :size="35" /><small>01 / PROTEGER EL EQUIPO</small><h2>Contactor o<br>variador del motor</h2><p>Detiene la peladora ante una vibración peligrosa.</p></article>
@@ -153,9 +148,9 @@ clicks: 3
 
 <div class="eyebrow">05 / ARQUITECTURA PROPUESTA · EDGE COMPUTING</div>
 
-# La reacción es local. La información, compartida.
+# Si cae Internet, la máquina no debe esperar.
 
-<p class="lead">Una separación clara entre control de máquina y servicios de información.</p>
+<p class="lead">Propuesta OT–IT: la reacción es local; la información, compartida.</p>
 
 <ArchitectureDiagram :stage="$clicks" />
 
@@ -237,14 +232,7 @@ Duración: 100 segundos.
 
 <p class="lead">La mejor interfaz es la que reduce la necesidad de teclear.</p>
 
-<div class="ergonomics-grid">
-  <article><div class="ergonomic-icon"><TechIcon name="scan" :size="29" /></div><div><h2>Lector de códigos</h2><p>Registrar cajas y lotes con un gatillo utilizable con guantes.</p></div></article>
-  <article><div class="ergonomic-icon"><TechIcon name="nfc" :size="29" /></div><div><h2>Lectura NFC</h2><p>Abrir la ficha y el historial de una máquina por proximidad.</p></div></article>
-  <article><div class="ergonomic-icon"><TechIcon name="camera" :size="29" /></div><div><h2>Cámara y linterna</h2><p>Iluminar una avería y adjuntar evidencias al parte.</p></div></article>
-  <article><div class="ergonomic-icon"><TechIcon name="mic" :size="29" /></div><div><h2>Dictado por voz</h2><p>Registrar observaciones cuando el ruido permita reconocerlas.</p></div></article>
-  <article><div class="ergonomic-icon"><TechIcon name="hand" :size="29" /></div><div><h2>Objetivos táctiles grandes</h2><p>Menos pulsaciones erróneas en pantallas compatibles con guantes.</p></div></article>
-  <article><div class="ergonomic-icon"><TechIcon name="bell" :size="29" /></div><div><h2>Avisos redundantes</h2><p>Vibración, texto e iconos. El color y el sonido no bastan.</p></div></article>
-</div>
+<ErgonomicsMap />
 
 <!--
 No añadir funciones por moda: cada una responde a una limitación del entorno. El NFC evita búsquedas, la pistola lectora evita escritura, la cámara documenta el problema. El dictado no se debe vender como infalible en una fábrica ruidosa. Los guantes exigen un dispositivo compatible, no solo botones más grandes. Fuente: página 8.
@@ -299,7 +287,7 @@ class: closing-slide
 
 <div class="eyebrow">12 / EL VALOR DE LA TRANSFORMACIÓN</div>
 
-<h1>No se trata de conectar máquinas.<br>Se trata de <span class="accent">actuar mejor.</span></h1>
+<h1>De producir a ciegas<br>a <span class="accent">actuar con criterio.</span></h1>
 
 <div class="outcomes">
   <article><span>01</span><h2>Calidad</h2><p>Detectar desvíos de temperatura y presión antes de prolongar el defecto.</p><small>MEDIR: lotes rechazados</small></article>
@@ -318,6 +306,7 @@ Duración: 45 segundos.
 
 ---
 class: sources-slide
+disabled: true
 ---
 
 <div class="eyebrow">ANEXO / FUENTES, ALCANCE Y NAVEGACIÓN</div>
@@ -331,5 +320,5 @@ class: sources-slide
 
 <!--
 El original se conserva en ../documentacion/TAREA_presentacion.pdf, fuera de la carpeta publicada. No se publica el PDF ni los ODT automáticamente. La presentación no afirma que exista infraestructura AWS, un gemelo digital operativo o un sistema industrial certificado. Los diagramas usan iconos vectoriales propios y el lenguaje de zonas y conexiones de los diagramas de arquitectura.
-Esta diapositiva queda como anexo después del cierre, disponible para preguntas.
+Este anexo se conserva en el código fuente, desactivado con disabled: true para que no aparezca tras el cierre ni en el PDF. Sus referencias también están en DIRECCION-CREATIVA.md. Para recuperarlo, retirar disabled y actualizar el contador y el verificador.
 -->
