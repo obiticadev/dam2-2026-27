@@ -18,7 +18,7 @@ onSlideEnter(reset)
       <h2>La máquina actúa.<br>La persona recibe el aviso.</h2>
       <div class="demo-machine" :class="{ 'has-fault': fault }">
         <TechIcon name="pressure" :size="38" />
-        <div><small>ESTACIÓN 03 · EMBOLSADO</small><strong>{{ fault ? 'Presión insuficiente' : 'Presión correcta' }}</strong><span>{{ fault ? 'Sellado interrumpido por el PLC' : 'Sellado habilitado' }}</span></div>
+        <div><small>ESTACIÓN 03 · SENSOR PROPUESTO: ifm PN2094</small><strong>{{ fault ? 'Presión insuficiente' : 'Presión correcta' }}</strong><span>{{ fault ? 'Sellado interrumpido por el PLC' : 'Sellado habilitado' }}</span></div>
       </div>
       <div class="demo-controls">
         <button class="btn primary" :disabled="fault" @click="state = 'alert'"><TechIcon name="alert" :size="18" />Simular caída de presión</button>

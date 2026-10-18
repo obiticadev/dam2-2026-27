@@ -110,12 +110,12 @@ Duración: 60 segundos.
 
 # Primero, hacer visible lo que ocurre.
 
-<p class="lead">Cada sensor responde a una pregunta concreta.</p>
+<p class="lead">Estos son los modelos que proponemos para cada estación.</p>
 
 <SignalMap />
 
 <!--
-Responder explícitamente a la pregunta de los sensores. En lavado hay dos: vibración y caudal. Un sensor de vibración detecta indicios de funcionamiento anómalo, no clasifica piedras. La PT100 mide temperatura; el controlador interpreta la medida. RFID es identificación automática y se incluye en la captura de datos, aunque no mida una magnitud física de proceso. No se ha inventado un umbral de presión. Fuente: página 3.
+En lavado proponemos el ifm VVB001 para saber si la peladora vibra más de lo normal y el ifm SM8000 para medir cuánta agua se usa. El primero no identifica piedras directamente: detecta golpes o vibraciones. En fritura, la sonda WIKA TR21-A (Pt100) mide el aceite para que el sistema pueda regular el calor. En embolsado, el ifm PN2094 mide la presión del aire. En almacén, el Zebra FX9600-4 con antenas AN480 lee las etiquetas de los palés. No hace falta explicar rangos de catálogo ni conexiones: importa qué dato aporta cada equipo y para qué sirve. Son modelos propuestos para la actividad, no equipos ya instalados. Fuentes: página 3 y fichas de la página 9; enlaces en el anexo.
 Duración: 75 segundos.
 -->
 
@@ -135,7 +135,7 @@ Duración: 75 segundos.
   <article class="purple"><TechIcon name="box" :size="35" /><small>04 / ORDENAR EL FLUJO</small><h2>Desviador<br>motorizado</h2><p>Dirige los palés en una línea de almacén automatizada.</p></article>
 </div>
 
-<div class="bottom-insight"><TechIcon name="shield" :size="19" /><span>La protección real exige enclavamientos y una solución de seguridad industrial adecuada.</span></div>
+<div class="bottom-insight"><TechIcon name="shield" :size="19" /><span>Antes de volver a funcionar, la máquina debe comprobar que es seguro hacerlo.</span></div>
 
 <!--
 El sensor mide, el controlador decide y el actuador ejecuta. El esquema es conceptual. Un variador o un contactor por sí solos no constituyen una función de seguridad certificada. La válvula reguladora de gas forma parte del control de proceso y no sustituye la seguridad del quemador. El desviador presupone una línea automatizada. No todos los actuadores son elementos de emergencia. Fuente: página 4.
@@ -179,7 +179,7 @@ clicks: 3
 <AlertWorkflow :stage="$clicks" />
 
 <!--
-Estado inicial: el sensor detecta presión insuficiente y el controlador interrumpe el sellado con la electroválvula. No se espera al operario.
+Estado inicial: el sensor propuesto, ifm PN2094, mide la presión del aire. Si baja demasiado, el controlador interrumpe el sellado con la válvula de aire. No se espera al operario.
 [click] La red transporta estación, presión medida y hora. La app presenta texto e iconos y usa vibración y sonido cuando el dispositivo lo permite.
 [click] Confirmar recepción registra quién atiende. Después hay reparación y comprobación local antes de reanudar. Confirmar no reinicia.
 [click] Si nadie confirma dentro del plazo definido, se repite el aviso y se avisa al responsable de mantenimiento. No hemos asignado segundos inventados. Repetir hasta recibir confirmación según la política de planta.
@@ -198,7 +198,7 @@ class: demo-slide
 <PressureDemo />
 
 <!--
-Demostración local, sin sensores ni maquinaria real. Pulsar «Simular caída de presión»: el sellado se interrumpe en el PLC antes de la confirmación. La app muestra la estación, la hora y una descripción. No se fabrica una lectura numérica de presión.
+Demostración local, sin sensores ni maquinaria real. El ifm PN2094 es el modelo que proponemos, no un sensor conectado al navegador. Pulsar «Simular caída de presión»: el sellado se interrumpe en el PLC antes de la confirmación. La app muestra la estación, la hora y una descripción. No se fabrica una lectura numérica de presión.
 Pulsar «Simular plazo agotado» para mostrar el escalado. Luego «Alerta recibida»: se asigna la atención, pero no se elimina la avería ni se arranca la máquina.
 Las etiquetas vibración/sonido/visual ilustran el diseño: el navegador no emite sonido, no vibra y no envía notificaciones push. Un producto real dependería del hardware, permisos y política del sistema operativo.
 Fuente: páginas 5–6; interacción web: implementación ilustrativa.
@@ -235,7 +235,7 @@ Duración: 100 segundos.
 <ErgonomicsMap />
 
 <!--
-No añadir funciones por moda: cada una responde a una limitación del entorno. El NFC evita búsquedas, la pistola lectora evita escritura, la cámara documenta el problema. El dictado no se debe vender como infalible en una fábrica ruidosa. Los guantes exigen un dispositivo compatible, no solo botones más grandes. Fuente: página 8.
+Cada función responde a una dificultad del trabajo. Proponemos la pistola Zebra DS3678-SR para escanear cajas y bastidores sin escribir sus códigos; se conecta al móvil o la tablet por Bluetooth. El NFC abre la ficha de la máquina y la cámara permite fotografiar una avería. El dictado solo ayudaría cuando el ruido permita reconocer la voz. La pantalla debe funcionar con guantes, no basta con hacer los botones más grandes. Fuentes: páginas 8–9.
 Duración: 60 segundos.
 -->
 
@@ -247,14 +247,14 @@ Duración: 60 segundos.
 # Dos formas de identificar. Un mismo registro.
 
 <div class="trace-grid">
-  <div class="trace-inputs"><article><TechIcon name="nfc" :size="32" /><div><span class="pill purple-pill">RFID</span><h2>Palés</h2><p>Entradas y salidas automáticas.</p></div></article><article><TechIcon name="scan" :size="32" /><div><span class="pill blue-pill">CÓDIGO DE BARRAS</span><h2>Cajas, lotes y bastidores</h2><p>Identificación individual por lectura.</p></div></article></div>
+  <div class="trace-inputs"><article><TechIcon name="nfc" :size="32" /><div><span class="pill purple-pill">RFID</span><h2>Zebra FX9600-4</h2><p>Con antenas AN480: lee los palés al entrar o salir.</p></div></article><article><TechIcon name="scan" :size="32" /><div><span class="pill blue-pill">CÓDIGO DE BARRAS</span><h2>Zebra DS3678-SR</h2><p>Escanea cajas, lotes y bastidores uno a uno.</p></div></article></div>
   <svg class="trace-connectors" viewBox="0 0 90 270" aria-hidden="true"><path d="M0 62H35v73h52M0 207H35v-72" fill="none" stroke="#8aaeff" stroke-width="2" /><path d="m78 129 9 6-9 6" fill="none" stroke="#8aaeff" stroke-width="2" /></svg>
   <div class="trace-database"><TechIcon name="database" :size="48" /><h2>Registro compartido</h2><p>Identidad · lote · movimiento</p><div class="trace-record"><span>CONTENEDOR</span><b>Bastidor B-014</b><span>CONTENIDO ACTUAL</span><b>Lote L-2026-018</b><small>Ejemplo ilustrativo</small></div></div>
   <div class="trace-rule"><TechIcon name="link" :size="30" /><h2>El bastidor<br>se reutiliza.<br><span class="accent">El lote cambia.</span></h2><p>Su código identifica el soporte; la app actualiza qué lote contiene en cada momento.</p></div>
 </div>
 
 <!--
-El lector RFID y la pistola no compiten: tienen distinta granularidad. Ambos deben usar los mismos registros para que no haya inventarios paralelos. El identificador del bastidor reutilizable no debe confundirse con el identificador del lote de patatas. Los códigos B-014 y L-2026-018 son ejemplos y no proceden de registros reales. Fuente: página 8, integración con el almacén.
+El Zebra FX9600-4 lee los palés al pasar por el punto de entrada o salida. La pistola Zebra DS3678-SR sirve para escanear una caja o un bastidor concreto. Ambos enviarían los datos a la misma aplicación, que comprobaría los movimientos para no contarlos dos veces. El código del bastidor identifica el soporte, no el lote de patatas que lleva: ese lote puede cambiar cuando se reutiliza. B-014 y L-2026-018 son ejemplos inventados para explicarlo, no registros reales. Fuentes: páginas 8–9.
 Duración: 60 segundos.
 -->
 
@@ -306,19 +306,19 @@ Duración: 45 segundos.
 
 ---
 class: sources-slide
-disabled: true
 ---
 
-<div class="eyebrow">ANEXO / FUENTES, ALCANCE Y NAVEGACIÓN</div>
+<div class="eyebrow">ANEXO / MODELOS Y FUENTES</div>
 
-# Un plan conceptual. Una demostración reproducible.
+# Los modelos que hemos consultado.
 
 <div class="sources-grid">
-  <div class="source-main"><span class="pill">FUENTE ACADÉMICA</span><h2>Plan de transformación digital<br>de RissyTech</h2><p>Actividad UT1 · «El Gemelo Digital en Papel»<br>Digitalización aplicada a los sistemas productivos · DAM</p><div class="source-pages"><span>Caso y proceso <b>pp. 1–2</b></span><span>Sensores y actuadores <b>pp. 3–4</b></span><span>Notificaciones y app <b>pp. 5–7</b></span><span>Movilidad y almacén <b>p. 8</b></span></div><small>Paginación impresa del documento del equipo, no del visor PDF.</small></div>
-  <div class="source-side"><h2>Qué se ha añadido</h2><p>Arquitectura por zonas, hoja de ruta e indicadores: <b>propuestas de diseño.</b></p><p>Interfaces y valores de motor: <b>simulación educativa, sin conexión a maquinaria.</b></p><h2>Cómo recorrerla</h2><div class="keyboard-guide"><span><kbd>→</kbd> <kbd>Espacio</kbd> Avanzar y revelar</span><span><kbd>←</kbd> Retroceder</span><span><kbd>O</kbd> Vista general</span><span>En las demos, utilizar sus botones.</span></div><a href="https://sli.dev" target="_blank" rel="noopener noreferrer" class="source-link">Construida con Slidev ↗</a></div>
+  <div class="source-main"><span class="pill">DOCUMENTO DEL EQUIPO</span><h2>Plan de transformación digital de RissyTech</h2><p>Actividad UT1 · «El Gemelo Digital en Papel»<br>Digitalización · 2.º de DAM</p><div class="source-pages"><span>Caso y proceso <b>pp. 1–2</b></span><span>Sensores y actuadores <b>pp. 3–4</b></span><span>Notificaciones y app <b>pp. 5–7</b></span><span>Movilidad y almacén <b>p. 8</b></span><span>Fichas de fabricantes <b>p. 9</b></span></div><small>Páginas impresas del documento.<br>Los enlaces abren las fuentes oficiales.</small></div>
+  <EquipmentSources />
 </div>
 
+<div class="bottom-insight"><TechIcon name="shield" :size="19" /><span>Son modelos propuestos para la actividad. Un técnico tendría que comprobarlos antes de instalarlos en una fábrica real.</span></div>
+
 <!--
-El original se conserva en ../documentacion/TAREA_presentacion.pdf, fuera de la carpeta publicada. No se publica el PDF ni los ODT automáticamente. La presentación no afirma que exista infraestructura AWS, un gemelo digital operativo o un sistema industrial certificado. Los diagramas usan iconos vectoriales propios y el lenguaje de zonas y conexiones de los diagramas de arquitectura.
-Este anexo se conserva en el código fuente, desactivado con disabled: true para que no aparezca tras el cierre ni en el PDF. Sus referencias también están en DIRECCION-CREATIVA.md. Para recuperarlo, retirar disabled y actualizar el contador y el verificador.
+Este anexo queda visible después del cierre y también se exporta al PDF para poder consultar los modelos. Las fichas son las mismas que aparecen en la página 9 de ../documentacion/TAREA_presentacion.pdf. No se publica ese documento ni los ODT: los enlaces apuntan a los fabricantes. La presentación no afirma que haya equipos instalados ni resultados medidos. La arquitectura y la hoja de ruta son propuestas; las demos son simulaciones educativas sin conexión a maquinaria. Los diagramas usan iconos propios, no servicios oficiales de AWS. Antes de instalar los modelos en una fábrica real habría que comprobar su compatibilidad con las máquinas.
 -->

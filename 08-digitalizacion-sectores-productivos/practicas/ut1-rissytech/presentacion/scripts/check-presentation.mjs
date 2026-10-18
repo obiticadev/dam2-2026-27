@@ -44,7 +44,7 @@ async function assertContained(root, containerSelector) {
   assert.deepEqual(overflows, [], `Content escaped ${containerSelector}`)
 }
 try {
-  for (let n = 1; n <= 13; n++) {
+  for (let n = 1; n <= 14; n++) {
     const slide = await go(n, n === 2 ? 2 : n === 6 || n === 7 ? 3 : 0)
     const geometry = await slide.evaluate(root => {
       const scale = root.getBoundingClientRect().width / 1100
@@ -63,8 +63,25 @@ try {
     await page.screenshot({ path: `${output}/slide-${String(n).padStart(2, '0')}.png` })
     slides.push({ slide: n, ...geometry })
     assert(geometry.title, `Slide ${n} has no heading`)
-    await assertContained(slide, '.station-card, .sensor-card, .phone-shell, .maintenance-demo')
+    await assertContained(slide, '.station-card, .sensor-card, .phone-shell, .maintenance-demo, .equipment-sources article')
   }
+
+  // Keep the proposed models and the official sources aligned with the document.
+  const sensors = await go(4)
+  for (const model of ['ifm VVB001', 'ifm SM8000', 'WIKA TR21-A', 'ifm PN2094', 'Zebra FX9600-4', 'AN480']) {
+    assert((await sensors.innerText()).includes(model), `Missing sensor model: ${model}`)
+  }
+  assert.doesNotMatch(await sensors.innerText(), /mm\/s|DN25|IO-Link|MHz|\[\d\]/)
+  const warehouse = await go(11)
+  for (const model of ['Zebra FX9600-4', 'AN480', 'Zebra DS3678-SR']) {
+    assert((await warehouse.innerText()).includes(model), `Missing warehouse model: ${model}`)
+  }
+  const sources = await go(14)
+  const sourceLinks = sources.locator('.equipment-sources a')
+  assert.equal(await sourceLinks.count(), 7)
+  const hrefs = await sourceLinks.evaluateAll(links => links.map(link => link.href))
+  assert(hrefs.every(href => ['media.ifm.com', 'www.wika.com', 'www.zebra.com'].includes(new URL(href).hostname)))
+  assert.match(await sources.innerText(), /ANEXO|Los modelos que hemos consultado/)
 
   // The architecture and workflow must actually follow Slidev's click state.
   await go(6)

@@ -1,6 +1,6 @@
 # RissyTech — La fábrica a ciegas
 
-Presentación de la UT1 de Digitalización: **13 diapositivas principales y un anexo conservado pero desactivado**, con diagramas SVG propios, arquitectura OT–IT por zonas y dos demos interactivas. Tema claro editorial. Duración orientativa: **15–17 minutos**.
+Presentación de la UT1 de Digitalización: **13 diapositivas principales y un anexo visible con los modelos y sus fuentes oficiales**, con diagramas SVG propios, arquitectura OT–IT por zonas y dos demos interactivas. Tema claro editorial. Duración orientativa: **15–17 minutos**. Los sensores y lectores se explican con vocabulario sencillo, al nivel de la actividad de segundo de DAM.
 
 Dirección creativa, alternativas distópicas, guion de apertura y fuentes de investigación: [DIRECCION-CREATIVA.md](./DIRECCION-CREATIVA.md). «La fábrica a ciegas» es una metáfora narrativa, no un incidente real.
 
@@ -99,7 +99,7 @@ Para comprobar el build estático, arranca `npm run preview -- --port 4173` y ej
 SLIDEV_URL=http://localhost:4173 npm run check
 ```
 
-Se comprueban 13 diapositivas, límites del contenido (incluidos textos SVG), pasos de arquitectura, escalado y confirmación de alertas, bloqueo/validación/arranque, revocación de seguridad y un viewport móvil. Guarda capturas e informe en `.qa/`, ignorado por Git.
+Se comprueban las 13 diapositivas y el anexo, los modelos y enlaces de fabricantes, límites del contenido (incluidos textos SVG), pasos de arquitectura, escalado y confirmación de alertas, bloqueo/validación/arranque, revocación de seguridad y un viewport móvil. Guarda capturas e informe en `.qa/`, ignorado por Git.
 
 El script utiliza el Chromium de Playwright en Windows y `/usr/bin/chromium` en Linux; admite otra ruta con `CHROMIUM_PATH`. También verifica que no haya errores de JavaScript ni solicitudes a recursos externos.
 

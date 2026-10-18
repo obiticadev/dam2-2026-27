@@ -1,8 +1,8 @@
 <script setup>
 import TechIcon from './TechIcon.vue'
 const rows = [
-  { icon: 'hand', problem: 'Guantes y manos ocupadas', tools: 'Lector de códigos + botones grandes', detail: 'Gatillo para registrar cajas y lotes; pantalla compatible con guantes.', result: 'Menos escritura y menos errores táctiles' },
-  { icon: 'bell', problem: 'Ruido industrial', tools: 'Avisos redundantes + dictado por voz', detail: 'Vibración, texto e iconos. Dictar solo cuando el ruido lo permita.', result: 'Reconocer el aviso sin depender del sonido' },
+  { icon: 'hand', problem: 'Guantes y manos ocupadas', tools: 'Zebra DS3678-SR + botones grandes', detail: 'Lector de códigos con gatillo, conectado por Bluetooth. Pantalla compatible con guantes.', result: 'Registrar cajas y lotes sin teclear' },
+  { icon: 'bell', problem: 'Ruido industrial', tools: 'Avisos visuales + dictado por voz', detail: 'Vibración, texto e iconos. Dictar solo cuando el ruido lo permita.', result: 'Reconocer el aviso sin depender del sonido' },
   { icon: 'camera', problem: 'Diagnóstico a pie de máquina', tools: 'NFC + cámara y linterna', detail: 'Abrir ficha e historial por proximidad; iluminar y fotografiar la avería.', result: 'Consultar y documentar sin buscar ni teclear' },
 ]
 </script>

@@ -2,7 +2,7 @@
 import TechIcon from './TechIcon.vue'
 defineProps({ stage: { type: Number, default: 0 } })
 const steps = [
-  { icon: 'pressure', label: 'Detectar', text: 'Presión por debajo del límite', group: 0 },
+  { icon: 'pressure', label: 'Detectar', text: 'El ifm PN2094 mide la caída de presión', group: 0 },
   { icon: 'valve', label: 'Interrumpir', text: 'El PLC detiene el sellado', group: 0 },
   { icon: 'network', label: 'Comunicar', text: 'Estación, valor y hora', group: 1 },
   { icon: 'bell', label: 'Alertar', text: 'Vibración, sonido y aviso', group: 1 },
