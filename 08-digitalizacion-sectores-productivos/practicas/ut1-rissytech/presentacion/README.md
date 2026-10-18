@@ -1,6 +1,6 @@
 # RissyTech — La fábrica a ciegas
 
-Presentación de la UT1 de Digitalización: **13 diapositivas principales y un anexo visible con los modelos y sus fuentes oficiales**, con diagramas SVG propios, arquitectura OT–IT por zonas y dos demos interactivas. Tema claro editorial. Duración orientativa: **15–17 minutos**. Los sensores y lectores se explican con vocabulario sencillo, al nivel de la actividad de segundo de DAM.
+Presentación de la UT1 de Digitalización: **14 diapositivas principales y un anexo visible con los modelos y sus fuentes oficiales**, con diagramas SVG propios, arquitectura OT–IT por zonas y dos demos interactivas. Tema claro editorial. Duración orientativa: **16–18 minutos**. Los sensores y lectores se explican con vocabulario sencillo, al nivel de la actividad de segundo de DAM.
 
 Dirección creativa, alternativas distópicas, guion de apertura y fuentes de investigación: [DIRECCION-CREATIVA.md](./DIRECCION-CREATIVA.md). «La fábrica a ciegas» es una metáfora narrativa, no un incidente real.
 
@@ -27,11 +27,17 @@ Las notas del presentador están en los comentarios de `slides.md`, con fuentes,
 
 ### Demo 9: reparación del motor
 
-1. Marca «Intervención terminada» y pulsa «Confirmar reparación».
-2. Pulsa «Validar PLC» sin marcar las otras dos condiciones: el arranque sigue bloqueado.
-3. Marca guardas cerradas y zona despejada. Valida de nuevo.
-4. Pulsa «Arranque simulado». El panel cambia a funcionamiento.
-5. Quitar una condición retira la autorización y detiene el motor simulado.
+1. Examina el estado del motor, la causa de la parada y las lecturas ilustrativas.
+2. Las tres comprobaciones locales aparecen marcadas como en Figma. Pulsa «Confirmar reparación»: se registra y se comprueban las condiciones, sin arrancar.
+3. Pulsa «Arranque simulado», que aparece en el mismo lugar como acción independiente. El panel cambia a funcionamiento.
+4. Selecciona una causa y, opcionalmente, escribe observaciones; pulsa «Guardar diagnóstico». El registro solo permanece durante la demo.
+5. Para mostrar un bloqueo, reinicia, desmarca una condición y confirma: no aparece el arranque. Cambiar una condición retira la autorización.
+
+### Diapositiva 10: prototipo de Figma
+
+Captura real, enlace y QR al [proyecto del equipo en Figma Make](https://www.figma.com/make/iSTIGsoBR2aFBGX2rocvTo/Industrial-Maintenance-App-Interface). Se ha comprobado su previsualización sin iniciar sesión. Abrir el proyecto requiere Internet; la captura y el QR son recursos locales. No utilizar el subdominio temporal `figmacachedpreview` como enlace público.
+
+La demo de mantenimiento reproduce la composición, los estados y el diagnóstico de Figma; mantiene una acción de arranque separada de la confirmación. Los valores y el límite de vibración son ilustrativos, no parámetros validados. El diseño del móvil de alertas adapta esa identidad al reto DAM.1, no es una captura literal de una pantalla de Figma.
 
 **Son simulaciones educativas.** No hay conexión a sensores, maquinaria, servicios de notificaciones ni sistemas de seguridad. La app web no vibra ni reproduce sonidos. Las casillas simulan señales que en una instalación real vendrían del hardware y de procedimientos autorizados.
 
@@ -99,7 +105,7 @@ Para comprobar el build estático, arranca `npm run preview -- --port 4173` y ej
 SLIDEV_URL=http://localhost:4173 npm run check
 ```
 
-Se comprueban las 13 diapositivas y el anexo, los modelos y enlaces de fabricantes, límites del contenido (incluidos textos SVG), pasos de arquitectura, escalado y confirmación de alertas, bloqueo/validación/arranque, revocación de seguridad y un viewport móvil. Guarda capturas e informe en `.qa/`, ignorado por Git.
+Se comprueban las 14 diapositivas y el anexo, los modelos y enlaces de fabricantes, el acceso al prototipo, límites del contenido (incluidos textos SVG), pasos de arquitectura, escalado y confirmación de alertas, bloqueo/confirmación/arranque, revocación de autorización, registro de diagnóstico y un viewport móvil. Guarda capturas e informe en `.qa/`, ignorado por Git.
 
 El script utiliza el Chromium de Playwright en Windows y `/usr/bin/chromium` en Linux; admite otra ruta con `CHROMIUM_PATH`. También verifica que no haya errores de JavaScript ni solicitudes a recursos externos.
 

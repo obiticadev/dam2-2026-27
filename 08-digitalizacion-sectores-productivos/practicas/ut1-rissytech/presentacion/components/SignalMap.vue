@@ -10,30 +10,33 @@ const rows = [
 
 <template>
   <div class="signal-map" role="group" aria-label="De la variable de cada estación a su captura y su utilidad">
-    <div class="signal-head"><span>ESTACIÓN / QUÉ MEDIMOS</span><span>MODELO PROPUESTO</span><span>PARA QUÉ LO USARÍAMOS</span></div>
-    <div v-for="r in rows" :key="r.n" class="signal-row" :class="r.tone">
-      <div class="signal-origin"><TechIcon :name="r.icon" :size="28" /><div><small>{{ r.n }} / {{ r.station }}</small><b>{{ r.variable }}</b></div></div>
-      <span class="signal-arrow" aria-hidden="true">→</span>
-      <div class="signal-device"><div v-for="device in r.devices" :key="device.model" class="signal-model"><strong>{{ device.model }}</strong><span>{{ device.kind }}</span></div></div>
-      <span class="signal-arrow" aria-hidden="true">→</span>
-      <p>{{ r.use }}</p>
+    <div class="signal-cards">
+      <article v-for="r in rows" :key="r.n" class="signal-card" :class="r.tone">
+        <header><span>{{ r.n }}</span><TechIcon :name="r.icon" :size="32" /></header>
+        <small>{{ r.station }}</small>
+        <h2>{{ r.variable }}</h2>
+        <div class="signal-device"><div v-for="device in r.devices" :key="device.model" class="signal-model"><span>{{ device.kind }}</span><strong>{{ device.model }}</strong></div></div>
+        <div class="signal-purpose"><span class="purpose-label">EL DATO NOS PERMITE</span><p>{{ r.use }}</p></div>
+      </article>
     </div>
     <div class="signal-notes"><span>Vibración: detecta golpes, no las piedras directamente.</span><span>RFID: lee etiquetas para identificar los palés.</span></div>
   </div>
 </template>
 
 <style scoped>
-.signal-map { margin-top: 24px; }
-.signal-head { display: grid; grid-template-columns: 39% 32% 29%; font-size: 9px; letter-spacing: .1em; color: var(--muted); margin-bottom: 12px; }
-.signal-row { --station: var(--teal); display: grid; grid-template-columns: 35% 4% 27% 5% 29%; align-items: center; min-height: 72px; border-bottom: 1px solid var(--line); }
-.signal-row.orange { --station: var(--orange); }.signal-row.blue { --station: var(--blue); }.signal-row.purple { --station: var(--purple); }
-.signal-origin { display: flex; align-items: center; gap: 15px; }.signal-origin svg { color: var(--station); flex-shrink: 0; }
-small { display: block; color: var(--station); font-size: 9px; margin-bottom: 5px; text-transform: uppercase; letter-spacing: .06em; }
-b { display: block; font-size: 15px; font-weight: 550; }.signal-arrow { color: var(--station); font-size: 22px; }
-.signal-device { background: var(--panel); border: 1px solid var(--line); border-radius: 7px; padding: 9px 12px; font-size: 13px; }
-.signal-model + .signal-model { margin-top: 6px; }
-.signal-model strong { display: block; font-size: 14px; font-weight: 650; line-height: 1.25; }
-.signal-model span { display: block; color: var(--muted); font-size: 11px; line-height: 1.3; }
-.signal-row p { font-size: 13px; color: var(--muted); padding-left: 6px; }
-.signal-notes { display: flex; justify-content: space-between; margin-top: 17px; font-size: 10px; color: var(--muted); }
+.signal-map { margin-top: 22px; }
+.signal-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.signal-card { --station: var(--teal); padding: 16px; border: 1px solid var(--line); border-radius: 15px; background: white; position: relative; box-shadow: 0 8px 24px #19374b06; }
+.signal-card.orange { --station: var(--orange); }.signal-card.blue { --station: var(--blue); }.signal-card.purple { --station: var(--purple); }
+header { display: flex; align-items: center; justify-content: space-between; color: var(--station); margin-bottom: 10px; }
+header > span { font: 600 25px 'Manrope Variable'; opacity: .65; }
+small { display: block; color: var(--station); font-size: 9px; text-transform: uppercase; letter-spacing: .07em; }
+.signal-card h2 { font-size: 20px; line-height: 1.25; margin-top: 7px; height: 54px; }
+.signal-device { background: color-mix(in srgb, var(--station) 6%, white); border-radius: 9px; padding: 10px 12px; height: 84px; margin-top: 10px; display: flex; flex-direction: column; justify-content: center; gap: 8px; }
+.signal-model strong { display: block; font-size: 14px; font-weight: 650; line-height: 1.25; margin-top: 2px; }
+.signal-model span { display: block; color: var(--muted); font-size: 10px; line-height: 1.3; }
+.signal-purpose { margin-top: 13px; border-top: 1px solid var(--line); padding-top: 11px; }
+.purpose-label { display: block; color: var(--station); font-size: 8px; letter-spacing: .08em; font-weight: 650; margin-bottom: 7px; }
+.signal-purpose p { font-size: 12px; line-height: 1.65; color: var(--muted); }
+.signal-notes { display: flex; justify-content: space-between; margin-top: 15px; font-size: 9px; color: var(--muted); }
 </style>

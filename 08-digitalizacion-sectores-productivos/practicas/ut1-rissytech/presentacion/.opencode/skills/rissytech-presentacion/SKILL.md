@@ -20,7 +20,7 @@ Lee `../documentacion/TAREA_presentacion.pdf` desde la raíz del proyecto antes 
 
 ## Diseño
 
-- Una idea por diapositiva; estructura actual: 13 diapositivas principales y un anexo.
+- Una idea por diapositiva; estructura actual: 14 diapositivas principales (incluido el acceso al prototipo de Figma) y un anexo.
 - Priorizar esquemas, tarjetas y diagramas frente a tablas densas del PDF.
 - Tipografía legible en proyector, contraste alto y formato 16:9.
 - Azul noche y turquesa como base; rojo para alarmas. Añadir texto e iconos: el color no basta.

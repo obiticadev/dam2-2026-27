@@ -3,7 +3,7 @@
 - Antes de editar diapositivas, carga las skills locales `slidev` y `rissytech-presentacion`.
 - Las skills están en `.opencode/skills/`, exclusivamente para este proyecto. No instalar skills globales.
 - Fuente académica: `../documentacion/TAREA_presentacion.pdf`. Conserva los originales.
-- Escribe en español. La presentación consta de 13 diapositivas principales y un anexo de fuentes.
+- Escribe en español. La presentación consta de 14 diapositivas principales (incluido el acceso al prototipo de Figma) y un anexo de fuentes.
 - Usa `slidev-styling`, `slidev-click-animations` y `slidev-components` como referencias comunitarias complementarias; la documentación oficial prevalece si hay discrepancias.
 - Separa hechos del documento, propuestas y simulaciones. No inventes resultados o ahorros.
 - El controlador local valida la seguridad: confirmar una alerta o reparación no debe arrancar una máquina automáticamente.

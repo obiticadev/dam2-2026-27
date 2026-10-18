@@ -43,8 +43,16 @@ async function assertContained(root, containerSelector) {
   }))
   assert.deepEqual(overflows, [], `Content escaped ${containerSelector}`)
 }
+async function assertPanelPadding(root, childSelector, panelSelector) {
+  const gap = await root.locator(childSelector).evaluate((child, selector) => {
+    const panel = child.closest(selector)
+    const scale = panel.closest('.slidev-layout').getBoundingClientRect().width / 1100
+    return (panel.getBoundingClientRect().bottom - child.getBoundingClientRect().bottom) / scale
+  }, panelSelector)
+  assert(gap >= 13, `${childSelector} needs at least 13px of space below it; got ${gap.toFixed(1)}px`)
+}
 try {
-  for (let n = 1; n <= 14; n++) {
+  for (let n = 1; n <= 15; n++) {
     const slide = await go(n, n === 2 ? 2 : n === 6 || n === 7 ? 3 : 0)
     const geometry = await slide.evaluate(root => {
       const scale = root.getBoundingClientRect().width / 1100
@@ -63,7 +71,7 @@ try {
     await page.screenshot({ path: `${output}/slide-${String(n).padStart(2, '0')}.png` })
     slides.push({ slide: n, ...geometry })
     assert(geometry.title, `Slide ${n} has no heading`)
-    await assertContained(slide, '.station-card, .sensor-card, .phone-shell, .maintenance-demo, .equipment-sources article')
+    await assertContained(slide, '.station-card, .signal-card, .sensor-card, .phone-shell, .maintenance-demo, .equipment-sources article')
   }
 
   // Keep the proposed models and the official sources aligned with the document.
@@ -72,11 +80,16 @@ try {
     assert((await sensors.innerText()).includes(model), `Missing sensor model: ${model}`)
   }
   assert.doesNotMatch(await sensors.innerText(), /mm\/s|DN25|IO-Link|MHz|\[\d\]/)
-  const warehouse = await go(11)
+  const warehouse = await go(12)
   for (const model of ['Zebra FX9600-4', 'AN480', 'Zebra DS3678-SR']) {
     assert((await warehouse.innerText()).includes(model), `Missing warehouse model: ${model}`)
   }
-  const sources = await go(14)
+  const prototype = await go(10)
+  const prototypeUrl = 'https://www.figma.com/make/iSTIGsoBR2aFBGX2rocvTo/Industrial-Maintenance-App-Interface'
+  assert.equal(await prototype.getByRole('link', { name: /Abrir prototipo en Figma/ }).getAttribute('href'), prototypeUrl)
+  assert.equal(await prototype.locator('.prototype-qr a').getAttribute('href'), prototypeUrl)
+  for (const image of await prototype.locator('img').all()) assert(await image.evaluate(img => img.complete && img.naturalWidth > 0), 'Prototype image failed to load')
+  const sources = await go(15)
   const sourceLinks = sources.locator('.equipment-sources a')
   assert.equal(await sourceLinks.count(), 7)
   const hrefs = await sourceLinks.evaluateAll(links => links.map(link => link.href))
@@ -109,31 +122,42 @@ try {
   await assertContained(alertSlide, '.phone-shell')
   await page.screenshot({ path: `${output}/alerta-confirmada.png` })
 
-  // Repair, controller validation and start are three independent transitions.
+  // Figma-inspired flow: confirm repair checks local conditions, but never starts the motor.
   const motor = await go(9)
-  const start = motor.getByRole('button', { name: 'Arranque simulado' })
-  assert(await start.isDisabled())
-  await motor.getByLabel('Intervención terminada').check()
-  await motor.getByRole('button', { name: 'Confirmar reparación' }).click()
-  await motor.getByRole('button', { name: 'Validar PLC' }).click()
-  assert(await start.isDisabled())
-  assert.match(await motor.innerText(), /arranque bloqueado/)
+  await assertPanelPadding(motor, '.motor-metrics', '.motor-panel')
+  await assertPanelPadding(motor, '.repair-primary', '.safety-panel')
+  const start = motor.getByRole('button', { name: /Arranque simulado/ })
+  assert.equal(await start.count(), 0)
+  await motor.getByLabel('Guardas de seguridad cerradas').uncheck()
+  await motor.getByRole('button', { name: /Confirmar reparación/ }).click()
+  assert.equal(await start.count(), 0)
+  assert.match(await motor.innerText(), /Arranque bloqueado/)
+  assert.match(await motor.innerText(), /Motor detenido/)
   await motor.getByLabel('Guardas de seguridad cerradas').check()
-  await motor.getByLabel('Zona de giro despejada').check()
-  assert(await start.isDisabled())
-  await motor.getByRole('button', { name: 'Validar PLC' }).click()
+  await motor.getByRole('button', { name: /Confirmar reparación/ }).click()
   assert(await start.isEnabled())
+  await assertPanelPadding(motor, '.repair-primary', '.safety-panel')
+  assert.match(await motor.innerText(), /Motor detenido/)
   await page.mouse.move(1580, 10)
   await page.screenshot({ path: `${output}/motor-autorizado.png` })
   await start.click()
   assert.match(await motor.innerText(), /En funcionamiento/)
   assert.match(await motor.innerText(), /1\.480/)
+  await assertPanelPadding(motor, '.motor-metrics', '.motor-panel')
   await assertContained(motor, '.maintenance-demo')
   await page.mouse.move(1580, 10)
   await page.screenshot({ path: `${output}/motor-funcionando.png` })
-  await motor.getByLabel('Guardas de seguridad cerradas').uncheck()
-  assert(await start.isDisabled())
+  await motor.getByLabel('Atasco mecánico').check()
+  await motor.getByLabel('Observaciones (opcional)').fill('Obstrucción retirada; comprobaciones locales simuladas.')
+  await motor.getByRole('button', { name: 'Guardar diagnóstico' }).click()
+  assert.match(await motor.innerText(), /Diagnóstico guardado en esta demo/)
+  await assertContained(motor, '.safety-panel, .motor-panel')
+  await page.screenshot({ path: `${output}/diagnostico-guardado.png` })
+  await motor.getByRole('button', { name: 'Reiniciar', exact: true }).click()
   assert.match(await motor.innerText(), /Motor detenido/)
+  await motor.getByRole('button', { name: /Confirmar reparación/ }).click()
+  await motor.getByLabel('Zona de giro despejada').uncheck()
+  assert.equal(await start.count(), 0)
   await page.keyboard.press('ArrowRight')
   await page.waitForTimeout(250)
   assert(await page.locator('.slidev-page-10 .slidev-layout').isVisible(), 'Arrow navigation should still work after a demo')

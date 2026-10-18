@@ -10,7 +10,7 @@ aspectRatio: 16/9
 canvasWidth: 1100
 colorSchema: light
 transition: fade
-duration: 17min
+duration: 18min
 routerMode: hash
 monaco: false
 record: false
@@ -211,22 +211,37 @@ class: demo-slide
 
 <div class="eyebrow">08 / DEMO · APP DEL OPERARIO DEL FUTURO · RETO DAM.2</div>
 
-# Confirmar una reparación no es arrancar una máquina.
+# Diagnosticar. Reparar. Volver a producir.
 
 <MaintenanceDemo />
 
 <!--
-Mostrar primero motor parado y vibración elevada. Los números son ilustrativos, inspirados en la maqueta del documento, no datos medidos.
-Secuencia recomendada para explicar el bloqueo: marcar solo «Intervención terminada», confirmar reparación y pulsar «Validar PLC». El arranque debe seguir bloqueado porque faltan las guardas y la zona despejada. Marcar las dos condiciones restantes y validar otra vez. Entonces se habilita «Arranque simulado». Pulsarlo para ver el estado de funcionamiento.
-En este prototipo las casillas simulan entradas del controlador; una app real no podría acreditar guardas cerradas por una simple casilla. La comprobación debe venir del hardware y de los procedimientos autorizados. La acción de arranque independiente evita confundir reparación confirmada con movimiento inmediato.
-Cambiar una condición revoca la autorización en la demo. Ningún botón está conectado a un equipo físico. Fuente: página 7 y principio de comprobación local de página 6.
+Mostrar el motor detenido, el indicador de velocidad y la causa de la parada. La composición y los estados se basan en el prototipo de Figma incluido en la siguiente diapositiva y en las capturas de la página 7 del documento. Todas las lecturas son ilustrativas, no datos medidos. El límite de 7,0 mm/s es parte de esa maqueta: no es un umbral validado para una máquina real.
+Las comprobaciones aparecen marcadas como en Figma y simulan entradas locales. Confirmar reparación registra la intervención y comprueba esas condiciones. Después aparece «Arranque simulado» como acción independiente; no se arranca al confirmar. En funcionamiento se normalizan las lecturas y aparece el registro de diagnóstico: seleccionar causa, añadir observaciones y guardar. Es un registro temporal que se borra al reiniciar la demo.
+La presentación conserva el flujo de alarma, intervención y diagnóstico del diseño, pero separa la confirmación del arranque por seguridad. Las casillas no sustituyen los enclavamientos físicos ni un procedimiento autorizado. Cambiar una condición revoca la autorización. Fuente: páginas 6–7 y prototipo de Figma del equipo.
 Duración: 100 segundos.
 -->
 
 ---
 ---
 
-<div class="eyebrow">09 / DISEÑAR PARA EL ENTORNO REAL</div>
+<div class="eyebrow">09 / EL PROTOTIPO · DEL DOCUMENTO A FIGMA</div>
+
+# La propuesta también se puede explorar.
+
+<PrototypeAccess />
+
+<!--
+Este enlace abre el proyecto original de Figma Make, no una app conectada a la planta. El QR apunta a la misma dirección estable que el botón. Captura obtenida del proyecto del equipo: Industrial Maintenance App Interface, versión visible al preparar esta diapositiva. No enlazar al subdominio temporal figmacachedpreview, que requiere el contexto de Figma y puede caducar.
+Se puede consultar también desde el móvil. El proyecto es accesible en modo de previsualización sin iniciar sesión en la comprobación realizada; las funciones de edición requieren cuenta. Hace falta conexión a Internet para abrir Figma, pero la captura y el QR se sirven localmente con la presentación.
+El prototipo original combina confirmación y reactivación; nuestra demo conserva el diseño, el diagnóstico y las lecturas ilustrativas, con una acción de arranque separada y comprobación local. No presentar ninguna de las dos interfaces como un sistema de seguridad industrial validado.
+Duración: 35 segundos.
+-->
+
+---
+---
+
+<div class="eyebrow">10 / DISEÑAR PARA EL ENTORNO REAL</div>
 
 # Guantes. Ruido. Manos ocupadas.
 
@@ -242,7 +257,7 @@ Duración: 60 segundos.
 ---
 ---
 
-<div class="eyebrow">10 / TRAZABILIDAD · INTEGRACIÓN CON EL ALMACÉN</div>
+<div class="eyebrow">11 / TRAZABILIDAD · INTEGRACIÓN CON EL ALMACÉN</div>
 
 # Dos formas de identificar. Un mismo registro.
 
@@ -261,7 +276,7 @@ Duración: 60 segundos.
 ---
 ---
 
-<div class="eyebrow">11 / PROPUESTA DE IMPLANTACIÓN</div>
+<div class="eyebrow">12 / PROPUESTA DE IMPLANTACIÓN</div>
 
 # Empezar pequeño. Validar. Después, escalar.
 
@@ -285,7 +300,7 @@ Duración: 60 segundos.
 class: closing-slide
 ---
 
-<div class="eyebrow">12 / EL VALOR DE LA TRANSFORMACIÓN</div>
+<div class="eyebrow">13 / EL VALOR DE LA TRANSFORMACIÓN</div>
 
 <h1>De producir a ciegas<br>a <span class="accent">actuar con criterio.</span></h1>
 
