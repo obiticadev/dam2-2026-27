@@ -52,7 +52,7 @@ async function assertPanelPadding(root, childSelector, panelSelector) {
   assert(gap >= 13, `${childSelector} needs at least 13px of space below it; got ${gap.toFixed(1)}px`)
 }
 try {
-  for (let n = 1; n <= 15; n++) {
+  for (let n = 1; n <= 16; n++) {
     const slide = await go(n, n === 2 ? 2 : n === 6 || n === 7 ? 3 : 0)
     const geometry = await slide.evaluate(root => {
       const scale = root.getBoundingClientRect().width / 1100
@@ -87,7 +87,8 @@ try {
   const prototype = await go(10)
   const prototypeUrl = 'https://www.figma.com/make/iSTIGsoBR2aFBGX2rocvTo/Industrial-Maintenance-App-Interface'
   assert.equal(await prototype.getByRole('link', { name: /Abrir prototipo en Figma/ }).getAttribute('href'), prototypeUrl)
-  assert.equal(await prototype.locator('.prototype-qr a').getAttribute('href'), prototypeUrl)
+  assert.equal(await prototype.locator('.prototype-qr a, .prototype-qr button').count(), 0)
+  assert.equal(await prototype.locator('.prototype-disclaimer').innerText(), 'Prototipo de interfaz')
   for (const image of await prototype.locator('img').all()) assert(await image.evaluate(img => img.complete && img.naturalWidth > 0), 'Prototype image failed to load')
   const sources = await go(15)
   const sourceLinks = sources.locator('.equipment-sources a')
@@ -95,6 +96,42 @@ try {
   const hrefs = await sourceLinks.evaluateAll(links => links.map(link => link.href))
   assert(hrefs.every(href => ['media.ifm.com', 'www.wika.com', 'www.zebra.com'].includes(new URL(href).hostname)))
   assert.match(await sources.innerText(), /ANEXO|Los modelos que hemos consultado/)
+  assert.equal(await sources.locator('.source-main, .source-pages').count(), 0)
+  assert.doesNotMatch(await sources.innerText(), /Son modelos propuestos para la actividad\./)
+
+  const farewell = await go(16)
+  assert.match(await farewell.innerText(), /Gracias por/)
+  assert.equal(await farewell.locator('.presentation-address').innerText(), 'https://ut1-rissytech.pages.dev/')
+  assert.equal(await farewell.locator('a, button').count(), 0)
+  assert(await farewell.locator('.farewell-qr img').evaluate(img => img.complete && img.naturalWidth > 0))
+  assert.match(await page.locator('.slidev-page-16 .deck-footer').innerText(), /15\s*\/ 15/)
+
+  // Hover must not move the control, its contents, or neighbouring content.
+  await page.emulateMedia({ reducedMotion: 'no-preference' })
+  for (const n of [8, 9, 10, 15]) {
+    const slide = await go(n)
+    for (const control of await slide.locator('a, button:not(:disabled)').all()) {
+      await page.mouse.move(1580, 10)
+      await page.waitForTimeout(250)
+      const bounds = () => slide.locator('*').evaluateAll(elements => elements.map(element => {
+        const r = element.getBoundingClientRect()
+        return [r.x, r.y, r.width, r.height]
+      }))
+      const before = await bounds()
+      await control.hover()
+      await page.waitForTimeout(250)
+      const after = await bounds()
+      assert.equal(before.length, after.length)
+      assert(before.every((r, i) => r.every((value, j) => Math.abs(value - after[i][j]) < .1)), `Hover moved content on slide ${n}: ${await control.innerText()}`)
+    }
+  }
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  const traceability = await go(12)
+  const iconBounds = await traceability.locator('.trace-rule > svg').evaluate(svg => {
+    const b = svg.getBBox()
+    return { x: b.x, y: b.y, right: b.x + b.width, bottom: b.y + b.height }
+  })
+  assert(iconBounds.x >= .8 && iconBounds.y >= .8 && iconBounds.right <= 23.2 && iconBounds.bottom <= 23.2, 'Link icon stroke is clipped by its SVG viewport')
 
   // The architecture and workflow must actually follow Slidev's click state.
   await go(6)
@@ -109,6 +146,12 @@ try {
 
   // Alert acknowledgement must not resume the machine.
   const alertSlide = await go(8)
+  assert.doesNotMatch(await alertSlide.innerText(), /Sin sonido ni vibración reales/)
+  assert(await alertSlide.locator('.reset-button').evaluate(button => {
+    const content = document.createRange()
+    content.selectNodeContents(button)
+    return button.getBoundingClientRect().width <= content.getBoundingClientRect().width + 4
+  }), 'Reset hover must fit its icon and text, not the full row')
   await alertSlide.getByRole('button', { name: 'Simular caída de presión' }).click()
   assert.match(await alertSlide.innerText(), /Sellado interrumpido por el PLC/)
   await alertSlide.getByRole('button', { name: 'Simular plazo agotado' }).click()
@@ -124,6 +167,8 @@ try {
 
   // Figma-inspired flow: confirm repair checks local conditions, but never starts the motor.
   const motor = await go(9)
+  assert.equal(await motor.locator('.operator-avatar').innerText(), 'OB')
+  assert.doesNotMatch(await motor.innerText(), /Basado en el prototipo/)
   await assertPanelPadding(motor, '.motor-metrics', '.motor-panel')
   await assertPanelPadding(motor, '.repair-primary', '.safety-panel')
   const start = motor.getByRole('button', { name: /Arranque simulado/ })
@@ -173,6 +218,11 @@ try {
   assert(await page.locator('.slidev-page-8 .slidev-layout').isVisible())
   assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1))
   await page.screenshot({ path: `${output}/mobile.png` })
+  for (const n of [10, 15, 16]) {
+    await go(n)
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1))
+    await page.screenshot({ path: `${output}/mobile-${n}.png` })
+  }
 
   await writeFile(`${output}/report.json`, JSON.stringify({ slides, errors, frameworkWarnings: [...frameworkWarnings], externalRequests: [...externalRequests] }, null, 2))
   console.log(JSON.stringify({ checkedSlides: slides.length, layoutWarnings: slides.filter(s => s.warnings.length), browserErrors: errors, frameworkWarnings: [...frameworkWarnings], externalRequests: [...externalRequests], interactions: 'passed' }, null, 2))

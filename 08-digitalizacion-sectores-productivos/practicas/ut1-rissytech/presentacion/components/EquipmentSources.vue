@@ -21,9 +21,10 @@ const sources = [
 </template>
 
 <style scoped>
-.equipment-sources { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
-.equipment-sources article { border: 1px solid var(--line); border-radius: 9px; padding: 14px; background: white; }
-.equipment-sources p { color: var(--muted); font-size: 11px; margin-bottom: 5px; }
-.equipment-sources h3 { font-size: 16px; letter-spacing: -.025em; }
-.equipment-sources a { display: block; width: fit-content; font-size: 11px; margin-top: 7px; text-decoration: underline; text-underline-offset: 3px; }
+.equipment-sources { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.equipment-sources article { border: 1px solid var(--line); border-radius: 12px; padding: 22px; background: white; min-height: 157px; }
+.equipment-sources p { color: var(--muted); font-size: 12px; margin-bottom: 8px; }
+.equipment-sources h3 { font-size: 19px; letter-spacing: -.025em; }
+.equipment-sources a { display: block; width: fit-content; font-size: 12px; margin-top: 10px; text-decoration: underline; text-underline-offset: 3px; }
+.equipment-sources a:hover { background: #eaf5f3; box-shadow: 0 0 0 4px #eaf5f3; border-radius: 2px; }
 </style>

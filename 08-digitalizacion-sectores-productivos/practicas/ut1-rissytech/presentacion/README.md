@@ -1,6 +1,6 @@
 # RissyTech — La fábrica a ciegas
 
-Presentación de la UT1 de Digitalización: **14 diapositivas principales y un anexo visible con los modelos y sus fuentes oficiales**, con diagramas SVG propios, arquitectura OT–IT por zonas y dos demos interactivas. Tema claro editorial. Duración orientativa: **16–18 minutos**. Los sensores y lectores se explican con vocabulario sencillo, al nivel de la actividad de segundo de DAM.
+Presentación de la UT1 de Digitalización: **15 diapositivas principales y un anexo visible con los modelos y sus fuentes oficiales**, con diagramas SVG propios, arquitectura OT–IT por zonas y dos demos interactivas. El anexo ocupa la página 15 y la despedida cierra la presentación en la página 16. Tema claro editorial. Duración orientativa: **16–18 minutos**. Los sensores y lectores se explican con vocabulario sencillo, al nivel de la actividad de segundo de DAM.
 
 Dirección creativa, alternativas distópicas, guion de apertura y fuentes de investigación: [DIRECCION-CREATIVA.md](./DIRECCION-CREATIVA.md). «La fábrica a ciegas» es una metáfora narrativa, no un incidente real.
 
@@ -35,7 +35,11 @@ Las notas del presentador están en los comentarios de `slides.md`, con fuentes,
 
 ### Diapositiva 10: prototipo de Figma
 
-Captura real, enlace y QR al [proyecto del equipo en Figma Make](https://www.figma.com/make/iSTIGsoBR2aFBGX2rocvTo/Industrial-Maintenance-App-Interface). Se ha comprobado su previsualización sin iniciar sesión. Abrir el proyecto requiere Internet; la captura y el QR son recursos locales. No utilizar el subdominio temporal `figmacachedpreview` como enlace público.
+Captura real, enlace y QR al [proyecto del equipo en Figma Make](https://www.figma.com/make/iSTIGsoBR2aFBGX2rocvTo/Industrial-Maintenance-App-Interface). Se ha comprobado su previsualización sin iniciar sesión. Abrir el proyecto requiere Internet; la captura y el QR son recursos locales. El QR es una imagen escaneable, no un enlace clicable. No utilizar el subdominio temporal `figmacachedpreview` como enlace público.
+
+### Despedida final
+
+Después del anexo, la despedida muestra `https://ut1-rissytech.pages.dev/` y un QR local a esa misma dirección, ambos sin interacción de enlace. El SVG se generó con `renderSVG` de `uqr`, con corrección M y un margen de cuatro módulos.
 
 La demo de mantenimiento reproduce la composición, los estados y el diagnóstico de Figma; mantiene una acción de arranque separada de la confirmación. Los valores y el límite de vibración son ilustrativos, no parámetros validados. El diseño del móvil de alertas adapta esa identidad al reto DAM.1, no es una captura literal de una pantalla de Figma.
 
@@ -75,7 +79,7 @@ Configuración de Cloudflare Pages si se conecta el repositorio del curso:
 
 También se puede subir **solo el contenido de `dist/`** mediante Direct Upload. Se usa navegación hash para que los enlaces a diapositivas no requieran reglas de redirección. No subas la carpeta completa del proyecto.
 
-No se ha realizado ningún despliegue ni configurado una cuenta de Cloudflare.
+URL pública indicada por el equipo: `https://ut1-rissytech.pages.dev/`. Los cambios locales no se despliegan sin autorización expresa.
 
 ## PDF de respaldo
 
@@ -105,7 +109,7 @@ Para comprobar el build estático, arranca `npm run preview -- --port 4173` y ej
 SLIDEV_URL=http://localhost:4173 npm run check
 ```
 
-Se comprueban las 14 diapositivas y el anexo, los modelos y enlaces de fabricantes, el acceso al prototipo, límites del contenido (incluidos textos SVG), pasos de arquitectura, escalado y confirmación de alertas, bloqueo/confirmación/arranque, revocación de autorización, registro de diagnóstico y un viewport móvil. Guarda capturas e informe en `.qa/`, ignorado por Git.
+Se comprueban las 16 páginas (15 diapositivas principales y el anexo), los modelos y enlaces de fabricantes, el acceso al prototipo, los QR no clicables, la despedida, la estabilidad geométrica al hacer hover, el icono de enlace sin recortes, límites del contenido (incluidos textos SVG), pasos de arquitectura, escalado y confirmación de alertas, bloqueo/confirmación/arranque, revocación de autorización, registro de diagnóstico y un viewport móvil. Guarda capturas e informe en `.qa/`, ignorado por Git.
 
 El script utiliza el Chromium de Playwright en Windows y `/usr/bin/chromium` en Linux; admite otra ruta con `CHROMIUM_PATH`. También verifica que no haya errores de JavaScript ni solicitudes a recursos externos.
 

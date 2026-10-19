@@ -23,9 +23,8 @@ onSlideEnter(reset)
       <div class="demo-controls">
         <button class="btn primary" :disabled="fault" @click="state = 'alert'"><TechIcon name="alert" :size="18" />Simular caída de presión</button>
         <button class="btn ghost" :disabled="state !== 'alert'" @click="state = 'escalated'">Simular plazo agotado</button>
-        <button class="reset-button" @click="reset"><TechIcon name="reset" :size="16" /> Reiniciar demo</button>
+        <div class="demo-reset-row"><button class="reset-button" @click="reset"><TechIcon name="reset" :size="16" /> Reiniciar demo</button></div>
       </div>
-      <p class="demo-footnote">Sin sonido ni vibración reales. La interfaz representa los canales de aviso de una app industrial.</p>
     </div>
     <div class="phone-shell" :class="{ 'phone-alarm': fault && !acknowledged }">
       <div class="phone-notch"></div><div class="phone-top"><span>09:41</span><span>● ▰</span></div>

@@ -37,7 +37,7 @@ onSlideEnter(reset)
 
 <template>
   <div class="maintenance-demo" @click.stop @keydown.space.stop @keydown.enter.stop @keydown.right.stop="nextSlide" @keydown.left.stop="prevSlide">
-    <div class="tablet-bar"><span><TechIcon name="chip" :size="19" /><span><b>RissyTech</b><small>PUESTO DE MANTENIMIENTO</small></span></span><span class="demo-connection"><i></i>PLC · SIMULADO<span class="operator-avatar">OV</span></span></div>
+    <div class="tablet-bar"><span><TechIcon name="chip" :size="19" /><span><b>RissyTech</b><small>PUESTO DE MANTENIMIENTO</small></span></span><span class="demo-connection"><i></i>PLC · SIMULADO<span class="operator-avatar">OB</span></span></div>
     <div class="tablet-heading"><div><small>ESTACIÓN 01 · LAVADO Y PELADO / PELADORA 04</small><h2>Motor de peladora</h2><p>Panel de diagnóstico y puesta en marcha segura</p></div><span class="machine-badge" :class="running ? 'status-green' : 'status-red'"><TechIcon :name="running ? 'check' : 'alert'" :size="18" />{{ running ? 'En funcionamiento' : 'Motor detenido' }}</span></div>
     <div class="tablet-columns">
       <div class="motor-panel">
@@ -69,7 +69,7 @@ onSlideEnter(reset)
         </template>
       </div>
     </div>
-    <div class="tablet-footer"><span>Basado en el prototipo de Figma · Simulación educativa, no telemetría real.</span><button class="reset-button" @click="reset"><TechIcon name="reset" :size="15" /> Reiniciar</button></div>
+    <div class="tablet-footer"><button class="reset-button" @click="reset"><TechIcon name="reset" :size="15" /> Reiniciar</button></div>
   </div>
 </template>
 

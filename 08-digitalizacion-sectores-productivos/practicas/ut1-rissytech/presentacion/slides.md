@@ -328,12 +328,33 @@ class: sources-slide
 # Los modelos que hemos consultado.
 
 <div class="sources-grid">
-  <div class="source-main"><span class="pill">DOCUMENTO DEL EQUIPO</span><h2>Plan de transformación digital de RissyTech</h2><p>Actividad UT1 · «El Gemelo Digital en Papel»<br>Digitalización · 2.º de DAM</p><div class="source-pages"><span>Caso y proceso <b>pp. 1–2</b></span><span>Sensores y actuadores <b>pp. 3–4</b></span><span>Notificaciones y app <b>pp. 5–7</b></span><span>Movilidad y almacén <b>p. 8</b></span><span>Fichas de fabricantes <b>p. 9</b></span></div><small>Páginas impresas del documento.<br>Los enlaces abren las fuentes oficiales.</small></div>
   <EquipmentSources />
 </div>
 
-<div class="bottom-insight"><TechIcon name="shield" :size="19" /><span>Son modelos propuestos para la actividad. Un técnico tendría que comprobarlos antes de instalarlos en una fábrica real.</span></div>
+<div class="bottom-insight"><TechIcon name="shield" :size="19" /><span>Un técnico tendría que comprobarlos antes de instalarlos en una fábrica real.</span></div>
 
 <!--
 Este anexo queda visible después del cierre y también se exporta al PDF para poder consultar los modelos. Las fichas son las mismas que aparecen en la página 9 de ../documentacion/TAREA_presentacion.pdf. No se publica ese documento ni los ODT: los enlaces apuntan a los fabricantes. La presentación no afirma que haya equipos instalados ni resultados medidos. La arquitectura y la hoja de ruta son propuestas; las demos son simulaciones educativas sin conexión a maquinaria. Los diagramas usan iconos propios, no servicios oficiales de AWS. Antes de instalar los modelos en una fábrica real habría que comprobar su compatibilidad con las máquinas.
+-->
+
+---
+class: farewell-slide
+---
+
+<div class="eyebrow">RISSYTECH / GRACIAS POR ACOMPAÑARNOS</div>
+
+<div class="farewell-grid">
+  <div class="farewell-copy">
+    <h1>Gracias por<br>vuestra <span class="accent">atención.</span></h1>
+    <p>La presentación también está en vuestro móvil.</p>
+    <span class="presentation-address">https://ut1-rissytech.pages.dev/</span>
+  </div>
+  <figure class="farewell-qr">
+    <img src="/presentacion-qr.svg" alt="Código QR para ver la presentación en https://ut1-rissytech.pages.dev/" />
+    <figcaption>Escanea y explora la presentación a tu ritmo.</figcaption>
+  </figure>
+</div>
+
+<!--
+Despedida final, después del anexo. La dirección visible y el QR apuntan a https://ut1-rissytech.pages.dev/. No son controles interactivos; el QR permite abrir la presentación en otro dispositivo.
 -->
