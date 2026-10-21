@@ -1,0 +1,144 @@
+{
+  "scope": "UT02-A capítulos 1 y 2 sin NIO; UT02-B completo",
+  "sources": [
+    {
+      "source": "temario/UT02-A-manejo-de-ficheros.md",
+      "source_sha256_bytes": "a2746eb2902b0fe15412450967f61739d02ec6beee69c201270d805c297ebf3e",
+      "selected_sha256_utf8": "19442be3da5946dc0b7326c739788f849be6f2b50b4080aff1ea385198ed64e3",
+      "annex_sha256_utf8": "2584527dc25119702d038cbf8402e2253c7421f7a75d49d275314a22788b2a50",
+      "output": "UT02-A - Manejo de ficheros - Resumen completo.md",
+      "output_sha256_bytes": "1209e4093e86b04c8ace1f55a4246106371d5c6f342a9a6409f777ed02ce7885",
+      "source_headings_in_scope": 27,
+      "original_code_blocks_preserved": 28,
+      "characters": 103337,
+      "words_approx": 13853,
+      "images_linked_existing": 7,
+      "transformations": [
+        "Codificación de salida UTF-8 y finales de línea LF.",
+        "Encabezados docentes desplazados un nivel y prefijados para distinguirlos del desarrollo elaborado; contenido de código sin modificar.",
+        "Rutas ./img/ adaptadas a ../temario/img/ para conservar recursos originales.",
+        "Excluido íntegramente el capítulo 3 (NIO).",
+        "Omitido el tramo introductorio de comparación IO/NIO y su enlace externo en 2.13; omisión expresa, no pérdida accidental."
+      ]
+    },
+    {
+      "source": "temario/UT02-B-librerias-xml-java.md",
+      "source_sha256_bytes": "c6a01ed53243ad027e539616e16bfca012ed9a7892bfb75729bc8039cbd79133",
+      "selected_sha256_utf8": "54b4b56c5683ce3da7709a57489115abc543a670cc7d497785d26fddc3d234d7",
+      "annex_sha256_utf8": "17da94aedf741e5b7b8828aac1209508b73eb241dbead69dc875d1fad0632d87",
+      "output": "UT02-B - Librerías XML en Java - Resumen completo.md",
+      "output_sha256_bytes": "8961a312c4c39d9b214cdaf5cb7b36154f61cac3365cbdfb63414dc29f5665f1",
+      "source_headings_in_scope": 31,
+      "original_code_blocks_preserved": 35,
+      "characters": 121597,
+      "words_approx": 15615,
+      "images_linked_existing": 12,
+      "transformations": [
+        "Codificación de salida UTF-8 y finales de línea LF.",
+        "Encabezados docentes desplazados un nivel y prefijados para distinguirlos del desarrollo elaborado; contenido de código sin modificar.",
+        "Rutas ./img/ adaptadas a ../temario/img/ para conservar recursos originales."
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "class": "PruebaFicheros",
+      "compiled_release": 17,
+      "status": "executed-pass",
+      "checks": {
+        "stdout_exact": true,
+        "binary_record": true,
+        "written_text": true,
+        "File_not_created": true
+      },
+      "stdout": "File crea: false\nAnexado: ABCDEXY\nSobrescrito: XY\nLinea: [A]\nLinea: []\nLinea: [B]\nPuntero: 36\nRegistro: 3;9.5\nTamano: 36\n"
+    },
+    {
+      "class": "PruebaXml",
+      "compiled_release": 17,
+      "status": "executed-pass",
+      "checks": {
+        "stdout_exact": true
+      },
+      "stdout": "DOM nodeValue: null\nDOM texto: Luis\nDOM ausente: []\nSAX texto: Luis\nStAX texto: Luis\nStAX en cierre: true\n"
+    }
+  ],
+  "prompt_inventory": [
+    {
+      "path": "prompts para podcast/UT02-A - Prompts para podcast.md",
+      "prompts": [
+        "P-A0",
+        "P-A1",
+        "P-A2",
+        "P-A3",
+        "P-A4",
+        "P-A5",
+        "P-A6",
+        "P-A7"
+      ],
+      "count": 8
+    },
+    {
+      "path": "prompts para podcast/UT02-B - Prompts para podcast.md",
+      "prompts": [
+        "P-B0",
+        "P-B1",
+        "P-B2",
+        "P-B3",
+        "P-B4",
+        "P-B5",
+        "P-B6",
+        "P-B7"
+      ],
+      "count": 8
+    },
+    {
+      "path": "prompts para cuestionarios/Examen completo - Simulacros y repaso adaptativo.md",
+      "prompts": [
+        "Q-M1",
+        "Q-M2",
+        "Q-M3",
+        "Q-M4",
+        "Q-M5"
+      ],
+      "count": 5
+    },
+    {
+      "path": "prompts para cuestionarios/UT02-A - Prompts para cuestionarios.md",
+      "prompts": [
+        "Q-A0",
+        "Q-A1",
+        "Q-A2",
+        "Q-A3",
+        "Q-A4",
+        "Q-A5",
+        "Q-A6",
+        "Q-A7"
+      ],
+      "count": 8
+    },
+    {
+      "path": "prompts para cuestionarios/UT02-B - Prompts para cuestionarios.md",
+      "prompts": [
+        "Q-B0",
+        "Q-B1",
+        "Q-B2",
+        "Q-B3",
+        "Q-B4",
+        "Q-B5",
+        "Q-B6",
+        "Q-B7"
+      ],
+      "count": 8
+    }
+  ],
+  "final_checks": {
+    "sources_unchanged": true,
+    "portable_no_wikilinks": true,
+    "code_fences_balanced": true,
+    "no_compiled_artifacts_in_output": true,
+    "podcast_prompts": 16,
+    "quiz_and_adaptive_prompts": 21,
+    "NIO_excluded_from_teaching_content": true
+  }
+}
