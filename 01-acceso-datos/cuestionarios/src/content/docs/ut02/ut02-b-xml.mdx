@@ -1,0 +1,67 @@
+---
+title: UT02-B · XML en Java
+description: Autoevaluación de DOM, SAX, StAX y JAXB.
+sidebar:
+  order: 2
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+<Quiz title="DOM vs SAX">
+¿Qué afirmación describe correctamente a **DOM**?
+
+- [x] Carga el documento completo en memoria como un árbol de nodos.
+- [ ] Recorre el documento lanzando eventos sin guardarlo en memoria.
+  > Eso describe a SAX.
+- [ ] Solo permite escribir XML, no leerlo.
+
+DOM permite recorrer y modificar el árbol, a cambio de un mayor consumo de memoria.
+
+</Quiz>
+
+<Quiz title="Ventajas de SAX">
+¿Cuáles son características de **SAX**?
+
+- [x] Procesa el documento de forma secuencial mediante eventos.
+- [x] Consume poca memoria, apto para ficheros grandes.
+- [ ] Permite volver atrás y modificar nodos ya leídos.
+- [x] El programador implementa un manejador (por ejemplo, extendiendo `DefaultHandler`).
+
+</Quiz>
+
+<Quiz title="Factoría DOM">
+Para obtener un `DocumentBuilder` se usa la clase [[DocumentBuilderFactory]].
+</Quiz>
+
+<Quiz title="StAX">
+¿En qué se diferencia **StAX** de SAX?
+
+- [x] En StAX el programa *tira* de los eventos (modelo *pull*); en SAX el analizador los *empuja* (*push*).
+- [ ] StAX carga todo el documento en memoria.
+- [ ] StAX no puede escribir XML.
+
+StAX ofrece dos API: de cursor (`XMLStreamReader`) y de iteradores (`XMLEventReader`).
+
+</Quiz>
+
+<Quiz title="JAXB: marshal">
+En JAXB, ¿qué operación convierte un objeto Java en XML?
+
+- [x] *Marshal* (`Marshaller`)
+- [ ] *Unmarshal* (`Unmarshaller`)
+  > *Unmarshal* hace lo contrario: de XML a objeto.
+- [ ] *Parse* (`DocumentBuilder`)
+
+</Quiz>
+
+<Quiz title="Anotación raíz">
+¿Qué anotación JAXB marca la clase que corresponde al elemento raíz del XML?
+
+- [ ] `@XmlElement`
+- [ ] `@XmlAttribute`
+- [x] `@XmlRootElement`
+- [ ] `@XmlType`
+
+</Quiz>
+
+<QuizResults />

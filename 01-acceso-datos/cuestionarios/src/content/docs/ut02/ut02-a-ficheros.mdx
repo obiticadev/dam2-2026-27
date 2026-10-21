@@ -1,0 +1,88 @@
+---
+title: UT02-A · Manejo de ficheros
+description: Autoevaluación de java.io, flujos, serialización, acceso aleatorio y java.nio.
+sidebar:
+  order: 1
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+<Quiz title="Flujos de bytes">
+¿Qué dos clases abstractas son la base de los flujos de bytes en `java.io`?
+
+- [x] `InputStream` y `OutputStream`
+- [ ] `Reader` y `Writer`
+  > `Reader` y `Writer` son la base de los flujos de **caracteres**.
+- [ ] `FileReader` y `FileWriter`
+- [ ] `Scanner` y `PrintStream`
+
+Los flujos de bytes (8 bits) se usan para datos binarios; sus métodos básicos son `read()` y `write()`.
+
+</Quiz>
+
+<Quiz title="Flujos de caracteres">
+¿Qué clases trabajan con flujos de **caracteres**?
+
+- [x] `FileReader`
+- [x] `BufferedWriter`
+- [ ] `FileInputStream`
+- [x] `PrintWriter`
+- [ ] `DataOutputStream`
+
+Las clases que terminan en `Reader`/`Writer` manejan caracteres; las que terminan en `Stream`, bytes.
+
+</Quiz>
+
+<Quiz title="Serializable">
+Para que un objeto se pueda escribir con `ObjectOutputStream`, su clase debe implementar la interfaz [[Serializable]].
+</Quiz>
+
+<Quiz title="Interfaz marcadora">
+¿Cuántos métodos hay que implementar al implementar `Serializable`?
+
+- [x] Ninguno, es una interfaz marcadora
+- [ ] Uno: `serialize()`
+- [ ] Dos: `writeObject()` y `readObject()`
+  > Pueden definirse de forma opcional para personalizar la serialización, pero no son obligatorios.
+
+</Quiz>
+
+<Quiz title="Atributos no serializados">
+¿Qué modificador evita que un atributo se guarde al serializar un objeto?
+
+- [ ] `static final`
+- [x] `transient`
+- [ ] `volatile`
+- [ ] `private`
+
+Un atributo `transient` se reconstruye con su valor por defecto (`null`, `0`, `false`) al deserializar.
+
+</Quiz>
+
+<Quiz title="Acceso aleatorio">
+¿Qué clase permite situarse en cualquier posición de un fichero con `seek()` para leer y escribir?
+
+- [ ] `FileInputStream`
+- [ ] `BufferedReader`
+- [x] `RandomAccessFile`
+- [ ] `File`
+  > `File` representa la ruta del fichero, pero no lee ni escribe su contenido.
+
+</Quiz>
+
+<Quiz title="Modo de apertura">
+¿Qué modo hay que pasar a `RandomAccessFile` para poder leer **y** escribir? Escríbelo sin comillas: [[rw]]
+</Quiz>
+
+<Quiz title="java.nio">
+¿Qué afirmaciones sobre `java.nio.file` son correctas?
+
+- [x] `Path` representa una ruta del sistema de ficheros.
+- [x] `Files.readAllLines(path)` devuelve una `List<String>` con las líneas.
+- [ ] `Files` debe instanciarse con `new Files(path)`.
+  > `Files` solo tiene métodos estáticos.
+- [x] `Path.of("datos.txt")` o `Paths.get("datos.txt")` crean un `Path`.
+
+</Quiz>
+
+<QuizResults />
