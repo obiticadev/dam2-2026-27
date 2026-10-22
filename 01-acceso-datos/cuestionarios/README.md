@@ -18,13 +18,15 @@ y [starlight-quiz](https://ewels.github.io/starlight-quiz). Las respuestas se gu
 ```
 src/content/docs/
 ├── index.mdx              # Portada
+├── examen-mixto.mdx       # Simulacro de 40 preguntas (UT02-A + UT02-B)
 ├── plantilla.mdx          # Ejemplo de cada tipo de pregunta (copiar para crear nuevos)
-└── ut02/                  # Una carpeta por unidad; se añade sola a la barra lateral
-    ├── ut02-a-ficheros.mdx
-    └── ut02-b-xml.mdx
+├── ut02a/                 # Ficheros, sin NIO: a1…a5, un bloque por página
+└── ut02b/                 # XML: b1…b5 (DOM, SAX, StAX, JAXB)
 ```
 
-Para una unidad nueva: crea `src/content/docs/utXX/` y añade el grupo en `sidebar` de `astro.config.mjs`.
+Cada carpeta de unidad se añade sola a la barra lateral; para una unidad nueva crea `src/content/docs/utXX/` y añade el grupo en `sidebar` de `astro.config.mjs`.
+
+Convenciones de las preguntas: seis opciones, una sola `[x]`, un comentario `>` por opción, `id` estable y único (`a1-01`, `b4-07`, `mx-12`…) para no perder el progreso guardado, y al final una línea `Repasar: **Axx**` que remite al resumen de `../resumen`.
 
 ## Sintaxis rápida
 
