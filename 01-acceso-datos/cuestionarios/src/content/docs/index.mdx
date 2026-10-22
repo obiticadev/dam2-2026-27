@@ -1,14 +1,38 @@
 ---
 title: Cuestionarios de Acceso a Datos
-description: Cuestionarios de autoevaluación de Acceso a Datos (DAM2).
+description: Cuestionarios de autoevaluación del primer examen de Acceso a Datos (DAM2).
 ---
 
-import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+import { LinkCard, CardGrid, Aside } from '@astrojs/starlight/components';
 
-Cuestionarios de autoevaluación del módulo **Acceso a Datos**. Las respuestas se guardan en
-el almacenamiento local del navegador: puedes cerrar la página y continuar más tarde.
+Cuestionarios de práctica para el **primer examen**: UT02-A *Manejo de ficheros* (sin NIO) y UT02-B *Librerías XML en Java*. Cada pregunta tiene **seis opciones y una sola correcta**; al responder se muestra por qué falla cada opción y el apartado del resumen que conviene repasar (Axx/Bxx). Las respuestas se guardan en el navegador: puedes cerrar la página y continuar más tarde.
+
+<Aside type="caution" title="Alcance">
+NIO (`Path`, `Files`, canales, opciones de apertura) no entra. Son preguntas de práctica, no preguntas oficiales del profesor.
+</Aside>
+
+## UT02-A · Manejo de ficheros
 
 <CardGrid>
-	<LinkCard title="UT02-A · Manejo de ficheros" href="/ut02/ut02-a-ficheros/" description="java.io, flujos, serialización, acceso aleatorio y java.nio." />
-	<LinkCard title="UT02-B · XML en Java" href="/ut02/ut02-b-xml/" description="DOM, SAX, StAX y JAXB." />
+	<LinkCard title="A1 · File, rutas y filtros" href="/ut02a/a1-file-filtros/" description="15 preguntas · A01–A05" />
+	<LinkCard title="A2 · Bytes, copia y parámetros" href="/ut02a/a2-bytes/" description="15 preguntas · A06" />
+	<LinkCard title="A3 · Serialización binaria" href="/ut02a/a3-serializacion/" description="12 preguntas · A07" />
+	<LinkCard title="A4 · Caracteres y acceso secuencial" href="/ut02a/a4-caracteres-secuencial/" description="15 preguntas · A08–A09" />
+	<LinkCard title="A5 · Acceso aleatorio" href="/ut02a/a5-acceso-aleatorio/" description="15 preguntas · A10, A14" />
+</CardGrid>
+
+## UT02-B · XML en Java
+
+<CardGrid>
+	<LinkCard title="B1 · DOM: parseo, árbol y extracción" href="/ut02b/b1-dom-lectura/" description="15 preguntas · B03–B05" />
+	<LinkCard title="B2 · DOM: crear, modificar y guardar" href="/ut02b/b2-dom-escritura/" description="12 preguntas · B06" />
+	<LinkCard title="B3 · SAX y acumulación de texto" href="/ut02b/b3-sax/" description="15 preguntas · B07–B08" />
+	<LinkCard title="B4 · StAX: cursor e iteradores" href="/ut02b/b4-stax/" description="15 preguntas · B09–B11" />
+	<LinkCard title="B5 · JAXB: anotaciones y ciclo" href="/ut02b/b5-jaxb/" description="15 preguntas · B12–B13" />
+</CardGrid>
+
+## Simulacro
+
+<CardGrid>
+	<LinkCard title="Examen mixto" href="/examen-mixto/" description="40 preguntas nuevas, ambas unidades mezcladas" />
 </CardGrid>

@@ -1,0 +1,362 @@
+---
+title: "A2 · Bytes, copia y parámetros"
+description: "FileInputStream, FileOutputStream, read/write por tramos, append, DataInputStream y DataOutputStream (A06, A02, A09)."
+sidebar:
+  order: 2
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloque **A06**, apoyado en **A02** y **A09**. Sin NIO. Los ficheros de los enunciados contienen bytes ASCII salvo que se indique otra cosa. Los fragmentos omiten los `import` y el manejo de `IOException`.
+
+<Quiz id="a2-01" title="Retorno de read()">
+¿Qué devuelve `FileInputStream.read()` sin argumentos?
+
+- [ ] Un `byte` entre -128 y 127, o `-1` al final.
+  > El retorno es `int`; si fuera `byte`, el valor -1 no se podría distinguir del byte `0xFF`.
+- [x] Un `int` entre 0 y 255 con el byte leído, o `-1` al llegar al final.
+  > Correcta (A06.1).
+- [ ] Un `char` con el carácter leído.
+  > Lee bytes, no caracteres decodificados.
+- [ ] La cantidad de bytes leídos.
+  > Eso lo devuelve `read(byte[])`.
+- [ ] `null` al llegar al final del fichero.
+  > Un tipo primitivo no puede ser `null`; `null` es la señal de `readLine()`.
+- [ ] Lanza `EOFException` al llegar al final.
+  > `read()` devuelve -1; `EOFException` la lanzan métodos como `readInt()`.
+
+Repasar: **A06.1, A15**.
+</Quiz>
+
+<Quiz id="a2-02" title="Byte 0xFF">
+El fichero `uno.bin` contiene un único byte con valor hexadecimal `FF`. ¿Qué imprime?
+
+```java
+try (FileInputStream in = new FileInputStream("uno.bin")) {
+    System.out.println(in.read() + " " + in.read());
+}
+```
+
+- [ ] `-1 -1`
+  > El primer `read()` devuelve el byte como valor 0–255, no -1.
+- [ ] `-1 255`
+  > El orden y los valores no corresponden.
+- [x] `255 -1`
+  > Correcta: el byte `FF` se devuelve como 255 y luego llega el final.
+- [ ] `FF -1`
+  > Se imprime un `int` decimal, no hexadecimal.
+- [ ] `255 0`
+  > Al final se devuelve -1, no 0.
+- [ ] `-1` y luego `EOFException`.
+  > `read()` no lanza `EOFException`.
+
+Repasar: **A06.1**.
+</Quiz>
+
+<Quiz id="a2-03" title="write(300)">
+¿Cuántos bytes tiene `n.bin` y qué valor tiene el primero?
+
+```java
+try (FileOutputStream out = new FileOutputStream("n.bin")) {
+    out.write(300);
+}
+```
+
+- [ ] 4 bytes, con el entero 300 en binario.
+  > `write(int)` escribe un único byte, no un `int` de cuatro.
+- [ ] 3 bytes: `'3'`, `'0'`, `'0'`.
+  > No escribe texto.
+- [x] 1 byte con valor 44.
+  > Correcta: escribe los 8 bits bajos; 300 mod 256 = 44.
+- [ ] 1 byte con valor 255, porque 300 no cabe.
+  > No satura: trunca a los 8 bits bajos.
+- [ ] Lanza `IllegalArgumentException` porque 300 > 255.
+  > No valida el rango; trunca.
+- [ ] 2 bytes, porque 300 necesita 9 bits.
+  > Siempre escribe exactamente un byte.
+
+Repasar: **A06.1, A15**.
+</Quiz>
+
+<Quiz id="a2-04" title="Truncado al abrir">
+`log.txt` contiene `HOLA`. ¿Qué tamaño tiene después de ejecutar esto?
+
+```java
+FileOutputStream out = new FileOutputStream("log.txt");
+out.close();
+```
+
+- [ ] 4 bytes: no se ha escrito nada, así que no cambia.
+  > El truncado se produce al **abrir** sin `append`, no al escribir.
+- [x] 0 bytes.
+  > Correcta: al abrir sin anexado, el contenido anterior se pierde.
+- [ ] 1 byte con un salto de línea.
+  > No se escribe nada.
+- [ ] Lanza `IOException` porque el fichero ya existe.
+  > Abrir un fichero existente para escritura es válido.
+- [ ] El fichero se borra del disco.
+  > Queda el fichero, vacío; truncar no es borrar la entrada.
+- [ ] Depende de si se llamó a `flush()`.
+  > Sin datos pendientes, el truncado ya ocurrió al abrir.
+
+Repasar: **A06.1, A09**.
+</Quiz>
+
+<Quiz id="a2-05" title="Abrir para leer un inexistente">
+`no-existe.bin` no existe. ¿Qué pasa al ejecutar `new FileInputStream("no-existe.bin")`?
+
+- [ ] Crea un fichero vacío y devuelve el flujo.
+  > Abrir para lectura nunca crea el fichero.
+- [ ] Devuelve un flujo cuyo primer `read()` da -1.
+  > El constructor ya falla.
+- [ ] Devuelve `null`.
+  > Un constructor no devuelve `null`.
+- [x] Lanza `FileNotFoundException`, que es subclase de `IOException`.
+  > Correcta (A06.1).
+- [ ] Lanza `NoSuchFileException`.
+  > Esa excepción pertenece a NIO, que no se usa aquí.
+- [ ] Lanza `EOFException`.
+  > No se ha intentado leer.
+
+Repasar: **A06.1**.
+</Quiz>
+
+<Quiz id="a2-06" title="read con off y len">
+`f.bin` contiene `ABCDE`. ¿Qué imprime?
+
+```java
+byte[] b = new byte[6];
+try (FileInputStream in = new FileInputStream("f.bin")) {
+    int n = in.read(b, 2, 3);
+    System.out.println(n + " " + Arrays.toString(b));
+}
+```
+
+- [ ] `3 [65, 66, 67, 0, 0, 0]`
+  > `off` = 2 indica dónde se escribe **en el array**, no cuánto se salta del fichero.
+- [x] `3 [0, 0, 65, 66, 67, 0]`
+  > Correcta: lee 3 bytes del principio del fichero y los coloca desde el índice 2.
+- [ ] `3 [0, 0, 67, 68, 69, 0]`
+  > Interpreta `off` como posición del fichero.
+- [ ] `5 [0, 0, 65, 66, 67, 68]`
+  > `len` limita a 3 bytes como máximo.
+- [ ] `67 [0, 0, 65, 66, 67, 0]`
+  > El retorno es una cantidad, no un byte.
+- [ ] Lanza `IndexOutOfBoundsException`.
+  > 2 + 3 = 5 ≤ 6: el tramo es válido.
+
+Repasar: **A06.1**.
+</Quiz>
+
+<Quiz id="a2-07" title="Copia con un error">
+`origen.bin` contiene `ABCDEF`. Supón que las lecturas devuelven 4, luego 2 y luego -1. ¿Qué contiene `destino.bin`?
+
+```java
+byte[] buffer = new byte[4];
+int leidos;
+while ((leidos = in.read(buffer)) != -1) {
+    out.write(buffer);
+}
+```
+
+- [ ] `ABCDEF`
+  > Sería el resultado con `write(buffer, 0, leidos)`.
+- [x] `ABCDEFCD`
+  > Correcta: la segunda vuelta escribe el array completo, `E F C D`, incluidos los restos.
+- [ ] `ABCDEF` seguido de dos bytes a cero.
+  > Los restos no son ceros: son `C` y `D` de la lectura anterior.
+- [ ] `ABCD`
+  > El bucle sigue hasta -1.
+- [ ] `ABCDABCD`
+  > La segunda lectura sí sobrescribe las dos primeras posiciones con `E F`.
+- [ ] Bucle infinito.
+  > Termina al recibir -1.
+
+Repasar: **A06.2**.
+</Quiz>
+
+<Quiz id="a2-08" title="Condición del bucle de copia">
+En el bucle de copia por bloques, ¿qué condición usa la señal de final que garantiza el contrato?
+
+- [x] `while ((leidos = in.read(buffer)) != -1)`
+  > Correcta: -1 es la señal contractual de final; el ejemplo docente usa `> 0`, que funciona con búfer no vacío.
+- [ ] `while ((leidos = in.read(buffer)) != null)`
+  > `read` devuelve un `int`; no puede compararse con `null`.
+- [ ] `while (in.available() > 0)`
+  > `available()` es una estimación, no un detector de final.
+- [ ] `while ((leidos = in.read(buffer)) == buffer.length)`
+  > Una lectura puede no llenar el búfer sin haber llegado al final.
+- [ ] `while (in.read() != '\n')`
+  > Es un criterio de texto, no de final de fichero binario.
+- [ ] `while (!in.eof())`
+  > `FileInputStream` no tiene método `eof()`.
+
+Repasar: **A06.2**.
+</Quiz>
+
+<Quiz id="a2-09" title="Escribir un tramo">
+¿Qué contiene `s.txt` al terminar?
+
+```java
+byte[] b = "HOLA MUNDO".getBytes(StandardCharsets.US_ASCII);
+try (FileOutputStream out = new FileOutputStream("s.txt")) {
+    out.write(b, 5, 5);
+}
+```
+
+- [ ] `HOLA `
+  > Escribe desde el índice 5, no los 5 primeros.
+- [x] `MUNDO`
+  > Correcta: desde el índice 5, cinco bytes.
+- [ ] `MUNDO` y un salto de línea.
+  > `write` no añade separadores.
+- [ ] `     MUNDO` (cinco espacios delante).
+  > `off` es un índice del array, no una posición del fichero.
+- [ ] `HOLA MUNDO`
+  > Solo se escribe el tramo indicado.
+- [ ] Lanza `IndexOutOfBoundsException`.
+  > 5 + 5 = 10 = `b.length`: el tramo es válido.
+
+Repasar: **A06.1**.
+</Quiz>
+
+<Quiz id="a2-10" title="Anexado de bytes">
+`a.bin` contiene `AB`. ¿Qué contiene después?
+
+```java
+try (FileOutputStream out = new FileOutputStream("a.bin", true)) {
+    out.write('C');
+}
+try (FileOutputStream out = new FileOutputStream("a.bin")) {
+    out.write('D');
+}
+```
+
+- [ ] `ABCD`
+  > La segunda apertura no usa `append` y trunca.
+- [ ] `ABC`
+  > La segunda apertura sí escribe `D` después de truncar.
+- [x] `D`
+  > Correcta: primero queda `ABC`, pero la segunda apertura sin anexado lo vacía y escribe `D`.
+- [ ] `DBC`
+  > Supone escribir desde el principio sin truncar; `FileOutputStream` no hace eso.
+- [ ] `ABD`
+  > No hay sustitución del último byte.
+- [ ] No compila: `write` no admite un `char`.
+  > El `char` se promociona a `int`.
+
+Repasar: **A06.1**.
+</Quiz>
+
+<Quiz id="a2-11" title="Tamaños de primitivas">
+¿Cuántos bytes tiene `p.bin` al terminar?
+
+```java
+try (DataOutputStream out = new DataOutputStream(new FileOutputStream("p.bin"))) {
+    out.write(65);
+    out.writeInt(65);
+    out.writeDouble(1.5);
+}
+```
+
+- [ ] 3
+  > Cuenta un byte por llamada.
+- [ ] 6
+  > Cuenta 1 + 1 + 4.
+- [ ] 9
+  > Cuenta `write(65)` como 4 bytes y olvida el `double`.
+- [x] 13
+  > Correcta: 1 (`write`) + 4 (`writeInt`) + 8 (`writeDouble`).
+- [ ] 16
+  > Cuenta `write(65)` como un `int` de 4 bytes.
+- [ ] 12
+  > Olvida el byte de `write(65)`.
+
+Repasar: **A06.3**.
+</Quiz>
+
+<Quiz id="a2-12" title="Leer más de lo escrito">
+`d.bin` se creó con `writeInt(10)` y `writeInt(20)` en un `DataOutputStream`. ¿Qué ocurre?
+
+```java
+try (DataInputStream in = new DataInputStream(new FileInputStream("d.bin"))) {
+    System.out.println(in.readInt());
+    System.out.println(in.readInt());
+    System.out.println(in.readInt());
+}
+```
+
+- [ ] Imprime `10`, `20` y `-1`.
+  > `readInt` no tiene valor centinela: -1 podría ser un entero válido.
+- [ ] Imprime `10`, `20` y `0`.
+  > No inventa valores.
+- [ ] Imprime `10`, `20` y `null`.
+  > Un `int` no puede ser `null`.
+- [x] Imprime `10` y `20`, y la tercera lectura lanza `EOFException`.
+  > Correcta: faltan bytes para un `int` completo.
+- [ ] Imprime `10`, `20`, `10`: vuelve al principio.
+  > Un flujo secuencial no rebobina.
+- [ ] Imprime `1020`.
+  > Cada `println` imprime un valor.
+
+Repasar: **A06.3, A15**.
+</Quiz>
+
+<Quiz id="a2-13" title="writeUTF frente a texto">
+¿Qué afirmación sobre `DataOutputStream.writeUTF("Hola")` es correcta?
+
+- [ ] Escribe exactamente los 4 bytes UTF-8 de `Hola`, igual que un `FileWriter` en UTF-8.
+  > `writeUTF` añade delante una longitud de dos bytes.
+- [x] Escribe dos bytes de longitud seguidos de la cadena en UTF-8 modificado: 6 bytes en este caso.
+  > Correcta (A06.3).
+- [ ] Escribe 8 bytes: dos por carácter.
+  > Eso se parecería a `writeChars`, que escribe `char` de 2 bytes.
+- [ ] Añade un salto de línea al final.
+  > No añade separadores.
+- [ ] Puede leerse con `BufferedReader.readLine()` sin problemas.
+  > Se lee con `readUTF()`, que conoce la cabecera de longitud.
+- [ ] Usa la codificación predeterminada del sistema.
+  > Usa siempre UTF-8 modificado.
+
+Repasar: **A06.3**.
+</Quiz>
+
+<Quiz id="a2-14" title="available()">
+¿Qué afirmación sobre `available()` es correcta?
+
+- [ ] Devuelve el tamaño total del fichero.
+  > Para el tamaño se usa `File.length()`.
+- [ ] Devuelve 0 únicamente cuando se ha llegado al final.
+  > Puede devolver 0 sin haber terminado.
+- [x] Es una estimación de los bytes que se pueden leer sin bloquear; no sirve como detector general del final.
+  > Correcta (A06.1).
+- [ ] Devuelve -1 al final, como `read()`.
+  > No devuelve -1.
+- [ ] Indica cuántos bytes se han leído hasta ahora.
+  > No es un contador de lectura.
+- [ ] Solo existe en `RandomAccessFile`.
+  > Es un método de `InputStream`.
+
+Repasar: **A06.1**.
+</Quiz>
+
+<Quiz id="a2-15" title="Copia binaria o por líneas">
+Hay que duplicar `foto.png` exactamente. ¿Qué enfoque es correcto?
+
+- [ ] `BufferedReader.readLine()` y `BufferedWriter.write()` línea a línea.
+  > Decodifica y cambia los terminadores: no conserva los bytes.
+- [ ] `FileReader` y `FileWriter` carácter a carácter.
+  > También interpreta los bytes como texto con una codificación.
+- [x] `FileInputStream` y `FileOutputStream` por bloques, escribiendo solo los bytes leídos en cada vuelta.
+  > Correcta: la copia binaria no interpreta los bytes.
+- [ ] `DataInputStream.readInt()` hasta `EOFException`, escribiendo con `writeInt`.
+  > Si el tamaño no es múltiplo de 4 se pierden los últimos bytes.
+- [ ] `ObjectOutputStream.writeObject` con el fichero.
+  > Serializaría un objeto Java, no copiaría el contenido.
+- [ ] Cambiar la extensión a `.txt` y copiarla como texto.
+  > La extensión no cambia el formato.
+
+Repasar: **A06.2, A09**.
+</Quiz>
+
+<QuizResults />

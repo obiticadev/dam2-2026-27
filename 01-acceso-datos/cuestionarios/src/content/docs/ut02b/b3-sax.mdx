@@ -1,0 +1,362 @@
+---
+title: "B3 · SAX y acumulación de texto"
+description: "Modelo push, SAXParserFactory, DefaultHandler, callbacks, characters(ch, start, length), StringBuilder, qName, Attributes e InputSource (B07, B08)."
+sidebar:
+  order: 3
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **B07–B08**. Los fragmentos omiten los `import` y el manejo de excepciones. Salvo que se diga otra cosa, se usa `SAXParserFactory.newInstance()` sin activar espacios de nombres, y los XML de los enunciados van en una sola línea, sin indentación.
+
+<Quiz id="b3-01" title="Modelo push">
+¿Qué describe mejor el funcionamiento de SAX?
+
+- [ ] La aplicación pide el siguiente evento con `next()`.
+  > Eso es StAX (modelo *pull*).
+- [x] El parser recorre el documento una vez y llama a los métodos del manejador cuando encuentra cada parte (modelo *push*).
+  > Correcta (B07.1).
+- [ ] Construye un árbol en memoria y después lo recorre.
+  > Eso es DOM.
+- [ ] Permite volver atrás para releer un elemento anterior.
+  > SAX no retiene el documento; hay que guardar estado propio o releer.
+- [ ] Convierte el XML en objetos Java anotados.
+  > Eso es JAXB.
+- [ ] Solo funciona con documentos pequeños.
+  > Precisamente es adecuado para documentos grandes.
+
+Repasar: **B07.1, B02.1**.
+</Quiz>
+
+<Quiz id="b3-02" title="Arrancar el análisis">
+¿Qué secuencia lanza correctamente el análisis con un manejador propio `MiHandler extends DefaultHandler`?
+
+- [ ] `new SAXParser().parse(new File("a.xml"), new MiHandler());`
+  > `SAXParser` es abstracta: se obtiene de la factoría.
+- [ ] `SAXParserFactory.newInstance().parse(new File("a.xml"), new MiHandler());`
+  > La factoría no parsea.
+- [x] `SAXParserFactory.newInstance().newSAXParser().parse(new File("a.xml"), new MiHandler());`
+  > Correcta (B07.1).
+- [ ] `DocumentBuilderFactory.newInstance().newSAXParser().parse(...)`
+  > Esa factoría es la de DOM.
+- [ ] `new MiHandler().parse(new File("a.xml"));`
+  > El manejador recibe eventos; no analiza.
+- [ ] `SAXParserFactory.newInstance().newSAXParser().parse(new MiHandler(), new File("a.xml"));`
+  > Primero va el origen y después el manejador.
+
+Repasar: **B07.1**.
+</Quiz>
+
+<Quiz id="b3-03" title="Orden de los callbacks">
+Para el XML `<a x="1"><b>t</b></a>`, ¿en qué orden se llaman los callbacks?
+
+- [ ] `startDocument`, `startElement a`, `characters "1"`, `startElement b`, `characters "t"`, `endElement b`, `endElement a`, `endDocument`
+  > Los atributos llegan en `startElement` (parámetro `Attributes`), no en `characters`.
+- [x] `startDocument`, `startElement a`, `startElement b`, `characters "t"`, `endElement b`, `endElement a`, `endDocument`
+  > Correcta: orden del documento, y el atributo va dentro de `startElement a`.
+- [ ] `startDocument`, `startElement a`, `endElement a`, `startElement b`, `characters "t"`, `endElement b`, `endDocument`
+  > `b` está dentro de `a`: `a` se cierra al final.
+- [ ] `startElement a`, `startElement b`, `characters "t"`, `endElement b`, `endElement a`
+  > Faltan `startDocument` y `endDocument`.
+- [ ] `startDocument`, `startElement b`, `startElement a`, …
+  > Se respeta el orden del documento.
+- [ ] `startDocument`, `startElement a`, `startElement x`, …
+  > Un atributo no genera `startElement`.
+
+Repasar: **B07.2, B07.3**.
+</Quiz>
+
+<Quiz id="b3-04" title="Tramo válido de characters">
+El parser llama a este `characters` con `ch = {'x','x','L','u','i','s','y'}`, `start = 2` y `length = 4`, y el acumulador estaba vacío. ¿Qué imprime?
+
+```java
+private final StringBuilder texto = new StringBuilder();
+
+@Override
+public void characters(char[] ch, int start, int length) {
+    texto.append(ch, start, length);
+    System.out.println(texto);
+}
+```
+
+- [ ] `xxLuisy`
+  > Toma el array completo ignorando `start` y `length`.
+- [x] `Luis`
+  > Correcta: índices 2 a 5.
+- [ ] `Lu`
+  > Interpreta `length` como índice final.
+- [ ] `xxLu`
+  > Empieza en 0 y toma 4.
+- [ ] `uisy`
+  > Empieza un carácter tarde.
+- [ ] `xxLuis`
+  > Toma `start + length` caracteres desde el 0.
+
+Repasar: **B08.1**.
+</Quiz>
+
+<Quiz id="b3-05" title="Acumulador sustituido">
+El texto de `<nombre>Luis</nombre>` llega en dos llamadas: `"Lu"` y `"is"`. ¿Qué imprime este manejador en `endElement`?
+
+```java
+private String texto = "";
+
+@Override
+public void characters(char[] ch, int start, int length) {
+    texto = new String(ch, start, length);
+}
+@Override
+public void endElement(String uri, String local, String qName) {
+    if ("nombre".equals(qName)) System.out.println(texto);
+}
+```
+
+- [ ] `Luis`
+  > Cada llamada **sustituye** el valor anterior.
+- [x] `is`
+  > Correcta: hay que acumular con `StringBuilder.append(ch, start, length)`.
+- [ ] `Lu`
+  > La segunda llamada sobrescribe la primera.
+- [ ] `isLu`
+  > No se acumula.
+- [ ] Una cadena vacía.
+  > La última llamada deja `is`.
+- [ ] Lanza `SAXException` por texto fragmentado.
+  > La fragmentación es un comportamiento permitido.
+
+Repasar: **B08.1, B15.2.3**.
+</Quiz>
+
+<Quiz id="b3-06" title="Dónde procesar el texto">
+Con el patrón de acumulación del temario, ¿en qué callback debe interpretarse el texto completo de un campo simple?
+
+- [ ] En `startElement`, porque ahí empieza el campo.
+  > Todavía no ha llegado el texto.
+- [ ] En cada llamada a `characters`.
+  > Puede llegar solo una parte del texto.
+- [x] En `endElement` del campo, tras haber acumulado todos los tramos.
+  > Correcta (B08.2).
+- [ ] En `startDocument`.
+  > Es el inicio del documento.
+- [ ] En el constructor del manejador.
+  > El constructor se ejecuta antes del análisis.
+- [ ] En `endDocument`, y solo ahí.
+  > Al final se habrían mezclado todos los campos.
+
+Repasar: **B08.2**.
+</Quiz>
+
+<Quiz id="b3-07" title="Contar elementos vacíos">
+¿Qué imprime el contador al terminar si el XML es `<l><i/><i>t</i><i/></l>`?
+
+```java
+int n = 0;
+
+@Override
+public void startElement(String uri, String local, String qName, Attributes atts) {
+    if ("i".equals(qName)) n++;
+}
+@Override
+public void endDocument() {
+    System.out.println(n);
+}
+```
+
+- [ ] 1
+  > Cuenta solo el que tiene texto; los vacíos también tienen inicio.
+- [x] 3
+  > Correcta: `<i/>` produce `startElement` y `endElement`.
+- [ ] 4
+  > Cuenta también `l`, pero la condición lo excluye.
+- [ ] 6
+  > Cuenta inicios y finales; solo se cuenta en `startElement`.
+- [ ] 2
+  > Olvida uno de los vacíos.
+- [ ] 0
+  > `qName` sí trae el nombre con la factoría por defecto.
+
+Repasar: **B07.3**.
+</Quiz>
+
+<Quiz id="b3-08" title="localName sin espacios de nombres">
+Con `SAXParserFactory.newInstance()` por defecto (sin `setNamespaceAware(true)`), ¿qué reciben `localName` y `qName` en `startElement` para `<student>`?
+
+- [ ] Los dos valen `student`.
+  > No siempre: depende de la configuración de namespaces.
+- [x] `qName` vale `student` y `localName` puede llegar vacío.
+  > Correcta: sin namespaces, el nombre fiable es `qName`.
+- [ ] `localName` vale `student` y `qName` es `null`.
+  > Es al revés.
+- [ ] Ambos son `null`.
+  > `qName` sí trae el nombre.
+- [ ] `uri` contiene `student`.
+  > `uri` es el espacio de nombres.
+- [ ] `qName` vale `<student>` con los signos.
+  > Solo el nombre, sin `<` ni `>`.
+
+Repasar: **B07.2**.
+</Quiz>
+
+<Quiz id="b3-09" title="Atributo ausente en SAX">
+¿Qué imprime este manejador para `<student rollno="393"/>`?
+
+```java
+@Override
+public void startElement(String uri, String local, String qName, Attributes attributes) {
+    System.out.println(attributes.getValue("rollno") + " " + attributes.getValue("curso"));
+}
+```
+
+Las opciones indican qué devuelve cada una de las dos llamadas.
+
+- [ ] `"393"` y `""`
+  > En SAX, un atributo ausente devuelve `null` (en DOM `getAttribute` devuelve `""`).
+- [x] `"393"` y `null`
+  > Correcta (B07.2).
+- [ ] `393` (entero) y `0`
+  > Los valores son `String`.
+- [ ] `null` y `null`, porque los atributos llegan en `characters`.
+  > Llegan en el parámetro `Attributes`.
+- [ ] `"393"` y lanza `SAXException`.
+  > No es un error pedir un atributo ausente.
+- [ ] `"rollno=393"` y `null`
+  > Devuelve solo el valor.
+
+Repasar: **B07.2, B15.1**.
+</Quiz>
+
+<Quiz id="b3-10" title="Manejador que reinicia en cada etiqueta">
+El manejador reinicia el acumulador en **cada** `startElement`, acumula en `characters` y en **cada** `endElement` imprime `qName + "=" + texto` y vuelve a vaciarlo. ¿Qué imprime para `<nombre>Lu<parte>is</parte></nombre>`?
+
+- [ ] `nombre=Luis`
+  > El reinicio al abrir `parte` pierde el `Lu` del padre.
+- [ ] `parte=is` y `nombre=Luis`
+  > `nombre` no conserva su texto porque se vació.
+- [x] `parte=is` y `nombre=` (vacío)
+  > Correcta: este estado simple sirve para hojas, no para contenido mixto.
+- [ ] `parte=Luis` y `nombre=`
+  > El acumulador se reinició al empezar `parte`.
+- [ ] `nombre=Lu` y `parte=is`
+  > `parte` se cierra antes que `nombre`.
+- [ ] Lanza `SAXException` por contenido mixto.
+  > El contenido mixto es XML válido.
+
+Repasar: **B08.3, B14.2**.
+</Quiz>
+
+<Quiz id="b3-11" title="Espacios de indentación">
+Este manejador se ejecuta sobre el XML indentado de abajo. ¿Qué se observa en la salida?
+
+```xml
+<a>
+  <b>x</b>
+</a>
+```
+
+```java
+@Override
+public void characters(char[] ch, int start, int length) {
+    System.out.println("[" + new String(ch, start, length) + "]");
+}
+```
+
+- [ ] Solo aparecen los textos de las hojas.
+  > Los espacios de indentación también son texto.
+- [x] También aparecen fragmentos formados solo por saltos y espacios.
+  > Correcta: hay que filtrar o aplicar `trim()` con criterio.
+- [ ] El parser lanza un error por los espacios.
+  > La indentación es válida.
+- [ ] Los espacios llegan a `startElement`.
+  > Llegan a `characters`.
+- [ ] Se imprime el marcado de las etiquetas.
+  > `characters` no recibe etiquetas.
+- [ ] Nada: `characters` solo se llama en elementos con atributos.
+  > Se llama con cualquier texto.
+
+Repasar: **B07.3**.
+</Quiz>
+
+<Quiz id="b3-12" title="Analizar sin lógica propia">
+¿Qué ocurre con `parser.parse(new File("a.xml"), new DefaultHandler())` si el XML está bien formado?
+
+- [ ] No compila: `DefaultHandler` es abstracta.
+  > Es una clase concreta con métodos vacíos.
+- [x] Lo analiza sin errores, pero no extrae ni muestra nada.
+  > Correcta: los callbacks heredados no hacen nada.
+- [ ] Imprime todo el XML por consola.
+  > No tiene lógica de impresión.
+- [ ] Devuelve un `Document` con el árbol.
+  > `parse` de SAX devuelve `void`.
+- [ ] Guarda los datos en una lista interna.
+  > SAX no guarda datos por la aplicación.
+- [ ] Lanza `SAXException` porque no hay callbacks sobrescritos.
+  > Los callbacks son opcionales.
+
+Repasar: **B07.1**.
+</Quiz>
+
+<Quiz id="b3-13" title="Datos de un registro">
+Para saber a qué `student` pertenece cada `firstname`, ¿qué debe hacer el manejador?
+
+- [ ] Llamar a `getParentNode()` dentro de `characters`.
+  > SAX no ofrece un árbol navegable.
+- [x] Mantener estado propio: por ejemplo, guardar el `rollno` actual en `startElement` de `student`.
+  > Correcta (B07.3).
+- [ ] Pedir al parser que vuelva al `student` anterior.
+  > SAX no retrocede.
+- [ ] Leer el atributo en `endElement`.
+  > `endElement` no recibe atributos.
+- [ ] Usar `getElementsByTagName("student")`.
+  > Es un método de DOM.
+- [ ] Nada: SAX asocia los datos automáticamente.
+  > La aplicación es responsable del estado.
+
+Repasar: **B07.3**.
+</Quiz>
+
+<Quiz id="b3-14" title="InputSource y setEncoding">
+El archivo `f` está en UTF-8 y contiene acentos. ¿Qué ocurre?
+
+```java
+Reader r = new InputStreamReader(new FileInputStream(f), "ISO-8859-1");
+InputSource is = new InputSource(r);
+is.setEncoding("UTF-8");
+parser.parse(is, handler);
+```
+
+- [ ] `setEncoding` corrige la decodificación y los acentos se leen bien.
+  > Con un `Reader`, los bytes ya se decodificaron como ISO-8859-1.
+- [x] Los caracteres ya llegan decodificados por el `Reader`; `setEncoding` no los reinterpreta y los acentos pueden salir mal.
+  > Correcta (B08.4).
+- [ ] El parser lanza un error por incoherencia de codificaciones.
+  > No compara ambas.
+- [ ] `InputSource` no admite un `Reader`.
+  > Sí lo admite.
+- [ ] El parser vuelve a leer el archivo en bytes.
+  > Trabaja con el `Reader` recibido.
+- [ ] Da igual: SAX siempre usa UTF-8.
+  > Con bytes, el parser interpreta la declaración; con un `Reader`, usa los caracteres que recibe.
+
+Repasar: **B08.4**.
+</Quiz>
+
+<Quiz id="b3-15" title="Mayúsculas en XML">
+El ejemplo docente compara nombres con `equalsIgnoreCase`. ¿Qué afirmación es correcta?
+
+- [ ] Es obligatorio, porque XML no distingue mayúsculas.
+  > XML sí distingue mayúsculas: `<Libro>` y `<libro>` son distintos.
+- [x] XML distingue mayúsculas; comparar sin distinguirlas es una decisión de la aplicación, no una regla del formato.
+  > Correcta (B08.3, B01.1).
+- [ ] SAX convierte todos los nombres a minúsculas.
+  > Entrega los nombres tal como están.
+- [ ] Con `equals` el parser lanzaría una excepción.
+  > La comparación la hace la aplicación.
+- [ ] `<Libro>` puede cerrarse con `</libro>`.
+  > Estaría mal formado.
+- [ ] `equalsIgnoreCase` es necesario para leer atributos.
+  > Los atributos se leen con `getValue`.
+
+Repasar: **B08.3, B01.1**.
+</Quiz>
+
+<QuizResults />

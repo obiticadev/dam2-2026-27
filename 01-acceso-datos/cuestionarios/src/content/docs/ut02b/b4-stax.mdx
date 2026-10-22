@@ -1,0 +1,339 @@
+---
+title: "B4 · StAX: cursor e iteradores"
+description: "Modelo pull, XMLStreamReader y XMLEventReader, next/nextEvent, hasNext, estados, getElementText, atributos, peek y cierre (B09–B11)."
+sidebar:
+  order: 4
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **B09–B11**. Los fragmentos omiten los `import` y el manejo de `XMLStreamException`. `r` es un `XMLStreamReader` recién creado con `XMLInputFactory.newInstance().createXMLStreamReader(...)` sobre el XML indicado, escrito en una sola línea y sin indentación; `er` es un `XMLEventReader` creado de la misma forma.
+
+<Quiz id="b4-01" title="Pull frente a push">
+¿Cuál es la diferencia principal entre StAX y SAX?
+
+- [ ] StAX construye un árbol y SAX no.
+  > Ninguno de los dos construye un árbol completo.
+- [x] En StAX la aplicación pide el siguiente evento (pull); en SAX el parser llama al manejador (push).
+  > Correcta (B09).
+- [ ] StAX permite volver atrás en el documento.
+  > No retrocede; como mucho se guardan eventos propios.
+- [ ] SAX es pull y StAX es push.
+  > Es al revés.
+- [ ] StAX solo puede escribir XML.
+  > Lee y escribe.
+- [ ] StAX necesita JAXB para funcionar.
+  > Es parte de `java.xml`.
+
+Repasar: **B09, B15.1**.
+</Quiz>
+
+<Quiz id="b4-02" title="Estado inicial">
+Sin haber llamado a ningún otro método, ¿qué devuelve `r.getEventType()`?
+
+- [ ] `START_ELEMENT` de la raíz.
+  > Antes de la raíz está el inicio del documento.
+- [x] `XMLStreamConstants.START_DOCUMENT`
+  > Correcta (B10.1).
+- [ ] -1, porque aún no se ha leído nada.
+  > Siempre hay un evento actual.
+- [ ] `END_DOCUMENT`
+  > Ese es el último.
+- [ ] Lanza `IllegalStateException`.
+  > Es válido consultarlo desde el principio.
+- [ ] `CHARACTERS`
+  > No hay texto antes de la raíz.
+
+Repasar: **B10.1**.
+</Quiz>
+
+<Quiz id="b4-03" title="Recorrido de inicios">
+¿Qué imprime para el XML `<a><b/><c>t</c></a>`?
+
+```java
+while (r.hasNext()) {
+    if (r.next() == XMLStreamConstants.START_ELEMENT) {
+        System.out.print(r.getLocalName() + " ");
+    }
+}
+```
+
+- [ ] `b c `
+  > La raíz `a` también produce `START_ELEMENT`.
+- [x] `a b c `
+  > Correcta: un inicio por cada elemento, incluido el vacío.
+- [ ] `a c `
+  > `<b/>` también tiene inicio.
+- [ ] `a b c t `
+  > `t` es texto, no un elemento.
+- [ ] `a b b c c a `
+  > Solo se imprimen los inicios.
+- [ ] Nada: el bucle no entra porque el estado inicial es `START_DOCUMENT`.
+  > `hasNext()` es `true` y `next()` avanza a la raíz.
+
+Repasar: **B10.1, B09.2**.
+</Quiz>
+
+<Quiz id="b4-04" title="hasNext no avanza">
+¿Qué imprime `System.out.println(r.getEventType() == XMLStreamConstants.START_DOCUMENT)` después de llamar tres veces seguidas a `r.hasNext()`?
+
+- [x] `true`
+  > Correcta: `hasNext()` comprueba sin avanzar.
+- [ ] `false`, porque el cursor está en el tercer evento.
+  > Solo `next()` avanza.
+- [ ] `false`, porque el cursor está en la raíz.
+  > No ha avanzado nada.
+- [ ] Lanza `IllegalStateException`.
+  > Consultar el tipo es válido en cualquier estado.
+- [ ] No compila: `hasNext()` devuelve `int`.
+  > Devuelve `boolean`.
+- [ ] Depende de la longitud del documento.
+  > No avanza nunca.
+
+Repasar: **B10.1**.
+</Quiz>
+
+<Quiz id="b4-05" title="Dónde queda el cursor">
+XML: `<libro><t lang="en">Hola</t><p>9</p></libro>`. El cursor está en el `START_ELEMENT` de `t`. ¿Qué imprime?
+
+```java
+String texto = r.getElementText();
+r.next();
+System.out.println(texto + " " + r.getLocalName());
+```
+
+- [ ] `Hola t`
+  > `getElementText()` deja el cursor en el cierre de `t`, y `next()` avanza otra vez.
+- [x] `Hola p`
+  > Correcta: tras el cierre de `t`, el siguiente evento es el inicio de `p`.
+- [ ] `Hola libro`
+  > Antes del cierre de `libro` está `p`.
+- [ ] ` t` (texto vacío)
+  > El método devuelve el texto completo.
+- [ ] `Hola` y lanza `IllegalStateException` en `getLocalName()`.
+  > En un `START_ELEMENT` el nombre está disponible.
+- [ ] `Hola 9`
+  > `getLocalName` devuelve nombres de elemento.
+
+Repasar: **B10.2**.
+</Quiz>
+
+<Quiz id="b4-06" title="Variable de tipo desfasada">
+XML: `<t>Hola</t>`. ¿Qué imprime?
+
+```java
+int tipo = r.next();               // START_ELEMENT de t
+String s = r.getElementText();
+System.out.println((tipo == XMLStreamConstants.START_ELEMENT) + " "
+        + (r.getEventType() == XMLStreamConstants.END_ELEMENT));
+```
+
+- [ ] `false true`
+  > La variable `tipo` no se actualiza sola.
+- [x] `true true`
+  > Correcta: `tipo` conserva el valor antiguo, pero el lector ya está en el cierre.
+- [ ] `true false`
+  > `getElementText()` sí avanza el lector.
+- [ ] `false false`
+  > `tipo` sigue valiendo `START_ELEMENT`.
+- [ ] Lanza `XMLStreamException`.
+  > `t` solo contiene texto.
+- [ ] No compila: `next()` devuelve `XMLEvent`.
+  > En el cursor devuelve `int`.
+
+Repasar: **B10.2**.
+</Quiz>
+
+<Quiz id="b4-07" title="getElementText con un subelemento">
+El cursor está en el inicio de `nombre` en `<nombre>Lu<b>is</b></nombre>`. ¿Qué ocurre con `r.getElementText()`?
+
+- [ ] Devuelve `Luis`.
+  > Eso haría `getTextContent()` en DOM.
+- [ ] Devuelve `Lu`.
+  > No se detiene en el subelemento devolviendo lo parcial.
+- [x] Lanza `XMLStreamException`, porque el elemento no es solo texto.
+  > Correcta (B10.2).
+- [ ] Devuelve `Lu<b>is</b>`.
+  > Nunca devuelve marcado.
+- [ ] Devuelve `null`.
+  > No devuelve `null`.
+- [ ] Devuelve `is`.
+  > No salta al subelemento.
+
+Repasar: **B10.2, B14.2**.
+</Quiz>
+
+<Quiz id="b4-08" title="Elemento vacío">
+El cursor está en el inicio de `<title/>`. ¿Qué devuelve `r.getElementText()`?
+
+- [ ] `null`
+  > Devuelve una cadena.
+- [x] `""` (cadena vacía)
+  > Correcta (B10.2).
+- [ ] `"title"`
+  > No devuelve el nombre.
+- [ ] Lanza `XMLStreamException`.
+  > Un elemento vacío es de solo texto (sin texto).
+- [ ] Lanza `IllegalStateException`.
+  > Está en `START_ELEMENT`, que es la precondición.
+- [ ] El texto del elemento siguiente.
+  > No sale del elemento.
+
+Repasar: **B10.2**.
+</Quiz>
+
+<Quiz id="b4-09" title="Atributos según el estado">
+XML: `<t lang="en">Hola</t>`. ¿Qué imprime?
+
+```java
+r.next();   // START_ELEMENT de t
+System.out.print(r.getAttributeValue(null, "lang") + " "
+        + r.getAttributeValue(null, "color") + " ");
+r.next();   // CHARACTERS
+System.out.println(r.getAttributeValue(null, "lang"));
+```
+
+- [ ] `en  en` (vacío en medio)
+  > Un atributo ausente da `null`, y en `CHARACTERS` no se pueden consultar atributos.
+- [ ] `en null en`
+  > En el evento de texto ya no hay atributos que consultar.
+- [x] `en null ` y después lanza `IllegalStateException`.
+  > Correcta: los atributos solo se consultan en `START_ELEMENT`.
+- [ ] `null null null`
+  > En el inicio de `t` el atributo existe.
+- [ ] Lanza `IllegalArgumentException` por el `null` del primer parámetro.
+  > `null` como URI significa no comprobar el espacio de nombres.
+- [ ] `en  ` y después `null`.
+  > Ni el ausente es vacío ni el tercero devuelve `null`.
+
+Repasar: **B10.1**.
+</Quiz>
+
+<Quiz id="b4-10" title="Avanzar después del final">
+`r` ya está en `END_DOCUMENT` y `r.hasNext()` es `false`. ¿Qué ocurre con `r.next()`?
+
+- [ ] Devuelve -1.
+  > No hay valor centinela.
+- [ ] Vuelve a `START_DOCUMENT`.
+  > StAX no rebobina.
+- [x] Lanza una excepción (`NoSuchElementException` en el JDK) porque no hay más eventos.
+  > Correcta (B10.1).
+- [ ] Devuelve `END_DOCUMENT` otra vez.
+  > No repite eventos.
+- [ ] Devuelve `null`.
+  > Devuelve un `int`; no puede ser `null`.
+- [ ] Cierra el flujo de entrada.
+  > No cierra nada.
+
+Repasar: **B10.1**.
+</Quiz>
+
+<Quiz id="b4-11" title="next y nextEvent">
+¿Qué línea **no compila**?
+
+- [ ] `int tipo = r.next();`
+  > Correcta en el cursor: devuelve `int`.
+- [ ] `XMLEvent e = er.nextEvent();`
+  > Correcta en la API de eventos.
+- [x] `XMLEvent e = r.next();`
+  > Esta no compila: en el cursor `next()` devuelve un `int`, no un `XMLEvent`.
+- [ ] `boolean b = er.hasNext();`
+  > `hasNext()` existe y devuelve `boolean`.
+- [ ] `XMLEvent e = er.peek();`
+  > `peek()` devuelve el próximo `XMLEvent` sin consumirlo.
+- [ ] `int t = r.getEventType();`
+  > Devuelve `int`.
+
+Repasar: **B09.1, B11.2**.
+</Quiz>
+
+<Quiz id="b4-12" title="peek no consume">
+XML: `<a/>`. Tras consumir con `er.nextEvent()` el `START_DOCUMENT`, ¿qué imprime?
+
+```java
+XMLEvent e1 = er.peek();
+XMLEvent e2 = er.nextEvent();
+System.out.println(e1.isStartElement() + " " + e2.isStartElement());
+```
+
+- [ ] `true false`
+  > `peek()` no consume: `nextEvent()` devuelve el mismo evento.
+- [x] `true true`
+  > Correcta: los dos corresponden al inicio de `a`.
+- [ ] `false true`
+  > `peek()` ya muestra el inicio de `a`.
+- [ ] `false false`
+  > El siguiente evento es el inicio de `a`.
+- [ ] Lanza `IllegalStateException` en `peek()`.
+  > `peek()` es válido.
+- [ ] No compila: `peek()` devuelve `int`.
+  > En `XMLEventReader` devuelve `XMLEvent`.
+
+Repasar: **B11.2**.
+</Quiz>
+
+<Quiz id="b4-13" title="El evento guardado no cambia">
+`ev` es el `StartElement` de `<t>Hola</t>` obtenido con `er.nextEvent()`. Después se llama a `er.getElementText()`. ¿Qué afirmación es correcta?
+
+- [ ] `ev` pasa a ser el evento de cierre de `t`.
+  > El objeto obtenido antes no se transforma.
+- [x] `ev.isStartElement()` sigue siendo `true`: el lector avanzó, pero el objeto guardado no cambia.
+  > Correcta (B11.2).
+- [ ] `ev` queda a `null`.
+  > La variable no se modifica.
+- [ ] `getElementText()` no se puede usar en la API de eventos.
+  > `XMLEventReader` también tiene `getElementText()`.
+- [ ] `ev.asStartElement()` avanza al siguiente evento.
+  > Solo da la vista tipada, sin consumir.
+- [ ] El lector vuelve al inicio de `t`.
+  > No retrocede.
+
+Repasar: **B11.1, B11.2**.
+</Quiz>
+
+<Quiz id="b4-14" title="Atributos en la API de eventos">
+¿Qué devuelve `start.getAttributes()` sobre un `StartElement`?
+
+- [ ] Un `NodeList`.
+  > `NodeList` es de DOM.
+- [ ] Un `NamedNodeMap`.
+  > También es de DOM.
+- [x] Un `Iterator<Attribute>`; cada `Attribute` tiene `getName()` (`QName`) y `getValue()`.
+  > Correcta (B11.1).
+- [ ] Un `String[]` con los valores.
+  > Devuelve objetos `Attribute`.
+- [ ] Un evento `ATTRIBUTE` que hay que consumir con `nextEvent()`.
+  > Los atributos van asociados al inicio del elemento.
+- [ ] Los atributos en el orden semántico fijado por el XML.
+  > El orden de los atributos no tiene significado en XML.
+
+Repasar: **B11.1, B09.2**.
+</Quiz>
+
+<Quiz id="b4-15" title="Cerrar el lector">
+¿Por qué no compila este código en JDK 17?
+
+```java
+try (XMLStreamReader r = XMLInputFactory.newInstance()
+        .createXMLStreamReader(new FileInputStream("a.xml"))) {
+    // …
+}
+```
+
+- [ ] Porque `createXMLStreamReader` no admite un `InputStream`.
+  > Sí lo admite.
+- [x] Porque `XMLStreamReader` no implementa `AutoCloseable`, así que no puede ir en un `try-with-resources`.
+  > Correcta: se cierra en un `finally`, y el flujo de origen sí en el `try-with-resources`.
+- [ ] Porque `XMLStreamReader` no tiene método `close()`.
+  > Lo tiene, pero no implementa `AutoCloseable`.
+- [ ] Porque falta capturar `SAXException`.
+  > StAX usa `XMLStreamException`.
+- [ ] Porque `XMLInputFactory` no tiene `newInstance()`.
+  > Sí lo tiene.
+- [ ] Sí compila; solo avisa de un recurso sin cerrar.
+  > Es un error de compilación.
+
+Repasar: **B11.3**.
+</Quiz>
+
+<QuizResults />

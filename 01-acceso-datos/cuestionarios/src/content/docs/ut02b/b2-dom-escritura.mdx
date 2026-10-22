@@ -1,0 +1,279 @@
+---
+title: "B2 · DOM: crear, modificar y guardar"
+description: "newDocument, createElement/appendChild, atributos, setTextContent, mover y eliminar nodos, Transformer, DOMSource y StreamResult (B06, B03–B05)."
+sidebar:
+  order: 2
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloque **B06** y precondiciones de **B03–B05**. Los fragmentos omiten los `import` y el manejo de excepciones; `doc` es un `Document` vacío creado con `builder.newDocument()` salvo que se indique otra cosa. Cuando se pregunta por el XML resultante, interesa la estructura, no la declaración ni la indentación.
+
+<Quiz id="b2-01" title="Crear no es insertar">
+¿Qué estructura tiene el árbol al terminar?
+
+```java
+Element raiz = doc.createElement("compania");
+doc.appendChild(raiz);
+Element emp = doc.createElement("empleado");
+emp.setAttribute("id", "1");
+```
+
+- [ ] `<compania><empleado id="1"/></compania>`
+  > `empleado` se ha creado, pero nunca se inserta.
+- [x] `<compania/>`
+  > Correcta: falta `raiz.appendChild(emp)`.
+- [ ] `<empleado id="1"/>`
+  > La raíz es `compania`.
+- [ ] `<compania><empleado><id>1</id></empleado></compania>`
+  > Ni se inserta `empleado` ni `setAttribute` crea hijos.
+- [ ] Un documento sin raíz.
+  > `compania` sí se ha insertado.
+- [ ] Lanza `DOMException` porque `emp` no tiene padre.
+  > Se puede modificar un nodo antes de insertarlo.
+
+Repasar: **B06.1**.
+</Quiz>
+
+<Quiz id="b2-02" title="setAttribute">
+`emp` es un elemento ya insertado. ¿Qué produce `emp.setAttribute("id", "7")`?
+
+- [ ] Un hijo `<id>7</id>` dentro de `emp`.
+  > Un atributo no es un elemento hijo.
+- [x] El atributo `id="7"` en el propio elemento `emp`.
+  > Correcta (B06.1).
+- [ ] Un atributo `id` creado pero sin asignar.
+  > `setAttribute` lo crea y lo asigna en un solo paso.
+- [ ] Un texto `7` dentro de `emp`.
+  > No toca el contenido.
+- [ ] El atributo `7="id"`.
+  > El primer parámetro es el nombre y el segundo el valor.
+- [ ] Una `DOMException` si `emp` ya tiene hijos.
+  > Los atributos son independientes de los hijos.
+
+Repasar: **B06.1**.
+</Quiz>
+
+<Quiz id="b2-03" title="createAttribute sin asignar">
+¿Cuántos atributos tiene `emp` al terminar?
+
+```java
+Element emp = doc.createElement("empleado");
+doc.appendChild(emp);
+Attr a = doc.createAttribute("dni");
+a.setValue("123");
+```
+
+- [ ] 1, con `dni="123"`.
+  > Crear el atributo no lo asigna al elemento.
+- [x] 0
+  > Correcta: faltaría `emp.setAttributeNode(a)` (o usar `setAttribute`).
+- [ ] 1, con `dni=""`.
+  > No se ha asignado ningún atributo.
+- [ ] 2: `dni` y su valor.
+  > El valor no es otro atributo.
+- [ ] Lanza `DOMException` en `setValue`.
+  > Se puede dar valor a un atributo no asignado.
+- [ ] No compila: `Attr` no tiene `setValue`.
+  > Sí lo tiene.
+
+Repasar: **B06.1**.
+</Quiz>
+
+<Quiz id="b2-04" title="setTextContent sobre un elemento con hijos">
+`e` es `<e><a/><b/></e>`. Tras `e.setTextContent("x")`, ¿qué imprime `e.getChildNodes().getLength()`?
+
+- [ ] 3: `a`, `b` y el texto nuevo.
+  > `setTextContent` sustituye el contenido, no lo añade.
+- [x] 1
+  > Correcta: los hijos previos se eliminan y queda un único nodo de texto.
+- [ ] 2: se conservan `a` y `b`.
+  > El texto los reemplaza.
+- [ ] 0
+  > Queda el nodo de texto `x`.
+- [ ] Lanza `DOMException` porque `e` tiene hijos elemento.
+  > No es un error; simplemente los sustituye.
+- [ ] 1, y es el elemento `a` con el texto `x`.
+  > El hijo resultante es un nodo de texto.
+
+Repasar: **B06.1**.
+</Quiz>
+
+<Quiz id="b2-05" title="appendChild mueve">
+`x` ya es hijo de `a`. ¿Qué imprime?
+
+```java
+b.appendChild(x);
+System.out.println(a.getChildNodes().getLength() + " " + b.getChildNodes().getLength());
+```
+
+Antes, `a` tenía solo el hijo `x` y `b` no tenía hijos (sin textos de indentación).
+
+- [ ] `1 1`
+  > `appendChild` no hace una copia.
+- [x] `0 1`
+  > Correcta: el nodo se mueve de `a` a `b`.
+- [ ] `1 0`
+  > Sí se inserta en `b`.
+- [ ] `2 1`
+  > No se duplica nada en `a`.
+- [ ] Lanza `DOMException` porque `x` ya tiene padre.
+  > Insertar un nodo ya colocado lo mueve.
+- [ ] `0 0`
+  > El nodo no se pierde.
+
+Repasar: **B06.1, B15.1**.
+</Quiz>
+
+<Quiz id="b2-06" title="Segunda raíz">
+¿Qué ocurre?
+
+```java
+doc.appendChild(doc.createElement("a"));
+doc.appendChild(doc.createElement("b"));
+```
+
+- [ ] El documento queda con dos raíces, `a` y `b`.
+  > Un XML solo puede tener un elemento raíz.
+- [ ] `b` sustituye a `a` como raíz.
+  > No hay sustitución automática.
+- [ ] `b` se inserta dentro de `a`.
+  > Se intenta insertar en el documento, no en `a`.
+- [x] La segunda llamada lanza `DOMException`.
+  > Correcta: el documento ya tiene elemento raíz.
+- [ ] El error aparece solo al transformar a fichero.
+  > Lo detecta ya la propia inserción.
+- [ ] No compila.
+  > El problema es de ejecución.
+
+Repasar: **B06.2**.
+</Quiz>
+
+<Quiz id="b2-07" title="removeChild de un nieto">
+`raiz` contiene `emp`, y `emp` contiene `nombre`. ¿Qué ocurre con `raiz.removeChild(nombre)`?
+
+- [ ] Elimina `nombre` de `emp`.
+  > `removeChild` solo elimina hijos **directos** del receptor.
+- [ ] Elimina `emp` y todo su contenido.
+  > No elimina un nodo distinto del indicado.
+- [x] Lanza `DOMException` porque `nombre` no es hijo directo de `raiz`.
+  > Correcta: lo correcto es `emp.removeChild(nombre)` o `nombre.getParentNode().removeChild(nombre)`.
+- [ ] Devuelve `null` sin cambiar nada.
+  > No devuelve `null`: lanza una excepción.
+- [ ] Vacía el texto de `nombre`.
+  > No toca el contenido.
+- [ ] No compila: `removeChild` recibe un `String`.
+  > Recibe un `Node`.
+
+Repasar: **B06.1**.
+</Quiz>
+
+<Quiz id="b2-08" title="Borrar en una lista viva">
+`a` es `<a><b/><b/><b/></a>` (sin espacios). ¿Cuántos `b` quedan?
+
+```java
+NodeList lista = a.getElementsByTagName("b");
+for (int i = 0; i < lista.getLength(); i++) {
+    a.removeChild(lista.item(i));
+}
+```
+
+- [ ] 0
+  > La lista es viva: al borrar se desplazan los índices.
+- [x] 1
+  > Correcta: se borra el índice 0, luego el índice 1 (que era el tercero), y el bucle termina.
+- [ ] 2
+  > Sí se borran dos.
+- [ ] 3
+  > Sí se borra alguno.
+- [ ] Lanza `ConcurrentModificationException`.
+  > `NodeList` no lanza esa excepción.
+- [ ] Lanza `DOMException` en la segunda vuelta.
+  > El nodo de la segunda vuelta sí es hijo directo.
+
+Repasar: **B05.1** (listas vivas).
+</Quiz>
+
+<Quiz id="b2-09" title="Origen y destino">
+¿Qué línea guarda `doc` en `empleados.xml`?
+
+- [x] `t.transform(new DOMSource(doc), new StreamResult(new File("empleados.xml")));`
+  > Correcta: primero el origen y después el destino.
+- [ ] `t.transform(new StreamResult(new File("empleados.xml")), new DOMSource(doc));`
+  > Origen y destino invertidos: no compila.
+- [ ] `new DOMSource(doc).save("empleados.xml");`
+  > `DOMSource` no escribe nada; solo adapta el origen.
+- [ ] `doc.write(new File("empleados.xml"));`
+  > `Document` no tiene ese método.
+- [ ] `t.transform(doc, new File("empleados.xml"));`
+  > `transform` recibe un `Source` y un `Result`.
+- [ ] `new StreamResult(new File("empleados.xml"));` y nada más.
+  > Crear el destino no escribe; falta `transform`.
+
+Repasar: **B06.3**.
+</Quiz>
+
+<Quiz id="b2-10" title="Modificar sin guardar">
+Se parsea `datos.xml`, se añade un elemento al árbol y el programa termina sin llamar a `transform`. ¿Qué pasa con `datos.xml`?
+
+- [ ] Contiene el nuevo elemento, porque el árbol está vinculado al archivo.
+  > El árbol es una copia en memoria.
+- [x] No cambia: hay que serializar el árbol explícitamente para guardarlo.
+  > Correcta (B06.3).
+- [ ] Se vacía, porque se abrió para escritura.
+  > `parse` solo lee.
+- [ ] Se guarda al llamar a `normalize()`.
+  > `normalize()` no escribe en disco.
+- [ ] Se guarda al cerrar el `DocumentBuilder`.
+  > No hay guardado automático.
+- [ ] Queda bloqueado hasta reiniciar.
+  > No hay bloqueo.
+
+Repasar: **B06.3**.
+</Quiz>
+
+<Quiz id="b2-11" title="Salida a consola">
+¿Qué hace este código?
+
+```java
+Transformer t = TransformerFactory.newInstance().newTransformer();
+t.setOutputProperty(OutputKeys.INDENT, "yes");
+t.transform(new DOMSource(doc), new StreamResult(System.out));
+```
+
+- [ ] Escribe el XML en un archivo y además lo muestra por consola.
+  > Solo hay un destino: la consola.
+- [x] Muestra el XML del árbol por la salida estándar, con indentación solicitada.
+  > Correcta (B03.3, B06.3).
+- [ ] Valida el documento y muestra los errores.
+  > Ni `transform` ni `INDENT` validan.
+- [ ] Imprime solo el texto, sin etiquetas.
+  > Una transformación sin hoja de estilos conserva el XML.
+- [ ] Convierte el XML en CSV.
+  > `INDENT` es presentación, no cambia el formato.
+- [ ] No compila: `StreamResult` no acepta `System.out`.
+  > Acepta un `OutputStream`.
+
+Repasar: **B03.3, B06.3**.
+</Quiz>
+
+<Quiz id="b2-12" title="Extensión del destino">
+El ejemplo docente transforma un DOM a `catalogo.txt` con `Transformer` y sin hoja de estilos. ¿Qué contiene el fichero?
+
+- [ ] Texto plano sin etiquetas, porque la extensión es `.txt`.
+  > La extensión no decide el formato.
+- [ ] Una lista CSV de los campos.
+  > No hay ninguna conversión a CSV.
+- [x] El mismo documento XML serializado, con sus etiquetas.
+  > Correcta: es una transformación de identidad.
+- [ ] Nada: `Transformer` solo escribe ficheros `.xml`.
+  > Escribe en cualquier destino.
+- [ ] El árbol en formato binario.
+  > `StreamResult` escribe texto.
+- [ ] Un objeto Java serializado.
+  > No interviene `ObjectOutputStream`.
+
+Repasar: **B02.2, B03.3**.
+</Quiz>
+
+<QuizResults />

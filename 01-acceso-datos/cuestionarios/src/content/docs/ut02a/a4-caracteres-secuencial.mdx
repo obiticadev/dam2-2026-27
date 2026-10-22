@@ -1,0 +1,347 @@
+---
+title: "A4 · Caracteres y acceso secuencial"
+description: "Reader y Writer, puentes de codificación, FileReader/FileWriter, BufferedReader/BufferedWriter, readLine, flush/close y operaciones secuenciales (A08, A09, A15)."
+sidebar:
+  order: 4
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **A08–A09** y matices de **A15**. Sin NIO. En los enunciados, `\n` y `\r` representan los caracteres de salto reales. Los fragmentos omiten `import` y manejo de `IOException`.
+
+<Quiz id="a4-01" title="Dirección de los puentes">
+¿Qué afirmación sobre los puentes entre bytes y caracteres es correcta?
+
+- [ ] `InputStreamReader` convierte caracteres en bytes.
+  > Invierte la dirección.
+- [x] `InputStreamReader` decodifica bytes a caracteres y `OutputStreamWriter` codifica caracteres a bytes.
+  > Correcta (A02.2, A08).
+- [ ] `OutputStreamWriter` decodifica bytes a caracteres.
+  > Es el puente de salida: de caracteres a bytes.
+- [ ] `BufferedReader` es el que decide la codificación.
+  > El búfer no cambia la codificación; la fija el puente.
+- [ ] `FileInputStream` decodifica UTF-8 automáticamente.
+  > Solo transporta bytes.
+- [ ] Ambos puentes trabajan siempre en UTF-16 en el fichero.
+  > La codificación externa la indica el charset, no la representación interna de `char`.
+
+Repasar: **A02.2, A15**.
+</Quiz>
+
+<Quiz id="a4-02" title="Jerarquía de FileReader">
+¿De qué clase hereda directamente `FileReader`?
+
+- [ ] `BufferedReader`
+  > `BufferedReader` envuelve otro `Reader`; no es la superclase.
+- [ ] `FileInputStream`
+  > Esa es de la familia de bytes.
+- [x] `InputStreamReader`
+  > Correcta: igual que `FileWriter` hereda de `OutputStreamWriter`.
+- [ ] `Writer`
+  > `Writer` es la familia de salida.
+- [ ] `RandomAccessFile`
+  > No pertenece a la jerarquía de `Reader`.
+- [ ] `StringReader`
+  > Es otra subclase de `Reader`, hermana y no padre.
+
+Repasar: **A02.2, A02.3**.
+</Quiz>
+
+<Quiz id="a4-03" title="Traza de readLine">
+¿Qué devuelven las llamadas sucesivas a `readLine()` en este bucle?
+
+```java
+try (BufferedReader in = new BufferedReader(new StringReader("A\r\n\r\nB\n"))) {
+    String linea;
+    do {
+        linea = in.readLine();
+        System.out.println(linea == null ? "null" : "\"" + linea + "\"");
+    } while (linea != null);
+}
+```
+
+- [ ] `"A"`, `"B"`, `null`
+  > Se pierde la línea vacía.
+- [x] `"A"`, `""`, `"B"`, `null`
+  > Correcta: `\r\n` es un terminador; la línea vacía es `""` y el salto final no crea otra línea.
+- [ ] `"A"`, `""`, `"B"`, `""`, `null`
+  > Un salto final no añade una línea vacía adicional.
+- [ ] `"A\r"`, `""`, `"B"`, `null`
+  > `readLine` reconoce `\r\n` completo y no devuelve el terminador.
+- [ ] `"A"`, `null`
+  > La línea vacía no es el final.
+- [ ] `"A"`, `""`, `"B"`, `-1`
+  > `readLine` señala el final con `null`, no con -1.
+
+Repasar: **A08.1, A16.4**.
+</Quiz>
+
+<Quiz id="a4-04" title="Fichero vacío">
+`vacio.txt` existe y tiene 0 bytes. ¿Qué imprime?
+
+```java
+try (BufferedReader in = new BufferedReader(new FileReader("vacio.txt"))) {
+    System.out.println(in.readLine());
+}
+```
+
+- [ ] `""`
+  > Una cadena vacía indicaría una línea vacía; aquí no hay ninguna línea.
+- [x] `null`
+  > Correcta: no quedan caracteres para formar una línea.
+- [ ] `"\n"`
+  > No hay caracteres que leer.
+- [ ] -1
+  > Ese es el final de `read()`, no de `readLine()`.
+- [ ] Lanza `EOFException`.
+  > `readLine` no la lanza.
+- [ ] Lanza `FileNotFoundException`.
+  > El fichero existe.
+
+Repasar: **A08.1**.
+</Quiz>
+
+<Quiz id="a4-05" title="Bucle con char">
+¿Qué problema tiene este bucle al leer un fichero que existe?
+
+```java
+FileReader r = new FileReader("t.txt");
+char c = (char) r.read();
+while (c != -1) {
+    System.out.print(c);
+    c = (char) r.read();
+}
+```
+
+- [ ] No compila: no se puede comparar un `char` con -1.
+  > Compila: el `char` se promociona a `int` en la comparación.
+- [ ] Funciona correctamente y termina al llegar al final.
+  > Al convertir -1 a `char` se obtiene 65535, que nunca es igual a -1.
+- [x] No termina nunca: tras el final, `(char) -1` vale 65535 y la condición siempre es cierta.
+  > Correcta: hay que guardar primero `int c = r.read()` y convertir solo si `c != -1`.
+- [ ] Lanza `EOFException` al llegar al final.
+  > `read()` no lanza esa excepción.
+- [ ] Se salta el primer carácter.
+  > El primero se imprime en la primera vuelta.
+- [ ] Imprime los caracteres en hexadecimal.
+  > `print(char)` imprime el carácter.
+
+Repasar: **A08.1** (trampa crítica).
+</Quiz>
+
+<Quiz id="a4-06" title="Bucle correcto de líneas">
+¿Qué bucle recorre todas las líneas de un `BufferedReader in` sin perder ninguna, incluidas las vacías?
+
+- [ ] `while (!(linea = in.readLine()).isEmpty())`
+  > Se detiene en la primera línea vacía y falla con `NullPointerException` al final.
+- [ ] `while ((linea = in.readLine()) != "")`
+  > Compara referencias y confunde línea vacía con final.
+- [x] `while ((linea = in.readLine()) != null)`
+  > Correcta (A08.1).
+- [ ] `while (in.read() != -1) { linea = in.readLine(); }`
+  > Consume el primer carácter de cada línea.
+- [ ] `while ((linea = in.readLine()).length() > 0)`
+  > Se detiene en una línea vacía y falla al final.
+- [ ] `while (in.available() > 0)`
+  > `BufferedReader` no tiene `available()`; además no es una señal de final fiable.
+
+Repasar: **A08.1**.
+</Quiz>
+
+<Quiz id="a4-07" title="Bytes de un texto UTF-8">
+¿Cuántos bytes tiene `c.txt` al terminar?
+
+```java
+try (Writer w = new OutputStreamWriter(
+        new FileOutputStream("c.txt"), StandardCharsets.UTF_8)) {
+    w.write("año");
+}
+```
+
+- [ ] 3, un byte por carácter.
+  > La `ñ` necesita dos bytes en UTF-8.
+- [x] 4
+  > Correcta: `a` (1) + `ñ` (2) + `o` (1).
+- [ ] 6, dos bytes por carácter.
+  > Confunde el `char` de 16 bits con la codificación del fichero.
+- [ ] 5, porque se añade un salto de línea.
+  > `write` no añade separadores.
+- [ ] 8, porque se escribe una cabecera de longitud.
+  > Eso es `writeUTF` de `DataOutputStream`, no un `Writer`.
+- [ ] Depende de la codificación predeterminada del sistema.
+  > Aquí el charset es explícito: UTF-8.
+
+Repasar: **A02.2, A08.3**.
+</Quiz>
+
+<Quiz id="a4-08" title="Bytes UTF-8 convertidos uno a uno">
+`c.txt` contiene `año` en UTF-8. ¿Qué imprime este fragmento?
+
+```java
+try (FileInputStream in = new FileInputStream("c.txt")) {
+    int b;
+    while ((b = in.read()) != -1) System.out.print((char) b);
+}
+```
+
+- [ ] `año`
+  > Convertir cada byte a `char` no decodifica caracteres multibyte.
+- [x] `aÃ±o`
+  > Correcta: los dos bytes de la `ñ` se interpretan por separado.
+- [ ] `a?o`
+  > No hay ningún carácter de sustitución: cada byte se convierte tal cual.
+- [ ] `ao`
+  > No se descarta ningún byte.
+- [ ] Números: `97 195 177 111`.
+  > Se imprime `(char) b`, no el entero.
+- [ ] Lanza `CharacterCodingException`.
+  > No se intenta decodificar nada.
+
+Repasar: **A08.3** (error típico).
+</Quiz>
+
+<Quiz id="a4-09" title="getEncoding()">
+`r` es un `InputStreamReader` abierto con la codificación predeterminada. ¿Qué afirmación es correcta?
+
+- [ ] `r.getEncoding()` devuelve `null` porque no se indicó charset.
+  > Es el error del temario: devuelve `null` solo si el lector está cerrado.
+- [x] `r.getEncoding()` devuelve el nombre de la codificación en uso mientras está abierto, y `null` después de `close()`.
+  > Correcta (A08.1, A15).
+- [ ] `r.getEncoding()` siempre devuelve `"UTF-16"`, la codificación de `char`.
+  > Devuelve la codificación externa usada para decodificar.
+- [ ] `getEncoding()` lanza `IOException` si el lector está cerrado.
+  > Devuelve `null`.
+- [ ] `getEncoding()` solo existe en `BufferedReader`.
+  > Es de `InputStreamReader`.
+- [ ] Devuelve un objeto `Charset`.
+  > Devuelve un `String` con el nombre.
+
+Repasar: **A08.1, A15**.
+</Quiz>
+
+<Quiz id="a4-10" title="Sin cerrar ni vaciar">
+El programa termina justo después de estas líneas, sin `flush()` ni `close()`. ¿Qué contiene `out.txt`?
+
+```java
+BufferedWriter w = new BufferedWriter(new FileWriter("out.txt"));
+w.write("hola");
+```
+
+- [ ] `hola`
+  > El texto se queda en el búfer en memoria y nunca llega al fichero.
+- [x] Nada: el fichero existe pero está vacío.
+  > Correcta: `FileWriter` crea o trunca el fichero al abrir, pero los datos nunca se vacían.
+- [ ] `hola` y un salto de línea.
+  > No se escribe ni se añade nada.
+- [ ] El fichero no llega a crearse.
+  > Abrir el `FileWriter` ya lo crea.
+- [ ] Solo la `h`, porque el búfer escribe carácter a carácter.
+  > El búfer acumula; no escribe parcialmente.
+- [ ] Lanza `IOException` al terminar el programa.
+  > La JVM no avisa de búferes sin vaciar.
+
+Repasar: **A08.2**.
+</Quiz>
+
+<Quiz id="a4-11" title="flush frente a close">
+¿Qué diferencia hay entre `flush()` y `close()` en un `BufferedWriter`?
+
+- [ ] Ninguna: los dos cierran el escritor.
+  > `flush()` no cierra.
+- [ ] `close()` descarta lo pendiente y `flush()` lo guarda.
+  > `close()` también vacía lo pendiente.
+- [x] `flush()` vacía el búfer hacia el destino sin cerrar; `close()` vacía y cierra.
+  > Correcta (A08.2).
+- [ ] `flush()` borra el contenido del fichero.
+  > No trunca nada.
+- [ ] Después de `flush()` ya no se puede escribir.
+  > Se puede seguir escribiendo.
+- [ ] `close()` solo cierra el `BufferedWriter`, no el `FileWriter` envuelto.
+  > Cerrar el envoltorio cierra normalmente el flujo subyacente.
+
+Repasar: **A08.2**.
+</Quiz>
+
+<Quiz id="a4-12" title="Anexar con FileWriter">
+`h.txt` contiene exactamente `ABC` (sin salto final). ¿Qué contiene después?
+
+```java
+try (FileWriter w = new FileWriter("h.txt", true)) {
+    w.write("XY");
+}
+```
+
+- [ ] `XY`
+  > Con `true` no se trunca.
+- [x] `ABCXY`
+  > Correcta: anexa al final sin añadir ningún salto.
+- [ ] `ABC` + salto + `XY`
+  > `append` no escribe saltos por sí mismo.
+- [ ] `XYC`
+  > No escribe desde el principio.
+- [ ] `ABC` + salto + `XY` + salto
+  > `write` no añade separadores.
+- [ ] No compila: `FileWriter(String, boolean)` no existe.
+  > Existe y se usa en los ejemplos del temario.
+
+Repasar: **A08.2**.
+</Quiz>
+
+<Quiz id="a4-13" title="Copia por líneas">
+Se copia un texto con `readLine()` en un bucle, escribiendo cada línea con `write(linea)` y `newLine()`. ¿Qué afirmación es correcta?
+
+- [ ] El destino es idéntico byte a byte al origen en cualquier caso.
+  > Los terminadores se normalizan y puede cambiar la codificación.
+- [x] Conserva el contenido de cada línea, pero usa el separador de la plataforma y deja un salto tras la última línea.
+  > Correcta (A08.3).
+- [ ] Pierde las líneas vacías.
+  > `readLine` devuelve `""` y se escribe como línea vacía.
+- [ ] Duplica los saltos, porque `readLine` conserva el terminador.
+  > `readLine` devuelve la línea sin terminador.
+- [ ] Es la forma correcta de copiar una imagen.
+  > Para una copia exacta se usa una copia binaria.
+- [ ] No escribe la última línea si no termina en salto.
+  > `readLine` también la devuelve.
+
+Repasar: **A08.3**.
+</Quiz>
+
+<Quiz id="a4-14" title="Eliminar un registro">
+`datos.txt` contiene las líneas `1;Ana`, `2;Luis` y `3;Eva`. Hay que eliminar el registro con id 2. ¿Qué procedimiento es correcto?
+
+- [ ] Abrir `datos.txt` con `FileWriter` sin anexado y luego leerlo para copiar lo que interesa.
+  > Al abrir sin anexado se trunca el original antes de leerlo.
+- [ ] Llamar al método `deleteLine(2)` de `BufferedReader`.
+  > No existe un método que elimine una línea en medio.
+- [ ] `new File("datos.txt").delete()` y volver a escribir solo la línea 2.
+  > Borra el fichero entero y deja justo la línea que se quería quitar.
+- [x] Leer línea a línea, copiar al temporal las líneas cuyo id no sea 2, cerrar ambos ficheros y sustituir después el original.
+  > Correcta: resultado `1;Ana` y `3;Eva` (A09).
+- [ ] Usar `seek` sobre el `BufferedReader` para saltar la línea.
+  > `BufferedReader` no tiene `seek`.
+- [ ] Escribir una línea vacía encima de `2;Luis` con `FileWriter(…, true)`.
+  > El anexado escribe al final, no encima.
+
+Repasar: **A09**.
+</Quiz>
+
+<Quiz id="a4-15" title="Búfer y disco">
+¿Qué afirmación sobre `BufferedReader` es correcta?
+
+- [ ] Cada llamada a `readLine()` hace una lectura física del disco.
+  > Muchas lecturas se resuelven desde el búfer en memoria.
+- [ ] En `new BufferedReader(reader, 100)`, el 100 es el número máximo de líneas.
+  > Es el tamaño del búfer en caracteres.
+- [ ] Convierte el fichero a UTF-8.
+  > No cambia la codificación.
+- [x] Guarda en memoria caracteres ya leídos para atender varias peticiones sin acceder al disco cada vez.
+  > Correcta (A09).
+- [ ] Solo puede envolver un `FileReader`.
+  > Envuelve cualquier `Reader`, por ejemplo un `InputStreamReader` o un `StringReader`.
+- [ ] Hereda de `InputStream`.
+  > Hereda de `Reader`.
+
+Repasar: **A08.1, A09, A15**.
+</Quiz>
+
+<QuizResults />

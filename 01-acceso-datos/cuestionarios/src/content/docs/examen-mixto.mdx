@@ -1,0 +1,925 @@
+---
+title: "Examen mixto · 40 preguntas"
+description: "Simulacro de práctica con UT02-A (sin NIO) y UT02-B mezcladas; preguntas distintas a las de los bloques."
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Simulacro de práctica, **no oficial**: 20 preguntas de UT02-A (sin NIO) y 20 de UT02-B, mezcladas. Seis opciones y una sola correcta por pregunta. El bloque de repaso aparece al responder.
+
+Convenciones: los fragmentos omiten `import` y manejo de excepciones; los ficheros contienen bytes ASCII salvo que se indique otra cosa; los XML van en una sola línea salvo que se muestren indentados; DOM, SAX y StAX usan las factorías por defecto del JDK; JAXB es la versión 2 (`javax.xml.bind`) con sus dependencias añadidas.
+
+<Quiz id="mx-01">
+¿Qué afirmación sobre `ObjectOutputStream` es correcta?
+
+- [ ] Solo puede envolver un `FileOutputStream`.
+  > Envuelve cualquier `OutputStream`; en el curso se usa un fichero como destino.
+- [x] Envuelve cualquier `OutputStream`, por ejemplo un `ByteArrayOutputStream` en memoria.
+  > Correcta (A02.2).
+- [ ] Hereda de `Writer`, porque escribe objetos como texto.
+  > Es de la familia de bytes: hereda de `OutputStream`.
+- [ ] Escribe objetos en formato XML.
+  > Usa el formato binario de serialización de Java.
+- [ ] Se crea con `new ObjectOutputStream("persona.dat")`.
+  > Recibe un flujo, no un nombre de fichero.
+- [ ] Es una interfaz que implementan las clases serializables.
+  > Es una clase concreta; la interfaz es `Serializable`.
+
+Repasar: **A02.2, A07**.
+</Quiz>
+
+<Quiz id="mx-02">
+¿Qué imprime el contador para este XML?
+
+```xml
+<r>
+  <a/>
+  <b>x</b>
+</r>
+```
+
+```java
+NodeList hijos = doc.getDocumentElement().getChildNodes();
+int n = 0;
+for (int i = 0; i < hijos.getLength(); i++) {
+    if (hijos.item(i).getNodeType() == Node.ELEMENT_NODE) n++;
+}
+System.out.println(n);
+```
+
+- [ ] 5
+  > Ese es el total de hijos; el filtro deja solo los elementos.
+- [ ] 3
+  > Cuenta también el texto `x`, que es nieto, no hijo.
+- [x] 2
+  > Correcta: `a` y `b` son los únicos hijos de tipo elemento.
+- [ ] 1
+  > `<a/>` también es un elemento aunque esté vacío.
+- [ ] 0
+  > Los elementos tienen `ELEMENT_NODE`.
+- [ ] 4
+  > No hay cuatro elementos.
+
+Repasar: **B04.2, B05.1**.
+</Quiz>
+
+<Quiz id="mx-03">
+¿Qué imprime?
+
+```java
+File f = new File("datos.txt");
+System.out.println(f.getParent() + " " + f.getName());
+```
+
+- [ ] La ruta del directorio de trabajo y `datos.txt`.
+  > `getParent()` trabaja con la ruta tal como se escribió, no con la absoluta.
+- [x] `null datos.txt`
+  > Correcta: una ruta relativa de un solo nombre no tiene padre.
+- [ ] ` datos.txt` (padre vacío)
+  > Devuelve `null`, no una cadena vacía.
+- [ ] `. datos.txt`
+  > No inventa el directorio actual.
+- [ ] Lanza `NullPointerException`.
+  > Concatenar `null` con un `String` es válido.
+- [ ] `datos.txt datos.txt`
+  > El padre no es el propio nombre.
+
+Repasar: **A04.2**.
+</Quiz>
+
+<Quiz id="mx-04">
+¿Qué imprime este manejador para `<a><b/><c/></a>`?
+
+```java
+@Override
+public void endElement(String uri, String local, String qName) {
+    System.out.print(qName + " ");
+}
+```
+
+- [ ] `a b c `
+  > Ese es el orden de los inicios.
+- [x] `b c a `
+  > Correcta: `a` se cierra después de sus hijos.
+- [ ] `a c b `
+  > Los cierres siguen el orden del documento.
+- [ ] `c b a `
+  > `b` se cierra antes que `c`.
+- [ ] `b c `
+  > La raíz también tiene `endElement`.
+- [ ] Nada: los elementos vacíos no tienen cierre.
+  > `<b/>` produce inicio y fin.
+
+Repasar: **B07.3**.
+</Quiz>
+
+<Quiz id="mx-05">
+`d.bin` se escribió con `writeInt(1)` y `writeInt(2)` en un `DataOutputStream`. ¿Qué imprime?
+
+```java
+try (DataInputStream in = new DataInputStream(new FileInputStream("d.bin"))) {
+    System.out.println(in.readLong());
+}
+```
+
+- [ ] `1`
+  > `readLong` lee 8 bytes de una vez.
+- [ ] `12`
+  > No concatena dígitos.
+- [ ] Lanza `EOFException`.
+  > Hay exactamente 8 bytes.
+- [x] `4294967298`
+  > Correcta: los 8 bytes `00 00 00 01 00 00 00 02` se interpretan como un único `long`.
+- [ ] `3`
+  > No suma los valores.
+- [ ] Lanza una excepción porque se escribieron `int`.
+  > El flujo no sabe qué se escribió: hay que leer con el formato acordado.
+
+Repasar: **A06.3**.
+</Quiz>
+
+<Quiz id="mx-06">
+¿Qué afirmación sobre `JAXBContext` es correcta?
+
+- [ ] `JAXBContext.newInstance(Libreria.class)` escribe el XML de la librería.
+  > Solo informa del modelo; escribir es cosa de `marshal`.
+- [x] Un mismo contexto puede crear tanto el `Marshaller` como el `Unmarshaller`.
+  > Correcta (B13.3).
+- [ ] Hay que crear un contexto distinto para cada objeto que se guarde.
+  > Se puede reutilizar.
+- [ ] Se crea con `new JAXBContext()`.
+  > Se obtiene con `newInstance`.
+- [ ] Valida automáticamente el XML contra el XSD.
+  > La validación hay que configurarla.
+- [ ] Pertenece al paquete `javax.xml.parsers`.
+  > Pertenece a `javax.xml.bind`.
+
+Repasar: **B13.2, B13.3**.
+</Quiz>
+
+<Quiz id="mx-07">
+XML: `<p>9</p>`. ¿Qué imprime?
+
+```java
+r.next();   // primera llamada
+r.next();   // segunda llamada
+System.out.println(r.getText());
+```
+
+- [ ] `p`
+  > Tras la primera llamada estaba en el inicio de `p`; la segunda avanza al texto.
+- [x] `9`
+  > Correcta: el cursor está en el evento `CHARACTERS`.
+- [ ] `<p>9</p>`
+  > No devuelve marcado.
+- [ ] Lanza `IllegalStateException`.
+  > `getText()` es válido en un evento de texto.
+- [ ] Una cadena vacía.
+  > El texto es `9`.
+- [ ] `null`
+  > Hay texto.
+
+Repasar: **B10.1**.
+</Quiz>
+
+<Quiz id="mx-08">
+Las figuras del temario muestran muchas clases. ¿Cuál **no** existe como clase estándar de `java.io` en JDK 17?
+
+- [ ] `PushbackInputStream`
+  > Existe: permite devolver bytes al flujo lógico.
+- [ ] `PrintStream`
+  > Existe, en la familia de bytes.
+- [x] `PushbackOutputStream`
+  > Correcta: aparece en una figura, pero no es una clase del JDK.
+- [ ] `StringReader`
+  > Existe: lector de caracteres desde un `String`.
+- [ ] `ByteArrayOutputStream`
+  > Existe: destino en memoria.
+- [ ] `LineNumberReader`
+  > Existe: subclase de `BufferedReader`.
+
+Repasar: **A02.3**.
+</Quiz>
+
+<Quiz id="mx-09">
+Un programa serializa un objeto cuando `Contador.total` vale 5. **Otro** programa, en una JVM nueva donde `total` nunca se modifica, lo deserializa. ¿Cuánto vale `Contador.total` en el segundo programa?
+
+```java
+class Contador implements Serializable {
+    static int total = 0;
+    int propio;
+}
+```
+
+- [ ] 5, porque se guardó con el objeto.
+  > Los campos `static` no forman parte del estado de la instancia.
+- [x] 0
+  > Correcta: `static` pertenece a la clase y no se serializa.
+- [ ] `null`
+  > Un `int` no puede ser `null`.
+- [ ] Lanza `InvalidClassException`.
+  > La clase es la misma.
+- [ ] El valor de `propio`.
+  > Son campos distintos.
+- [ ] No compila: un campo `static` impide implementar `Serializable`.
+  > Compila sin problema.
+
+Repasar: **A07.1**.
+</Quiz>
+
+<Quiz id="mx-10">
+`e` es `<a x="1" y="2"><b/></a>`. ¿Qué imprime?
+
+```java
+System.out.println(e.getAttributes().getLength() + " " + e.getChildNodes().getLength());
+```
+
+- [ ] `3 3`
+  > Atributos e hijos se cuentan por separado.
+- [x] `2 1`
+  > Correcta: dos atributos en el `NamedNodeMap` y un hijo, `b`.
+- [ ] `0 3`
+  > Los atributos no son hijos.
+- [ ] `1 2`
+  > Intercambia los conteos.
+- [ ] `2 3`
+  > Los atributos no se suman a los hijos.
+- [ ] `0 1`
+  > `getAttributes()` sí devuelve los atributos.
+
+Repasar: **B04.1, B05.1**.
+</Quiz>
+
+<Quiz id="mx-11">
+`hola.txt` contiene exactamente `Hola`. ¿Qué imprime?
+
+```java
+try (FileReader r = new FileReader("hola.txt")) {
+    char[] buf = new char[10];
+    System.out.println(r.read(buf) + " " + r.read(buf));
+}
+```
+
+- [ ] `10 -1`
+  > Devuelve la cantidad realmente leída, no el tamaño del array.
+- [x] `4 -1`
+  > Correcta: cuatro caracteres y después el final.
+- [ ] `4 0`
+  > Al final devuelve -1.
+- [ ] `Hola -1`
+  > El retorno es un `int`.
+- [ ] `4 4`
+  > No vuelve a leer lo mismo.
+- [ ] `4 null`
+  > `read` devuelve `int`.
+
+Repasar: **A08.1**.
+</Quiz>
+
+<Quiz id="mx-12">
+Hay que sumar el campo `<importe>` de un XML de 5 GB en una sola pasada, y el propio bucle del programa debe decidir cuándo avanzar. ¿Qué API encaja mejor?
+
+- [ ] DOM, porque permite consultar el árbol.
+  > Cargar 5 GB en un árbol en memoria es costoso y no hace falta.
+- [ ] SAX, porque el programa controla el bucle.
+  > En SAX el parser controla el recorrido (*push*).
+- [x] StAX, porque es *streaming* y la aplicación pide cada evento (*pull*).
+  > Correcta (B02.3).
+- [ ] JAXB, porque convierte el XML en objetos.
+  > Materializaría todo el modelo.
+- [ ] `Transformer`, porque recorre el documento.
+  > Sirve para transformar o serializar, no para este cálculo.
+- [ ] `RandomAccessFile` con `seek` por etiquetas.
+  > No es un parser XML.
+
+Repasar: **B02.1, B02.3**.
+</Quiz>
+
+<Quiz id="mx-13">
+`notas.dat` contiene registros de `int id` + `double nota` (12 bytes) y mide 60 bytes. ¿Qué imprime?
+
+```java
+try (RandomAccessFile raf = new RandomAccessFile("notas.dat", "r")) {
+    raf.seek(raf.length() - 12);
+    System.out.println(raf.readInt() + " " + raf.getFilePointer());
+}
+```
+
+Los ids van del 1 al 5 en orden.
+
+- [ ] `5 60`
+  > `readInt` avanza 4 bytes, no 12.
+- [x] `5 52`
+  > Correcta: último registro en 48; tras leer el `int`, puntero en 52.
+- [ ] `4 52`
+  > El registro que empieza en 48 es el quinto (índice 4), con id 5.
+- [ ] `5 48`
+  > Leer avanza el puntero.
+- [ ] Lanza `EOFException`.
+  > Quedan 12 bytes desde el 48.
+- [ ] `6 64`
+  > No hay un sexto registro.
+
+Repasar: **A10.1, A10.2**.
+</Quiz>
+
+<Quiz id="mx-14">
+En SAX, ¿en qué callback se lee el atributo `rollno` de `<student rollno="393">`?
+
+- [ ] En `characters`, porque es texto.
+  > Los atributos no llegan como texto.
+- [x] En `startElement`, a través del parámetro `Attributes`.
+  > Correcta (B07.2).
+- [ ] En `endElement`, que recibe los atributos.
+  > `endElement` no recibe atributos.
+- [ ] En `startDocument`.
+  > Todavía no se ha leído ningún elemento.
+- [ ] Llamando a `getAttribute("rollno")` del elemento.
+  > Ese método es de DOM.
+- [ ] En un callback `attribute` propio.
+  > No existe.
+
+Repasar: **B07.2**.
+</Quiz>
+
+<Quiz id="mx-15">
+`f.isFile()` devuelve `false`. ¿Qué se puede deducir con seguridad?
+
+- [ ] Que `f` es un directorio.
+  > También puede no existir.
+- [ ] Que `f` no existe.
+  > Puede existir y ser un directorio.
+- [x] Que no existe como fichero regular: puede no existir o ser otra cosa, como un directorio.
+  > Correcta (A04.2).
+- [ ] Que se ha producido un error de E/S.
+  > No se deduce ningún error.
+- [ ] Que `f.length()` devolverá -1.
+  > `length()` no devuelve -1.
+- [ ] Que `f.isDirectory()` devolverá `true`.
+  > Si no existe, también devuelve `false`.
+
+Repasar: **A04.2**.
+</Quiz>
+
+<Quiz id="mx-16">
+Hay que obtener este XML con JAXB. ¿Qué anotaciones son correctas en la clase `Persona` (sobre sus getters)?
+
+```xml
+<persona dni="11A"><nombre>Ana</nombre></persona>
+```
+
+- [ ] `@XmlRootElement(name = "persona")`, `@XmlElement` en `dni` y `@XmlAttribute` en `nombre`.
+  > Intercambia atributo y elemento.
+- [x] `@XmlRootElement(name = "persona")`, `@XmlAttribute` en `dni` y `@XmlElement` (o ninguna) en `nombre`.
+  > Correcta (B12.2).
+- [ ] `@XmlElementWrapper(name = "persona")` en la clase.
+  > `@XmlElementWrapper` envuelve colecciones.
+- [ ] `@XmlType(name = "dni")` en `dni`.
+  > `@XmlType` se aplica a clases.
+- [ ] Ninguna: basta con que `Persona` implemente `Serializable`.
+  > `Serializable` no produce XML.
+- [ ] `@XmlAttribute` en los dos getters.
+  > `nombre` sería un atributo y no un elemento.
+
+Repasar: **B12.2**.
+</Quiz>
+
+<Quiz id="mx-17">
+`nuevo.bin` **no** existe y su carpeta sí. ¿Qué ocurre?
+
+```java
+try (FileOutputStream out = new FileOutputStream("nuevo.bin", true)) {
+    out.write('A');
+}
+```
+
+- [ ] Lanza `FileNotFoundException`: con `append` el fichero debe existir.
+  > `append` también crea el fichero si falta.
+- [x] Crea `nuevo.bin` con el contenido `A`.
+  > Correcta (A06.1).
+- [ ] Crea `nuevo.bin` vacío y descarta la escritura.
+  > La escritura se realiza.
+- [ ] Lanza `EOFException`.
+  > No hay ninguna lectura.
+- [ ] Crea `nuevo.bin` con `A` y un salto de línea.
+  > `write` no añade saltos.
+- [ ] Crea también las carpetas padre si faltan.
+  > Aquí la carpeta existe; y en general no crea padres.
+
+Repasar: **A06.1**.
+</Quiz>
+
+<Quiz id="mx-18">
+XML: `<a>hola</a>`. ¿Qué ocurre?
+
+```java
+er.nextEvent();                  // START_DOCUMENT
+er.nextEvent();                  // START_ELEMENT a
+XMLEvent ev = er.nextEvent();    // CHARACTERS "hola"
+StartElement se = ev.asStartElement();
+```
+
+- [ ] `se` representa el inicio de `a`.
+  > `ev` es un evento de texto, no un inicio.
+- [ ] `asStartElement()` avanza hasta el siguiente inicio.
+  > No consume ni busca eventos.
+- [x] Lanza `ClassCastException`: hay que comprobar antes `ev.isStartElement()`.
+  > Correcta (B11.1).
+- [ ] Devuelve `null`.
+  > No devuelve `null`.
+- [ ] No compila.
+  > `asStartElement()` existe en `XMLEvent`.
+- [ ] Lanza `XMLStreamException`.
+  > Es un fallo de conversión de tipo.
+
+Repasar: **B11.1**.
+</Quiz>
+
+<Quiz id="mx-19">
+`e` es un elemento sin hijos. ¿Qué imprime?
+
+```java
+e.appendChild(doc.createTextNode("a"));
+e.appendChild(doc.createTextNode("b"));
+int antes = e.getChildNodes().getLength();
+e.normalize();
+System.out.println(antes + " " + e.getChildNodes().getLength() + " " + e.getTextContent());
+```
+
+- [ ] `1 1 ab`
+  > Antes de normalizar son dos nodos de texto.
+- [x] `2 1 ab`
+  > Correcta: `normalize()` fusiona los textos adyacentes.
+- [ ] `2 2 ab`
+  > `normalize()` los fusiona.
+- [ ] `2 0 `
+  > No elimina texto con contenido.
+- [ ] `2 1 a`
+  > Al fusionar se conserva todo el texto.
+- [ ] Lanza `DOMException` por insertar dos textos seguidos.
+  > Es válido.
+
+Repasar: **B04.4, B06.1**.
+</Quiz>
+
+<Quiz id="mx-20">
+¿Qué dato es **persistente**?
+
+- [ ] Una variable `static` mientras el programa se ejecuta.
+  > Está en memoria y desaparece al terminar.
+- [ ] Un objeto `File` creado con `new File("a.txt")`.
+  > Solo representa una ruta en memoria.
+- [x] Un registro escrito en un fichero del disco, que sigue ahí cuando termina el programa.
+  > Correcta (A01).
+- [ ] Un `ArrayList` con 1000 elementos.
+  > Está en RAM.
+- [ ] El búfer de un `BufferedWriter` sin vaciar.
+  > Está en memoria y puede perderse.
+- [ ] Un objeto que implementa `Serializable`, por el hecho de implementarlo.
+  > Hace falta escribirlo en algún soporte.
+
+Repasar: **A01**.
+</Quiz>
+
+<Quiz id="mx-21">
+El fichero contiene exactamente los caracteres `A\rB` (un `\r` aislado, sin salto final). ¿Qué devuelven las llamadas sucesivas a `readLine()`?
+
+- [ ] `"A\rB"`, `null`
+  > `\r` también es un terminador de línea.
+- [x] `"A"`, `"B"`, `null`
+  > Correcta: `readLine` reconoce `\n`, `\r` y `\r\n`.
+- [ ] `"A"`, `""`, `"B"`, `null`
+  > Un único terminador no crea una línea vacía.
+- [ ] `"A"`, `null`
+  > La última línea se devuelve aunque no termine en salto.
+- [ ] `"AB"`, `null`
+  > No elimina el terminador uniendo las líneas.
+- [ ] `"A\r"`, `"B"`, `null`
+  > El terminador no se incluye.
+
+Repasar: **A08.1**.
+</Quiz>
+
+<Quiz id="mx-22">
+Hay que guardar 3 objetos `Persona` en un único fichero y poder leerlos todos sin problemas de cabeceras. ¿Qué estrategia es la del curso?
+
+- [ ] Abrir un `ObjectOutputStream` nuevo en modo `append` para cada persona.
+  > Cada flujo nuevo escribe otra cabecera y la lectura falla.
+- [x] Escribirlos con el mismo `ObjectOutputStream` abierto, o guardar una colección completa con un solo `writeObject`.
+  > Correcta (A07.3).
+- [ ] Guardar cada persona con `writeUTF(persona.toString())`.
+  > Sería texto, no serialización de objetos.
+- [ ] Usar `RandomAccessFile.writeObject`.
+  > `RandomAccessFile` no tiene ese método.
+- [ ] Marcar `Persona` como `transient`.
+  > `transient` se aplica a campos.
+- [ ] Usar un `FileWriter` en modo anexado.
+  > Es para caracteres.
+
+Repasar: **A07.3**.
+</Quiz>
+
+<Quiz id="mx-23">
+¿Qué nodo devuelve un valor distinto de `null` en `getNodeValue()`?
+
+- [ ] El `Document`.
+  > Su `nodeValue` es `null`.
+- [ ] Un `Element` con texto.
+  > El texto está en un hijo `Text`; el elemento devuelve `null`.
+- [x] Un `Attr`, que devuelve el valor del atributo.
+  > Correcta (B04.3).
+- [ ] La raíz obtenida con `getDocumentElement()`.
+  > Es un `Element`.
+- [ ] Un `NodeList`.
+  > No es un `Node`.
+- [ ] Ninguno: `getNodeValue()` siempre devuelve `null`.
+  > `Text` y `Attr` sí tienen valor.
+
+Repasar: **B04.3**.
+</Quiz>
+
+<Quiz id="mx-24">
+Un directorio contiene `a.txt` y `b.txt`. ¿Qué afirmación sobre `dir.listFiles()` es correcta?
+
+- [ ] Devuelve `{"a.txt", "b.txt"}` como `String[]`.
+  > `listFiles` devuelve `File[]`; `list` devuelve `String[]`.
+- [ ] Garantiza el orden alfabético.
+  > El orden del listado no está garantizado.
+- [x] Devuelve un `File[]` con las dos entradas, en un orden no garantizado.
+  > Correcta (A05).
+- [ ] Incluye también los ficheros de las subcarpetas.
+  > Solo las entradas inmediatas.
+- [ ] Devuelve `null` porque no se pasó filtro.
+  > La sobrecarga sin filtro es válida.
+- [ ] Abre los dos ficheros para lectura.
+  > Solo representa las rutas.
+
+Repasar: **A04.2, A05**.
+</Quiz>
+
+<Quiz id="mx-25">
+¿Qué imprime este manejador para el XML indentado de abajo?
+
+```xml
+<a>
+  <b>x</b>
+</a>
+```
+
+```java
+@Override
+public void characters(char[] ch, int start, int length) {
+    String s = new String(ch, start, length).trim();
+    if (!s.isEmpty()) System.out.println("[" + s + "]");
+}
+```
+
+- [ ] `[x]` y dos líneas `[]`.
+  > Los fragmentos en blanco se descartan.
+- [x] `[x]`
+  > Correcta: los saltos y espacios quedan vacíos tras `trim()`.
+- [ ] Nada.
+  > `x` no es un texto vacío.
+- [ ] `[b]`
+  > `characters` no recibe nombres de elemento.
+- [ ] `[a x]`
+  > Solo hay texto en `b`.
+- [ ] `[<b>x</b>]`
+  > No recibe marcado.
+
+Repasar: **B07.3, B08.2**.
+</Quiz>
+
+<Quiz id="mx-26">
+La clase `Libro` tiene `@XmlAttribute(name = "id")` en `getIsbn()` y `@XmlElement(name = "escritor")` en `getAutor()`. Se hace `unmarshal` de `<libro id="1"/>`. ¿Qué imprime `System.out.println(l.getIsbn() + " " + l.getAutor())`?
+
+- [ ] `1 ` (autor vacío)
+  > Una propiedad sin elemento en el XML queda `null`.
+- [x] `1 null`
+  > Correcta: falta `escritor` y no hay validación configurada.
+- [ ] Lanza `JAXBException` por faltar `escritor`.
+  > Sin esquema, JAXB no exige el elemento.
+- [ ] `null null`
+  > El atributo `id` sí está.
+- [ ] `id null`
+  > Se lee el valor, no el nombre.
+- [ ] Lanza `NullPointerException`.
+  > Concatenar `null` es válido.
+
+Repasar: **B13.3**.
+</Quiz>
+
+<Quiz id="mx-27">
+`t.bin` tiene 3 bytes. ¿Qué imprime?
+
+```java
+try (FileInputStream in = new FileInputStream("t.bin")) {
+    byte[] b = new byte[10];
+    System.out.println(in.read(b) + " " + in.read(b));
+}
+```
+
+- [ ] `10 -1`
+  > Devuelve la cantidad leída.
+- [ ] `3 0`
+  > Al final devuelve -1.
+- [x] `3 -1`
+  > Correcta.
+- [ ] `3 3`
+  > No vuelve a leer lo mismo.
+- [ ] Lanza `EOFException` porque el array es más grande.
+  > Una lectura puede no llenar el array.
+- [ ] `-1 -1`
+  > Hay datos que leer.
+
+Repasar: **A06.1**.
+</Quiz>
+
+<Quiz id="mx-28">
+XML: `<a><b/></a>`. ¿Qué imprime?
+
+```java
+while (r.hasNext()) {
+    int t = r.next();
+    if (t == XMLStreamConstants.START_ELEMENT) System.out.print(r.getLocalName() + " ");
+    if (t == XMLStreamConstants.END_ELEMENT) System.out.print("/" + r.getLocalName() + " ");
+}
+```
+
+- [ ] `a b /a `
+  > `<b/>` produce también su cierre.
+- [x] `a b /b /a `
+  > Correcta: un elemento vacío genera inicio y fin.
+- [ ] `a /a b /b `
+  > `b` está dentro de `a`.
+- [ ] `a b `
+  > Faltan los cierres.
+- [ ] `/b /a `
+  > Faltan los inicios.
+- [ ] Lanza `IllegalStateException` en `getLocalName()` del cierre.
+  > En `END_ELEMENT` el nombre está disponible.
+
+Repasar: **B09.2, B10.1**.
+</Quiz>
+
+<Quiz id="mx-29">
+¿Cuántos bytes ocupa cada fichero?
+
+```java
+try (DataOutputStream d = new DataOutputStream(new FileOutputStream("bin.dat"))) {
+    d.writeInt(1234567);
+}
+try (Writer w = new OutputStreamWriter(new FileOutputStream("txt.txt"), StandardCharsets.US_ASCII)) {
+    w.write("1234567");
+}
+```
+
+- [ ] 7 y 7
+  > `writeInt` siempre escribe 4 bytes.
+- [x] 4 y 7
+  > Correcta: binario de tamaño fijo frente a un dígito por byte en ASCII.
+- [ ] 4 y 4
+  > El texto ocupa un byte por dígito.
+- [ ] 7 y 14
+  > En ASCII cada carácter ocupa un byte.
+- [ ] 8 y 7
+  > Un `int` ocupa 4 bytes.
+- [ ] 4 y 8
+  > `write` no añade saltos ni terminadores.
+
+Repasar: **A03, A06.3**.
+</Quiz>
+
+<Quiz id="mx-30">
+Un fichero se escribió solo con `writeDouble(2.5)`. ¿Qué ocurre?
+
+```java
+try (RandomAccessFile raf = new RandomAccessFile("x.dat", "r")) {
+    System.out.println(raf.readInt());
+}
+```
+
+- [ ] Imprime `2`.
+  > No convierte el `double`: lee 4 bytes y los interpreta como `int`.
+- [ ] Lanza una excepción porque el dato es un `double`.
+  > El fichero no guarda el tipo de lo escrito.
+- [x] Imprime un entero sin sentido formado por los 4 primeros bytes del `double`.
+  > Correcta: hay que leer con el formato acordado.
+- [ ] Lanza `EOFException`.
+  > Hay 8 bytes; se leen 4.
+- [ ] Imprime `2.5`.
+  > `readInt` devuelve un `int`.
+- [ ] Imprime `0`, porque solo lee la parte decimal.
+  > Interpreta bytes, no partes del número.
+
+Repasar: **A06.3, A10.1**.
+</Quiz>
+
+<Quiz id="mx-31">
+¿Qué imprime para este XML indentado?
+
+```xml
+<r>
+  <a>x</a>
+</r>
+```
+
+```java
+String t = doc.getDocumentElement().getTextContent();
+System.out.println(t.equals("x") + " " + t.trim().equals("x"));
+```
+
+- [ ] `true true`
+  > El texto de la raíz incluye los saltos y espacios de indentación.
+- [x] `false true`
+  > Correcta: `getTextContent()` concatena también el texto en blanco.
+- [ ] `false false`
+  > Tras `trim()` queda `x`.
+- [ ] `true false`
+  > Imposible: si fuese `x`, el `trim()` también lo sería.
+- [ ] Lanza `NullPointerException`.
+  > `getTextContent()` de un elemento no es `null`.
+- [ ] `false` y lanza excepción en `trim()`.
+  > `trim()` funciona sobre cualquier cadena.
+
+Repasar: **B04.3**.
+</Quiz>
+
+<Quiz id="mx-32">
+¿Cuál de estos fragmentos **no** está bien formado?
+
+- [ ] `<a><b/></a>`
+  > Correcto: `b` está bien anidado.
+- [ ] `<a x="1"></a>`
+  > Correcto: atributo entre comillas.
+- [x] `<a><b></a></b>`
+  > Correcta: la anidación está cruzada.
+- [ ] `<a>texto <b>más</b></a>`
+  > El contenido mixto es válido.
+- [ ] `<a/>`
+  > Elemento vacío válido.
+- [ ] `<Libro></Libro>`
+  > Apertura y cierre coinciden, incluidas las mayúsculas.
+
+Repasar: **B01.1**.
+</Quiz>
+
+<Quiz id="mx-33">
+¿Qué constructor de JDK 17 escribe texto en UTF-8 explícito usando directamente `FileWriter`?
+
+- [ ] `new FileWriter("a.txt", "UTF-8")`
+  > No hay sobrecarga con `String` de codificación.
+- [x] `new FileWriter("a.txt", StandardCharsets.UTF_8)`
+  > Correcta: existen sobrecargas con `Charset`.
+- [ ] `new FileWriter("a.txt", true)` y después `setEncoding("UTF-8")`.
+  > `FileWriter` no tiene `setEncoding`.
+- [ ] `new BufferedWriter(new FileWriter("a.txt"), "UTF-8")`
+  > El segundo parámetro de `BufferedWriter` es el tamaño del búfer.
+- [ ] `new FileWriter(new FileOutputStream("a.txt"), "UTF-8")`
+  > `FileWriter` no envuelve un flujo; eso lo hace `OutputStreamWriter`.
+- [ ] No se puede: `FileWriter` siempre usa la codificación predeterminada.
+  > Desde Java 11 admite un `Charset`.
+
+Repasar: **A08.2**.
+</Quiz>
+
+<Quiz id="mx-34">
+¿Qué excepciones comprobadas puede lanzar `saxParser.parse(file, handler)`?
+
+- [ ] `XMLStreamException`
+  > Es de StAX.
+- [ ] `ParserConfigurationException`
+  > Se produce al crear el parser, no al parsear.
+- [x] `SAXException` e `IOException`
+  > Correcta (B07.1).
+- [ ] `JAXBException`
+  > Es de JAXB.
+- [ ] `TransformerException`
+  > Es de la transformación.
+- [ ] Ninguna.
+  > Declara las dos de la respuesta correcta.
+
+Repasar: **B07.1, B03.2**.
+</Quiz>
+
+<Quiz id="mx-35">
+¿Qué hace `marshaller.marshal(libreria, System.out)`?
+
+- [ ] Escribe `libreria.xml` y también lo muestra.
+  > Solo escribe en el destino indicado: la consola.
+- [x] Muestra el XML por consola sin crear ningún fichero.
+  > Correcta (B13.3).
+- [ ] Lee el XML desde la consola.
+  > Esa sería la dirección contraria.
+- [ ] Imprime `libreria.toString()`.
+  > Imprime el XML mapeado.
+- [ ] No compila: `marshal` solo admite un `File`.
+  > También admite un `OutputStream`.
+- [ ] Valida el XML antes de mostrarlo.
+  > La validación no es automática.
+
+Repasar: **B13.3**.
+</Quiz>
+
+<Quiz id="mx-36">
+Se crea un lector StAX con `createXMLStreamReader(new FileReader("a.xml"))`. ¿Qué afirmación es correcta?
+
+- [ ] El parser vuelve a decodificar los bytes con la codificación de la declaración XML.
+  > Recibe caracteres ya decodificados por el `FileReader`.
+- [x] La decodificación ya la ha hecho el `FileReader`; con un `InputStream` el parser podría interpretar la codificación del XML.
+  > Correcta (B09.3).
+- [ ] No compila: StAX solo acepta `InputStream`.
+  > También acepta un `Reader`.
+- [ ] El lector se cierra solo al llegar a `END_DOCUMENT`.
+  > Hay que cerrarlo.
+- [ ] `FileReader` convierte el XML en eventos.
+  > Solo lee caracteres.
+- [ ] StAX ignora la codificación porque siempre usa UTF-16.
+  > Con bytes sí la interpreta.
+
+Repasar: **B09.3**.
+</Quiz>
+
+<Quiz id="mx-37">
+¿Qué diferencia hay entre `getAbsolutePath()` y `getCanonicalPath()` para `new File("datos/../a.txt")`?
+
+- [ ] Ninguna: las dos devuelven la misma cadena siempre.
+  > La canónica elimina redundancias como `..`.
+- [x] La absoluta puede conservar `datos/..`; la canónica elimina esas redundancias y puede lanzar `IOException`.
+  > Correcta (A04.2).
+- [ ] La canónica exige que `a.txt` exista.
+  > No lo exige en general.
+- [ ] La absoluta comprueba que existe la ruta.
+  > Ninguna de las dos lo comprueba.
+- [ ] `getCanonicalPath()` devuelve solo el nombre `a.txt`.
+  > Eso es `getName()`.
+- [ ] `getAbsolutePath()` devuelve un `File`.
+  > Devuelve un `String`.
+
+Repasar: **A04.2**.
+</Quiz>
+
+<Quiz id="mx-38">
+¿Qué clase de la familia de bytes es una subclase de `FilterInputStream`?
+
+- [ ] `FileInputStream`
+  > Hereda directamente de `InputStream`: es un origen, no un filtro.
+- [ ] `ObjectInputStream`
+  > Hereda directamente de `InputStream`.
+- [x] `DataInputStream`
+  > Correcta: añade funcionalidad (primitivas) sobre otro flujo.
+- [ ] `InputStreamReader`
+  > Es de la familia de caracteres.
+- [ ] `RandomAccessFile`
+  > No es un `InputStream`.
+- [ ] `ByteArrayInputStream`
+  > Hereda directamente de `InputStream`.
+
+Repasar: **A02.3**.
+</Quiz>
+
+<Quiz id="mx-39">
+`r` es `<r><a/><b/><c/></r>` (sin espacios). ¿Qué imprime?
+
+```java
+Node quitado = r.removeChild(r.getFirstChild());
+System.out.println(quitado.getNodeName() + " " + r.getChildNodes().getLength()
+        + " " + r.getFirstChild().getNodeName());
+```
+
+- [ ] `r 2 b`
+  > `removeChild` devuelve el nodo eliminado, no el padre.
+- [x] `a 2 b`
+  > Correcta: se quita `a`, quedan `b` y `c`.
+- [ ] `a 3 a`
+  > El nodo sí se elimina.
+- [ ] `a 2 a`
+  > El primer hijo ya es `b`.
+- [ ] `null 2 b`
+  > Devuelve el nodo eliminado.
+- [ ] Lanza `DOMException`.
+  > `a` es hijo directo de `r`.
+
+Repasar: **B06.1**.
+</Quiz>
+
+<Quiz id="mx-40">
+Se serializa un objeto, después se **modifica la clase** (cambia su `serialVersionUID`) y se intenta deserializar el fichero antiguo. ¿Qué excepción aparece?
+
+- [ ] `ClassNotFoundException`
+  > La clase existe; lo que cambia es su versión.
+- [ ] `NotSerializableException`
+  > Esa aparece al escribir objetos no serializables.
+- [x] `InvalidClassException`
+  > Correcta: incompatibilidad de versión de la clase serializada.
+- [ ] `ClassCastException`
+  > Aparece al convertir a un tipo equivocado.
+- [ ] `EOFException`
+  > No es un problema de final de datos.
+- [ ] Ninguna: se rellenan los campos nuevos con valores por defecto.
+  > Con un `serialVersionUID` distinto la lectura falla.
+
+Repasar: **A07.1, A07.2**.
+</Quiz>
+
+<QuizResults />

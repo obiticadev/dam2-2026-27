@@ -15,9 +15,14 @@ export default defineConfig({
 			sidebar: [
 				{ label: 'Inicio', slug: 'index' },
 				{
-					label: 'UT02 · Ficheros y XML',
-					items: [{ autogenerate: { directory: 'ut02' } }],
+					label: 'UT02-A · Ficheros (sin NIO)',
+					items: [{ autogenerate: { directory: 'ut02a' } }],
 				},
+				{
+					label: 'UT02-B · XML',
+					items: [{ autogenerate: { directory: 'ut02b' } }],
+				},
+				{ label: 'Examen mixto', slug: 'examen-mixto' },
 				{ label: 'Plantilla de preguntas', slug: 'plantilla' },
 			],
 			plugins: [

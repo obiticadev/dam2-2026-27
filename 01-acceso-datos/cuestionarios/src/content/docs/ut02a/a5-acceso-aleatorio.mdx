@@ -1,0 +1,369 @@
+---
+title: "A5 · Acceso aleatorio"
+description: "RandomAccessFile, modos r/rw, seek, skipBytes, cálculo de posiciones en registros fijos, EOF y tamaños de escritura (A10, A14, A15)."
+sidebar:
+  order: 5
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **A10** y **A14** con matices de **A15**. Sin NIO. Salvo que se diga otra cosa, `notas.dat` contiene registros de **`int id` + `double nota` = 12 bytes**, sin cabecera, y el primer registro tiene índice 0. Los fragmentos omiten el manejo de `IOException`.
+
+<Quiz id="a5-01" title="Registro numerado desde 1">
+¿En qué byte empieza el **cuarto** registro (numeración ordinal desde 1)?
+
+- [ ] 48
+  > Es `4 × 12`: usa el número ordinal como si fuera índice base cero.
+- [x] 36
+  > Correcta: `(4 − 1) × 12 = 36`.
+- [ ] 40
+  > Es la posición de la nota del cuarto registro, no su inicio.
+- [ ] 52
+  > Suma el desplazamiento del campo al índice equivocado.
+- [ ] 3
+  > Cuenta registros, pero el puntero se mide en bytes.
+- [ ] 32
+  > Calcula con registros de 8 bytes.
+
+Repasar: **A10.2**.
+</Quiz>
+
+<Quiz id="a5-02" title="Campo de un registro">
+¿Con qué `seek` se coloca el puntero al principio de la **nota** del registro de **índice 3**?
+
+- [ ] `seek(36)`
+  > Es el inicio del registro; falta el desplazamiento del `int`.
+- [x] `seek(40)`
+  > Correcta: `3 × 12 + 4 = 40`.
+- [ ] `seek(44)`
+  > Suma 8 en lugar de 4: el `double` va después de un `int` de 4 bytes.
+- [ ] `seek(28)`
+  > Es la nota del índice 2.
+- [ ] `seek(3)`
+  > `seek` usa bytes, no números de registro.
+- [ ] `seek(52)`
+  > Es la nota del índice 4.
+
+Repasar: **A10.2**.
+</Quiz>
+
+<Quiz id="a5-03" title="Puntero tras leer un registro">
+`notas.dat` tiene 5 registros. ¿Qué imprime?
+
+```java
+try (RandomAccessFile raf = new RandomAccessFile("notas.dat", "r")) {
+    raf.seek(24);
+    raf.readInt();
+    raf.readDouble();
+    System.out.println(raf.getFilePointer());
+}
+```
+
+- [ ] 24
+  > Leer avanza el puntero.
+- [ ] 28
+  > Solo cuenta el `readInt`.
+- [x] 36
+  > Correcta: 24 + 4 + 8.
+- [ ] 32
+  > Cuenta el `double` como 4 bytes.
+- [ ] 2
+  > El puntero se mide en bytes, no en registros.
+- [ ] 60
+  > Eso es el tamaño del fichero, no la posición.
+
+Repasar: **A10.1, A10.2**.
+</Quiz>
+
+<Quiz id="a5-04" title="Añadir un registro al final">
+`notas.dat` tiene 5 registros. ¿Qué imprime?
+
+```java
+try (RandomAccessFile raf = new RandomAccessFile("notas.dat", "rw")) {
+    raf.seek(raf.length());
+    raf.writeInt(6);
+    raf.writeDouble(7.25);
+    System.out.println(raf.getFilePointer() + " " + raf.length());
+}
+```
+
+- [ ] `12 72`
+  > El puntero no vuelve al principio del registro tras escribir.
+- [ ] `72 60`
+  > Escribir más allá del final aumenta el tamaño.
+- [x] `72 72`
+  > Correcta: 60 + 12 en ambos casos.
+- [ ] `60 72`
+  > Escribir avanza el puntero.
+- [ ] `12 12`
+  > `"rw"` no trunca al abrir: el fichero conserva sus 60 bytes.
+- [ ] `6 6`
+  > Confunde el número de registros con bytes.
+
+Repasar: **A10.1**.
+</Quiz>
+
+<Quiz id="a5-05" title="seek absoluto y skipBytes relativo">
+`notas.dat` tiene 5 registros. ¿Qué imprime?
+
+```java
+try (RandomAccessFile raf = new RandomAccessFile("notas.dat", "r")) {
+    raf.seek(4);
+    raf.skipBytes(8);
+    raf.seek(8);
+    System.out.println(raf.getFilePointer());
+}
+```
+
+- [ ] 20
+  > Trata el segundo `seek` como un desplazamiento relativo.
+- [ ] 12
+  > Se queda en la posición tras `skipBytes`, pero después hay otro `seek`.
+- [x] 8
+  > Correcta: `seek` coloca el puntero en una posición absoluta.
+- [ ] 4
+  > Ignora todo lo posterior al primer `seek`.
+- [ ] 16
+  > Suma 8 al primer `seek` dos veces.
+- [ ] 24
+  > Suma todos los valores.
+
+Repasar: **A10.1, A15**.
+</Quiz>
+
+<Quiz id="a5-06" title="Retorno de skipBytes">
+`f.dat` tiene 10 bytes. ¿Qué imprime?
+
+```java
+try (RandomAccessFile raf = new RandomAccessFile("f.dat", "r")) {
+    raf.seek(6);
+    System.out.println(raf.skipBytes(20) + " " + raf.getFilePointer());
+}
+```
+
+- [ ] `20 26`
+  > No salta más allá del final.
+- [x] `4 10`
+  > Correcta: devuelve los bytes que ha saltado de verdad.
+- [ ] `20 10`
+  > El retorno es la cantidad efectiva, no la pedida.
+- [ ] `-1 6`
+  > No devuelve -1 por no poder saltar todo.
+- [ ] Lanza `EOFException`.
+  > `skipBytes` no lanza excepción por llegar al final.
+- [ ] `0 6`
+  > Sí avanza hasta el final.
+
+Repasar: **A10.1**.
+</Quiz>
+
+<Quiz id="a5-07" title="seek más allá del final">
+`f.dat` tiene 10 bytes. ¿Qué imprime?
+
+```java
+try (RandomAccessFile raf = new RandomAccessFile("f.dat", "rw")) {
+    raf.seek(100);
+    long a = raf.length();
+    raf.write(1);
+    System.out.println(a + " " + raf.length());
+}
+```
+
+- [ ] `100 101`
+  > `seek` por sí solo no cambia el tamaño.
+- [ ] `10 11`
+  > La escritura se hace en la posición 100, no al final anterior.
+- [x] `10 101`
+  > Correcta: `seek` no amplía; la escritura en el byte 100 sí extiende el fichero.
+- [ ] `10 10`
+  > La escritura extiende el fichero.
+- [ ] Lanza `EOFException` en `seek(100)`.
+  > Posicionarse más allá del final es válido.
+- [ ] `100 100`
+  > Ni `seek` amplía ni la escritura deja el tamaño en 100.
+
+Repasar: **A10.1**.
+</Quiz>
+
+<Quiz id="a5-08" title="Abrir con rw un fichero existente">
+`notas.dat` tiene 3 registros (36 bytes). ¿Qué imprime?
+
+```java
+try (RandomAccessFile raf = new RandomAccessFile("notas.dat", "rw")) {
+    raf.writeInt(99);
+    System.out.println(raf.length());
+}
+```
+
+- [ ] 4
+  > `"rw"` no trunca al abrir.
+- [x] 36
+  > Correcta: sobrescribe los 4 primeros bytes (el id del registro 0) y el tamaño no cambia.
+- [ ] 40
+  > No anexa: el puntero empieza en 0.
+- [ ] 0
+  > No se borra el contenido.
+- [ ] 12
+  > No reduce el fichero al primer registro.
+- [ ] Lanza `IOException` porque el fichero existe.
+  > Abrir un fichero existente con `"rw"` es válido.
+
+Repasar: **A10.1, A15**.
+</Quiz>
+
+<Quiz id="a5-09" title="Modo r sin fichero">
+`nuevo.dat` no existe. ¿Qué ocurre con `new RandomAccessFile("nuevo.dat", "r")`?
+
+- [ ] Crea un fichero vacío.
+  > Solo `"rw"` puede crearlo.
+- [x] Lanza `FileNotFoundException`.
+  > Correcta: `"r"` exige un fichero existente.
+- [ ] Devuelve un objeto con `length()` igual a 0.
+  > El constructor ya falla.
+- [ ] Lanza `EOFException`.
+  > No se ha intentado leer.
+- [ ] Lanza `IllegalArgumentException` por el modo.
+  > `"r"` es un modo válido.
+- [ ] Crea el fichero al primer `write`.
+  > En modo `"r"` no se puede escribir.
+
+Repasar: **A10.1**.
+</Quiz>
+
+<Quiz id="a5-10" title="Modos válidos">
+¿Cuál de estas llamadas lanza `IllegalArgumentException` por el modo?
+
+- [ ] `new RandomAccessFile("a.dat", "r")`
+  > `"r"` es válido.
+- [ ] `new RandomAccessFile("a.dat", "rw")`
+  > `"rw"` es válido.
+- [x] `new RandomAccessFile("a.dat", "w")`
+  > Correcta: `"w"` no es un modo de `RandomAccessFile`.
+- [ ] `new RandomAccessFile("a.dat", "rws")`
+  > `"rws"` existe (escritura sincronizada de contenido y metadatos).
+- [ ] `new RandomAccessFile("a.dat", "rwd")`
+  > `"rwd"` existe (escritura sincronizada de contenido).
+- [ ] `new RandomAccessFile(new File("a.dat"), "rw")`
+  > También existe el constructor con `File`.
+
+Repasar: **A10.1**.
+</Quiz>
+
+<Quiz id="a5-11" title="Señales de final">
+El puntero está justo al final del fichero. ¿Qué combinación de resultados es correcta para `read()`, `readLine()` y `readInt()`?
+
+- [ ] `-1`, `-1` y `-1`
+  > Cada método señala el final a su manera.
+- [ ] `null`, `null` y `EOFException`
+  > `read()` devuelve un `int`: -1.
+- [x] `-1`, `null` y `EOFException`
+  > Correcta (A15).
+- [ ] `-1`, `""` y `0`
+  > `""` sería una línea vacía y `readInt` no devuelve 0 por falta de datos.
+- [ ] `EOFException` en los tres.
+  > `read()` y `readLine()` no lanzan esa excepción.
+- [ ] `0`, `null` y `-1`
+  > `read()` devuelve -1, y `readInt` no tiene valor centinela.
+
+Repasar: **A10.1, A15**.
+</Quiz>
+
+<Quiz id="a5-12" title="readFully incompleto">
+`f.dat` tiene 10 bytes. ¿Qué ocurre?
+
+```java
+try (RandomAccessFile raf = new RandomAccessFile("f.dat", "r")) {
+    byte[] b = new byte[16];
+    raf.readFully(b);
+}
+```
+
+- [ ] Devuelve 10, los bytes leídos.
+  > `readFully` devuelve `void`.
+- [ ] Llena 10 posiciones y deja las otras 6 a cero sin error.
+  > `readFully` llena el array entero o falla.
+- [x] Lanza `EOFException`.
+  > Correcta: no hay bytes suficientes para llenar el array.
+- [ ] Devuelve -1.
+  > Su tipo de retorno es `void`.
+- [ ] Repite los bytes desde el principio hasta llenar el array.
+  > No rebobina.
+- [ ] No compila: `readFully` necesita `off` y `len`.
+  > Existe la sobrecarga con solo el array.
+
+Repasar: **A10.1**.
+</Quiz>
+
+<Quiz id="a5-13" title="Tamaño con writeChar y writeBytes">
+`t.dat` no existe. ¿Qué imprime?
+
+```java
+try (RandomAccessFile raf = new RandomAccessFile("t.dat", "rw")) {
+    raf.writeChar('A');
+    raf.writeBytes("ño");
+    System.out.println(raf.length());
+}
+```
+
+- [ ] 3
+  > `writeChar` escribe 2 bytes.
+- [x] 4
+  > Correcta: 2 (`writeChar`) + 1 por cada `char` en `writeBytes`.
+- [ ] 5
+  > Trata la `ñ` como dos bytes UTF-8, pero `writeBytes` no codifica en UTF-8.
+- [ ] 6
+  > Cuenta 2 bytes por `char` también en `writeBytes`.
+- [ ] 8
+  > Cuenta 4 bytes por llamada.
+- [ ] 7
+  > Suma una cabecera de longitud, que solo añade `writeUTF`.
+
+Repasar: **A10.1, A10.2, A15**.
+</Quiz>
+
+<Quiz id="a5-14" title="Línea que falta">
+Este método debe cambiar la nota del registro de índice `i` sin tocar el resto del fichero. ¿Qué línea va en el hueco?
+
+```java
+void cambiarNota(RandomAccessFile raf, int i, double nueva) throws IOException {
+    // hueco
+    raf.writeDouble(nueva);
+}
+```
+
+- [ ] `raf.seek(i * 12);`
+  > Sobrescribiría el `id` y los primeros bytes de la nota.
+- [x] `raf.seek(i * 12 + 4);`
+  > Correcta: inicio del registro más el desplazamiento del `int`.
+- [ ] `raf.skipBytes(i * 12 + 4);`
+  > `skipBytes` es relativo a la posición actual, que no se conoce.
+- [ ] `raf.seek(i + 4);`
+  > Mezcla índice de registro con bytes.
+- [ ] `raf.seek((i + 1) * 12 + 4);`
+  > Trata el índice base cero como ordinal y apunta al registro siguiente.
+- [ ] `raf.seek(raf.length());`
+  > Añadiría la nota al final en lugar de cambiarla.
+
+Repasar: **A10.2**.
+</Quiz>
+
+<Quiz id="a5-15" title="RandomAccessFile y los flujos">
+¿Qué afirmación es correcta?
+
+- [ ] `RandomAccessFile` hereda de `InputStream` y de `OutputStream`.
+  > Java no tiene herencia múltiple de clases y no hereda de ninguna de las dos.
+- [ ] `InputStream in = new RandomAccessFile("a.dat", "r");` compila.
+  > No es un `InputStream`.
+- [x] Implementa `DataInput` y `DataOutput`, por eso tiene métodos como `readInt` y `writeDouble`.
+  > Correcta (A10.1).
+- [ ] Solo permite leer; para escribir hay que abrir un `FileOutputStream`.
+  > Con `"rw"` lee y escribe con el mismo objeto.
+- [ ] Su puntero cuenta registros.
+  > Cuenta bytes.
+- [ ] Obliga a que todos los registros tengan el mismo tamaño.
+  > Facilita trabajar con registros fijos, pero no lo impone.
+
+Repasar: **A10.1, A03**.
+</Quiz>
+
+<QuizResults />

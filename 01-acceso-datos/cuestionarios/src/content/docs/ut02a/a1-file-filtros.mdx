@@ -1,0 +1,335 @@
+---
+title: "A1 · File, rutas y filtros"
+description: "Persistencia, formas de acceso, la clase File, creación y borrado, FilenameFilter y listados (A01–A05, A15)."
+sidebar:
+  order: 1
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **A01–A05** y matices de **A15**. Sin NIO. Seis opciones y una sola correcta por pregunta. Los fragmentos omiten los `import` y el manejo de `IOException`.
+
+<Quiz id="a1-01" title="Entrada y salida">
+Un programa Java lee un fichero del disco y escribe un resumen en otro fichero. Desde el punto de vista de la E/S de Java, ¿qué afirmación es correcta?
+
+- [x] Leer del disco es entrada y escribir en disco es salida, porque se define desde el programa.
+  > Correcta: entrada y salida se definen respecto al programa (A01).
+- [ ] Leer del disco es salida, porque los datos salen del disco.
+  > Invierte el punto de vista: se toma el del programa, no el del dispositivo.
+- [ ] Ambas operaciones son salida, porque las dos usan el disco.
+  > El dispositivo no determina la dirección; la determina el sentido respecto al programa.
+- [ ] Solo se habla de entrada/salida cuando interviene la red.
+  > La E/S incluye ficheros, consola, memoria, teclado y red.
+- [ ] Un flujo (*stream*) siempre representa un fichero del disco.
+  > Un flujo abstrae cualquier origen o destino: memoria, consola, red, ficheros…
+- [ ] El dato pasa a ser persistente en cuanto se guarda en una variable.
+  > Una variable en RAM no es persistente; la persistencia sobrevive a la ejecución.
+
+Repasar: **A01**.
+</Quiz>
+
+<Quiz id="a1-02" title="Dos ejes independientes">
+¿Qué afirmación sobre la clasificación de ficheros del temario es correcta?
+
+- [ ] Un fichero de texto siempre se lee secuencialmente y uno binario siempre de forma aleatoria.
+  > Son ejes independientes: un binario puede leerse secuencialmente y un texto puede recorrerse con posiciones.
+- [ ] La extensión `.dat` convierte el contenido en binario.
+  > La extensión no cambia el formato; lo determina cómo se escribió.
+- [x] Texto/binario y secuencial/aleatorio son dos ejes distintos que se combinan.
+  > Correcta: representación y forma de acceso son ejes independientes (A03).
+- [ ] Un fichero de texto no está formado por bytes.
+  > Físicamente todo son bytes; el texto se interpreta mediante una codificación.
+- [ ] `RandomAccessFile` obliga a que todos los registros tengan el mismo tamaño.
+  > Los registros fijos facilitan el cálculo de posiciones, pero la clase no lo impone.
+- [ ] Se puede acceder aleatoriamente a la entrada de teclado porque es un flujo.
+  > El acceso aleatorio requiere un soporte que permita reposicionarse; el teclado no.
+
+Repasar: **A03**.
+</Quiz>
+
+<Quiz id="a1-03" title="Abstracciones de flujos">
+¿Qué combinación de clase base y tipo de datos es correcta?
+
+- [ ] `Reader` → bytes de entrada.
+  > `Reader` es la base de la entrada de **caracteres**.
+- [ ] `OutputStream` → caracteres de salida.
+  > `OutputStream` es salida de **bytes**; los caracteres de salida van con `Writer`.
+- [x] `InputStream` → bytes de entrada.
+  > Correcta (A02.1).
+- [ ] `Writer` → bytes de salida.
+  > `Writer` escribe caracteres.
+- [ ] `PrintStream` → familia de caracteres, porque imprime texto.
+  > `PrintStream` hereda de `OutputStream`: es familia de bytes aunque imprima texto.
+- [ ] `RandomAccessFile` → subclase de `InputStream`.
+  > Implementa `DataInput` y `DataOutput`, pero no hereda de `InputStream`.
+
+Repasar: **A02.1, A02.3**.
+</Quiz>
+
+<Quiz id="a1-04" title="¿Crea el fichero?">
+La carpeta de trabajo está vacía. ¿Qué imprime este fragmento?
+
+```java
+File f = new File("informe.txt");
+System.out.println(f.exists() + " " + f.length() + " " + f.getName());
+```
+
+- [x] `false 0 informe.txt`
+  > Correcta: `new File` solo representa la ruta; `length()` de un inexistente devuelve 0.
+- [ ] `true 0 informe.txt`
+  > Supone que el constructor crea el fichero; no lo hace.
+- [ ] `false -1 informe.txt`
+  > `length()` no devuelve -1 para un inexistente: devuelve 0.
+- [ ] Lanza `FileNotFoundException` en la primera línea.
+  > El constructor de `File` no comprueba la existencia.
+- [ ] `false 0` seguido de la ruta absoluta completa.
+  > `getName()` devuelve solo el último nombre de la ruta.
+- [ ] No compila porque `length()` devuelve `int` y se concatena con `boolean`.
+  > Devuelve `long` y la concatenación con `String` compila sin problema.
+
+Repasar: **A04.1, A04.2**.
+</Quiz>
+
+<Quiz id="a1-05" title="length() igual a 0">
+`f.length()` devuelve `0`. ¿Qué se puede deducir **con seguridad**?
+
+- [ ] Que el fichero existe y está vacío.
+  > También devuelve 0 si no existe.
+- [ ] Que el fichero no existe.
+  > Un fichero existente y vacío también da 0.
+- [ ] Que `f` es un directorio.
+  > El tamaño de los directorios no está especificado por este contrato; no se deduce.
+- [x] Nada concluyente sobre su existencia: hay que comprobar `exists()` o `isFile()`.
+  > Correcta: 0 es ambiguo entre vacío e inexistente (A15).
+- [ ] Que se ha producido una `IOException` silenciosa.
+  > No se deduce ningún error.
+- [ ] Que el fichero tiene 0 líneas pero puede tener bytes.
+  > `length()` mide **bytes**, no líneas.
+
+Repasar: **A04.2, A15**.
+</Quiz>
+
+<Quiz id="a1-06" title="createNewFile dos veces">
+La carpeta `datos` existe y está vacía. ¿Qué imprime?
+
+```java
+File f = new File("datos", "a.txt");
+boolean r1 = f.createNewFile();
+boolean r2 = f.createNewFile();
+System.out.println(r1 + " " + r2);
+```
+
+- [ ] `true true`
+  > La segunda llamada no vuelve a crear nada.
+- [x] `true false`
+  > Correcta: `false` significa que ya existía; no es una excepción.
+- [ ] `false false`
+  > La primera vez sí se crea el fichero.
+- [ ] `true` y después lanza `IOException` porque ya existe.
+  > Que exista ya no es un error: devuelve `false`.
+- [ ] `false true`
+  > El orden es al revés.
+- [ ] No compila: `File(String, String)` no existe.
+  > Es uno de los tres constructores del temario: padre y nombre hijo.
+
+Repasar: **A04.2**.
+</Quiz>
+
+<Quiz id="a1-07" title="Padre inexistente">
+La carpeta `nueva` **no** existe. ¿Qué ocurre?
+
+```java
+File f = new File("nueva/a.txt");
+f.createNewFile();
+```
+
+- [ ] Crea la carpeta `nueva` y el fichero `a.txt`.
+  > `createNewFile` no crea directorios padre.
+- [ ] Devuelve `false` sin más.
+  > `false` significa «ya existía»; aquí el problema es otro.
+- [x] Falla con una `IOException`, porque el directorio padre no existe.
+  > Correcta: no crea padres y la E/S falla.
+- [ ] Crea `a.txt` en la carpeta de trabajo.
+  > Respeta la ruta indicada; no la cambia.
+- [ ] Lanza `NullPointerException` al construir el `File`.
+  > El constructor acepta la ruta aunque no exista.
+- [ ] Devuelve `true`, pero el fichero se crea al cerrar el programa.
+  > No hay creación diferida; eso se parece a `deleteOnExit`, que además borra.
+
+Repasar: **A04.2, A04.3**.
+</Quiz>
+
+<Quiz id="a1-08" title="mkdir frente a mkdirs">
+No existe ninguna de las carpetas `x`, `x/y` ni `x/y/z`. ¿Qué imprime?
+
+```java
+File d = new File("x/y/z");
+System.out.println(d.mkdir() + " " + d.mkdirs() + " " + d.mkdirs());
+```
+
+- [ ] `true true false`
+  > `mkdir` no crea padres: la primera llamada falla.
+- [ ] `false false false`
+  > `mkdirs` sí crea los padres que faltan.
+- [ ] `true false false`
+  > La primera llamada no puede crear `z` sin `x/y`.
+- [x] `false true false`
+  > Correcta: `mkdir` falla, `mkdirs` crea toda la ruta y la tercera llamada no crea nada porque ya existe.
+- [ ] `false true true`
+  > Si el directorio ya existe, `mkdirs` devuelve `false`.
+- [ ] Lanza `IOException` en `mkdir()`.
+  > `mkdir` informa del fallo con `false`, no con excepción.
+
+Repasar: **A04.2**.
+</Quiz>
+
+<Quiz id="a1-09" title="renameTo y el objeto original">
+`viejo.txt` existe y `nuevo.txt` no. El renombrado funciona. ¿Qué imprime?
+
+```java
+File a = new File("viejo.txt");
+boolean ok = a.renameTo(new File("nuevo.txt"));
+System.out.println(ok + " " + a.getName() + " " + a.exists());
+```
+
+- [ ] `true nuevo.txt true`
+  > El objeto `File` original no cambia su ruta tras renombrar.
+- [x] `true viejo.txt false`
+  > Correcta: `a` sigue representando `viejo.txt`, que ya no existe.
+- [ ] `true viejo.txt true`
+  > `viejo.txt` ya no existe en disco.
+- [ ] `false viejo.txt true`
+  > El enunciado indica que el renombrado funciona.
+- [ ] `true nuevo.txt false`
+  > `getName()` devuelve la ruta que representa el objeto: `viejo.txt`.
+- [ ] No compila: `renameTo` recibe un `String`.
+  > Recibe un `File` de destino.
+
+Repasar: **A04.2**.
+</Quiz>
+
+<Quiz id="a1-10" title="Borrar un directorio con contenido">
+`carpeta` existe y contiene un fichero. ¿Qué devuelve `new File("carpeta").delete()`?
+
+- [ ] `true`, y borra la carpeta con su contenido.
+  > `delete` no borra recursivamente.
+- [x] `false`, porque solo borra ficheros o directorios vacíos.
+  > Correcta (A04.2).
+- [ ] `true`, pero la carpeta se borra al terminar la JVM.
+  > Eso describe `deleteOnExit`, y ese método no devuelve `boolean`.
+- [ ] Lanza `IOException` indicando que el directorio no está vacío.
+  > `delete` informa con `false`, sin el motivo detallado.
+- [ ] `false`, porque `delete` solo sirve para ficheros.
+  > Sí borra directorios cuando están vacíos.
+- [ ] Borra solo el fichero de dentro y devuelve `true`.
+  > No toca el contenido.
+
+Repasar: **A04.2**.
+</Quiz>
+
+<Quiz id="a1-11" title="Firma de FilenameFilter">
+¿Cuál es la firma del único método de `FilenameFilter`?
+
+- [ ] `boolean accept(File file)`
+  > Esa es la de `FileFilter`, otra interfaz distinta.
+- [ ] `boolean accept(String path)`
+  > Recibe también el directorio, y el nombre no es la ruta completa.
+- [x] `boolean accept(File dir, String name)`
+  > Correcta: el directorio que se lista y el nombre de la entrada candidata.
+- [ ] `void accept(File dir, String name)`
+  > Debe devolver `boolean` para incluir o descartar.
+- [ ] `String[] accept(File dir)`
+  > El filtro decide entrada a entrada; el array lo devuelve `list`.
+- [ ] `boolean filter(File dir, String name)`
+  > El método se llama `accept`.
+
+Repasar: **A05, A15**.
+</Quiz>
+
+<Quiz id="a1-12" title="Listado sin coincidencias">
+`dir` es un directorio existente y accesible. Contiene `a.TXT`, `b.csv` y una subcarpeta llamada `c.txt`. ¿Qué contiene `nombres`?
+
+```java
+String[] nombres = dir.list((padre, nombre) ->
+        nombre.endsWith(".txt") && new File(padre, nombre).isFile());
+```
+
+- [ ] `null`
+  > `null` indica que no es un directorio o un error de E/S; aquí el directorio existe.
+- [ ] `{"a.TXT"}`
+  > `endsWith` distingue mayúsculas y minúsculas: `.TXT` no termina en `.txt`.
+- [ ] `{"c.txt"}`
+  > `c.txt` es un directorio y el filtro exige `isFile()`.
+- [x] Un array vacío.
+  > Correcta: ninguna entrada cumple las dos condiciones.
+- [ ] `{"a.TXT", "c.txt"}`
+  > Ignora tanto las mayúsculas como la comprobación `isFile()`.
+- [ ] Rutas completas en lugar de nombres.
+  > `list` devuelve nombres; `listFiles`, objetos `File`.
+
+Repasar: **A05**.
+</Quiz>
+
+<Quiz id="a1-13" title="list sobre un fichero">
+`notas.txt` es un fichero regular existente. ¿Qué ocurre?
+
+```java
+String[] r = new File("notas.txt").list();
+System.out.println(r.length);
+```
+
+- [ ] Imprime `0`, porque un fichero no tiene entradas.
+  > Sobre algo que no es un directorio, `list()` devuelve `null`, no un array vacío.
+- [ ] Imprime `1`, con el propio nombre del fichero.
+  > No lista el propio fichero.
+- [x] Lanza `NullPointerException` en la segunda línea.
+  > Correcta: `r` es `null` y acceder a `.length` falla.
+- [ ] Lanza `IOException` en la primera línea.
+  > `list()` no declara `IOException`; informa con `null`.
+- [ ] Imprime el número de líneas del fichero.
+  > `list` no lee contenido.
+- [ ] No compila: `list()` exige un filtro.
+  > Hay sobrecarga sin filtro.
+
+Repasar: **A04.2, A05**.
+</Quiz>
+
+<Quiz id="a1-14" title="Filtro como clase">
+Una clase `Filtrar implements FilenameFilter` sobrescribe `accept`. ¿Qué afirmación es correcta?
+
+- [ ] Se escribe `dir.list(new FilenameFilter())` para usarla.
+  > No se instancia una interfaz.
+- [x] `dir.list(new Filtrar())` funciona por polimorfismo: se pasa una instancia de una clase que implementa la interfaz.
+  > Correcta (A05).
+- [ ] Solo sirve con `listFiles`, no con `list`.
+  > Ambos tienen una sobrecarga que recibe un `FilenameFilter`.
+- [ ] Si `accept` devuelve `true`, la entrada se descarta.
+  > `true` significa incluir la entrada.
+- [ ] Pasar `null` como filtro descarta todas las entradas.
+  > Un filtro `null` acepta todos los nombres.
+- [ ] Dentro de `accept` no se puede consultar el tamaño del fichero.
+  > Se puede construir `new File(dir, name)` y consultar `length()`, `isFile()`, etc.
+
+Repasar: **A05**.
+</Quiz>
+
+<Quiz id="a1-15" title="Fichero temporal">
+¿Qué afirmación sobre `File.createTempFile("tmp", ".txt")` es correcta?
+
+- [ ] Solo crea una representación; el fichero aparece al escribir en él.
+  > A diferencia de `new File`, **crea físicamente** el fichero.
+- [ ] Se borra automáticamente al terminar la JVM.
+  > No se borra solo; para eso se llama además a `deleteOnExit()`.
+- [ ] Es un método de instancia que se llama sobre un `File` existente.
+  > Es estático.
+- [ ] Devuelve un `String` con la ruta.
+  > Devuelve un `File`.
+- [x] Crea un fichero vacío con un nombre que no se repite y devuelve su `File`; puede lanzar `IOException`.
+  > Correcta (A04.2).
+- [ ] Acepta prefijos de un solo carácter.
+  > El prefijo debe tener al menos tres caracteres.
+
+Repasar: **A04.2**.
+</Quiz>
+
+<QuizResults />

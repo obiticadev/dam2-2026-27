@@ -1,0 +1,351 @@
+---
+title: "B5 · JAXB: anotaciones y ciclo"
+description: "Binding XML, JAXB 2 (javax.xml.bind) en JDK 17, anotaciones, wrapper e ítem, propOrder, constructor sin argumentos, marshal y unmarshal (B12, B13, B15)."
+sidebar:
+  order: 5
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **B12–B13** y matices de **B15**. Se usa **JAXB 2 (`javax.xml.bind`)**, como en el curso, con la API y la implementación añadidas como dependencias en JDK 17. Los fragmentos omiten los `import`, los getters/setters que no influyen y el manejo de `JAXBException`. Cuando se pregunta por el XML, interesa la estructura, no la declaración ni la indentación.
+
+<Quiz id="b5-01" title="Qué es el binding">
+¿Qué aporta JAXB frente a DOM?
+
+- [ ] Un árbol de `Node` más rápido de recorrer.
+  > JAXB no trabaja con nodos DOM.
+- [x] Una correspondencia entre XML y clases Java: la aplicación trabaja con objetos como `Libreria` y `Libro`.
+  > Correcta (B12.1).
+- [ ] Un modelo de eventos *push* como SAX.
+  > No es un modelo de eventos.
+- [ ] La serialización binaria de objetos en `.dat`.
+  > Esa es `ObjectOutputStream`; JAXB produce XML.
+- [ ] Validación automática contra cualquier XSD de la carpeta.
+  > La validación no es automática.
+- [ ] Conversión de XML a JSON estándar.
+  > El curso se centra en Java ↔ XML.
+
+Repasar: **B12.1, B02.1**.
+</Quiz>
+
+<Quiz id="b5-02" title="JAXB en JDK 17">
+Un proyecto en JDK 17 importa `javax.xml.bind.*` y **no** tiene dependencias añadidas. ¿Qué ocurre al compilar?
+
+- [ ] Compila y funciona: JAXB forma parte de cualquier JDK moderno.
+  > JAXB salió del JDK en Java 11.
+- [x] No compila: el paquete `javax.xml.bind` no existe; hay que añadir la API y una implementación de JAXB 2.
+  > Correcta (B12.1).
+- [ ] Compila, pero hay que cambiar todos los `javax.xml` por `jakarta`, incluido DOM.
+  > DOM, SAX y StAX siguen en `java.xml` con `javax.xml`.
+- [ ] Compila si la clase implementa `Serializable`.
+  > `Serializable` no tiene nada que ver.
+- [ ] Compila; solo falla al validar el XSD.
+  > Falla antes, al compilar.
+- [ ] Compila si se añade solo la API, sin implementación, y funciona en ejecución.
+  > Con solo la API compila, pero en ejecución falta el motor.
+
+Repasar: **B12.1, B15.1**.
+</Quiz>
+
+<Quiz id="b5-03" title="Atributo o elemento">
+¿Qué XML produce `marshal` para un `Libro` con `isbn = "978"` y `autor = "Roche"`?
+
+```java
+@XmlRootElement(name = "libro")
+public class Libro {
+    private String isbn, autor;
+
+    @XmlAttribute(name = "id")
+    public String getIsbn() { return isbn; }
+    public void setIsbn(String isbn) { this.isbn = isbn; }
+
+    @XmlElement(name = "escritor")
+    public String getAutor() { return autor; }
+    public void setAutor(String autor) { this.autor = autor; }
+}
+```
+
+- [ ] `<libro><id>978</id><escritor>Roche</escritor></libro>`
+  > `@XmlAttribute` produce un atributo, no un hijo.
+- [x] `<libro id="978"><escritor>Roche</escritor></libro>`
+  > Correcta: `name` fija el nombre XML del atributo y del elemento.
+- [ ] `<libro isbn="978"><autor>Roche</autor></libro>`
+  > Se usan los nombres XML de `name`, no los de las propiedades Java.
+- [ ] `<Libro id="978"><escritor>Roche</escritor></Libro>`
+  > La raíz se llama como indica `@XmlRootElement(name = "libro")`.
+- [ ] `<libro escritor="Roche"><id>978</id></libro>`
+  > Intercambia atributo y elemento.
+- [ ] Lanza excepción porque falta `@XmlType`.
+  > `@XmlType` no es obligatorio.
+
+Repasar: **B12.2**.
+</Quiz>
+
+<Quiz id="b5-04" title="Wrapper e ítem">
+`Libreria` tiene una lista con dos libros. ¿Qué estructura genera?
+
+```java
+@XmlElementWrapper(name = "ListaLibro")
+@XmlElement(name = "Libro")
+public ArrayList<Libro> getListaLibro() { return listaLibro; }
+```
+
+- [ ] `<Libro><ListaLibro>…</ListaLibro><ListaLibro>…</ListaLibro></Libro>`
+  > Intercambia contenedor e ítem.
+- [x] `<ListaLibro><Libro>…</Libro><Libro>…</Libro></ListaLibro>`
+  > Correcta: un contenedor y un elemento por cada libro.
+- [ ] `<ArrayList><Libro>…</Libro><Libro>…</Libro></ArrayList>`
+  > El nombre de la clase de la colección no genera elementos.
+- [ ] `<ListaLibro>…</ListaLibro><ListaLibro>…</ListaLibro>` sin contenedor.
+  > El wrapper es el único contenedor.
+- [ ] `<Libro>…</Libro><Libro>…</Libro>` sin contenedor.
+  > Sin el wrapper sí sería así; aquí hay contenedor.
+- [ ] Un atributo `ListaLibro` con los libros separados por comas.
+  > No hay ningún `@XmlAttribute`.
+
+Repasar: **B12.3, B15.2.5**.
+</Quiz>
+
+<Quiz id="b5-05" title="Nombre por defecto">
+¿Cómo se llama el elemento raíz al hacer `marshal` de esta clase?
+
+```java
+@XmlRootElement
+public class Libreria { … }
+```
+
+- [ ] `Libreria`
+  > Por defecto, la primera letra pasa a minúscula.
+- [x] `libreria`
+  > Correcta (B12.2).
+- [ ] `LIBRERIA`
+  > No se pone todo en mayúsculas.
+- [ ] `root`
+  > No hay un nombre genérico.
+- [ ] Lanza excepción porque falta `name`.
+  > `name` es opcional.
+- [ ] `ArrayList`
+  > Es el tipo de una propiedad, no la clase raíz.
+
+Repasar: **B12.2**.
+</Quiz>
+
+<Quiz id="b5-06" title="propOrder con nombres XML">
+¿Qué ocurre al ejecutar `JAXBContext.newInstance(Libro.class)`?
+
+```java
+@XmlRootElement
+@XmlType(propOrder = {"Titulo", "autor"})
+public class Libro {
+    private String titulo, autor;
+
+    @XmlElement(name = "Titulo")
+    public String getTitulo() { return titulo; }
+    public void setTitulo(String t) { titulo = t; }
+
+    public String getAutor() { return autor; }
+    public void setAutor(String a) { autor = a; }
+}
+```
+
+- [ ] Funciona y escribe primero `Titulo` y luego `autor`.
+  > `propOrder` usa los nombres de las **propiedades Java**: `"titulo"`, no `"Titulo"`.
+- [x] Falla al crear el contexto (`IllegalAnnotationsException`, subclase de `JAXBException`) porque `"Titulo"` no es una propiedad Java.
+  > Correcta (B12.2).
+- [ ] Funciona, pero ignora `propOrder`.
+  > El contexto detecta la anotación incorrecta.
+- [ ] Falla al compilar.
+  > Es un error de ejecución.
+- [ ] Funciona y escribe `autor` antes que `Titulo`.
+  > No llega a funcionar.
+- [ ] Solo falla al validar contra un XSD.
+  > Falla antes, al crear el contexto.
+
+Repasar: **B12.2, B15.1**.
+</Quiz>
+
+<Quiz id="b5-07" title="Constructor sin argumentos">
+`Libro` está anotada correctamente, pero su **único** constructor es `public Libro(String titulo)`. ¿Qué ocurre con `JAXBContext.newInstance(Libro.class)`?
+
+- [ ] Funciona: JAXB llama al constructor con un título vacío.
+  > JAXB no inventa argumentos.
+- [ ] Funciona solo si `Libro` implementa `Serializable`.
+  > `Serializable` no influye en JAXB.
+- [x] Falla al crear el contexto, porque la clase no tiene constructor sin argumentos.
+  > Correcta: al declarar un constructor con parámetros desaparece el implícito.
+- [ ] Funciona en `marshal` y falla solo en `unmarshal`.
+  > El problema se detecta ya al crear el contexto.
+- [ ] No compila.
+  > Compila; el error es de ejecución.
+- [ ] Funciona si se añade `@XmlType`.
+  > La anotación no crea constructores.
+
+Repasar: **B12.4**.
+</Quiz>
+
+<Quiz id="b5-08" title="Serializable y JAXB">
+¿Debe una clase anotada para JAXB implementar `Serializable`?
+
+- [ ] Sí, porque `marshal` es una serialización.
+  > «Serialización» en sentido amplio no exige la interfaz de la serialización binaria.
+- [x] No: `Serializable` es para la serialización binaria nativa; JAXB usa anotaciones y JavaBeans.
+  > Correcta (B12.1).
+- [ ] Sí, o `unmarshal` devuelve `null`.
+  > No depende de `Serializable`.
+- [ ] Solo la clase raíz.
+  > Ninguna lo necesita.
+- [ ] Solo si tiene listas.
+  > Las listas no lo exigen.
+- [ ] Sí, y además todos los campos deben ser `transient`.
+  > `transient` es de la serialización binaria.
+
+Repasar: **B12.1, B15.1**.
+</Quiz>
+
+<Quiz id="b5-09" title="Dirección de marshal">
+¿Qué operación convierte un objeto `Libreria` en un archivo XML?
+
+- [ ] `unmarshaller.unmarshal(archivo)`
+  > Es la dirección contraria: XML → objeto.
+- [x] `marshaller.marshal(libreria, archivo)`
+  > Correcta: primero el objeto origen y después el destino.
+- [ ] `marshaller.marshal(archivo, libreria)`
+  > El orden de los parámetros es objeto y destino.
+- [ ] `context.createMarshaller()` y nada más.
+  > Solo crea el componente.
+- [ ] `new DOMSource(libreria)`
+  > `DOMSource` necesita un nodo DOM, no un objeto de dominio.
+- [ ] `libreria.toString()`
+  > No produce XML.
+
+Repasar: **B13.3, B15.2.6**.
+</Quiz>
+
+<Quiz id="b5-10" title="Línea que falta">
+¿Qué línea falta para que el fragmento escriba `libreria.xml`?
+
+```java
+JAXBContext ctx = JAXBContext.newInstance(Libreria.class);
+// hueco
+m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+m.marshal(libreria, new File("libreria.xml"));
+```
+
+- [ ] `Marshaller m = new Marshaller(ctx);`
+  > `Marshaller` es una interfaz: se obtiene del contexto.
+- [x] `Marshaller m = ctx.createMarshaller();`
+  > Correcta (B13.3).
+- [ ] `Marshaller m = ctx.createUnmarshaller();`
+  > Devuelve un `Unmarshaller`, de otro tipo.
+- [ ] `Marshaller m = Marshaller.newInstance(Libreria.class);`
+  > No existe ese método.
+- [ ] `Marshaller m = JAXBContext.createMarshaller();`
+  > Es un método de instancia del contexto.
+- [ ] `Marshaller m = (Marshaller) libreria;`
+  > Un objeto de dominio no es un `Marshaller`.
+
+Repasar: **B13.3**.
+</Quiz>
+
+<Quiz id="b5-11" title="unmarshal y el cast">
+¿Por qué el ejemplo usa `(Libreria) u.unmarshal(new File("libreria.xml"))`?
+
+- [ ] Porque el cast convierte el XML en objeto.
+  > La conversión la hace `unmarshal`.
+- [x] Porque la sobrecarga `unmarshal(File)` declara `Object` como tipo de retorno.
+  > Correcta (B13.3).
+- [ ] Porque `unmarshal` devuelve un `Document`.
+  > Devuelve el objeto del modelo.
+- [ ] Porque `Libreria` implementa `Serializable`.
+  > No tiene relación.
+- [ ] Porque sin cast se pierde la lista de libros.
+  > Sin cast simplemente no compila la asignación.
+- [ ] No hace falta; es solo estilo.
+  > Sin cast no compila.
+
+Repasar: **B13.3**.
+</Quiz>
+
+<Quiz id="b5-12" title="JAXB_FORMATTED_OUTPUT">
+¿Qué hace `m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE)`?
+
+- [ ] Valida el XML contra el XSD.
+  > Es presentación, no validación.
+- [x] Pide una salida con saltos de línea e indentación legibles.
+  > Correcta (B13.3).
+- [ ] Cambia la codificación a UTF-16.
+  > No selecciona codificación.
+- [ ] Ordena los elementos alfabéticamente.
+  > El orden lo controla `propOrder`.
+- [ ] Escribe también el XSD.
+  > No genera esquemas.
+- [ ] Hace que `marshal` escriba en consola y en archivo a la vez.
+  > El destino lo indica el parámetro de `marshal`.
+
+Repasar: **B13.3, B15.1**.
+</Quiz>
+
+<Quiz id="b5-13" title="Cambiar el objeto tras guardar">
+¿Qué contiene `libreria.xml` al terminar?
+
+```java
+libreria.setNombre("A");
+m.marshal(libreria, new File("libreria.xml"));
+libreria.setNombre("B");
+```
+
+- [ ] `<nombre>B</nombre>`, porque el archivo está vinculado al objeto.
+  > El archivo se escribió en el `marshal`; después no se vuelve a escribir.
+- [x] `<nombre>A</nombre>`
+  > Correcta: hace falta otro `marshal` para guardar el cambio.
+- [ ] Nada: el archivo se vacía al cambiar el objeto.
+  > El archivo no se toca.
+- [ ] `<nombre>AB</nombre>`
+  > No se concatena nada.
+- [ ] Lanza excepción al modificar un objeto ya guardado.
+  > Se puede modificar libremente.
+- [ ] `<nombre/>`
+  > Se guardó con el valor `A`.
+
+Repasar: **B13.4**.
+</Quiz>
+
+<Quiz id="b5-14" title="propOrder en la raíz">
+En el código docente, `Libro` tiene `propOrder` pero `Libreria` no. ¿Qué se puede afirmar sobre los hijos de la raíz al hacer `marshal`?
+
+- [ ] Siempre salen en el orden `ListaLibro`, `lugar`, `nombre`, como en el XSD.
+  > Tener un XSD no fija el orden de salida ni valida.
+- [x] No está garantizado ese orden; para fijarlo se añade `@XmlType(propOrder = {"listaLibro", "lugar", "nombre"})` a `Libreria`.
+  > Correcta (B13.1).
+- [ ] El `propOrder` de `Libro` se aplica también a `Libreria`.
+  > Cada clase tiene su propio `@XmlType`.
+- [ ] Salen en orden alfabético por obligación.
+  > Sin `propOrder` no hay un orden garantizado.
+- [ ] `@XmlType` no se puede poner en la clase raíz.
+  > Sí se puede.
+- [ ] Para fijarlo se usa `propOrder = {"ListaLibro", "lugar", "nombre"}` con el nombre XML del wrapper.
+  > `propOrder` usa nombres de propiedades Java: `listaLibro`.
+
+Repasar: **B13.1, B12.2**.
+</Quiz>
+
+<Quiz id="b5-15" title="Cardinalidad del XSD">
+En el XSD docente, `Libro` tiene `minOccurs="0"` y `maxOccurs="unbounded"` dentro de `ListaLibro`. ¿Qué significa?
+
+- [ ] Que debe haber exactamente un libro.
+  > Eso sería 1 y 1.
+- [ ] Que la lista no puede estar vacía.
+  > `minOccurs="0"` permite cero libros.
+- [x] Que `ListaLibro` puede contener desde cero hasta cualquier número de `Libro`.
+  > Correcta (B13.1).
+- [ ] Que el XML se valida automáticamente al hacer `unmarshal`.
+  > La validación hay que configurarla aparte.
+- [ ] Que `Libro` es un atributo opcional.
+  > Es un elemento.
+- [ ] Que JAXB genera libros vacíos hasta el máximo.
+  > No genera datos.
+
+Repasar: **B13.1**.
+</Quiz>
+
+<QuizResults />

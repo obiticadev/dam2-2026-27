@@ -1,0 +1,360 @@
+---
+title: "B1 · DOM: parseo, árbol y extracción"
+description: "Factorías, parse y newDocument, tipos de nodo, getNodeValue/getTextContent, espacios, normalize, getElementsByTagName y atributos (B01, B03–B05, B15)."
+sidebar:
+  order: 1
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **B03–B05**, con apoyo en **B01** y **B15**. Los fragmentos omiten los `import` y el manejo de excepciones. Cuando el resultado depende de los espacios, se usa la factoría por defecto del JDK, sin validación ni opciones adicionales.
+
+<Quiz id="b1-01" title="Bien formado y válido">
+`<marcas>ochenta</marcas>` aparece en un XML sintácticamente correcto y no se ha configurado ningún esquema. ¿Qué hace `builder.parse(...)`?
+
+- [ ] Lo rechaza porque `marcas` debería ser numérico.
+  > Sin esquema no hay tipos: el parser solo comprueba que esté bien formado.
+- [x] Lo acepta: está bien formado, y la validación contra un XSD es otra operación que habría que configurar.
+  > Correcta (B01.2).
+- [ ] Convierte `ochenta` en 80.
+  > XML es texto; no hay conversión automática.
+- [ ] Lanza `ParserConfigurationException`.
+  > Esa excepción es de configuración del parser, no del contenido.
+- [ ] Lo acepta, pero `getTextContent()` devolverá `null`.
+  > Devuelve el texto `ochenta`.
+- [ ] Lo valida contra el XSD que haya en la misma carpeta.
+  > La validación nunca es automática.
+
+Repasar: **B01.2**.
+</Quiz>
+
+<Quiz id="b1-02" title="Crear el DocumentBuilder">
+¿Qué secuencia obtiene correctamente un `Document` a partir de `clase.xml`?
+
+- [ ] `Document d = new DocumentBuilder().parse(new File("clase.xml"));`
+  > `DocumentBuilder` es abstracta: no se instancia con `new`.
+- [x] `DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File("clase.xml"))`
+  > Correcta (B03.1).
+- [ ] `DocumentBuilderFactory.newInstance().parse(new File("clase.xml"))`
+  > La factoría crea el builder; no parsea.
+- [ ] `new Document(new File("clase.xml"))`
+  > `Document` es una interfaz.
+- [ ] `DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument(new File("clase.xml"))`
+  > `newDocument()` crea un documento vacío y no recibe archivo.
+- [ ] `SAXParserFactory.newInstance().newDocumentBuilder().parse(...)`
+  > La factoría SAX crea un `SAXParser`, no un `DocumentBuilder`.
+
+Repasar: **B03.1**.
+</Quiz>
+
+<Quiz id="b1-03" title="Documento vacío">
+¿Qué imprime?
+
+```java
+DocumentBuilder b = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+Document doc = b.newDocument();
+System.out.println(doc.getDocumentElement());
+```
+
+- [ ] `<root/>`
+  > Java no crea una raíz por su cuenta.
+- [x] `null`
+  > Correcta: un documento nuevo no tiene elemento raíz hasta que se añade.
+- [ ] `#document`
+  > Ese es el nombre del nodo documento, no su raíz.
+- [ ] Lanza `SAXException` porque no hay XML que leer.
+  > `newDocument()` no lee nada.
+- [ ] Lanza `FileNotFoundException`.
+  > No interviene ningún archivo.
+- [ ] Una cadena vacía.
+  > `getDocumentElement()` devuelve un `Element` o `null`.
+
+Repasar: **B03.2**.
+</Quiz>
+
+<Quiz id="b1-04" title="Excepciones de DOM">
+¿Qué combinación de excepción y momento es correcta?
+
+- [ ] `SAXException` al llamar a `newDocumentBuilder()`.
+  > Al crear el builder, la excepción es `ParserConfigurationException`.
+- [x] `ParserConfigurationException` al crear el builder y `SAXException` si el XML está mal formado al parsear.
+  > Correcta: DOM puede lanzar `SAXException` aunque la aplicación no use callbacks SAX.
+- [ ] `XMLStreamException` al parsear con DOM.
+  > Esa excepción es de StAX.
+- [ ] `JAXBException` si falta el archivo.
+  > Es de JAXB; si falta el archivo, se produce una `IOException`.
+- [ ] Ninguna: `parse` devuelve `null` si hay errores.
+  > Los errores se comunican con excepciones.
+- [ ] `ClassCastException` si el XML no tiene raíz.
+  > Un XML sin raíz está mal formado: `SAXException`.
+
+Repasar: **B03.2**.
+</Quiz>
+
+<Quiz id="b1-05" title="Primer hijo con indentación">
+Con la factoría por defecto, se parsea este XML. ¿Qué imprime?
+
+```xml
+<clase>
+    <alumno numero="1"/>
+</clase>
+```
+
+```java
+Element root = doc.getDocumentElement();
+System.out.println(root.getFirstChild().getNodeName());
+```
+
+- [ ] `alumno`
+  > Antes de `<alumno>` hay un nodo de texto con el salto de línea y los espacios.
+- [x] `#text`
+  > Correcta: el primer hijo es el texto de indentación.
+- [ ] `clase`
+  > Es el nombre de la raíz, no de su hijo.
+- [ ] `numero`
+  > Un atributo no es un hijo ordinario.
+- [ ] `null`
+  > El método devuelve el nombre de un nodo que existe.
+- [ ] Lanza `NullPointerException`.
+  > `getFirstChild()` no es `null`: hay texto.
+
+Repasar: **B04.2**.
+</Quiz>
+
+<Quiz id="b1-06" title="Número de hijos directos">
+Con la factoría por defecto, ¿qué imprime para este XML?
+
+```xml
+<a>
+  <b/>
+  <c/>
+</a>
+```
+
+```java
+System.out.println(doc.getDocumentElement().getChildNodes().getLength());
+```
+
+- [ ] 2
+  > Cuenta solo los elementos; `getChildNodes()` incluye los textos.
+- [ ] 3
+  > Cuenta un único bloque de texto.
+- [x] 5
+  > Correcta: texto, `b`, texto, `c`, texto.
+- [ ] 4
+  > Olvida el texto que hay antes del cierre `</a>`.
+- [ ] 1
+  > Hay varios hijos directos.
+- [ ] 0
+  > `b` y `c` son hijos directos.
+
+Repasar: **B04.2, B05.1**.
+</Quiz>
+
+<Quiz id="b1-07" title="Valor de un Element">
+`e` es el elemento `<ciudad>Soria</ciudad>`. ¿Qué imprime `System.out.println(e.getNodeName() + " " + e.getNodeValue() + " " + e.getTextContent())`?
+
+- [ ] `ciudad Soria Soria`
+  > `getNodeValue()` de un `Element` es `null`.
+- [x] `ciudad null Soria`
+  > Correcta (B04.3).
+- [ ] `#text Soria Soria`
+  > `#text` es el nombre de un nodo de texto, no del elemento.
+- [ ] `ciudad null null`
+  > `getTextContent()` sí devuelve el texto descendiente.
+- [ ] `ciudad  Soria` (valor vacío)
+  > Es `null`, no una cadena vacía.
+- [ ] `Soria null ciudad`
+  > Confunde nombre y contenido.
+
+Repasar: **B04.3, B15.1**.
+</Quiz>
+
+<Quiz id="b1-08" title="getTextContent con subelementos">
+`dir` es el elemento siguiente, escrito en una sola línea. ¿Qué devuelve `dir.getTextContent()`?
+
+```xml
+<dir>Calle <num>5</num></dir>
+```
+
+- [ ] `Calle `
+  > También concatena el texto de los descendientes.
+- [ ] `Calle <num>5</num>`
+  > No devuelve marcado.
+- [x] `Calle 5`
+  > Correcta: concatena todo el texto descendiente.
+- [ ] `null`
+  > Eso devuelve `getNodeValue()`.
+- [ ] `5`
+  > Omite el texto propio de `dir`.
+- [ ] Lanza `DOMException` porque hay contenido mixto.
+  > El contenido mixto es válido.
+
+Repasar: **B04.3**.
+</Quiz>
+
+<Quiz id="b1-09" title="Descendientes o hijos directos">
+¿Qué imprime?
+
+```xml
+<grupo>
+  <alumno/>
+  <sub><alumno/><alumno/></sub>
+</grupo>
+```
+
+```java
+Element g = doc.getDocumentElement();
+Element sub = (Element) g.getElementsByTagName("sub").item(0);
+System.out.println(g.getElementsByTagName("alumno").getLength() + " "
+        + sub.getElementsByTagName("alumno").getLength());
+```
+
+- [ ] `1 2`
+  > Desde `grupo` también encuentra los descendientes de `sub`.
+- [x] `3 2`
+  > Correcta: busca en todos los descendientes del elemento receptor.
+- [ ] `3 3`
+  > Desde `sub` solo hay dos.
+- [ ] `1 0`
+  > Supone que solo busca hijos directos y además falla en `sub`.
+- [ ] `2 2`
+  > Cuenta mal: hay un `alumno` directo y dos dentro de `sub`.
+- [ ] Depende de la indentación.
+  > Los espacios no son elementos `alumno`.
+
+Repasar: **B05.1**.
+</Quiz>
+
+<Quiz id="b1-10" title="Document frente a Element">
+¿Qué imprime para el XML `<item><item/></item>`?
+
+```java
+System.out.println(doc.getElementsByTagName("item").getLength() + " "
+        + doc.getDocumentElement().getElementsByTagName("item").getLength());
+```
+
+- [ ] `1 1`
+  > Desde el documento también se incluye la raíz.
+- [x] `2 1`
+  > Correcta: `Document` incluye la raíz; `Element` busca solo descendientes, no a sí mismo.
+- [ ] `2 2`
+  > El elemento receptor no se cuenta a sí mismo.
+- [ ] `1 0`
+  > El documento encuentra los dos.
+- [ ] `0 1`
+  > El documento sí encuentra coincidencias.
+- [ ] Lanza excepción por repetir el nombre.
+  > Un elemento puede contener otro con el mismo nombre.
+
+Repasar: **B05.1**.
+</Quiz>
+
+<Quiz id="b1-11" title="item fuera de rango">
+`lista` es un `NodeList` con 2 nodos. ¿Qué devuelve `lista.item(2)`?
+
+- [ ] El último nodo, porque los índices empiezan en 1.
+  > Los índices empiezan en 0: válidos 0 y 1.
+- [x] `null`
+  > Correcta: fuera de rango devuelve `null`.
+- [ ] Lanza `ArrayIndexOutOfBoundsException`.
+  > `NodeList` no es un array.
+- [ ] Lanza `IndexOutOfBoundsException`.
+  > No se lanza: devuelve `null`.
+- [ ] El primer nodo, porque la lista es circular.
+  > No es circular.
+- [ ] Un nodo de texto vacío.
+  > No inventa nodos.
+
+Repasar: **B05.1, B15.1**.
+</Quiz>
+
+<Quiz id="b1-12" title="Atributo ausente">
+`e` es `<alumno numero="7"/>`. ¿Qué imprime?
+
+```java
+System.out.println("[" + e.getAttribute("curso") + "] " + e.hasAttribute("curso")
+        + " " + (e.getAttribute("numero") + 1));
+```
+
+- [ ] `[null] false 8`
+  > En DOM, un atributo ausente da `""`, y el valor es un `String`.
+- [x] `[] false 71`
+  > Correcta: cadena vacía; y `"7" + 1` concatena.
+- [ ] `[] false 8`
+  > `getAttribute` devuelve `String`: `"7" + 1` es `"71"`.
+- [ ] `[] true 71`
+  > `hasAttribute` distingue ausente: `false`.
+- [ ] Lanza `NullPointerException`.
+  > No hay ningún `null` que se use.
+- [ ] No compila: `getAttribute` devuelve `Attr`.
+  > Devuelve `String`; el que devuelve `Attr` es `getAttributeNode`.
+
+Repasar: **B05.1, B05.3**.
+</Quiz>
+
+<Quiz id="b1-13" title="Método auxiliar sin coincidencia">
+`alumno` no contiene ningún elemento `apodo`. ¿Qué ocurre al llamar a `getValorEtiqueta("apodo", alumno)`?
+
+```java
+public static String getValorEtiqueta(String etiqueta, Element elemento) {
+    Node nValue = elemento.getElementsByTagName(etiqueta).item(0);
+    return nValue.getTextContent();
+}
+```
+
+- [ ] Devuelve `""`.
+  > `item(0)` devuelve `null` y el método no lo comprueba.
+- [ ] Devuelve `null`.
+  > No llega a devolver nada.
+- [x] Lanza `NullPointerException` al llamar a `getTextContent()`.
+  > Correcta: hay que garantizar que existe la coincidencia o comprobar `null`.
+- [ ] Lanza `DOMException` en `getElementsByTagName`.
+  > Esa búsqueda devuelve una lista vacía sin error.
+- [ ] Devuelve el texto del primer `apodo` del documento.
+  > Busca solo dentro de `elemento`.
+- [ ] No compila porque `item` devuelve `Element`.
+  > Devuelve `Node`, que es lo que se asigna.
+
+Repasar: **B05.2**.
+</Quiz>
+
+<Quiz id="b1-14" title="normalize()">
+¿Qué hace `doc.getDocumentElement().normalize()`?
+
+- [ ] Elimina toda la indentación del documento.
+  > No elimina necesariamente texto que contiene espacios.
+- [ ] Valida el XML contra su esquema.
+  > No valida.
+- [x] Fusiona nodos de texto adyacentes y elimina los nodos de texto vacíos del subárbol.
+  > Correcta (B04.4).
+- [ ] Guarda el documento normalizado en el archivo original.
+  > Solo cambia el árbol en memoria.
+- [ ] Ordena los elementos alfabéticamente.
+  > No reordena.
+- [ ] Convierte los atributos en elementos hijos.
+  > No cambia la estructura.
+
+Repasar: **B04.4**.
+</Quiz>
+
+<Quiz id="b1-15" title="Recorrer hijos de forma segura">
+Al recorrer `root.getChildNodes()`, ¿qué comprobación evita una `ClassCastException` al hacer `(Element) n`?
+
+- [ ] `if (n != null)`
+  > Los textos de indentación no son `null` y tampoco son `Element`.
+- [ ] `if (n.getNodeValue() == null)`
+  > El nodo documento y otros tipos también tienen `nodeValue` nulo.
+- [x] `if (n.getNodeType() == Node.ELEMENT_NODE)`
+  > Correcta (B04.2).
+- [ ] `if (n.hasChildNodes())`
+  > Un elemento vacío no tiene hijos.
+- [ ] `if (n.getTextContent().isEmpty())`
+  > No identifica el tipo de nodo.
+- [ ] No hace falta: todos los hijos son elementos.
+  > Puede haber texto, comentarios, etc.
+
+Repasar: **B04.2, B15.1**.
+</Quiz>
+
+<QuizResults />

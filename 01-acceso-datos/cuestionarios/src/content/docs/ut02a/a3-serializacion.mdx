@@ -1,0 +1,278 @@
+---
+title: "A3 · Serialización binaria"
+description: "Serializable, writeObject/readObject, cast, transient y static, excepciones, serialVersionUID y anexado (A07, A15)."
+sidebar:
+  order: 3
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloque **A07** y matices de **A15**. Sin NIO. Los fragmentos omiten los `import` y el manejo de `IOException`/`ClassNotFoundException` salvo que la pregunta trate de ello.
+
+<Quiz id="a3-01" title="Interfaz Serializable">
+¿Qué hay que hacer para que la clase `Persona` se pueda guardar con `ObjectOutputStream`?
+
+- [ ] Implementar `Serializable` y su método `serialize()`.
+  > `Serializable` no tiene métodos.
+- [x] Declarar `implements Serializable`; no hay que implementar ningún método porque es una interfaz marcadora.
+  > Correcta (A07.1).
+- [ ] Heredar de `ObjectOutputStream`.
+  > La clase de los datos no hereda del flujo.
+- [ ] Implementar obligatoriamente `writeObject` y `readObject` privados.
+  > Son opcionales para personalizar; no hacen falta en la serialización por defecto.
+- [ ] Anotarla con `@XmlRootElement`.
+  > Esa anotación es de JAXB (XML), no de la serialización binaria.
+- [ ] Declarar todos sus campos `public`.
+  > Los campos `private` normales también se serializan.
+
+Repasar: **A07.1**.
+</Quiz>
+
+<Quiz id="a3-02" title="transient al recuperar">
+Se serializa un objeto con `nombre = "Ana"` e `intentos = 3` y después se deserializa. ¿Qué imprime `System.out.println(r.nombre + " " + r.intentos)` sobre el objeto recuperado?
+
+```java
+class Usuario implements Serializable {
+    String nombre;
+    transient int intentos = 7;
+}
+```
+
+- [ ] `Ana 3`
+  > Un campo `transient` no forma parte del estado serializado.
+- [ ] `Ana 7`
+  > Al deserializar no se vuelve a ejecutar el inicializador del campo.
+- [x] `Ana 0`
+  > Correcta: el `int` transitorio recupera el valor por defecto del tipo.
+- [ ] `null 0`
+  > `nombre` es un campo normal y sí se guarda.
+- [ ] `Ana null`
+  > Un `int` no puede valer `null`.
+- [ ] Lanza `NotSerializableException` por el campo `transient`.
+  > `transient` excluye el campo; no impide serializar la clase.
+
+Repasar: **A07.1, A15**.
+</Quiz>
+
+<Quiz id="a3-03" title="Qué forma parte del estado">
+En la serialización por defecto, ¿qué se guarda en el fichero?
+
+- [ ] Los campos `static` de la clase.
+  > Son de la clase, no del estado de la instancia.
+- [ ] El código de los métodos, incluido `toString()`.
+  > Solo se guardan datos; el código debe estar disponible al leer.
+- [x] Los campos de instancia no `transient`, incluidos los `private`, y los objetos a los que referencian.
+  > Correcta: se recorre el grafo de objetos.
+- [ ] Solo los campos `public`.
+  > La visibilidad no decide qué se serializa.
+- [ ] La dirección de memoria del objeto, para recuperarlo idéntico.
+  > Se reconstruye el estado en un objeto nuevo, no la misma identidad.
+- [ ] Solo la referencia de las colecciones, sin sus elementos.
+  > Se guardan también sus elementos (el ejemplo del `Vector` con cadenas).
+
+Repasar: **A07.1**.
+</Quiz>
+
+<Quiz id="a3-04" title="Campo no serializable">
+¿Qué ocurre al ejecutar `out.writeObject(new Pedido())`?
+
+```java
+class Cliente { String nombre = "Eva"; }   // no implementa Serializable
+
+class Pedido implements Serializable {
+    int numero = 1;
+    Cliente cliente = new Cliente();
+}
+```
+
+- [ ] Se guarda `numero` y `cliente` se ignora.
+  > Solo se ignoraría si fuese `transient`.
+- [ ] Se guarda todo, porque basta con que `Pedido` sea serializable.
+  > Todo el grafo serializado debe serlo.
+- [x] Lanza `NotSerializableException` al intentar escribir el `Cliente`.
+  > Correcta (A07.1).
+- [ ] Lanza `ClassNotFoundException`.
+  > Esa excepción aparece al **leer** si falta una clase.
+- [ ] No compila.
+  > Compila: el problema aparece en ejecución.
+- [ ] Guarda `cliente` como `null`.
+  > No sustituye por `null` automáticamente.
+
+Repasar: **A07.1, A07.2**.
+</Quiz>
+
+<Quiz id="a3-05" title="readObject sin cast">
+¿Por qué no compila la segunda línea?
+
+```java
+ObjectInputStream in = new ObjectInputStream(new FileInputStream("p.dat"));
+Persona p = in.readObject();
+```
+
+- [ ] Porque falta el método `readPersona()`.
+  > No existe; se usa `readObject()`.
+- [x] Porque `readObject()` devuelve `Object` y hace falta el cast `(Persona)`.
+  > Correcta (A07.2).
+- [ ] Porque `ObjectInputStream` no puede envolver un `FileInputStream`.
+  > Envuelve cualquier `InputStream`.
+- [ ] Porque `Persona` debe tener un constructor sin argumentos.
+  > No es un requisito de la serialización por defecto de la clase.
+- [ ] Porque `readObject()` devuelve `byte[]`.
+  > Devuelve un `Object` ya reconstruido.
+- [ ] Sí compila; solo falla en ejecución.
+  > La asignación de `Object` a `Persona` sin cast es un error de compilación.
+
+Repasar: **A07.2**.
+</Quiz>
+
+<Quiz id="a3-06" title="Para qué sirve el cast">
+En `Persona p = (Persona) in.readObject();`, ¿qué hace el cast?
+
+- [ ] Convierte los bytes del fichero en un objeto `Persona`.
+  > Eso lo hace `readObject()`; el cast no convierte bytes.
+- [x] Comprueba que el objeto ya reconstruido es una `Persona` y permite tratarlo con ese tipo.
+  > Correcta (A15).
+- [ ] Llama al constructor de `Persona` con los datos leídos.
+  > El cast no llama a constructores.
+- [ ] Recupera los campos `transient`.
+  > No cambia lo que se ha guardado.
+- [ ] Es opcional y no tiene efecto.
+  > Sin él no compila la asignación.
+- [ ] Evita que se pueda lanzar `ClassNotFoundException`.
+  > Esa excepción depende de la clase disponible, no del cast.
+
+Repasar: **A07.2, A15**.
+</Quiz>
+
+<Quiz id="a3-07" title="Cast al tipo equivocado">
+El fichero contiene un único `String` serializado. ¿Qué ocurre?
+
+```java
+Persona p = (Persona) in.readObject();
+```
+
+- [ ] `p` vale `null`.
+  > El cast no devuelve `null` al fallar.
+- [ ] Lanza `NotSerializableException`.
+  > Esa excepción aparece al escribir objetos no serializables.
+- [ ] Lanza `ClassNotFoundException`.
+  > La clase `String` está disponible.
+- [x] Lanza `ClassCastException`.
+  > Correcta: el objeto leído no es del tipo al que se convierte.
+- [ ] Lanza `InvalidClassException`.
+  > Esa indica incompatibilidad de versión de una clase serializada.
+- [ ] No compila.
+  > El tipo real solo se conoce en ejecución.
+
+Repasar: **A07.2**.
+</Quiz>
+
+<Quiz id="a3-08" title="Identidad del objeto">
+Se escribe un objeto `original` y se recupera en `copia` dentro del mismo programa. ¿Qué imprime `System.out.println(original == copia)`?
+
+- [x] `false`
+  > Correcta: se reconstruye el estado en un objeto nuevo.
+- [ ] `true`
+  > Deserializar no recupera la misma identidad.
+- [ ] Depende de si la clase define `equals`.
+  > `==` compara referencias, no usa `equals`.
+- [ ] Depende de `serialVersionUID`.
+  > Ese identificador es de compatibilidad de la clase, no de identidad del objeto.
+- [ ] No compila al comparar objetos de distinta procedencia.
+  > Ambos son del mismo tipo; compila.
+- [ ] Lanza `ClassCastException`.
+  > No hay ningún cast en la comparación.
+
+Repasar: **A07.1**.
+</Quiz>
+
+<Quiz id="a3-09" title="serialVersionUID">
+¿Qué representa `serialVersionUID`?
+
+- [ ] Un número distinto para cada objeto que se serializa.
+  > Es de la clase, no de cada objeto.
+- [x] Un identificador de versión de la clase para comprobar la compatibilidad al deserializar.
+  > Correcta (A07.1).
+- [ ] La posición del objeto dentro del fichero.
+  > No es un puntero.
+- [ ] El número de campos que se van a serializar.
+  > No cuenta campos.
+- [ ] Una clave para cifrar el fichero.
+  > La serialización no cifra.
+- [ ] Un campo obligatorio sin el cual la clase no compila.
+  > No es obligatorio para compilar.
+
+Repasar: **A07.1**.
+</Quiz>
+
+<Quiz id="a3-10" title="Orden de los argumentos">
+En el ejemplo docente, el constructor es `Alumno(String dni, String nmatricula, String nombre, String ape1, String ape2)` y asigna cada parámetro a su campo del mismo nombre. ¿Qué valor queda en el campo `nombre`?
+
+```java
+Alumno a = new Alumno("gallego", "gomez", "1", "100", "natalia");
+```
+
+- [ ] `"natalia"`
+  > Los argumentos se asignan por posición, no por lo que parecen.
+- [ ] `"gallego"`
+  > `"gallego"` es el primer argumento: va a `dni`.
+- [x] `"1"`
+  > Correcta: el tercer argumento corresponde a `nombre`.
+- [ ] `"gomez"`
+  > Es el segundo: `nmatricula`.
+- [ ] `"100"`
+  > Es el cuarto: `ape1`.
+- [ ] `null`, porque el nombre no se serializa.
+  > No hay ninguna serialización en esta línea.
+
+Repasar: **A07.2** (advertencia sobre el ejemplo `Alumno`).
+</Quiz>
+
+<Quiz id="a3-11" title="Anexar objetos">
+Se ejecuta dos veces este método, con dos personas distintas, sobre un `gente.dat` que al principio no existe. Después se lee con **un único** `ObjectInputStream` y dos `readObject()`. ¿Qué ocurre?
+
+```java
+void guardar(Persona p) throws IOException {
+    try (ObjectOutputStream out = new ObjectOutputStream(
+            new FileOutputStream("gente.dat", true))) {
+        out.writeObject(p);
+    }
+}
+```
+
+- [ ] Se leen las dos personas sin problema, gracias a `append = true`.
+  > `append` solo controla bytes; cada `ObjectOutputStream` nuevo escribe otra cabecera.
+- [ ] Solo se guarda la segunda persona.
+  > Con `append` el primer bloque no se borra.
+- [x] La primera lectura funciona y la segunda falla por la cabecera intermedia (`StreamCorruptedException`).
+  > Correcta: hay que escribir todos los objetos con el mismo flujo o guardar una colección.
+- [ ] La primera lectura falla porque el fichero tiene dos cabeceras al principio.
+  > La primera cabecera y el primer objeto se leen bien.
+- [ ] La segunda lectura devuelve `null`.
+  > No hay centinela `null`; el flujo encuentra datos inesperados.
+- [ ] No compila: `ObjectOutputStream` no admite `append`.
+  > El `append` es del `FileOutputStream` envuelto.
+
+Repasar: **A07.3**.
+</Quiz>
+
+<Quiz id="a3-12" title="Excepciones de la lectura">
+¿Qué excepciones comprobadas hay que capturar o propagar al llamar a `readObject()`?
+
+- [ ] Solo `IOException`.
+  > Falta la de clase no encontrada.
+- [ ] Solo `ClassNotFoundException`.
+  > La lectura también puede fallar por E/S.
+- [x] `IOException` y `ClassNotFoundException`.
+  > Correcta (A07.2).
+- [ ] `ClassCastException` y `NullPointerException`.
+  > Son no comprobadas.
+- [ ] `NotSerializableException` y `EOFException`, y ninguna más.
+  > Ambas son subclases de `IOException`; además falta `ClassNotFoundException`.
+- [ ] Ninguna: `readObject()` no declara excepciones.
+  > Declara las dos de la respuesta correcta.
+
+Repasar: **A07.2**.
+</Quiz>
+
+<QuizResults />
