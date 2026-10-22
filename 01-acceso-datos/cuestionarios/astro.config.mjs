@@ -5,6 +5,8 @@ import starlightQuiz from 'starlight-quiz';
 
 // https://astro.build/config
 export default defineConfig({
+	// URL pública en Cloudflare Pages: canónicas, Open Graph y sitemap
+	site: 'https://cuestionarios-ad-2.pages.dev',
 	integrations: [
 		starlight({
 			title: 'Cuestionarios · Acceso a Datos',
