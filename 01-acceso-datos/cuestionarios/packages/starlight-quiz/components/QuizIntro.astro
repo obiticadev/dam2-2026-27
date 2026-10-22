@@ -1,0 +1,37 @@
+---
+import { createStringResolver } from '../lib/i18n';
+
+interface Props {
+  /** Extra class names for the panel. */
+  class?: string;
+  /**
+   * Override the intro text. Prefer passing content in the default slot
+   * (`<QuizIntro>your **markdown** here</QuizIntro>`); this prop is the
+   * plain-string fallback for vanilla Astro and i18n overrides.
+   */
+  textLabel?: string;
+  /** Override the reset button label. */
+  resetLabel?: string;
+}
+
+const { class: className, textLabel, resetLabel } = Astro.props;
+
+const resolve = createStringResolver(Astro.locals);
+const text = resolve('starlightQuiz.intro.text', textLabel);
+const reset = resolve('starlightQuiz.results.resetAll', resetLabel);
+const confirmReset = resolve('starlightQuiz.results.confirmReset');
+---
+
+<sl-quiz-intro class:list={['sl-quiz-intro', className]} data-confirm-label={confirmReset}>
+  <p class="sl-quiz-intro-text"><slot>{text}</slot></p>
+  <!-- Inline margin reset: Starlight's unlayered content "* + *" rule adds a
+       top margin that our layered styles can't override, knocking the button
+       off the flex row's vertical centre. -->
+  <button type="button" class="sl-quiz-intro-reset" style="margin-block: 0">{reset}</button>
+</sl-quiz-intro>
+
+<script>
+  import { defineQuizIntroElement } from '../lib/intro-element';
+
+  defineQuizIntroElement();
+</script>

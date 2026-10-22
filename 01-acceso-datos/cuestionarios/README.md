@@ -1,8 +1,9 @@
 # Cuestionarios · Acceso a Datos
 
 Sitio estático de cuestionarios de autoevaluación hecho con [Astro Starlight](https://starlight.astro.build/)
-y [starlight-quiz](https://ewels.github.io/starlight-quiz). Las respuestas se guardan en el
-`localStorage` del navegador de cada alumno (no hay servidor ni base de datos).
+y una versión propia de [starlight-quiz](https://ewels.github.io/starlight-quiz) (ver más abajo).
+Las respuestas, las marcas y el cronómetro se guardan en el `localStorage` del navegador de cada
+alumno (no hay servidor ni base de datos).
 
 ## Comandos
 
@@ -16,10 +17,11 @@ y [starlight-quiz](https://ewels.github.io/starlight-quiz). Las respuestas se gu
 ## Estructura
 
 ```
+PLANTILLA.mdx              # Ejemplo de cada tipo de pregunta (copiar para crear nuevos; no se publica)
+packages/starlight-quiz/   # Fork local del plugin de cuestionarios
 src/content/docs/
 ├── index.mdx              # Portada
 ├── examen-mixto.mdx       # Simulacro de 40 preguntas (UT02-A + UT02-B)
-├── plantilla.mdx          # Ejemplo de cada tipo de pregunta (copiar para crear nuevos)
 ├── ut02a/                 # Ficheros, sin NIO: a1…a5, un bloque por página
 └── ut02b/                 # XML: b1…b5 (DOM, SAX, StAX, JAXB)
 ```
@@ -50,6 +52,25 @@ Explicación que aparece al responder.
 ```
 
 Opciones globales en `quizDefaults` (`astro.config.mjs`): barajar respuestas, numerar preguntas, botón de enviar, etc.
+
+## Plugin propio (`packages/starlight-quiz`)
+
+Es una copia de starlight-quiz 1.0.2 desligada del original (`file:packages/starlight-quiz` en
+`package.json`); los cambios se hacen ahí directamente. Respecto al original añade:
+
+- **Paginación automática:** cualquier página con `<Quiz>` muestra una pregunta cada vez, con
+  *Anterior / Siguiente* (también con las flechas ← →) y `<QuizResults />` como última página.
+  La URL guarda la pregunta actual (`#a1-05`, `#resultados`), así que recargar vuelve a ella.
+- **Navegador de preguntas:** cuadrícula numerada en la columna derecha (en móvil, desplegable en
+  la barra superior) con colores de acierto/fallo, la pregunta actual y acceso a resultados.
+- **Marcar para revisar:** botón *Marcar* bajo cada pregunta; se ve como una esquina naranja.
+- **Preguntas barajadas** (`shuffleQuestions`): cada intento tiene su propio orden aleatorio, que se
+  mantiene al recargar y cambia al reiniciar. La numeración sigue el orden mostrado.
+- **Cronómetro:** arranca al elegir la primera respuesta (sea cuál sea la pregunta), cuenta solo
+  con la página visible, se detiene al responder todo y aparece en los resultados. *Reiniciar
+  intento* borra respuestas, marcas y tiempo, vuelve a barajar y el cronómetro espera de nuevo.
+- **Diseño más compacto:** el CSS del plugin se ordena después de las capas de Starlight, que
+  antes le añadían 1rem extra entre opciones.
 
 ## Despliegue en Cloudflare Pages
 

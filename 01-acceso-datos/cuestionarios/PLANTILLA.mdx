@@ -5,8 +5,10 @@ description: Sintaxis para crear nuevos cuestionarios con starlight-quiz.
 
 import { Quiz, QuizResults } from 'starlight-quiz/components';
 
-Copia este archivo en `src/content/docs/<carpeta>/` con extensión `.mdx` para crear un cuestionario nuevo.
-Aparecerá solo en la barra lateral si la carpeta está en `autogenerate` de `astro.config.mjs`.
+Copia este archivo en `src/content/docs/<carpeta>/` con extensión `.mdx` para crear un cuestionario nuevo
+(esta copia está fuera de `src/content/docs/`, así que no se publica). Aparecerá solo en la barra lateral si
+la carpeta está en `autogenerate` de `astro.config.mjs`. La paginación y el navegador de preguntas se activan
+solos en cualquier página que tenga `<Quiz>`.
 
 ## Respuesta única
 

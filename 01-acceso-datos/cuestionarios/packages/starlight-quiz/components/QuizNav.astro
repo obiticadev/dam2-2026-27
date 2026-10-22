@@ -1,0 +1,135 @@
+---
+import { getQuizDefaults } from '../lib/config';
+import { createStringResolver } from '../lib/i18n';
+import QuizNavPanel from './QuizNavPanel.astro';
+
+interface Props {
+  /** `sidebar` for the right column on wide screens, `mobile` for the fixed bar. */
+  variant: 'sidebar' | 'mobile';
+}
+
+const { variant } = Astro.props;
+const { shuffleQuestions } = getQuizDefaults(Astro.locals);
+
+const resolve = createStringResolver(Astro.locals);
+const labels = {
+  heading: resolve('starlightQuiz.nav.heading'),
+  previous: resolve('starlightQuiz.nav.previous'),
+  next: resolve('starlightQuiz.nav.next'),
+  flag: resolve('starlightQuiz.nav.flag'),
+  unflag: resolve('starlightQuiz.nav.unflag'),
+  results: resolve('starlightQuiz.nav.results'),
+  finish: resolve('starlightQuiz.nav.finish'),
+  back: resolve('starlightQuiz.nav.back'),
+  time: resolve('starlightQuiz.nav.time'),
+  question: resolve('starlightQuiz.nav.question'),
+  correct: resolve('starlightQuiz.nav.legendCorrect'),
+  wrong: resolve('starlightQuiz.nav.legendWrong'),
+  flagged: resolve('starlightQuiz.nav.legendFlagged'),
+  restart: resolve('starlightQuiz.nav.restart'),
+  answered: resolve('starlightQuiz.results.answered'),
+  correctCount: resolve('starlightQuiz.results.correct'),
+  confirmReset: resolve('starlightQuiz.results.confirmReset'),
+};
+---
+
+{
+  /* Runs before the page content is parsed: from here on only the first quiz
+    shows until the pager takes over (none when shuffling, as the first one in
+    the page is not the first one shown), so the page never flashes every
+    question. If the pager script never loads, the fallback restores the list. */
+}
+<script is:inline define:vars={{ shuffleQuestions }}>
+  (() => {
+    const root = document.documentElement;
+    if (root.hasAttribute('data-quiz-paged')) return;
+    root.setAttribute('data-quiz-paged', '');
+    if (shuffleQuestions) root.setAttribute('data-quiz-shuffle', '');
+    setTimeout(() => {
+      if (root.hasAttribute('data-quiz-ready')) return;
+      root.removeAttribute('data-quiz-paged');
+      root.removeAttribute('data-quiz-shuffle');
+    }, 4000);
+  })();
+</script>
+
+<sl-quiz-nav
+  class:list={['sl-quiz-nav', `sl-quiz-nav--${variant}`]}
+  data-variant={variant}
+  data-label-heading={labels.heading}
+  data-label-previous={labels.previous}
+  data-label-next={labels.next}
+  data-label-flag={labels.flag}
+  data-label-unflag={labels.unflag}
+  data-label-finish={labels.finish}
+  data-label-back={labels.back}
+  data-label-question={labels.question}
+  data-label-results={labels.results}
+  data-label-correct={labels.correct}
+  data-label-wrong={labels.wrong}
+  data-label-flagged={labels.flagged}
+  data-confirm-label={labels.confirmReset}
+  data-shuffle-questions={String(shuffleQuestions)}
+  hidden
+>
+  {
+    variant === 'sidebar' ? (
+      <>
+        <div class="sl-quiz-nav-head">
+          <h2>{labels.heading}</h2>
+          <span class="sl-quiz-nav-timer" title={labels.time}>
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14">
+              <circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M12 9v4l2.5 2M9 2h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+            <span class="sl-quiz-nav-timer-value">00:00</span>
+          </span>
+        </div>
+        <div class="sl-quiz-nav-panel">
+          <QuizNavPanel labels={labels} />
+        </div>
+      </>
+    ) : (
+      <nav class="sl-quiz-nav-bar" aria-label={labels.heading}>
+        <details>
+          <summary>
+            <span class="sl-quiz-nav-toggle">
+              <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16">
+                <path
+                  d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h6v6h-6z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span class="sl-quiz-nav-current">{labels.heading}</span>
+              <svg class="sl-quiz-nav-caret" aria-hidden="true" viewBox="0 0 24 24" width="16" height="16">
+                <path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+            </span>
+            <span class="sl-quiz-nav-score">
+              <b class="sl-quiz-nav-answered">0</b>/<b class="sl-quiz-nav-total">0</b>
+            </span>
+            <span class="sl-quiz-nav-timer" title={labels.time}>
+              <svg aria-hidden="true" viewBox="0 0 24 24" width="14" height="14">
+                <circle cx="12" cy="13" r="8" fill="none" stroke="currentColor" stroke-width="2" />
+                <path d="M12 9v4l2.5 2M9 2h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              <span class="sl-quiz-nav-timer-value">00:00</span>
+            </span>
+          </summary>
+          <div class="sl-quiz-nav-dropdown">
+            <QuizNavPanel labels={labels} />
+          </div>
+        </details>
+      </nav>
+    )
+  }
+</sl-quiz-nav>
+
+<script>
+  import { defineQuizNavElement } from '../lib/nav-element';
+
+  defineQuizNavElement();
+</script>
