@@ -7,7 +7,7 @@ import { Quiz, QuizResults } from 'starlight-quiz/components';
 
 Simulacro de práctica, **no oficial**: 20 preguntas de UT02-A (sin NIO) y 20 de UT02-B, mezcladas. Seis opciones y una sola correcta por pregunta. El bloque de repaso aparece al responder.
 
-Convenciones: los fragmentos omiten `import` y manejo de excepciones; los ficheros contienen bytes ASCII salvo que se indique otra cosa; los XML van en una sola línea salvo que se muestren indentados; DOM, SAX y StAX usan las factorías por defecto del JDK; JAXB es la versión 2 (`javax.xml.bind`) con sus dependencias añadidas.
+Convenciones: los fragmentos omiten `import` y manejo de excepciones; los ficheros contienen bytes ASCII salvo que se indique otra cosa; los XML se muestran indentados para leerlos mejor, pero el fichero no tiene espacios ni saltos de línea entre etiquetas salvo que el enunciado diga que la indentación es real; DOM, SAX y StAX usan las factorías por defecto del JDK; JAXB es la versión 2 (`javax.xml.bind`) con sus dependencias añadidas.
 
 <Quiz id="mx-01">
 ¿Qué afirmación sobre `ObjectOutputStream` es correcta?
@@ -88,7 +88,14 @@ Repasar: **A04.2**.
 </Quiz>
 
 <Quiz id="mx-04">
-¿Qué imprime este manejador para `<a><b/><c/></a>`?
+¿Qué imprime este manejador para este XML?
+
+```xml
+<a>
+  <b/>
+  <c/>
+</a>
+```
 
 ```java
 @Override
@@ -228,7 +235,13 @@ Repasar: **A07.1**.
 </Quiz>
 
 <Quiz id="mx-10">
-`e` es `<a x="1" y="2"><b/></a>`. ¿Qué imprime?
+`e` es la raíz de este XML, sin espacios entre etiquetas. ¿Qué imprime?
+
+```xml
+<a x="1" y="2">
+  <b/>
+</a>
+```
 
 ```java
 System.out.println(e.getAttributes().getLength() + " " + e.getChildNodes().getLength());
@@ -558,7 +571,7 @@ Repasar: **A04.2, A05**.
 </Quiz>
 
 <Quiz id="mx-25">
-¿Qué imprime este manejador para el XML indentado de abajo?
+¿Qué imprime este manejador para este XML, cuya indentación es real (los saltos de línea y espacios están en el fichero)?
 
 ```xml
 <a>
@@ -636,7 +649,13 @@ Repasar: **A06.1**.
 </Quiz>
 
 <Quiz id="mx-28">
-XML: `<a><b/></a>`. ¿Qué imprime?
+¿Qué imprime para este XML?
+
+```xml
+<a>
+  <b/>
+</a>
+```
 
 ```java
 while (r.hasNext()) {
@@ -716,7 +735,7 @@ Repasar: **A06.3, A10.1**.
 </Quiz>
 
 <Quiz id="mx-31">
-¿Qué imprime para este XML indentado?
+¿Qué imprime para este XML, cuya indentación es real (los saltos de línea y espacios están en el fichero)?
 
 ```xml
 <r>
@@ -748,17 +767,40 @@ Repasar: **B04.3**.
 <Quiz id="mx-32">
 ¿Cuál de estos fragmentos **no** está bien formado?
 
-- [ ] `<a><b/></a>`
+- [ ] Fragmento:
+  ```xml
+  <a>
+    <b/>
+  </a>
+  ```
   > Correcto: `b` está bien anidado.
-- [ ] `<a x="1"></a>`
+- [ ] Fragmento:
+  ```xml
+  <a x="1"></a>
+  ```
   > Correcto: atributo entre comillas.
-- [x] `<a><b></a></b>`
+- [x] Fragmento:
+  ```xml
+  <a>
+    <b>
+  </a>
+  </b>
+  ```
   > Correcta: la anidación está cruzada.
-- [ ] `<a>texto <b>más</b></a>`
+- [ ] Fragmento con contenido mixto:
+  ```xml
+  <a>texto <b>más</b></a>
+  ```
   > El contenido mixto es válido.
-- [ ] `<a/>`
+- [ ] Fragmento:
+  ```xml
+  <a/>
+  ```
   > Elemento vacío válido.
-- [ ] `<Libro></Libro>`
+- [ ] Fragmento:
+  ```xml
+  <Libro></Libro>
+  ```
   > Apertura y cierre coinciden, incluidas las mayúsculas.
 
 Repasar: **B01.1**.
@@ -879,7 +921,15 @@ Repasar: **A02.3**.
 </Quiz>
 
 <Quiz id="mx-39">
-`r` es `<r><a/><b/><c/></r>` (sin espacios). ¿Qué imprime?
+`r` es la raíz de este XML, sin espacios entre etiquetas. ¿Qué imprime?
+
+```xml
+<r>
+  <a/>
+  <b/>
+  <c/>
+</r>
+```
 
 ```java
 Node quitado = r.removeChild(r.getFirstChild());

@@ -7,7 +7,7 @@ sidebar:
 
 import { Quiz, QuizResults } from 'starlight-quiz/components';
 
-Bloques **B03–B05**, con apoyo en **B01** y **B15**. Los fragmentos omiten los `import` y el manejo de excepciones. Cuando el resultado depende de los espacios, se usa la factoría por defecto del JDK, sin validación ni opciones adicionales.
+Bloques **B03–B05**, con apoyo en **B01** y **B15**. Los fragmentos omiten los `import` y el manejo de excepciones. Cuando el resultado depende de los espacios, se usa la factoría por defecto del JDK, sin validación ni opciones adicionales. Los XML se muestran indentados para leerlos mejor, pero el fichero no tiene espacios ni saltos de línea entre etiquetas salvo que el enunciado diga que la indentación es real.
 
 <Quiz id="b1-01" title="Bien formado y válido">
 `<marcas>ochenta</marcas>` aparece en un XML sintácticamente correcto y no se ha configurado ningún esquema. ¿Qué hace `builder.parse(...)`?
@@ -92,7 +92,7 @@ Repasar: **B03.2**.
 </Quiz>
 
 <Quiz id="b1-05" title="Primer hijo con indentación">
-Con la factoría por defecto, se parsea este XML. ¿Qué imprime?
+Con la factoría por defecto, se parsea este XML, cuya indentación es real (los saltos de línea y espacios están en el fichero). ¿Qué imprime?
 
 ```xml
 <clase>
@@ -227,7 +227,13 @@ Repasar: **B05.1**.
 </Quiz>
 
 <Quiz id="b1-10" title="Document frente a Element">
-¿Qué imprime para el XML `<item><item/></item>`?
+¿Qué imprime para este XML?
+
+```xml
+<item>
+  <item/>
+</item>
+```
 
 ```java
 System.out.println(doc.getElementsByTagName("item").getLength() + " "

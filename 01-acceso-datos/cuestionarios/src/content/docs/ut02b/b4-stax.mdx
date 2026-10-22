@@ -7,7 +7,7 @@ sidebar:
 
 import { Quiz, QuizResults } from 'starlight-quiz/components';
 
-Bloques **B09–B11**. Los fragmentos omiten los `import` y el manejo de `XMLStreamException`. `r` es un `XMLStreamReader` recién creado con `XMLInputFactory.newInstance().createXMLStreamReader(...)` sobre el XML indicado, escrito en una sola línea y sin indentación; `er` es un `XMLEventReader` creado de la misma forma.
+Bloques **B09–B11**. Los fragmentos omiten los `import` y el manejo de `XMLStreamException`. `r` es un `XMLStreamReader` recién creado con `XMLInputFactory.newInstance().createXMLStreamReader(...)` sobre el XML indicado (se muestra indentado para leerlo mejor, pero el fichero no tiene espacios ni saltos de línea entre etiquetas); `er` es un `XMLEventReader` creado de la misma forma.
 
 <Quiz id="b4-01" title="Pull frente a push">
 ¿Cuál es la diferencia principal entre StAX y SAX?
@@ -48,7 +48,14 @@ Repasar: **B10.1**.
 </Quiz>
 
 <Quiz id="b4-03" title="Recorrido de inicios">
-¿Qué imprime para el XML `<a><b/><c>t</c></a>`?
+¿Qué imprime para este XML?
+
+```xml
+<a>
+  <b/>
+  <c>t</c>
+</a>
+```
 
 ```java
 while (r.hasNext()) {
@@ -94,7 +101,16 @@ Repasar: **B10.1**.
 </Quiz>
 
 <Quiz id="b4-05" title="Dónde queda el cursor">
-XML: `<libro><t lang="en">Hola</t><p>9</p></libro>`. El cursor está en el `START_ELEMENT` de `t`. ¿Qué imprime?
+XML, sin espacios entre etiquetas:
+
+```xml
+<libro>
+  <t lang="en">Hola</t>
+  <p>9</p>
+</libro>
+```
+
+El cursor está en el `START_ELEMENT` de `t`. ¿Qué imprime?
 
 ```java
 String texto = r.getElementText();
@@ -145,7 +161,11 @@ Repasar: **B10.2**.
 </Quiz>
 
 <Quiz id="b4-07" title="getElementText con un subelemento">
-El cursor está en el inicio de `nombre` en `<nombre>Lu<b>is</b></nombre>`. ¿Qué ocurre con `r.getElementText()`?
+El cursor está en el inicio de `nombre` en este XML, con contenido mixto (por eso va en una sola línea). ¿Qué ocurre con `r.getElementText()`?
+
+```xml
+<nombre>Lu<b>is</b></nombre>
+```
 
 - [ ] Devuelve `Luis`.
   > Eso haría `getTextContent()` en DOM.

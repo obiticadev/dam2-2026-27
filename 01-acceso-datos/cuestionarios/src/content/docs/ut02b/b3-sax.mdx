@@ -7,7 +7,7 @@ sidebar:
 
 import { Quiz, QuizResults } from 'starlight-quiz/components';
 
-Bloques **B07–B08**. Los fragmentos omiten los `import` y el manejo de excepciones. Salvo que se diga otra cosa, se usa `SAXParserFactory.newInstance()` sin activar espacios de nombres, y los XML de los enunciados van en una sola línea, sin indentación.
+Bloques **B07–B08**. Los fragmentos omiten los `import` y el manejo de excepciones. Salvo que se diga otra cosa, se usa `SAXParserFactory.newInstance()` sin activar espacios de nombres. Los XML se muestran indentados para leerlos mejor, pero el fichero no tiene espacios ni saltos de línea entre etiquetas salvo que el enunciado diga que la indentación es real.
 
 <Quiz id="b3-01" title="Modelo push">
 ¿Qué describe mejor el funcionamiento de SAX?
@@ -48,7 +48,13 @@ Repasar: **B07.1**.
 </Quiz>
 
 <Quiz id="b3-03" title="Orden de los callbacks">
-Para el XML `<a x="1"><b>t</b></a>`, ¿en qué orden se llaman los callbacks?
+Para este XML, sin espacios entre etiquetas, ¿en qué orden se llaman los callbacks?
+
+```xml
+<a x="1">
+  <b>t</b>
+</a>
+```
 
 - [ ] `startDocument`, `startElement a`, `characters "1"`, `startElement b`, `characters "t"`, `endElement b`, `endElement a`, `endDocument`
   > Los atributos llegan en `startElement` (parámetro `Attributes`), no en `characters`.
@@ -147,7 +153,15 @@ Repasar: **B08.2**.
 </Quiz>
 
 <Quiz id="b3-07" title="Contar elementos vacíos">
-¿Qué imprime el contador al terminar si el XML es `<l><i/><i>t</i><i/></l>`?
+¿Qué imprime el contador al terminar con este XML?
+
+```xml
+<l>
+  <i/>
+  <i>t</i>
+  <i/>
+</l>
+```
 
 ```java
 int n = 0;
@@ -226,7 +240,11 @@ Repasar: **B07.2, B15.1**.
 </Quiz>
 
 <Quiz id="b3-10" title="Manejador que reinicia en cada etiqueta">
-El manejador reinicia el acumulador en **cada** `startElement`, acumula en `characters` y en **cada** `endElement` imprime `qName + "=" + texto` y vuelve a vaciarlo. ¿Qué imprime para `<nombre>Lu<parte>is</parte></nombre>`?
+El manejador reinicia el acumulador en **cada** `startElement`, acumula en `characters` y en **cada** `endElement` imprime `qName + "=" + texto` y vuelve a vaciarlo. ¿Qué imprime para este XML? Tiene contenido mixto, así que se escribe en una sola línea.
+
+```xml
+<nombre>Lu<parte>is</parte></nombre>
+```
 
 - [ ] `nombre=Luis`
   > El reinicio al abrir `parte` pierde el `Lu` del padre.
@@ -245,7 +263,7 @@ Repasar: **B08.3, B14.2**.
 </Quiz>
 
 <Quiz id="b3-11" title="Espacios de indentación">
-Este manejador se ejecuta sobre el XML indentado de abajo. ¿Qué se observa en la salida?
+Este manejador se ejecuta sobre este XML, cuya indentación es real (los saltos de línea y espacios están en el fichero). ¿Qué se observa en la salida?
 
 ```xml
 <a>

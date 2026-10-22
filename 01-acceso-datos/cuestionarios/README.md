@@ -30,6 +30,8 @@ Cada carpeta de unidad se añade sola a la barra lateral; para una unidad nueva 
 
 Convenciones de las preguntas: seis opciones, una sola `[x]`, un comentario `>` por opción, `id` estable y único (`a1-01`, `b4-07`, `mx-12`…) para no perder el progreso guardado, y al final una línea `Repasar: **Axx**` que remite al resumen de `../resumen`.
 
+XML: todo documento con elementos anidados va en un bloque ```` ```xml ```` indentado, nunca en línea (también en las opciones, que necesitan un texto breve antes del bloque, p. ej. `- [ ] XML:`, para que el plugin las reconozca). Se entiende que el fichero **no** tiene espacios entre etiquetas; si la respuesta depende de los espacios, el enunciado dice que la indentación es real. Solo el contenido mixto (`<a>texto <b>x</b></a>`) se deja en una línea, porque indentarlo cambiaría el texto.
+
 ## Sintaxis rápida
 
 ```mdx

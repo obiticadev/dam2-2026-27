@@ -7,7 +7,7 @@ sidebar:
 
 import { Quiz, QuizResults } from 'starlight-quiz/components';
 
-Bloques **B12–B13** y matices de **B15**. Se usa **JAXB 2 (`javax.xml.bind`)**, como en el curso, con la API y la implementación añadidas como dependencias en JDK 17. Los fragmentos omiten los `import`, los getters/setters que no influyen y el manejo de `JAXBException`. Cuando se pregunta por el XML, interesa la estructura, no la declaración ni la indentación.
+Bloques **B12–B13** y matices de **B15**. Se usa **JAXB 2 (`javax.xml.bind`)**, como en el curso, con la API y la implementación añadidas como dependencias en JDK 17. Los fragmentos omiten los `import`, los getters/setters que no influyen y el manejo de `JAXBException`. Cuando se pregunta por el XML, interesa la estructura, no la declaración ni la indentación (se muestra indentado para leerlo mejor).
 
 <Quiz id="b5-01" title="Qué es el binding">
 ¿Qué aporta JAXB frente a DOM?
@@ -65,15 +65,41 @@ public class Libro {
 }
 ```
 
-- [ ] `<libro><id>978</id><escritor>Roche</escritor></libro>`
+- [ ] XML:
+  ```xml
+  <libro>
+    <id>978</id>
+    <escritor>Roche</escritor>
+  </libro>
+  ```
   > `@XmlAttribute` produce un atributo, no un hijo.
-- [x] `<libro id="978"><escritor>Roche</escritor></libro>`
+- [x] XML:
+  ```xml
+  <libro id="978">
+    <escritor>Roche</escritor>
+  </libro>
+  ```
   > Correcta: `name` fija el nombre XML del atributo y del elemento.
-- [ ] `<libro isbn="978"><autor>Roche</autor></libro>`
+- [ ] XML:
+  ```xml
+  <libro isbn="978">
+    <autor>Roche</autor>
+  </libro>
+  ```
   > Se usan los nombres XML de `name`, no los de las propiedades Java.
-- [ ] `<Libro id="978"><escritor>Roche</escritor></Libro>`
+- [ ] XML:
+  ```xml
+  <Libro id="978">
+    <escritor>Roche</escritor>
+  </Libro>
+  ```
   > La raíz se llama como indica `@XmlRootElement(name = "libro")`.
-- [ ] `<libro escritor="Roche"><id>978</id></libro>`
+- [ ] XML:
+  ```xml
+  <libro escritor="Roche">
+    <id>978</id>
+  </libro>
+  ```
   > Intercambia atributo y elemento.
 - [ ] Lanza excepción porque falta `@XmlType`.
   > `@XmlType` no es obligatorio.
@@ -90,15 +116,41 @@ Repasar: **B12.2**.
 public ArrayList<Libro> getListaLibro() { return listaLibro; }
 ```
 
-- [ ] `<Libro><ListaLibro>…</ListaLibro><ListaLibro>…</ListaLibro></Libro>`
+- [ ] XML:
+  ```xml
+  <Libro>
+    <ListaLibro>…</ListaLibro>
+    <ListaLibro>…</ListaLibro>
+  </Libro>
+  ```
   > Intercambia contenedor e ítem.
-- [x] `<ListaLibro><Libro>…</Libro><Libro>…</Libro></ListaLibro>`
+- [x] XML:
+  ```xml
+  <ListaLibro>
+    <Libro>…</Libro>
+    <Libro>…</Libro>
+  </ListaLibro>
+  ```
   > Correcta: un contenedor y un elemento por cada libro.
-- [ ] `<ArrayList><Libro>…</Libro><Libro>…</Libro></ArrayList>`
+- [ ] XML:
+  ```xml
+  <ArrayList>
+    <Libro>…</Libro>
+    <Libro>…</Libro>
+  </ArrayList>
+  ```
   > El nombre de la clase de la colección no genera elementos.
-- [ ] `<ListaLibro>…</ListaLibro><ListaLibro>…</ListaLibro>` sin contenedor.
+- [ ] Sin contenedor:
+  ```xml
+  <ListaLibro>…</ListaLibro>
+  <ListaLibro>…</ListaLibro>
+  ```
   > El wrapper es el único contenedor.
-- [ ] `<Libro>…</Libro><Libro>…</Libro>` sin contenedor.
+- [ ] Sin contenedor:
+  ```xml
+  <Libro>…</Libro>
+  <Libro>…</Libro>
+  ```
   > Sin el wrapper sí sería así; aquí hay contenedor.
 - [ ] Un atributo `ListaLibro` con los libros separados por comas.
   > No hay ningún `@XmlAttribute`.

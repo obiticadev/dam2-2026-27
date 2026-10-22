@@ -7,7 +7,7 @@ sidebar:
 
 import { Quiz, QuizResults } from 'starlight-quiz/components';
 
-Bloque **B06** y precondiciones de **B03–B05**. Los fragmentos omiten los `import` y el manejo de excepciones; `doc` es un `Document` vacío creado con `builder.newDocument()` salvo que se indique otra cosa. Cuando se pregunta por el XML resultante, interesa la estructura, no la declaración ni la indentación.
+Bloque **B06** y precondiciones de **B03–B05**. Los fragmentos omiten los `import` y el manejo de excepciones; `doc` es un `Document` vacío creado con `builder.newDocument()` salvo que se indique otra cosa. Cuando se pregunta por el XML resultante, interesa la estructura, no la declaración ni la indentación. Los XML se muestran indentados para leerlos mejor, pero el fichero no tiene espacios ni saltos de línea entre etiquetas salvo que el enunciado diga que la indentación es real.
 
 <Quiz id="b2-01" title="Crear no es insertar">
 ¿Qué estructura tiene el árbol al terminar?
@@ -19,13 +19,31 @@ Element emp = doc.createElement("empleado");
 emp.setAttribute("id", "1");
 ```
 
-- [ ] `<compania><empleado id="1"/></compania>`
+- [ ] Árbol:
+  ```xml
+  <compania>
+    <empleado id="1"/>
+  </compania>
+  ```
   > `empleado` se ha creado, pero nunca se inserta.
-- [x] `<compania/>`
+- [x] Árbol:
+  ```xml
+  <compania/>
+  ```
   > Correcta: falta `raiz.appendChild(emp)`.
-- [ ] `<empleado id="1"/>`
+- [ ] Árbol:
+  ```xml
+  <empleado id="1"/>
+  ```
   > La raíz es `compania`.
-- [ ] `<compania><empleado><id>1</id></empleado></compania>`
+- [ ] Árbol:
+  ```xml
+  <compania>
+    <empleado>
+      <id>1</id>
+    </empleado>
+  </compania>
+  ```
   > Ni se inserta `empleado` ni `setAttribute` crea hijos.
 - [ ] Un documento sin raíz.
   > `compania` sí se ha insertado.
@@ -81,7 +99,14 @@ Repasar: **B06.1**.
 </Quiz>
 
 <Quiz id="b2-04" title="setTextContent sobre un elemento con hijos">
-`e` es `<e><a/><b/></e>`. Tras `e.setTextContent("x")`, ¿qué imprime `e.getChildNodes().getLength()`?
+`e` es la raíz de este XML. Tras `e.setTextContent("x")`, ¿qué imprime `e.getChildNodes().getLength()`?
+
+```xml
+<e>
+  <a/>
+  <b/>
+</e>
+```
 
 - [ ] 3: `a`, `b` y el texto nuevo.
   > `setTextContent` sustituye el contenido, no lo añade.
@@ -169,7 +194,15 @@ Repasar: **B06.1**.
 </Quiz>
 
 <Quiz id="b2-08" title="Borrar en una lista viva">
-`a` es `<a><b/><b/><b/></a>` (sin espacios). ¿Cuántos `b` quedan?
+`a` es la raíz de este XML, sin espacios entre etiquetas. ¿Cuántos `b` quedan?
+
+```xml
+<a>
+  <b/>
+  <b/>
+  <b/>
+</a>
+```
 
 ```java
 NodeList lista = a.getElementsByTagName("b");
