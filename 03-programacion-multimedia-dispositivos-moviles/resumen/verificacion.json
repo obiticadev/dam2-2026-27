@@ -1,0 +1,160 @@
+{
+  "scope": "PMDM primer examen: Tema 1 y Tema 2 completos; Sensores y Multimedia como referencias",
+  "exam_date": "2026-10-30",
+  "practice_format": "cuatro opciones, una correcta (elegido por el estudiante; formato oficial no comunicado)",
+  "reference_date": "2026-10",
+  "sources": [
+    {
+      "source": "temario/Tema 1.md",
+      "source_sha256_bytes": "12f8eb5fb0fc20c3cbbe4e124d2913da83882b7c28f9c1c293cb2e80c33eb65d",
+      "annex_sha256_utf8": "9b55c082e079eea70e318a94dc03ded59d0811db6aec5ff1bb9ea7d4d76a3f6e",
+      "output": "Tema 1 - Tecnologías para aplicaciones móviles - Resumen completo.md",
+      "output_sha256_bytes": "f287b83ab3fdbe3d5ee826216d76f47d27de3534cb8bc1d152cd0bf2e3d8a9b6",
+      "annex_reversible_to_source": true,
+      "source_headings": 42,
+      "original_code_blocks_preserved": 9,
+      "original_code_blocks_in_source": 9,
+      "local_resources_linked": 37,
+      "local_resources_missing": 0,
+      "characters": 111737,
+      "words_approx": 15806,
+      "transformations": [
+        "Codificación de salida UTF-8 y finales de línea LF; texto y código docentes sin modificar, incluidos los espacios no separables (U+00A0) de sus bloques de código.",
+        "Encabezados docentes desplazados un nivel y prefijados con «Docente —» para distinguirlos del desarrollo elaborado; los bloques de código no se tocan.",
+        "Rutas `Recursos/` adaptadas a `../temario/Recursos/` y enlace al otro tema adaptado a `../temario/`, para conservar figuras, PDF y vídeo.",
+        "Omitida la línea de navegación inicial hacia el otro tema; las anclas internas `<a id>` y el índice original se conservan."
+      ]
+    },
+    {
+      "source": "temario/Tema 2.md",
+      "source_sha256_bytes": "0bf042dcbca9e50725a1c11d0e54999b65bdda7c716e1c2ba640398119e9a0e7",
+      "annex_sha256_utf8": "82f6bacc974fec6365284a854deac37dab1f4d55ccb41b488eda26eaa0cfa2d7",
+      "output": "Tema 2 - Entorno de trabajo y Android Studio - Resumen completo.md",
+      "output_sha256_bytes": "eb60f2962e6998b8e75f7298f6c2121a9605f276d7f9d2063ccfb775e1b241e3",
+      "annex_reversible_to_source": true,
+      "source_headings": 28,
+      "original_code_blocks_preserved": 6,
+      "original_code_blocks_in_source": 6,
+      "local_resources_linked": 20,
+      "local_resources_missing": 0,
+      "characters": 96105,
+      "words_approx": 13731,
+      "transformations": [
+        "Codificación de salida UTF-8 y finales de línea LF; texto y código docentes sin modificar, incluidos los espacios no separables (U+00A0) de sus bloques de código.",
+        "Encabezados docentes desplazados un nivel y prefijados con «Docente —» para distinguirlos del desarrollo elaborado; los bloques de código no se tocan.",
+        "Rutas `Recursos/` adaptadas a `../temario/Recursos/` y enlace al otro tema adaptado a `../temario/`, para conservar figuras, PDF y vídeo.",
+        "Omitida la línea de navegación inicial hacia el otro tema; las anclas internas `<a id>` y el índice original se conservan."
+      ]
+    }
+  ],
+  "tests": [
+    {
+      "check": "copia literal de los bloques Java/XML del Tema 2",
+      "status": "fails",
+      "reason": "espacios no separables U+00A0 en la sangría",
+      "affected_code_lines": 50
+    },
+    {
+      "check": "activity_main.xml normalizado",
+      "tool": "xmllint --noout",
+      "status": "pass"
+    },
+    {
+      "check": "MainActivity + ExampleActivity normalizados con stubs",
+      "tool": "javac --release 17",
+      "status": "pass"
+    },
+    {
+      "check": "variante SetContentView(R.Layout.acivity_main)",
+      "tool": "javac --release 17",
+      "status": "fails-as-expected",
+      "error": "cannot find symbol"
+    },
+    {
+      "check": "ejecución en emulador o dispositivo",
+      "status": "not-executed",
+      "reason": "sin SDK de Android"
+    }
+  ],
+  "prompt_inventory": [
+    {
+      "path": "prompts para cuestionarios/Examen completo - Simulacros y repaso adaptativo.md",
+      "prompts": [
+        "Q-X1",
+        "Q-X2",
+        "Q-X3",
+        "Q-X4",
+        "Q-X5"
+      ],
+      "count": 5
+    },
+    {
+      "path": "prompts para cuestionarios/Tema 1 - Prompts para cuestionarios.md",
+      "prompts": [
+        "Q-M0",
+        "Q-M1",
+        "Q-M2",
+        "Q-M3",
+        "Q-M4",
+        "Q-M5",
+        "Q-M6",
+        "Q-M7"
+      ],
+      "count": 8
+    },
+    {
+      "path": "prompts para cuestionarios/Tema 2 - Prompts para cuestionarios.md",
+      "prompts": [
+        "Q-S0",
+        "Q-S1",
+        "Q-S2",
+        "Q-S3",
+        "Q-S4",
+        "Q-S5",
+        "Q-S6",
+        "Q-S7"
+      ],
+      "count": 8
+    },
+    {
+      "path": "prompts para podcast/Tema 1 - Prompts para podcast.md",
+      "prompts": [
+        "P-M0",
+        "P-M1",
+        "P-M2",
+        "P-M3",
+        "P-M4",
+        "P-M5",
+        "P-M6",
+        "P-M7"
+      ],
+      "count": 8
+    },
+    {
+      "path": "prompts para podcast/Tema 2 - Prompts para podcast.md",
+      "prompts": [
+        "P-S0",
+        "P-S1",
+        "P-S2",
+        "P-S3",
+        "P-S4",
+        "P-S5",
+        "P-S6",
+        "P-S7"
+      ],
+      "count": 8
+    }
+  ],
+  "final_checks": {
+    "sources_unchanged": true,
+    "portable_no_wikilinks": true,
+    "code_fences_balanced": true,
+    "local_links_resolve": true,
+    "no_nbsp_in_elaborated_text": true,
+    "no_compiled_artifacts_in_output": true,
+    "podcast_prompts": 16,
+    "quiz_and_adaptive_prompts": 21,
+    "four_option_format": true,
+    "issues": []
+  }
+}
