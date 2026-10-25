@@ -6,8 +6,8 @@ import starlightQuiz from 'starlight-quiz';
 
 // https://astro.build/config
 export default defineConfig({
-	// URL pública: canónicas, Open Graph y sitemap. Descomentar y ajustar al publicar el sitio.
-	// site: 'https://<proyecto>.pages.dev',
+	// URL pública en Cloudflare Pages: canónicas, Open Graph y sitemap
+	site: 'https://cuestionarios-pmdm.pages.dev',
 	integrations: [
 		starlight({
 			title: 'Cuestionarios · PMDM',
