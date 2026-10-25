@@ -1,0 +1,162 @@
+---
+title: "S3 · Compilación, emuladores y dispositivo real"
+description: "Make Project, Run y Debug, etapas, APK, emulador y AVD, dispositivo real y depuración USB (S08–S10, S17)."
+sidebar:
+  order: 3
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **S08–S10** y matices de **S17**. Cuatro opciones y una sola correcta por pregunta.
+
+<Quiz id="s3-01" title="Make Project">
+¿Qué hace **Build > Make Project**?
+
+- [x] Compila el proyecto ejecutando Gradle.
+  > Correcta (S08).
+- [ ] Compila e instala la app en el dispositivo conectado.
+  > Eso es **Run**.
+- [ ] Crea un dispositivo virtual.
+  > Eso se hace con el asistente de AVD.
+- [ ] Publica la app en Google Play.
+  > No.
+
+Repasar: **S08**.
+</Quiz>
+
+<Quiz id="s3-02" title="Run">
+Al pulsar **Run**, ¿qué hace Android Studio?
+
+- [ ] Solo abre el emulador, sin compilar.
+  > También compila.
+- [x] Compila con Gradle, pide un destino de implementación (emulador o dispositivo) y carga la app en él.
+  > Correcta (S08).
+- [ ] Ejecuta la app dentro del propio IDE, sin emulador ni dispositivo.
+  > Necesita un destino.
+- [ ] Pone automáticamente puntos de interrupción.
+  > Eso corresponde a la depuración, y los puntos los pone el programador.
+
+Repasar: **S08**.
+</Quiz>
+
+<Quiz id="s3-03" title="Debug">
+¿Qué permite el modo **Debug**?
+
+- [ ] Compilar más rápido.
+  > No es su función.
+- [ ] Instalar la app sin compilarla.
+  > No.
+- [ ] Cambiar el nivel de API mínimo.
+  > No.
+- [x] Poner puntos de interrupción, examinar variables y evaluar expresiones en tiempo de ejecución.
+  > Correcta (S08).
+
+Repasar: **S08**.
+</Quiz>
+
+<Quiz id="s3-04" title="Clasificar un fallo">
+Un proyecto compila sin errores, pero al pulsar **Run** no aparece ningún destino de ejecución. ¿En qué etapa está el problema?
+
+- [ ] En la construcción: hay un error de código.
+  > La construcción ha terminado bien.
+- [x] En la elección del destino: falta un emulador creado o un dispositivo conectado y autorizado.
+  > Correcta: compilar no crea un destino (S08, S09.2).
+- [ ] En el XML del layout.
+  > Un error de layout aparecería al compilar o al ejecutar.
+- [ ] En el ciclo de vida de la actividad.
+  > La app todavía no se ha ejecutado.
+
+Repasar: **S08, S09.2**.
+</Quiz>
+
+<Quiz id="s3-05" title="Compilar no basta">
+¿Qué garantiza que un proyecto compile correctamente?
+
+- [ ] Que la interfaz se verá igual en todos los dispositivos.
+  > El aspecto puede variar entre dispositivos.
+- [ ] Que no habrá errores en ejecución.
+  > Puede fallar al ejecutarse.
+- [x] Que se cumplen las condiciones de construcción; ejecutar y probar responden a otras preguntas.
+  > Correcta (S08).
+- [ ] Que la app ya está instalada en el emulador.
+  > Compilar no instala.
+
+Repasar: **S08**.
+</Quiz>
+
+<Quiz id="s3-06" title="Papel del emulador">
+¿Qué afirmación sobre los emuladores es correcta según el temario?
+
+- [ ] Reproducen siempre exactamente el aspecto y el funcionamiento del dispositivo real.
+  > Pueden diferir en aspecto y, a veces, en funcionalidad.
+- [ ] Solo se usan al final, cuando la app está terminada.
+  > Se usan la mayor parte del tiempo.
+- [x] Se usan la mayor parte del tiempo, también para depurar, y a veces son obligatorios porque no se tiene el dispositivo.
+  > Correcta (S09.1).
+- [ ] No permiten poner puntos de interrupción.
+  > Se depura como un programa de ordenador.
+
+Repasar: **S09.1**.
+</Quiz>
+
+<Quiz id="s3-07" title="Cuándo pasar al dispositivo">
+Según el profesor, ¿cuándo se empieza a instalar la app en el dispositivo físico?
+
+- [ ] Desde el primer día, sin usar el emulador.
+  > El emulador es la herramienta principal.
+- [ ] Nunca: basta con el emulador.
+  > Hay aspectos que dependen del dispositivo físico.
+- [ ] Solo después de publicarla.
+  > No.
+- [x] Cuando la app tiene el 80–90 % de su funcionalidad, para probar aspectos del dispositivo físico.
+  > Correcta (S09.1).
+
+Repasar: **S09.1**.
+</Quiz>
+
+<Quiz id="s3-08" title="AVD">
+¿Qué es un AVD?
+
+- [x] Un *Android Virtual Device*: el dispositivo virtual que usa el emulador de Android para ejecutar la app.
+  > Correcta (S09.2).
+- [ ] El entorno de ejecución ART.
+  > ART ejecuta el código dentro de cualquier dispositivo, real o emulado.
+- [ ] Un fichero `.apk` instalable.
+  > No.
+- [ ] Una plantilla de actividad.
+  > No.
+
+Repasar: **S09.2**.
+</Quiz>
+
+<Quiz id="s3-09" title="Instalar en un dispositivo">
+Según el temario, ¿cuál es la forma más sencilla de probar una app Android en un dispositivo y qué hay que activar para ejecutarla desde Android Studio?
+
+- [ ] Copiar un `.jar` y activar el modo avión.
+  > El `.jar` corresponde a los midlets de Java ME.
+- [x] Transferir el `.apk` al dispositivo; para ejecutar desde Android Studio, activar la depuración USB.
+  > Correcta (S10).
+- [ ] Copiar el proyecto entero de Android Studio al móvil.
+  > No.
+- [ ] Usar solo el emulador, porque Android no permite instalar apps externas.
+  > Sí lo permite.
+
+Repasar: **S10**.
+</Quiz>
+
+<Quiz id="s3-10" title="Diferencias emulador–real">
+¿A qué atribuye el temario las diferencias de aspecto o funcionamiento entre emulador y dispositivo real?
+
+- [ ] Solo a errores en el código Java.
+  > No.
+- [ ] A que el emulador usa otro lenguaje de programación.
+  > No.
+- [x] A las características físicas del dispositivo (pantalla, botones…) y a la implementación de su máquina virtual.
+  > Correcta, con la analogía de la web en distintos navegadores (S10).
+- [ ] A que el dispositivo real no admite XML.
+  > No.
+
+Repasar: **S10**.
+</Quiz>
+
+<QuizResults />

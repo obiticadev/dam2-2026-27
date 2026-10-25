@@ -1,0 +1,192 @@
+---
+title: "M1 · Dispositivos, limitaciones y hardware"
+description: "Definición de dispositivo móvil, clasificación, limitaciones y ventajas, tecnologías disponibles, smartphone, chipset y ARM (M01–M05, M15)."
+sidebar:
+  order: 1
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **M01–M05** y matices de **M15**. Cuatro opciones y una sola correcta por pregunta.
+
+<Quiz id="m1-01" title="Rasgo de la definición">
+Según la definición de trabajo del curso, ¿qué rasgo forma parte de un dispositivo móvil?
+
+- [ ] Conexión permanente a Internet.
+  > La definición dice conexión a una red **permanente o no**.
+- [x] Conexión, permanente o no, a una red.
+  > Correcta: la conexión intermitente forma parte de la definición (M02.2).
+- [ ] Sistema operativo Android o iOS.
+  > Son ejemplos de SO, no requisitos de la definición.
+- [ ] Una única función, sin posibilidad de funciones generales.
+  > Se diseña para una función específica, pero normalmente puede hacer también funciones más generales.
+
+Repasar: **M02.2**.
+</Quiz>
+
+<Quiz id="m1-02" title="Verdad a medias">
+El temario afirma que la «pequeña capacidad de proceso» de los móviles es una **verdad a medias**. ¿Por qué?
+
+- [ ] Porque los móviles no tienen procesador propio y usan el de la red.
+  > Tienen procesador propio; el chipset lo integra.
+- [ ] Porque la capacidad de proceso no influye en el diseño de las aplicaciones.
+  > Influye: es una de las restricciones de diseño.
+- [x] Porque los móviles avanzados superan a equipos de sobremesa de gama media-baja de pocos años antes.
+  > Correcta: el temario lo matiza con esa comparación, y lo mismo con la memoria (M02.2).
+- [ ] Porque todos los móviles actuales carecen de cálculo en coma flotante.
+  > Era un ejemplo de restricción en algunos casos, no una característica actual general.
+
+Repasar: **M02.2**.
+</Quiz>
+
+<Quiz id="m1-03" title="Foco del curso">
+Entre todos los tipos de dispositivos móviles que cita el temario, ¿en cuáles se centra el curso?
+
+- [ ] PDA y PocketPC.
+  > Están completamente en desuso según el propio temario.
+- [x] Smartphones y tablets.
+  > Correcta (M02.3).
+- [ ] Navegadores GPS y lectores de libros digitales.
+  > Aparecen en otras clasificaciones, no son el foco del curso.
+- [ ] Videoconsolas de mano y cámaras digitales.
+  > Son ejemplos de otras clasificaciones.
+
+Repasar: **M02.3**.
+</Quiz>
+
+<Quiz id="m1-04" title="Internet tablets">
+¿Dónde sitúa el temario las *Internet tablets*?
+
+- [x] Entre las PDA y los PC ultramóviles (pequeños tablet PC).
+  > Correcta (M02.3).
+- [ ] Entre los smartphones y los portátiles.
+  > No es la ubicación que da el temario.
+- [ ] Dentro de los buscapersonas.
+  > Los *pagers* son otra categoría, hoy en desuso.
+- [ ] Como sinónimo de *handheld*.
+  > *Handheld* (PC de mano) es otra entrada de la lista.
+
+Repasar: **M02.3**.
+</Quiz>
+
+<Quiz id="m1-05" title="Limitaciones del temario">
+¿Cuál de estas restricciones **no** figura entre las limitaciones de las tecnologías móviles del temario?
+
+- [ ] Suministro de energía limitado.
+  > Sí figura: normalmente depende de baterías.
+- [ ] Conexión de red intermitente y con ancho de banda limitado.
+  > Sí figura.
+- [ ] Teclados pequeños y con funcionalidad muy básica.
+  > Sí figura.
+- [x] Imposibilidad de instalar aplicaciones de terceros.
+  > Correcta: al contrario, el smartphone se caracteriza por poder ejecutar apps de terceros (M03.1, M05.1).
+
+Repasar: **M03.1**.
+</Quiz>
+
+<Quiz id="m1-06" title="Consecuencia de diseño">
+Según el temario, ¿qué consecuencia tienen las limitaciones de los móviles para el análisis y diseño de una aplicación?
+
+- [ ] Ninguna: el hardware actual iguala al de un ordenador de sobremesa.
+  > El temario insiste en tenerlas muy en cuenta.
+- [ ] Obligan a programar siempre en código nativo con el NDK.
+  > El temario no extrae esa conclusión.
+- [ ] Solo afectan a las aplicaciones de juegos.
+  > Afectan a cualquier aplicación móvil.
+- [x] No se puede pretender la misma funcionalidad que en un programa de sobremesa o portátil.
+  > Correcta (M03.1).
+
+Repasar: **M03.1**.
+</Quiz>
+
+<Quiz id="m1-07" title="Doble cara de la conectividad">
+La conectividad aparece en el temario como ventaja y también como limitación. ¿Qué afirmación lo explica?
+
+- [ ] Es una contradicción del temario: solo puede ser una de las dos.
+  > No es contradictorio: se refieren a aspectos distintos.
+- [x] Hay muchas redes disponibles (SMS, voz, Internet, Bluetooth…), pero la conexión puede ser intermitente y de ancho de banda limitado.
+  > Correcta (M03.2).
+- [ ] Es ventaja en las tablets y limitación en los smartphones.
+  > El temario no distingue por tipo de dispositivo.
+- [ ] Es ventaja solo cuando el dispositivo tiene conexión permanente.
+  > La definición admite conexión no permanente.
+
+Repasar: **M03.1, M03.2**.
+</Quiz>
+
+<Quiz id="m1-08" title="Preguntas antes de desarrollar">
+¿Qué tres niveles de preguntas plantea el temario antes de desarrollar para un móvil?
+
+- [ ] Presupuesto, plazo y equipo de trabajo.
+  > No son las preguntas tecnológicas del temario.
+- [ ] Lenguaje, base de datos y servidor.
+  > No es la secuencia del temario.
+- [x] Hardware, sistema operativo y plataforma de desarrollo (con sus lenguajes y herramientas).
+  > Correcta (M04).
+- [ ] Batería, pantalla y teclado.
+  > Son limitaciones, no las preguntas iniciales.
+
+Repasar: **M04**.
+</Quiz>
+
+<Quiz id="m1-09" title="Qué define un smartphone">
+Según el temario, ¿qué caracteriza a un smartphone frente a un teléfono móvil normal?
+
+- [x] Tener instalado un sistema operativo y poder ejecutar aplicaciones del fabricante, del operador o de terceros.
+  > Correcta (M05.1).
+- [ ] Tener pantalla táctil.
+  > Es una característica habitual, no la que lo define.
+- [ ] Usar exclusivamente Android.
+  > Hay smartphones con otros SO.
+- [ ] No poder hacer llamadas telefónicas.
+  > Es un terminal de telefonía; simplemente su uso principal ya no es necesariamente llamar.
+
+Repasar: **M05.1**.
+</Quiz>
+
+<Quiz id="m1-10" title="Chipset">
+¿A qué se llama **chipset** en un smartphone?
+
+- [ ] Solo al procesador principal.
+  > Es más amplio que el procesador principal.
+- [ ] Al sistema operativo grabado en la memoria.
+  > Es hardware, no software.
+- [ ] A la tarjeta SD de ampliación.
+  > No.
+- [x] Al conjunto de dispositivos integrados en la placa: procesador principal, DSP, procesadores de imagen y audio, módem, cachés y códecs.
+  > Correcta, por analogía con la placa base de un PC (M05.2).
+
+Repasar: **M05.2**.
+</Quiz>
+
+<Quiz id="m1-11" title="ARM">
+¿Qué afirmación sobre ARM es correcta?
+
+- [ ] Es un fabricante de teléfonos móviles británico.
+  > No fabrica teléfonos.
+- [ ] Es un sistema operativo móvil basado en Linux.
+  > Es una arquitectura de procesador.
+- [x] Es una arquitectura de procesador que otras empresas licencian; tiene más del 90 % de cuota en móviles.
+  > Correcta (M05.2).
+- [ ] Es una arquitectura usada solo por Apple.
+  > La usan Samsung, Qualcomm, Texas Instruments, Apple y muchas otras.
+
+Repasar: **M05.2**.
+</Quiz>
+
+<Quiz id="m1-12" title="Arquitecturas de chipset">
+¿Qué pareja de arquitectura de chipset y empresa es correcta según el temario?
+
+- [ ] MSM → Texas Instruments.
+  > MSM es de Qualcomm.
+- [x] OMAP → Texas Instruments.
+  > Correcta: *Open Multimedia Application Platform* (M05.2).
+- [ ] OMAP → Qualcomm.
+  > OMAP es de Texas Instruments.
+- [ ] Cortex → Marvell.
+  > Cortex es una familia de micros ARM.
+
+Repasar: **M05.2**.
+</Quiz>
+
+<QuizResults />

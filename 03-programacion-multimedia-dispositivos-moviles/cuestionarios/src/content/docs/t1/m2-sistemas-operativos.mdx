@@ -1,0 +1,192 @@
+---
+title: "M2 · Sistemas operativos móviles"
+description: "Panorama, Android, iOS, HarmonyOS, KaiOS y alternativas libres (M06–M08, M15)."
+sidebar:
+  order: 2
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **M06–M08** y matices de **M15**. Cuatro opciones y una sola correcta por pregunta. No se pregunta por cifras de cuota ni por la versión más reciente, que caducan.
+
+<Quiz id="m2-01" title="Dominio del mercado">
+Según el temario, ¿por qué se han consolidado Android e iOS frente a la diversidad de los años 2000?
+
+- [ ] Porque son los únicos sistemas gratuitos.
+  > iOS no se licencia a terceros; el criterio no es la gratuidad.
+- [x] Por sus ecosistemas de aplicaciones, sus actualizaciones constantes y su compatibilidad con tecnologías emergentes.
+  > Correcta: IA, 5G e IoT (M06.1).
+- [ ] Porque los dos están basados en Windows.
+  > Android usa un kernel de Linux; iOS deriva de Mac OS X.
+- [ ] Porque los demás sistemas se prohibieron legalmente.
+  > El temario no dice nada parecido.
+
+Repasar: **M06.1**.
+</Quiz>
+
+<Quiz id="m2-02" title="Núcleo de Android">
+¿Sobre qué está basado Android?
+
+- [x] Sobre una versión modificada del kernel de Linux.
+  > Correcta (M06.2).
+- [ ] Sobre el núcleo de Mac OS X.
+  > Eso describe el origen de iOS.
+- [ ] Sobre Symbian.
+  > Symbian es otro SO, ya descontinuado.
+- [ ] Sobre la máquina virtual de Java SE.
+  > Android no se basa en la JVM de Java SE.
+
+Repasar: **M06.2**.
+</Quiz>
+
+<Quiz id="m2-03" title="Primer dispositivo Android">
+¿Cuál fue el primer dispositivo comercializado con Android?
+
+- [ ] El Samsung Galaxy, en 2010.
+  > No fue el primero.
+- [ ] El Nexus One, de Google.
+  > No fue el primero.
+- [x] El HTC Dream (T-Mobile G1), en 2008.
+  > Correcta, conocido también como «Google Phone» (M06.2).
+- [ ] El iPhone original.
+  > Usa iOS.
+
+Repasar: **M06.2**.
+</Quiz>
+
+<Quiz id="m2-04" title="Nombres de postres">
+Las versiones de Android recibían nombres de postres. ¿Qué regla seguían?
+
+- [ ] Un nombre por año, en orden de popularidad.
+  > La regla es alfabética.
+- [ ] El nombre lo elegía el primer fabricante que lanzaba la versión.
+  > No.
+- [ ] Solo las versiones pares tenían nombre.
+  > No: cada versión mayor tenía nombre.
+- [x] Cada versión avanzaba una letra del alfabeto: Cupcake, Donut, Éclair, Froyo, Gingerbread…
+  > Correcta (M06.3).
+
+Repasar: **M06.3**.
+</Quiz>
+
+<Quiz id="m2-05" title="Letra y versión">
+Según la tabla de versiones del temario, ¿qué pareja es correcta?
+
+- [ ] KitKat → 5.0.
+  > KitKat es la 4.4; la 5.0 es Lollipop.
+- [x] Lollipop → 5.0 / 5.1.
+  > Correcta (M06.3).
+- [ ] Marshmallow → 7.0.
+  > Marshmallow es la 6.0; la 7.0 es Nougat.
+- [ ] Oreo → 4.0.
+  > La 4.0 es Ice Cream Sandwich; Oreo es la 8.0.
+
+Repasar: **M06.3**.
+</Quiz>
+
+<Quiz id="m2-06" title="IDE de Android">
+¿Qué afirmación sobre el IDE para Android es correcta?
+
+- [ ] Android Studio fue el IDE oficial desde el lanzamiento de Android.
+  > Primero se usó Eclipse con el plugin ADT.
+- [ ] Android Studio está basado en NetBeans.
+  > Está basado en IntelliJ IDEA de JetBrains.
+- [x] Primero fue Eclipse con el plugin ADT y después Android Studio, basado en IntelliJ IDEA.
+  > Correcta (M06.2, M06.4).
+- [ ] Android no tiene IDE oficial; se programa con el bloc de notas.
+  > Tiene IDE oficial: Android Studio.
+
+Repasar: **M06.2, M06.4**.
+</Quiz>
+
+<Quiz id="m2-07" title="Hardware de iOS">
+¿En qué dispositivos puede funcionar iOS?
+
+- [ ] En cualquier smartphone con procesador ARM.
+  > Apple no lo permite.
+- [x] Solo en hardware de Apple.
+  > Correcta (M07).
+- [ ] En dispositivos Apple y en los de los fabricantes que paguen licencia.
+  > Apple no licencia iOS a terceros.
+- [ ] En cualquier dispositivo con Mac OS X instalado.
+  > iOS deriva de Mac OS X, pero no se instala sobre él.
+
+Repasar: **M07**.
+</Quiz>
+
+<Quiz id="m2-08" title="Lenguajes de iOS">
+¿Qué afirmación sobre los lenguajes de iOS es correcta según el temario?
+
+- [ ] El único lenguaje es Objective-C.
+  > El temario presenta Swift como el estándar actual (la frase de 1.C es antigua).
+- [ ] Se programa en Java con el SDK de Android.
+  > No.
+- [ ] Swift es el lenguaje antiguo y Objective-C, el moderno.
+  > Es al revés.
+- [x] Swift es el lenguaje moderno y estándar actual; Objective-C es el antiguo, usado en proyectos *legacy*.
+  > Correcta (M07).
+
+Repasar: **M07**.
+</Quiz>
+
+<Quiz id="m2-09" title="Coste de desarrollar para iOS">
+¿Qué es de pago en el desarrollo para iOS?
+
+- [ ] Descargar el SDK.
+  > El SDK se descarga gratis.
+- [ ] Usar el simulador de Xcode.
+  > Viene con Xcode.
+- [x] Registrarse en el programa de desarrolladores para publicar en la App Store.
+  > Correcta (M07, M09.3).
+- [ ] Programar en Swift.
+  > El lenguaje no tiene coste.
+
+Repasar: **M07, M09.3**.
+</Quiz>
+
+<Quiz id="m2-10" title="Herramientas de Xcode">
+¿Para qué sirve **TestFlight** según el temario?
+
+- [ ] Para medir CPU, memoria, energía y red de la app.
+  > Eso es Instruments.
+- [ ] Para diseñar visualmente las pantallas.
+  > Eso es Interface Builder (o la vista previa de SwiftUI).
+- [ ] Para emular dispositivos Android.
+  > Xcode trae simuladores de dispositivos Apple.
+- [x] Para enviar *builds* a probadores beta antes de publicar en la App Store.
+  > Correcta (M07).
+
+Repasar: **M07**.
+</Quiz>
+
+<Quiz id="m2-11" title="HarmonyOS">
+¿Qué afirmación sobre HarmonyOS es correcta según el temario?
+
+- [ ] Es un sistema libre desarrollado por comunidades, sin dispositivos comerciales.
+  > Eso describe a Ubuntu Touch o LineageOS.
+- [x] Es de Huawei, se enfoca en la conectividad entre dispositivos y es muy usado en China, pero limitado fuera de Asia.
+  > Correcta (M08).
+- [ ] Es de Samsung y se usa sobre todo en relojes y televisores.
+  > Eso describe Tizen.
+- [ ] Está orientado a teléfonos básicos de mercados emergentes.
+  > Eso describe KaiOS.
+
+Repasar: **M08**.
+</Quiz>
+
+<Quiz id="m2-12" title="KaiOS">
+¿Qué describe a KaiOS?
+
+- [ ] Sistema de Apple para el Apple Watch.
+  > No.
+- [ ] Alternativa libre basada en Linux para smartphones completos.
+  > No es su enfoque.
+- [x] Sistema para *feature phones*, con bajo consumo y apps clave como WhatsApp, orientado a mercados emergentes.
+  > Correcta (M08).
+- [ ] Sistema de Huawei que abandona la base de Android.
+  > Eso es HarmonyOS NEXT.
+
+Repasar: **M08**.
+</Quiz>
+
+<QuizResults />

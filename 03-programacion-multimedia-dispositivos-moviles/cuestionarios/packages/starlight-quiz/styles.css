@@ -1,0 +1,1113 @@
+/**
+ * starlight-quiz theme.
+ *
+ * Scoped in a cascade layer so consumers can override any rule from unlayered
+ * CSS without specificity battles. Colours are driven by Starlight's
+ * `--sl-color-*` custom properties, with sensible fallbacks so the components
+ * also look right in a plain Astro project (including OS dark mode).
+ *
+ * The statement below orders our layer after Starlight's. Without it this file
+ * is bundled first, so `starlight-quiz` became the lowest layer and Starlight's
+ * Markdown spacing (`margin-top: 1rem` between sibling blocks) won over the
+ * quiz layout — stacking an extra 1rem between every pair of answers.
+ */
+@layer starlight.base, starlight.reset, starlight.core, starlight.content, starlight.components, starlight.utils,
+  starlight-quiz;
+
+@layer starlight-quiz {
+  .sl-quiz,
+  .sl-quiz-results,
+  .sl-quiz-progress,
+  .sl-quiz-intro,
+  .sl-quiz-nav,
+  .sl-quiz-pager {
+    --slq-accent: var(--sl-color-accent, #2563eb);
+    --slq-correct: var(--sl-color-green, #15803d);
+    --slq-correct-bg: var(--sl-color-green-low, #dcfce7);
+    --slq-correct-high: var(--sl-color-green-high, #166534);
+    --slq-wrong: var(--sl-color-red, #b91c1c);
+    --slq-wrong-bg: var(--sl-color-red-low, #fee2e2);
+    --slq-wrong-high: var(--sl-color-red-high, #991b1b);
+    --slq-average: var(--sl-color-orange, #c2410c);
+    --slq-average-bg: var(--sl-color-orange-low, #ffedd5);
+    --slq-text: var(--sl-color-text, #1f2937);
+    --slq-bg: var(--sl-color-bg, #ffffff);
+    --slq-surface: var(--sl-color-gray-6, #f3f4f6);
+    --slq-border: var(--sl-color-gray-5, #d1d5db);
+    --slq-muted: var(--sl-color-gray-3, #6b7280);
+    --slq-radius: 0.5rem;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    .sl-quiz,
+    .sl-quiz-results,
+    .sl-quiz-progress,
+    .sl-quiz-intro,
+    .sl-quiz-nav,
+    .sl-quiz-pager {
+      --slq-correct-bg: var(--sl-color-green-low, #052e16);
+      --slq-correct-high: var(--sl-color-green-high, #86efac);
+      --slq-wrong-bg: var(--sl-color-red-low, #450a0a);
+      --slq-wrong-high: var(--sl-color-red-high, #fca5a5);
+      --slq-average-bg: var(--sl-color-orange-low, #431407);
+      --slq-text: var(--sl-color-text, #e5e7eb);
+      --slq-bg: var(--sl-color-bg, #0b0e14);
+      --slq-surface: var(--sl-color-gray-6, #111827);
+      --slq-border: var(--sl-color-gray-5, #374151);
+      --slq-muted: var(--sl-color-gray-3, #9ca3af);
+    }
+  }
+
+  /* Visually hidden but available to assistive technology. */
+  .sl-quiz .sr-only,
+  .sl-quiz-pager .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .sl-quiz {
+    display: block;
+    margin-block: 1.5rem 0;
+    padding: 1.25rem 1.25rem 1rem;
+    color: var(--slq-text);
+    background: var(--slq-bg);
+    border: 1px solid var(--slq-border);
+    border-radius: var(--slq-radius);
+  }
+
+  .sl-quiz-number {
+    margin: 0 0 0.25rem;
+    color: var(--slq-muted);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .sl-quiz-title {
+    margin: 0 0 0.625rem;
+    font-weight: 600;
+    font-size: 1.0625rem;
+    line-height: 1.35;
+  }
+
+  .sl-quiz-form {
+    margin: 0;
+  }
+
+  .sl-quiz-question {
+    margin: 0 0 0.875rem;
+  }
+
+  .sl-quiz-question > :first-child {
+    margin-top: 0;
+  }
+
+  .sl-quiz-fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .sl-quiz-answer {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0 0.625rem;
+    align-items: center;
+    margin: 0;
+    padding: 0.5rem 0.75rem;
+    line-height: 1.45;
+    border: 1px solid var(--slq-border);
+    border-radius: var(--slq-radius);
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      background-color 0.15s ease;
+  }
+
+  .sl-quiz-answer:hover:not(:has(input:disabled)) {
+    border-color: var(--slq-accent);
+  }
+
+  .sl-quiz-answer input {
+    flex-shrink: 0;
+    inline-size: 1.05em;
+    block-size: 1.05em;
+    margin: 0;
+    accent-color: var(--slq-accent);
+    /* Keep the native control above the label overlay so it stays clickable. */
+    position: relative;
+    z-index: 1;
+  }
+
+  .sl-quiz-answer label {
+    cursor: inherit;
+  }
+
+  /* Make the whole answer row a click target, not just the label text: the
+     label (tied to the input via `for`) stretches to cover the entire wrapper,
+     padding included. */
+  .sl-quiz-answer label::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+  }
+
+  .sl-quiz-answer label > :first-child {
+    margin-top: 0;
+  }
+
+  .sl-quiz-answer label > :last-child {
+    margin-bottom: 0;
+  }
+
+  /* XML trees and other code blocks inside an answer: tighter, and without the
+     copy button (in an answer it only competes with picking it). Expressive
+     Code's styles are unlayered, hence `!important`. */
+  .sl-quiz-answer .expressive-code {
+    margin-top: 0.375rem;
+    --ec-codePadBlk: 0.375rem !important;
+    --ec-codePadInl: 0.75rem !important;
+  }
+
+  .sl-quiz-answer .expressive-code .copy {
+    display: none !important;
+  }
+
+  .sl-quiz-answer--correct {
+    border-color: var(--slq-correct);
+    background: var(--slq-correct-bg);
+  }
+
+  .sl-quiz-answer--correct input {
+    accent-color: var(--slq-correct);
+  }
+
+  .sl-quiz-answer--wrong {
+    border-color: var(--slq-wrong);
+    background: var(--slq-wrong-bg);
+  }
+
+  .sl-quiz-answer--wrong input {
+    accent-color: var(--slq-wrong);
+  }
+
+  .sl-quiz-answer-feedback {
+    grid-column: 2;
+    margin-top: 0.375rem;
+    font-size: 0.875rem;
+    color: var(--slq-muted);
+  }
+
+  .sl-quiz-answer-feedback > :first-child {
+    margin-top: 0;
+  }
+
+  /* Fill-in-the-blank inputs */
+  .sl-quiz-blank {
+    display: inline;
+    padding: 0.1em 0.4em;
+    color: var(--slq-text);
+    background: var(--slq-bg);
+    border: 1px solid var(--slq-border);
+    border-bottom-width: 2px;
+    border-radius: 0.25rem;
+    font: inherit;
+  }
+
+  .sl-quiz-blank:focus-visible {
+    outline: 2px solid var(--slq-accent);
+    outline-offset: 1px;
+  }
+
+  .sl-quiz-blank--correct {
+    border-color: var(--slq-correct);
+    background: var(--slq-correct-bg);
+  }
+
+  .sl-quiz-blank--wrong {
+    border-color: var(--slq-wrong);
+    background: var(--slq-wrong-bg);
+  }
+
+  /* Feedback panel: a stack of tinted boxes — one per shown answer's feedback,
+     or a single generic message. Each box is badged with the answer it relates
+     to so multiple feedbacks stay distinguishable (mirrors mkdocs-quiz). */
+  .sl-quiz-feedback {
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    /* The top space lets the first box's badge (which overhangs the top edge)
+       clear the answers above it. */
+    margin: 0;
+    padding-top: 1.5rem;
+  }
+
+  .sl-quiz-feedback:focus-visible {
+    outline: 2px solid var(--slq-accent);
+    outline-offset: 2px;
+  }
+
+  .sl-quiz-feedback-item {
+    position: relative;
+    margin: 0;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--slq-border);
+    border-radius: var(--slq-radius);
+    background: var(--slq-surface);
+    font-size: 0.875rem;
+  }
+
+  .sl-quiz-feedback-item--correct {
+    border-color: var(--slq-correct);
+    background: var(--slq-correct-bg);
+    color: var(--slq-correct-high);
+  }
+
+  .sl-quiz-feedback-item--wrong {
+    border-color: var(--slq-wrong);
+    background: var(--slq-wrong-bg);
+    color: var(--slq-wrong-high);
+  }
+
+  .sl-quiz-feedback-item > :first-child {
+    margin-top: 0;
+  }
+
+  .sl-quiz-feedback-item > :last-child {
+    margin-bottom: 0;
+  }
+
+  /* Badge straddling the top-inline-start edge, naming the answer. */
+  .sl-quiz-feedback-badge {
+    position: absolute;
+    top: -0.6rem;
+    inset-inline-start: 0.6rem;
+    max-inline-size: calc(100% - 1.2rem);
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.25;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .sl-quiz-feedback-item--correct .sl-quiz-feedback-badge {
+    background: var(--slq-correct);
+    color: var(--slq-bg);
+  }
+
+  .sl-quiz-feedback-item--wrong .sl-quiz-feedback-badge {
+    background: var(--slq-wrong);
+    color: var(--slq-bg);
+  }
+
+  .sl-quiz-feedback-message {
+    font-weight: 600;
+  }
+
+  .sl-quiz-corrections {
+    margin: 0.5rem 0 0;
+  }
+
+  .sl-quiz-corrections del {
+    color: var(--slq-wrong);
+  }
+
+  .sl-quiz-corrections ins {
+    color: var(--slq-correct);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  /* Actions */
+  .sl-quiz-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.875rem 0 0;
+  }
+
+  /* Nothing to show once auto-submitted or locked: drop the empty row. */
+  .sl-quiz-actions:not(:has(button:not([hidden]))) {
+    display: none;
+  }
+
+  /*
+   * Buttons mirror Starlight's primary/secondary LinkButton so they sit
+   * naturally in the theme. The submit button uses the accent background with
+   * `--sl-color-black` for text — that token flips to white in light mode and
+   * dark in dark mode, so the label always contrasts the accent (a plain
+   * `--sl-color-white` would read black-on-blue in light mode). Fallbacks keep
+   * it legible when used in a vanilla Astro site without Starlight's tokens.
+   */
+  .sl-quiz-actions button {
+    padding: 0.4375rem 1.125rem;
+    font: inherit;
+    font-weight: 600;
+    line-height: 1.1875;
+    color: var(--sl-color-black, #ffffff);
+    background: var(--sl-color-text-accent, var(--slq-accent));
+    border: 1px solid var(--sl-color-text-accent, var(--slq-accent));
+    border-radius: 999rem;
+    cursor: pointer;
+    transition: opacity 0.15s ease;
+  }
+
+  .sl-quiz-actions button:hover {
+    opacity: 0.9;
+  }
+
+  .sl-quiz-actions button:focus-visible {
+    outline: 2px solid var(--slq-accent);
+    outline-offset: 0.25rem;
+  }
+
+  /* Reset mirrors the secondary LinkButton: outlined, no accent fill. */
+  .sl-quiz-reset {
+    color: var(--sl-color-white, var(--slq-text)) !important;
+    background: transparent !important;
+    border-color: var(--slq-border) !important;
+  }
+
+  /* Post-answer explanation */
+  .sl-quiz-content {
+    margin: 0.875rem 0 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--slq-border);
+    font-size: 0.9375rem;
+  }
+
+  .sl-quiz-content > :first-child {
+    margin-top: 0;
+  }
+
+  /* No-JS fallback: the raw source is just markdown; keep it readable. */
+  .sl-quiz-source > :first-child {
+    margin-top: 0;
+  }
+
+  /* ---- Results panel ------------------------------------------------- */
+  .sl-quiz-results {
+    display: block;
+    margin-block: 1.5rem;
+    padding: 1.25rem;
+    color: var(--slq-text);
+    background: var(--slq-surface);
+    border: 1px solid var(--slq-border);
+    border-radius: var(--slq-radius);
+    text-align: center;
+  }
+
+  /* In-progress state: a quiet, text-only summary (no bar). */
+  .sl-quiz-results-progress {
+    color: var(--slq-muted);
+  }
+
+  .sl-quiz-results-heading {
+    margin: 0 0 0.5rem;
+    font-size: var(--sl-text-h4, 1.25rem);
+    font-weight: 600;
+    color: var(--slq-text);
+  }
+
+  .sl-quiz-results-stats,
+  .sl-quiz-results-correct-stats {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .sl-quiz-results-answered,
+  .sl-quiz-results-total,
+  .sl-quiz-results-percentage,
+  .sl-quiz-results-correct {
+    font-weight: 600;
+    color: var(--slq-text);
+  }
+
+  /* Complete state: a bold, prominent score. */
+  .sl-quiz-results-title {
+    margin: 0;
+    font-size: var(--sl-text-h3, 1.5rem);
+    font-weight: 700;
+    color: var(--slq-text);
+  }
+
+  .sl-quiz-results-score {
+    display: inline-block;
+    margin: 1.25rem 0;
+    padding: 0.5rem 1.25rem;
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1;
+    border-radius: 12px;
+  }
+
+  .sl-quiz-results-complete--excellent .sl-quiz-results-score,
+  .sl-quiz-results-complete--good .sl-quiz-results-score {
+    color: var(--slq-correct);
+    background: var(--slq-correct-bg);
+  }
+
+  .sl-quiz-results-complete--average .sl-quiz-results-score,
+  .sl-quiz-results-complete--poor .sl-quiz-results-score {
+    color: var(--slq-average);
+    background: var(--slq-average-bg);
+  }
+
+  .sl-quiz-results-complete--fail .sl-quiz-results-score {
+    color: var(--slq-wrong);
+    background: var(--slq-wrong-bg);
+  }
+
+  .sl-quiz-results-message {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+
+  .sl-quiz-results-detail {
+    margin: 0 0 1rem;
+    color: var(--slq-muted);
+    font-size: 0.9375rem;
+  }
+
+  .sl-quiz-results-reset,
+  .sl-quiz-intro-reset {
+    flex-shrink: 0;
+    padding: 0.5rem 1.25rem;
+    font: inherit;
+    font-weight: 600;
+    color: var(--slq-text);
+    background: var(--slq-bg);
+    border: 1px solid var(--slq-border);
+    border-radius: var(--slq-radius);
+    cursor: pointer;
+  }
+
+  .sl-quiz-results-reset:hover,
+  .sl-quiz-intro-reset:hover {
+    border-color: var(--slq-accent);
+  }
+
+  /* ---- Intro panel (info text + page reset) -------------------------- */
+  .sl-quiz-intro {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem 1rem;
+    margin-block: 1.5rem;
+    padding: 1rem 1.25rem;
+    color: var(--slq-text);
+    background: var(--slq-surface);
+    border: 1px solid var(--slq-border);
+    border-radius: var(--slq-radius);
+  }
+
+  .sl-quiz-intro-text {
+    flex: 1 1 16rem;
+    margin: 0;
+    color: var(--slq-muted);
+    font-size: 0.9375rem;
+  }
+
+  /* ---- Progress widget (e.g. in the table of contents) -------------- */
+  .sl-quiz-progress {
+    display: block;
+    /* Space before the table of contents below. Uses padding, not margin:
+       Starlight's reset layer sets `* { margin: 0 }` and outranks this
+       (deliberately low-priority) layer, but it does not touch padding. */
+    padding-block: 0 2.5rem;
+    font-size: var(--sl-text-xs, 0.8125rem);
+  }
+
+  .sl-quiz-progress[hidden] {
+    display: none;
+  }
+
+  /* Rendered as an <h2>; under Starlight it inherits the table-of-contents
+     "On this page" heading style automatically. These are the vanilla-Astro
+     fallbacks for the same look when Starlight's styles are absent. */
+  .sl-quiz-progress-heading {
+    margin: 0 0 0.75rem;
+    font-size: var(--sl-text-h5, 1.125rem);
+    font-weight: 600;
+    line-height: var(--sl-line-height-headings, 1.2);
+    color: var(--slq-text);
+  }
+
+  .sl-quiz-progress-bar {
+    display: flex;
+    height: 0.375rem;
+    margin-block: 0.5rem;
+    background: var(--slq-border);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+
+  /* Two segments: correct (green) and incorrect (red), each sized as a
+     fraction of the total — matching mkdocs-quiz. */
+  .sl-quiz-progress-bar-incorrect,
+  .sl-quiz-progress-bar-correct {
+    display: block;
+    block-size: 100%;
+    inline-size: 0;
+    transition: inline-size 0.3s ease;
+  }
+
+  .sl-quiz-progress-bar-incorrect {
+    background: var(--slq-wrong);
+  }
+
+  .sl-quiz-progress-bar-correct {
+    background: var(--slq-correct);
+  }
+
+  .sl-quiz-progress-stats {
+    margin: 0;
+    color: var(--slq-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sl-quiz-progress-label {
+    text-transform: capitalize;
+  }
+
+  .sl-quiz-progress-footer {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .sl-quiz-progress-reset {
+    flex-shrink: 0;
+    padding: 0;
+    font: inherit;
+    color: var(--sl-color-text-accent, var(--slq-accent));
+    background: none;
+    border: 0;
+    cursor: pointer;
+  }
+
+  .sl-quiz-progress-reset:hover {
+    text-decoration: underline;
+  }
+
+  .sl-quiz-progress-reset:focus-visible {
+    outline: 2px solid var(--slq-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  /* ---- Full-width variant for narrow screens (page footer) ---------- */
+  /* The right-sidebar widget is hidden below Starlight's `lg` breakpoint, so a
+     copy is rendered in the page flow above the footer. The bar spans the full
+     width on top; the two counts and the reset link share one row beneath it,
+     split into even thirds. */
+  .sl-quiz-progress--mobile {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5rem 1.5rem;
+    /* `padding`, not `margin`: Starlight's reset layer zeroes margins here. */
+    padding-block: 2rem 0;
+    border-block-start: 1px solid var(--slq-border);
+  }
+
+  .sl-quiz-progress--mobile .sl-quiz-progress-bar {
+    order: -1;
+    flex-basis: 100%;
+    margin-block: 0;
+  }
+
+  /* Flatten the footer wrapper so the correct count and reset link sit on the
+     same flex row as the answered count. */
+  .sl-quiz-progress--mobile .sl-quiz-progress-footer {
+    display: contents;
+  }
+
+  .sl-quiz-progress--mobile > .sl-quiz-progress-stats,
+  .sl-quiz-progress--mobile .sl-quiz-progress-footer .sl-quiz-progress-stats {
+    flex: 1 1 0;
+  }
+
+  .sl-quiz-progress--mobile .sl-quiz-progress-footer .sl-quiz-progress-stats {
+    text-align: center;
+  }
+
+  .sl-quiz-progress--mobile .sl-quiz-progress-reset {
+    flex: 1 1 0;
+    text-align: end;
+  }
+
+  /* The bar already conveys the percentage; keep the counts terse here. */
+  .sl-quiz-progress--mobile .sl-quiz-progress-percent {
+    display: none;
+  }
+
+  /* ---- Compact counter badge (mobile ToC bar) ----------------------- */
+  /* It is pinned to the end of the flex `<summary>` row with an inline
+     `margin-inline-start: auto` set when injected (see progress-element.ts),
+     which beats Starlight's unlayered margin reset on that row. */
+  .sl-quiz-progress-badge {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.3125rem 0.625rem;
+    border: 1px solid var(--slq-border);
+    border-radius: 999px;
+    font-size: var(--sl-text-xs, 0.8125rem);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    white-space: nowrap;
+    color: var(--slq-muted);
+    /* It is a button: tapping jumps to the next unanswered quiz (or results). */
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .sl-quiz-progress-badge:hover {
+    border-color: var(--slq-accent);
+  }
+
+  .sl-quiz-progress-badge:focus-visible {
+    outline: 2px solid var(--slq-accent);
+    outline-offset: 2px;
+  }
+
+  .sl-quiz-progress-badge[hidden] {
+    display: none;
+  }
+
+  .sl-quiz-progress-badge .sl-quiz-progress-answered {
+    font-weight: 600;
+    color: var(--slq-accent);
+  }
+
+  .sl-quiz-progress-badge-sep {
+    opacity: 0.6;
+  }
+
+  /* ---- Pagination -------------------------------------------------- */
+  /* Until the pager script is ready only the first quiz shows (no flash of
+     every question); afterwards the pager marks the hidden ones. */
+  html[data-quiz-paged]:not([data-quiz-ready]) sl-quiz ~ sl-quiz,
+  html[data-quiz-shuffle]:not([data-quiz-ready]) sl-quiz,
+  html[data-quiz-paged]:not([data-quiz-ready]) sl-quiz-results,
+  html[data-quiz-ready] [data-quiz-inactive] {
+    display: none;
+  }
+
+  html[data-quiz-ready] .sl-quiz-results {
+    margin-block: 1.5rem 0;
+  }
+
+  /* Previous / flag / next, right under the current question. It sticks to the
+     bottom of the viewport while a long question or its feedback scrolls. */
+  .sl-quiz-pager {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.75rem 0;
+    background: var(--sl-color-bg, var(--slq-bg));
+  }
+
+  .sl-quiz-pager button {
+    padding: 0.4375rem 1rem;
+    font: inherit;
+    font-size: var(--sl-text-sm, 0.875rem);
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: var(--slq-text);
+    background: transparent;
+    border: 1px solid var(--slq-border);
+    border-radius: 999rem;
+    cursor: pointer;
+    transition:
+      border-color 0.15s ease,
+      opacity 0.15s ease;
+  }
+
+  .sl-quiz-pager button:hover:not(:disabled) {
+    border-color: var(--slq-accent);
+  }
+
+  .sl-quiz-pager button:focus-visible {
+    outline: 2px solid var(--slq-accent);
+    outline-offset: 2px;
+  }
+
+  .sl-quiz-pager button:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+
+  .sl-quiz-pager button[hidden] {
+    display: none;
+  }
+
+  .sl-quiz-pager-prev {
+    justify-self: start;
+  }
+
+  .sl-quiz-pager-flag {
+    justify-self: center;
+  }
+
+  .sl-quiz-pager-flag[aria-pressed='true'] {
+    color: var(--slq-average);
+    border-color: var(--slq-average);
+    background: var(--slq-average-bg);
+  }
+
+  .sl-quiz-pager-next {
+    justify-self: end;
+  }
+
+  .sl-quiz-pager-next:not(:disabled) {
+    color: var(--sl-color-black, #ffffff);
+    background: var(--sl-color-text-accent, var(--slq-accent));
+    border-color: var(--sl-color-text-accent, var(--slq-accent));
+  }
+
+  .sl-quiz-pager-next:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+
+  @media (max-width: 30rem) {
+    .sl-quiz {
+      padding: 1rem 0.875rem 0.875rem;
+    }
+
+    .sl-quiz-pager button {
+      padding-inline: 0.75rem;
+    }
+  }
+
+  /* ---- Question navigator ------------------------------------------- */
+  .sl-quiz-nav {
+    display: block;
+    font-size: var(--sl-text-xs, 0.8125rem);
+    color: var(--slq-text);
+  }
+
+  .sl-quiz-nav[hidden] {
+    display: none;
+  }
+
+  .sl-quiz-nav-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .sl-quiz-nav-head h2 {
+    margin: 0;
+  }
+
+  .sl-quiz-nav-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    color: var(--slq-muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .sl-quiz-nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(2.125rem, 1fr));
+    gap: 0.375rem;
+  }
+
+  .sl-quiz-nav-cell {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-block-size: 2.125rem;
+    margin: 0;
+    padding: 0;
+    font: inherit;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    color: var(--slq-text);
+    background: transparent;
+    border: 1px solid var(--slq-border);
+    border-radius: 0.375rem;
+    cursor: pointer;
+    overflow: hidden;
+    transition: border-color 0.15s ease;
+  }
+
+  .sl-quiz-nav-cell:hover {
+    border-color: var(--slq-accent);
+  }
+
+  .sl-quiz-nav-cell:focus-visible {
+    outline: 2px solid var(--slq-accent);
+    outline-offset: 2px;
+  }
+
+  .sl-quiz-nav-cell[data-state='correct'],
+  .sl-quiz-nav-swatch[data-state='correct'] {
+    color: var(--slq-correct-high);
+    background: var(--slq-correct-bg);
+    border-color: var(--slq-correct);
+  }
+
+  .sl-quiz-nav-cell[data-state='wrong'],
+  .sl-quiz-nav-swatch[data-state='wrong'] {
+    color: var(--slq-wrong-high);
+    background: var(--slq-wrong-bg);
+    border-color: var(--slq-wrong);
+  }
+
+  .sl-quiz-nav-cell[aria-current='step'] {
+    border-color: var(--slq-accent);
+    box-shadow: inset 0 0 0 1px var(--slq-accent);
+  }
+
+  /* Flag: a folded corner, so it reads at a glance next to the colours. */
+  .sl-quiz-nav-cell[data-flagged]::after,
+  .sl-quiz-nav-swatch[data-flagged]::after {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: 0;
+    inline-size: 0.625rem;
+    block-size: 0.625rem;
+    background: linear-gradient(to bottom left, var(--slq-average) 50%, transparent 50%);
+  }
+
+  .sl-quiz-nav-cell--results {
+    grid-column: 1 / -1;
+    min-block-size: 2rem;
+  }
+
+  .sl-quiz-nav-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.875rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+    color: var(--slq-muted);
+  }
+
+  .sl-quiz-nav-legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    margin: 0;
+  }
+
+  .sl-quiz-nav-swatch {
+    position: relative;
+    display: inline-block;
+    inline-size: 0.75rem;
+    block-size: 0.75rem;
+    border: 1px solid var(--slq-border);
+    border-radius: 0.1875rem;
+    overflow: hidden;
+  }
+
+  .sl-quiz-nav .sl-quiz-progress-bar {
+    margin-block: 0.875rem 0.5rem;
+  }
+
+  .sl-quiz-nav-stats {
+    margin: 0;
+    color: var(--slq-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sl-quiz-nav-stats b {
+    color: var(--slq-text);
+  }
+
+  .sl-quiz-nav-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.375rem;
+    margin: 0.875rem 0 0;
+  }
+
+  .sl-quiz-nav-actions button {
+    padding: 0.4375rem 1rem;
+    font: inherit;
+    font-weight: 600;
+    color: var(--slq-text);
+    background: transparent;
+    border: 1px solid var(--slq-border);
+    border-radius: 999rem;
+    cursor: pointer;
+  }
+
+  .sl-quiz-nav-actions button:hover {
+    border-color: var(--slq-accent);
+  }
+
+  .sl-quiz-nav-actions button:focus-visible {
+    outline: 2px solid var(--slq-accent);
+    outline-offset: 2px;
+  }
+
+  .sl-quiz-nav-actions button[hidden] {
+    display: none;
+  }
+
+  .sl-quiz-nav-actions .sl-quiz-nav-finish--ready {
+    color: var(--sl-color-black, #ffffff);
+    background: var(--sl-color-text-accent, var(--slq-accent));
+    border-color: var(--sl-color-text-accent, var(--slq-accent));
+  }
+
+  .sl-quiz-nav-actions .sl-quiz-nav-restart {
+    padding-block: 0.25rem;
+    font-weight: 400;
+    color: var(--slq-muted);
+    border-color: transparent;
+  }
+
+  .sl-quiz-nav-actions .sl-quiz-nav-restart:hover {
+    color: var(--slq-wrong);
+    border-color: transparent;
+  }
+
+  /* Mobile bar: takes the slot of Starlight's fixed "On this page" bar. */
+  .sl-quiz-nav-bar {
+    position: fixed;
+    z-index: var(--sl-z-index-toc, 4);
+    top: calc(var(--sl-nav-height, 3.5rem) - 1px);
+    inset-inline: 0;
+    border-top: 1px solid var(--sl-color-gray-5, var(--slq-border));
+    background-color: var(--sl-color-bg-nav, var(--slq-bg));
+  }
+
+  @media (min-width: 50rem) {
+    .sl-quiz-nav-bar {
+      inset-inline-start: var(--sl-content-inline-start, 0);
+    }
+  }
+
+  .sl-quiz-nav-bar summary {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    block-size: var(--sl-mobile-toc-height, 3rem);
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--sl-color-hairline-shade, var(--slq-border));
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .sl-quiz-nav-bar summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .sl-quiz-nav-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-inline-size: 0;
+    padding: 0.5rem 0.5rem 0.5rem 0.75rem;
+    line-height: 1;
+    color: var(--sl-color-white, var(--slq-text));
+    background-color: var(--sl-color-black, var(--slq-bg));
+    border: 1px solid var(--sl-color-gray-5, var(--slq-border));
+    border-radius: 0.5rem;
+  }
+
+  .sl-quiz-nav-current {
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sl-quiz-nav-caret {
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+  }
+
+  .sl-quiz-nav-bar details[open] .sl-quiz-nav-toggle {
+    border-color: var(--slq-accent);
+  }
+
+  .sl-quiz-nav-bar details[open] .sl-quiz-nav-caret {
+    transform: rotate(90deg);
+  }
+
+  .sl-quiz-nav-score {
+    margin-inline-start: auto;
+    color: var(--slq-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .sl-quiz-nav-score b {
+    color: var(--slq-text);
+  }
+
+  .sl-quiz-nav-dropdown {
+    max-block-size: calc(85vh - var(--sl-nav-height, 3.5rem) - var(--sl-mobile-toc-height, 3rem));
+    padding: 1rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    background-color: var(--sl-color-black, var(--slq-bg));
+    border-bottom: 1px solid var(--sl-color-hairline-shade, var(--slq-border));
+    box-shadow: var(--sl-shadow-md, 0 8px 24px rgb(0 0 0 / 0.15));
+  }
+
+  /* Bigger touch targets in the drop-down. */
+  .sl-quiz-nav-dropdown .sl-quiz-nav-grid {
+    grid-template-columns: repeat(auto-fill, minmax(2.5rem, 1fr));
+    gap: 0.5rem;
+  }
+
+  .sl-quiz-nav-dropdown .sl-quiz-nav-cell {
+    min-block-size: 2.5rem;
+  }
+
+  .sl-quiz-nav-dropdown .sl-quiz-nav-actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .sl-quiz-nav-dropdown .sl-quiz-nav-finish {
+    flex: 1 1 auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .sl-quiz-answer,
+    .sl-quiz-progress-bar-incorrect,
+    .sl-quiz-progress-bar-correct,
+    .sl-quiz-actions button,
+    .sl-quiz-pager button,
+    .sl-quiz-nav-cell,
+    .sl-quiz-nav-caret {
+      transition: none;
+    }
+  }
+}

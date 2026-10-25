@@ -1,0 +1,192 @@
+---
+title: "S1 · Herramientas, proyecto y estructura"
+description: "SDK e IDE, instalación, módulos, factores de forma, asistente, nivel de API, plantillas y estructura del proyecto (S01–S04, S17)."
+sidebar:
+  order: 1
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **S01–S04** y matices de **S17**. Cuatro opciones y una sola correcta por pregunta. Los requisitos de 2017 y las cifras de las capturas son históricos: no deciden ninguna respuesta.
+
+<Quiz id="s1-01" title="Mínimo para compilar">
+Según el temario, ¿qué es lo **mínimo** que hay que tener instalado para compilar un programa Android?
+
+- [ ] Un emulador.
+  > Sirve para probar, no para compilar.
+- [x] El SDK de Android.
+  > Correcta: a partir de él se instala el resto de herramientas (S01).
+- [ ] Un dispositivo físico con depuración USB.
+  > Sirve para ejecutar, no para compilar.
+- [ ] La JVM de Java ME.
+  > No es necesaria para Android.
+
+Repasar: **S01**.
+</Quiz>
+
+<Quiz id="s1-02" title="SDK e IDE">
+¿Qué afirmación distingue correctamente SDK e IDE?
+
+- [ ] Son sinónimos: Android Studio es el SDK de Android.
+  > Android Studio es el IDE; el SDK es el kit de bibliotecas y herramientas.
+- [ ] El IDE es imprescindible y el SDK es opcional.
+  > Es al revés: el SDK es el mínimo.
+- [x] El SDK aporta bibliotecas y herramientas para construir; el IDE integra editor, diseño, compilación, ejecución y depuración.
+  > Correcta (S01).
+- [ ] El SDK es el dispositivo virtual donde se prueba la app.
+  > Eso es el AVD.
+
+Repasar: **S01**.
+</Quiz>
+
+<Quiz id="s1-03" title="Descarga de Android Studio">
+Según el temario, ¿qué opciones ofrecía la página oficial de Android Studio?
+
+- [x] Descargar el IDE incluyendo el SDK o sin incluirlo.
+  > Correcta (S01).
+- [ ] Solo el SDK, sin IDE.
+  > También ofrecía el IDE.
+- [ ] Solo una versión para Windows.
+  > Es multiplataforma: Windows, Mac y Linux.
+- [ ] Una versión de pago con SDK y otra gratuita sin él.
+  > No hay versión de pago.
+
+Repasar: **S01, S02**.
+</Quiz>
+
+<Quiz id="s1-04" title="Requisitos de 2017">
+El temario da como requisitos Windows 7/8/10, 3 GB de RAM y Android Studio 3.0. ¿Cómo deben interpretarse en 2026?
+
+- [ ] Como los requisitos actuales recomendados.
+  > Son datos del temario de 2017.
+- [ ] Como un máximo: un equipo más potente no sirve.
+  > No tiene sentido.
+- [ ] Como requisitos exclusivos de Linux.
+  > Se dan para los tres sistemas.
+- [x] Como datos históricos del temario; para instalar hoy hay que consultar los requisitos vigentes.
+  > Correcta (S02).
+
+Repasar: **S02**.
+</Quiz>
+
+<Quiz id="s1-05" title="Factores de forma y módulos">
+En el paso 2 del asistente se marcan **Phone and Tablet** y **Wear**. ¿Qué ocurre?
+
+- [ ] Se crean dos proyectos independientes.
+  > Es un solo proyecto.
+- [x] Cada formato seleccionado se convierte en un módulo del mismo proyecto.
+  > Correcta (S03.1, S03.2).
+- [ ] Solo se crea código para el formato con el nivel de API más alto.
+  > Se crea para cada formato.
+- [ ] Se crean dos actividades en el mismo módulo.
+  > Son módulos distintos.
+
+Repasar: **S03.2**.
+</Quiz>
+
+<Quiz id="s1-06" title="Nivel de API mínimo">
+Según el asistente, ¿qué ocurre al elegir un nivel de API mínimo **más bajo**?
+
+- [ ] La app llega a menos dispositivos, pero con más funciones.
+  > Es al revés.
+- [ ] La app solo funciona en el emulador.
+  > No.
+- [x] La app llega a más dispositivos, pero con menos funciones disponibles.
+  > Correcta (S03.3).
+- [ ] No cambia nada: el nivel de API es solo informativo.
+  > Determina en qué dispositivos se puede instalar.
+
+Repasar: **S03.3**.
+</Quiz>
+
+<Quiz id="s1-07" title="Porcentaje acumulado">
+En la ventana **Help me choose**, junto a cada versión aparece un porcentaje acumulado. ¿Qué indica?
+
+- [ ] El porcentaje de dispositivos que usa exactamente esa versión.
+  > Es acumulado.
+- [ ] El porcentaje de funciones nuevas de esa versión.
+  > No.
+- [ ] El porcentaje de apps de Google Play compiladas para esa versión.
+  > No.
+- [x] El porcentaje de dispositivos que usan esa versión **o una superior**.
+  > Correcta; por eso baja al subir de versión (S03.3).
+
+Repasar: **S03.3**.
+</Quiz>
+
+<Quiz id="s1-08" title="Compatibilidad por versión">
+Un proyecto fija una API mínima de 21. El móvil A tiene API 19 y el móvil B, API 23. Considerando solo el nivel de API, ¿qué ocurre?
+
+- [ ] Ninguno puede instalarla.
+  > B cumple la condición: 23 ≥ 21.
+- [x] A no puede instalarla (19 < 21); B cumple la condición de versión (23 ≥ 21).
+  > Correcta (S03.3).
+- [ ] Ambos pueden, porque el nivel mínimo es solo una recomendación.
+  > El mínimo impide instalar en versiones inferiores.
+- [ ] A puede si se renombra `MainActivity`.
+  > El nombre de la clase no cambia el nivel de API del dispositivo.
+
+Repasar: **S03.3**.
+</Quiz>
+
+<Quiz id="s1-09" title="Add No Activity">
+En el paso 3, ¿qué ocurre si se elige **Add No Activity**?
+
+- [ ] El asistente obliga a crear al menos una actividad en el paso 4.
+  > No.
+- [ ] Se crea automáticamente una `MainActivity` vacía.
+  > No se crea ninguna actividad.
+- [x] Se pulsa **Finish** directamente para crear el proyecto.
+  > Correcta (S03.2).
+- [ ] El proyecto no se puede compilar nunca.
+  > No es así.
+
+Repasar: **S03.2**.
+</Quiz>
+
+<Quiz id="s1-10" title="Empty Activity">
+¿Por qué el curso trabaja sobre la plantilla **Empty Activity**?
+
+- [x] Porque contiene los elementos estrictamente necesarios para ejecutar la app y sirve de esqueleto.
+  > Correcta (S03.4).
+- [ ] Porque incluye un mapa y un inicio de sesión ya programados.
+  > Esas son otras plantillas.
+- [ ] Porque es la única que genera un archivo XML.
+  > Otras también generan layouts.
+- [ ] Porque no crea ninguna actividad.
+  > Eso es Add No Activity.
+
+Repasar: **S03.4**.
+</Quiz>
+
+<Quiz id="s1-11" title="Actividad principal y splash">
+¿Qué afirmación sobre la actividad principal es correcta según el temario?
+
+- [ ] Debe llamarse obligatoriamente `MainActivity`.
+  > Es una convención del curso, no una obligación.
+- [ ] Es siempre la primera pantalla que ve el usuario.
+  > Puede abrirse antes una *splash screen*.
+- [ ] No puede tener layout XML.
+  > Su layout es `activity_main`.
+- [x] Suele ser la primera que se abre, pero antes puede mostrarse una *splash screen*.
+  > Correcta (S03.4).
+
+Repasar: **S03.4**.
+</Quiz>
+
+<Quiz id="s1-12" title="Estructura del proyecto">
+En la vista Android de un proyecto, ¿dónde está el fichero `activity_main.xml`?
+
+- [ ] En `manifests`.
+  > Ahí está `AndroidManifest.xml`.
+- [ ] En `java`, dentro del paquete de la app.
+  > Ahí está `MainActivity`.
+- [x] En `res/layout`.
+  > Correcta (S04.2).
+- [ ] En `Gradle Scripts`.
+  > Ahí están los `build.gradle`.
+
+Repasar: **S04.2**.
+</Quiz>
+
+<QuizResults />

@@ -1,0 +1,36 @@
+---
+import { createStringResolver } from '../lib/i18n';
+
+interface Props {
+  /** Extra class names for the badge. */
+  class?: string;
+  /** Override the prefix label (defaults to the translated "Quiz"). */
+  badgeLabel?: string;
+  /** Override the word describing the count (used for the accessible label). */
+  answeredLabel?: string;
+}
+
+const { class: className, badgeLabel, answeredLabel } = Astro.props;
+
+const resolve = createStringResolver(Astro.locals);
+const badge = resolve('starlightQuiz.results.badge', badgeLabel);
+const answered = resolve('starlightQuiz.results.answered', answeredLabel);
+---
+
+<sl-quiz-progress-badge
+  class:list={['sl-quiz-progress-badge', className]}
+  data-badge-label={badge}
+  data-answered-label={answered}
+  hidden
+>
+  <span class="sl-quiz-progress-badge-label">{badge}:</span>
+  <span class="sl-quiz-progress-answered">0</span>
+  <span class="sl-quiz-progress-badge-sep" aria-hidden="true">/</span>
+  <span class="sl-quiz-progress-total">0</span>
+</sl-quiz-progress-badge>
+
+<script>
+  import { defineQuizProgressBadgeElement } from '../lib/progress-element';
+
+  defineQuizProgressBadgeElement();
+</script>

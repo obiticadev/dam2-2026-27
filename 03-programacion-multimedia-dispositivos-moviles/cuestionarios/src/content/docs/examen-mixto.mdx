@@ -1,0 +1,621 @@
+---
+title: "Examen mixto · 40 preguntas"
+description: "Simulacro de práctica con el Tema 1 y el Tema 2 mezclados; preguntas distintas a las de los bloques."
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Simulacro de práctica, **no oficial**: 20 preguntas del Tema 1 y 20 del Tema 2, mezcladas. Cuatro opciones y una sola correcta por pregunta. La explicación aparece al responder.
+
+Convenciones: el código es el del temario (`android.support`); las trazas del ciclo de vida siguen el comportamiento estándar de Android; los datos de versiones y cuotas no deciden ninguna respuesta. Sensores y Multimedia no entran.
+
+<Quiz id="mx-01">
+Una app de inventario se usará en un almacén con cobertura intermitente. ¿Qué limitación del temario condiciona sobre todo la consulta de datos remotos?
+
+- [ ] Las pantallas de dimensiones reducidas.
+  > Afecta a la presentación, no a la disponibilidad de datos remotos.
+- [x] La conexión de red intermitente y con ancho de banda limitado.
+  > Correcta: hay que separar lo que funciona en local de lo que necesita red (M03.1).
+- [ ] La falta de coma flotante.
+  > No tiene relación con la consulta remota.
+- [ ] Los teclados pequeños.
+  > Afectan a la escritura.
+
+Repasar: **M03.1**.
+</Quiz>
+
+<Quiz id="mx-02">
+¿Qué afirmación sobre el foco de un desarrollo móvil es coherente con el temario?
+
+- [ ] Hay que trasladar la misma funcionalidad que en el escritorio, porque el hardware ya es equivalente.
+  > El temario dice que no se puede pretender la misma funcionalidad.
+- [ ] Las limitaciones solo se revisan al final, en las pruebas.
+  > Se tienen en cuenta desde el análisis y el diseño.
+- [x] Hay que tener en cuenta las restricciones desde el análisis y diseño, y aprovechar ventajas como la movilidad y la conectividad.
+  > Correcta (M03.1, M03.2).
+- [ ] Las ventajas de los móviles se limitan al tamaño.
+  > También movilidad, peso, transporte y conectividad.
+
+Repasar: **M03**.
+</Quiz>
+
+<Quiz id="mx-03">
+¿Qué componente **no** forma parte del chipset de un smartphone según el temario?
+
+- [ ] Procesadores digitales de señal (DSP).
+  > Sí forman parte.
+- [ ] Módem.
+  > Sí forma parte.
+- [ ] Códecs de audio y vídeo.
+  > Sí forman parte.
+- [x] El sistema operativo.
+  > Correcta: el SO es software, no un componente de la placa (M05.2).
+
+Repasar: **M05.2**.
+</Quiz>
+
+<Quiz id="mx-04">
+¿Qué empresa diseña la arquitectura de procesador que domina la telefonía móvil y que fabricantes como Qualcomm o Samsung usan bajo licencia?
+
+- [ ] Intel, con su arquitectura x86.
+  > No es la dominante en móviles; Intel también licenció ARM (XScale).
+- [ ] Texas Instruments, con OMAP.
+  > OMAP es una arquitectura de chipset basada en micros ARM.
+- [x] ARM (*Advanced RISC Machines*).
+  > Correcta (M05.2).
+- [ ] Marvell.
+  > Es otra empresa de chipsets.
+
+Repasar: **M05.2**.
+</Quiz>
+
+<Quiz id="mx-05">
+¿Qué pareja sistema operativo–origen es correcta?
+
+- [x] iOS → derivado de Mac OS X.
+  > Correcta (M07).
+- [ ] Android → derivado de Mac OS X.
+  > Android usa un kernel de Linux modificado.
+- [ ] iOS → kernel de Linux modificado.
+  > Ese es Android.
+- [ ] HarmonyOS → desarrollado por Apple.
+  > Es de Huawei.
+
+Repasar: **M06.2, M07**.
+</Quiz>
+
+<Quiz id="mx-06">
+Según la tabla de nombres de Android, ¿qué versión corresponde a la letra **J**?
+
+- [ ] Jelly Cake, 3.0.
+  > No existe ese nombre.
+- [ ] Gingerbread, 2.3.
+  > Es la G.
+- [ ] KitKat, 4.4.
+  > Es la K.
+- [x] Jelly Bean, 4.1–4.3.
+  > Correcta (M06.3).
+
+Repasar: **M06.3**.
+</Quiz>
+
+<Quiz id="mx-07">
+¿Qué herramienta de Xcode sirve para el *profiling* de CPU, memoria, energía y red?
+
+- [ ] Interface Builder.
+  > Es el editor visual de pantallas.
+- [x] Instruments.
+  > Correcta (M07).
+- [ ] TestFlight.
+  > Distribuye versiones beta.
+- [ ] SwiftUI.
+  > Es un marco de interfaz.
+
+Repasar: **M07**.
+</Quiz>
+
+<Quiz id="mx-08">
+¿Qué sistema alternativo describe el temario como libre, basado en Linux, con más privacidad pero sin dispositivos comerciales?
+
+- [ ] KaiOS.
+  > Se vende en teléfonos básicos de mercados emergentes.
+- [ ] HarmonyOS.
+  > Tiene gamas completas de Huawei.
+- [x] Ubuntu Touch o LineageOS.
+  > Correcta (M08).
+- [ ] Tizen.
+  > Es de Samsung.
+
+Repasar: **M08**.
+</Quiz>
+
+<Quiz id="mx-09">
+Un equipo escribe una app en Objective-C con el SDK de Apple. ¿Qué dice el temario sobre su portabilidad?
+
+- [ ] Funcionará en cualquier dispositivo con KVM.
+  > Eso se dice de los midlets de Java ME.
+- [x] Lo más probable es que solo pueda ejecutarse en dispositivos Apple con iOS.
+  > Correcta (M09.1).
+- [ ] Funcionará en Android si se compila con el NDK.
+  > No.
+- [ ] Es portable a cualquier SO porque Objective-C es multiplataforma.
+  > El temario no lo afirma.
+
+Repasar: **M09.1**.
+</Quiz>
+
+<Quiz id="mx-10">
+Con el Android NDK, ¿qué tipo de código se genera?
+
+- [ ] Código gestionado que se ejecuta en una máquina virtual.
+  > Ese es el de Java o C#.
+- [ ] Bytecode de Java ME.
+  > No.
+- [ ] Código HTML para un WebView.
+  > No.
+- [x] Código nativo, escrito en C o C++.
+  > Correcta (M09.2).
+
+Repasar: **M09.2**.
+</Quiz>
+
+<Quiz id="mx-11">
+¿Qué lenguajes y plataforma fija el curso?
+
+- [x] Java y XML sobre Android, con Android Studio.
+  > Correcta (M10).
+- [ ] Kotlin y Compose sobre Android, con Android Studio.
+  > Google impulsa Kotlin, pero el curso usa Java y XML.
+- [ ] Java ME con NetBeans.
+  > No.
+- [ ] Swift con Xcode.
+  > Es iOS.
+
+Repasar: **M10**.
+</Quiz>
+
+<Quiz id="mx-12">
+¿En qué capa de la plataforma Android se encuentra el controlador **Binder (IPC)**?
+
+- [ ] En el framework de la API de Java.
+  > Allí están los gestores y las vistas.
+- [ ] En la HAL.
+  > La HAL contiene los módulos de audio, cámara, Bluetooth, sensores…
+- [x] En el kernel de Linux, entre sus controladores.
+  > Correcta (M11.1).
+- [ ] En las apps del sistema.
+  > No.
+
+Repasar: **M11.1**.
+</Quiz>
+
+<Quiz id="mx-13">
+¿En qué capa está el **administrador de actividad**, que gestiona el ciclo de vida de las apps y la pila de retroceso?
+
+- [ ] En el kernel de Linux.
+  > No.
+- [ ] En el Android Runtime.
+  > ART ejecuta el código.
+- [ ] En las bibliotecas C/C++ nativas.
+  > No.
+- [x] En el framework de la API de Java.
+  > Correcta (M11.1).
+
+Repasar: **M11.1**.
+</Quiz>
+
+<Quiz id="mx-14">
+¿A qué capa pertenece **OpenGL ES**, accesible desde las apps mediante la Java OpenGL API?
+
+- [x] A las bibliotecas C/C++ nativas.
+  > Correcta (M11.1).
+- [ ] Al kernel de Linux.
+  > No.
+- [ ] A la HAL.
+  > No.
+- [ ] A las apps del sistema.
+  > No.
+
+Repasar: **M11.1**.
+</Quiz>
+
+<Quiz id="mx-15">
+¿Qué formato ejecutan Dalvik y ART?
+
+- [ ] Archivos `.class` de Java.
+  > Se convierten antes a `.dex`.
+- [x] Archivos DEX, un bytecode propio de Android optimizado para memoria mínima.
+  > Correcta (M11.1, M12.3).
+- [ ] Archivos `.jar` de Java ME.
+  > No.
+- [ ] Código fuente Java interpretado línea a línea.
+  > No.
+
+Repasar: **M12.3**.
+</Quiz>
+
+<Quiz id="mx-16">
+¿Qué funciones principales de ART cita el temario?
+
+- [ ] Interpretación exclusiva sin compilación.
+  > ART compila (AOT y JIT).
+- [ ] Ejecución de midlets y gestión de perfiles MIDP.
+  > Es Java ME.
+- [x] Compilación AOT y JIT, recolección de elementos no usados optimizada y mejor depuración.
+  > Correcta (M11.1).
+- [ ] Dibujo de la interfaz y gestión de notificaciones.
+  > Son funciones del framework.
+
+Repasar: **M11.1, M12.3**.
+</Quiz>
+
+<Quiz id="mx-17">
+¿Por qué Java ME propuso máquinas virtuales más ligeras que las de Java SE?
+
+- [ ] Porque Java SE no admite el lenguaje Java.
+  > Sí lo admite.
+- [ ] Porque Android las exigía.
+  > Android usa Dalvik/ART.
+- [ ] Porque los móviles no tienen sistema operativo.
+  > La máquina virtual se instala sobre el SO.
+- [x] Porque las JVM de Java SE son demasiado pesadas en memoria, cómputo y pantalla para los dispositivos pequeños.
+  > Correcta (M12.2).
+
+Repasar: **M12.2**.
+</Quiz>
+
+<Quiz id="mx-18">
+Según la comparativa, ¿qué tipo de aplicación tiene rendimiento **medio**, acceso **moderado** al hardware y coste **medio**?
+
+- [ ] Nativa.
+  > Todo alto.
+- [x] Híbrida.
+  > Correcta (M13.3).
+- [ ] Web.
+  > Acceso limitado y coste bajo.
+- [ ] Ninguna: la tabla solo compara nativas y web.
+  > La tabla incluye la fila híbrida.
+
+Repasar: **M13.3**.
+</Quiz>
+
+<Quiz id="mx-19">
+¿Qué combinación de tecnología de interfaz es propia del **Android moderno** según la diapositiva?
+
+- [ ] SwiftUI.
+  > Es de iOS.
+- [ ] Xamarin.
+  > Usa C# y es multiplataforma.
+- [x] Jetpack Compose.
+  > Correcta; el curso usa el enfoque clásico Java + XML (M13.4).
+- [ ] Interface Builder.
+  > Es de Xcode.
+
+Repasar: **M13.4**.
+</Quiz>
+
+<Quiz id="mx-20">
+¿Qué medida de la diapositiva de rendimiento responde directamente a la limitación de **memoria**?
+
+- [ ] Usar caché y compresión de red.
+  > Responde a la red.
+- [ ] Minimizar animaciones.
+  > Es minimización de recursos.
+- [ ] Reducir el tamaño del código.
+  > Es minimización de recursos.
+- [x] Liberar memoria de forma eficiente para evitar ralentizaciones.
+  > Correcta (M13.5).
+
+Repasar: **M13.5, M03.1**.
+</Quiz>
+
+<Quiz id="mx-21">
+¿Qué pieza es imprescindible para **compilar** una app Android?
+
+- [x] El SDK de Android.
+  > Correcta (S01).
+- [ ] Un AVD creado.
+  > Sirve para ejecutar.
+- [ ] Un móvil con depuración USB.
+  > Sirve para ejecutar.
+- [ ] La plantilla Empty Activity.
+  > Es un punto de partida, no un requisito para compilar.
+
+Repasar: **S01**.
+</Quiz>
+
+<Quiz id="mx-22">
+En el paso 1 del asistente, el dominio de la empresa es `mycompany.com` y la app se llama `My Application`. ¿Qué nombre de paquete propone el asistente de la captura?
+
+- [ ] `mycompany.com.myapplication`
+  > El dominio se invierte.
+- [x] `com.mycompany.myapplication`
+  > Correcta: dominio invertido + nombre (S03.2).
+- [ ] `myapplication.mycompany.com`
+  > No.
+- [ ] `com.example.myapplication`
+  > `com.example` es el valor de ejemplo cuando no hay dominio propio.
+
+Repasar: **S03.2**.
+</Quiz>
+
+<Quiz id="mx-23">
+Un proyecto fija una API mínima de 24. Hay dos móviles: A con API 21 y B con API 23. Considerando solo la versión, ¿qué ocurre?
+
+- [ ] Ambos pueden instalarla.
+  > Los dos están por debajo de 24.
+- [ ] Solo B puede instalarla.
+  > 23 < 24.
+- [x] Ninguno cumple la condición de versión.
+  > Correcta (S03.3).
+- [ ] Solo A puede instalarla.
+  > 21 < 24.
+
+Repasar: **S03.3**.
+</Quiz>
+
+<Quiz id="mx-24">
+¿Qué contiene la carpeta `res/values` de un proyecto Android?
+
+- [ ] El código Java de las actividades.
+  > Está en `java`.
+- [ ] Los iconos del lanzador.
+  > Están en `mipmap`.
+- [x] Valores como cadenas, colores y estilos.
+  > Correcta (S04.2).
+- [ ] El fichero `AndroidManifest.xml`.
+  > Está en `manifests`.
+
+Repasar: **S04.2**.
+</Quiz>
+
+<Quiz id="mx-25">
+¿Qué zona del IDE muestra el **árbol de componentes** de la interfaz y las **propiedades** de cada elemento?
+
+- [ ] El panel lateral izquierdo.
+  > Es el navegador de ficheros del proyecto.
+- [ ] La barra superior.
+  > Contiene el menú y las herramientas.
+- [ ] El panel central.
+  > Contiene la paleta y la emulación visual.
+- [x] El panel lateral derecho.
+  > Correcta (S04.1).
+
+Repasar: **S04.1**.
+</Quiz>
+
+<Quiz id="mx-26">
+Este es el `onCreate` de una actividad:
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    setContentView(R.layout.activity_main);
+}
+```
+
+¿Qué le falta según el temario y qué ocurriría?
+
+- [x] Falta `super.onCreate(savedInstanceState);` como primera línea; al ejecutarse, Android lanza `SuperNotCalledException`.
+  > Correcta (S06).
+- [ ] Falta `import android.os.Bundle;` y por eso no se ve la interfaz.
+  > El import es necesario para compilar, pero no es lo que señala la regla del temario.
+- [ ] No falta nada: `setContentView` ya llama a la superclase.
+  > No la llama.
+- [ ] Falta `finish();` al final.
+  > Cerraría la actividad.
+
+Repasar: **S06, S14.1**.
+</Quiz>
+
+<Quiz id="mx-27">
+En `activity_main.xml`, ¿qué prefijo de espacio de nombres llevan las restricciones `layout_constraintTop_toTopOf`?
+
+- [ ] `android:`
+  > Se usa para atributos del sistema, como `layout_width` o `text`.
+- [ ] `tools:`
+  > Es para las herramientas de diseño.
+- [x] `app:`
+  > Correcta: atributos de bibliotecas como ConstraintLayout (S07).
+- [ ] `xmlns:`
+  > Declara espacios de nombres; no es el prefijo de un atributo.
+
+Repasar: **S07**.
+</Quiz>
+
+<Quiz id="mx-28">
+Una actividad llama a `setContentView(R.layout.otro_layout)`, pero en `activity_main.xml` aparece `tools:context=".MainActivity"`. ¿Qué layout muestra la actividad en ejecución?
+
+- [ ] `activity_main`, porque `tools:context` la asocia.
+  > `tools:context` solo informa al editor.
+- [x] `otro_layout`, porque es el que se pasa a `setContentView`.
+  > Correcta (S07).
+- [ ] Ninguno, porque hay conflicto.
+  > No hay conflicto en ejecución.
+- [ ] Los dos superpuestos.
+  > No.
+
+Repasar: **S06, S07**.
+</Quiz>
+
+<Quiz id="mx-29">
+Una app compila y se ejecuta en el emulador, pero en un móvil físico su interfaz se ve distinta. ¿Qué etapa hay que investigar?
+
+- [ ] La construcción: hay que revisar los errores de Gradle.
+  > La construcción ya fue bien.
+- [ ] La instalación: el APK está corrupto.
+  > La app se ejecuta.
+- [x] La ejecución en ese dispositivo: características de pantalla, botones o implementación del dispositivo.
+  > Correcta (S08, S10).
+- [ ] El ciclo de vida: falta `onRestart`.
+  > No tiene relación con el aspecto.
+
+Repasar: **S08, S10**.
+</Quiz>
+
+<Quiz id="mx-30">
+El temario explica instalar una app copiando un archivo `.jar` y pulsando sobre él. ¿Qué precisión hay que hacer?
+
+- [ ] Es la forma estándar de instalar en Android.
+  > En Android se instala un `.apk`.
+- [ ] Un `.jar` se convierte en app Android al renombrarlo a `.apk`.
+  > No.
+- [ ] Es la forma de instalar desde Android Studio.
+  > Android Studio instala el APK mediante ADB.
+- [x] Corresponde a los midlets de Java ME; en Android el paquete instalable es el `.apk`.
+  > Correcta (S10).
+
+Repasar: **S10**.
+</Quiz>
+
+<Quiz id="mx-31">
+¿Dónde se activa la **depuración USB** en un móvil Android?
+
+- [x] En las Opciones de desarrollador, que se muestran pulsando siete veces el número de compilación en Ajustes.
+  > Correcta (aclaración de S10).
+- [ ] En Android Studio, en Build > Make Project.
+  > No.
+- [ ] En el AVD Manager.
+  > El AVD es un dispositivo virtual.
+- [ ] No hace falta activarla nunca.
+  > El temario dice que hay que habilitarla para usar un dispositivo físico.
+
+Repasar: **S10**.
+</Quiz>
+
+<Quiz id="mx-32">
+¿Qué diferencia hay entre el emulador (AVD) y el Android Runtime (ART)?
+
+- [ ] Son el mismo componente con dos nombres.
+  > No.
+- [x] El AVD es un dispositivo virtual de pruebas; ART es el entorno que ejecuta el código de las apps dentro de cualquier dispositivo, real o emulado.
+  > Correcta (S09.2, M12.3).
+- [ ] ART solo funciona en el emulador.
+  > Funciona en todos los dispositivos con Android 5.0 o superior.
+- [ ] El AVD sustituye a ART en los móviles físicos.
+  > No.
+
+Repasar: **S09.2, M12.3**.
+</Quiz>
+
+<Quiz id="mx-33">
+¿Qué fase del ciclo de vida de la aplicación consiste en que el usuario la localiza desde su dispositivo (por USB, Bluetooth, Internet…)?
+
+- [ ] Instalación.
+  > Viene después.
+- [ ] Ejecución.
+  > Viene después.
+- [x] Descubrimiento.
+  > Correcta (S12).
+- [ ] Actualización.
+  > Se refiere a una app ya instalada.
+
+Repasar: **S12**.
+</Quiz>
+
+<Quiz id="mx-34">
+Una actividad está completamente oculta por otra, sigue en memoria y no está anexada al administrador de ventanas. ¿En qué estado está?
+
+- [ ] Reanudada.
+  > No tiene el foco ni es visible.
+- [ ] Pausada.
+  > La pausada sigue parcialmente visible y anexada.
+- [ ] Destruida.
+  > La instancia sigue en memoria.
+- [x] Detenida.
+  > Correcta (S13.2).
+
+Repasar: **S13.2**.
+</Quiz>
+
+<Quiz id="mx-35">
+¿Cuál es la analogía que usa el temario para el modelo de estados de una aplicación?
+
+- [x] El planificador de procesos (*scheduler*) del sistema operativo, que gestiona los estados de los procesos.
+  > Correcta (S13.1).
+- [ ] Un navegador web que muestra la misma página distinta.
+  > Esa analogía es la del dispositivo real frente al emulador.
+- [ ] Una placa base de PC.
+  > Es la analogía del chipset.
+- [ ] Una pila LIFO de platos.
+  > La pila es la de actividades, no la de estados.
+
+Repasar: **S13.1**.
+</Quiz>
+
+<Quiz id="mx-36">
+La actividad A está reanudada. El usuario pulsa el botón **Inicio** y, al rato, vuelve a la app; el sistema no ha eliminado el proceso. ¿Qué secuencia recibe A en total?
+
+- [ ] `onPause` → `onResume`.
+  > A deja de ser visible, así que también se detiene.
+- [x] `onPause` → `onStop`, y al volver `onRestart` → `onStart` → `onResume`.
+  > Correcta (S14.4).
+- [ ] `onPause` → `onStop` → `onDestroy`, y al volver `onCreate` → `onStart` → `onResume`.
+  > La instancia sigue viva.
+- [ ] Ningún *callback*: la app sigue en primer plano.
+  > Pasa a segundo plano.
+
+Repasar: **S14.4**.
+</Quiz>
+
+<Quiz id="mx-37">
+La actividad reanudada llama a `finish()`. ¿Qué secuencia recibe?
+
+- [ ] Solo `onDestroy`.
+  > Antes pasa por pausa y detención.
+- [ ] `onPause` → `onResume`.
+  > No vuelve a primer plano.
+- [ ] `onSaveInstanceState` → `onDestroy`.
+  > En un cierre explícito no se guarda estado.
+- [x] `onPause` → `onStop` → `onDestroy`.
+  > Correcta (S14.4).
+
+Repasar: **S14.4**.
+</Quiz>
+
+<Quiz id="mx-38">
+¿Qué *callback* **no** aparece en el esqueleto `ExampleActivity` del temario, aunque sí en el diagrama del ciclo de vida?
+
+- [ ] `onStart()`
+  > Sí aparece.
+- [ ] `onPause()`
+  > Sí aparece.
+- [x] `onRestart()`
+  > Correcta (S14.1, S14.3).
+- [ ] `onDestroy()`
+  > Sí aparece.
+
+Repasar: **S14.1, S14.3**.
+</Quiz>
+
+<Quiz id="mx-39">
+En la figura del giro de pantalla, ¿en qué camino se ejecutan `onSaveInstanceState()` y `onRestoreInstanceState()`?
+
+- [x] Solo en el camino rojo, cuando el usuario cambia la orientación y la actividad se destruye y se recrea.
+  > Correcta (S15.2).
+- [ ] Solo en el camino azul, en el arranque normal.
+  > En el arranque normal no hay estado que restaurar.
+- [ ] En ambos caminos siempre.
+  > El temario dice que solo en el rojo.
+- [ ] En ninguno: solo aparecen al pulsar Atrás.
+  > Al pulsar Atrás no se guarda estado.
+
+Repasar: **S15.2**.
+</Quiz>
+
+<Quiz id="mx-40">
+La figura antigua del temario sitúa `onSaveInstanceState()` antes de `onPause()`. ¿Qué precisión es correcta?
+
+- [ ] Es así en todas las versiones de Android.
+  > Ha cambiado.
+- [ ] Nunca se llama a `onSaveInstanceState()`.
+  > Sí se llama antes de destruir una actividad recreable.
+- [x] Desde Android 9 (API 28) se llama después de `onStop()`; lo esencial es que se llama antes de destruir una actividad que el sistema podría recrear.
+  > Correcta (S15.3).
+- [ ] Se llama después de `onDestroy()`.
+  > Ya no habría instancia que guardar.
+
+Repasar: **S15.3**.
+</Quiz>
+
+<QuizResults />

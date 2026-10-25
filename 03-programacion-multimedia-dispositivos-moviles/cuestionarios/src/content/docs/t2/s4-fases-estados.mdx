@@ -1,0 +1,192 @@
+---
+title: "S4 · Administrador, fases y estados"
+description: "Administrador de aplicaciones, cinco fases del ciclo de vida, estados de una actividad y estados del midlet (S11–S13, S17)."
+sidebar:
+  order: 4
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **S11–S13** y matices de **S17**. Cuatro opciones y una sola correcta por pregunta. Ojo: el temario intercala los estados del **midlet** de Java ME entre los de la **actividad** de Android.
+
+<Quiz id="s4-01" title="Funciones del administrador">
+¿Cuáles son las dos funciones esenciales del administrador de aplicaciones?
+
+- [x] Gestionar el ciclo de vida de las aplicaciones en el dispositivo y controlar sus estados mientras están en ejecución.
+  > Correcta (S11).
+- [ ] Compilar las apps y crear emuladores.
+  > Son tareas del IDE.
+- [ ] Diseñar la interfaz y generar la clase `R`.
+  > Son tareas del desarrollo.
+- [ ] Gestionar la batería y la red.
+  > No son las funciones que cita el temario.
+
+Repasar: **S11**.
+</Quiz>
+
+<Quiz id="s4-02" title="Orden de las fases">
+¿Cuál es el orden de las cinco fases del ciclo de vida de una aplicación según el temario?
+
+- [ ] Instalación, descubrimiento, ejecución, borrado y actualización.
+  > Desordena las fases.
+- [ ] Creación, inicio, reanudación, pausa y detención.
+  > Mezcla *callbacks* de una actividad.
+- [x] Descubrimiento, instalación, ejecución, actualización y borrado.
+  > Correcta (S12).
+- [ ] Activo, pausa, destruido, actualización y borrado.
+  > Mezcla estados del midlet.
+
+Repasar: **S12**.
+</Quiz>
+
+<Quiz id="s4-03" title="Fase de actualización">
+En la fase de **actualización**, ¿qué debe hacer el gestor de aplicaciones?
+
+- [ ] Actualizar la app sin avisar al usuario.
+  > El temario dice que informa al usuario.
+- [x] Detectar que se trata de una actualización de una app ya instalada e informar al usuario para que decida.
+  > Correcta (S12).
+- [ ] Borrar la versión anterior y obligar a descubrir la nueva.
+  > No.
+- [ ] Pausar todas las actividades de la app.
+  > No es la función de esa fase.
+
+Repasar: **S12**.
+</Quiz>
+
+<Quiz id="s4-04" title="Tras la instalación">
+Según el temario, una vez instalada, ¿dónde permanece la aplicación y hasta cuándo?
+
+- [ ] En la RAM, hasta que se apaga el dispositivo.
+  > La instalación es persistente.
+- [ ] En el emulador, hasta cerrar Android Studio.
+  > No.
+- [ ] En la pila de actividades, hasta pulsar Atrás.
+  > Confunde la app instalada con sus actividades.
+- [x] En memoria persistente, hasta que el usuario decide borrarla.
+  > Correcta (S12).
+
+Repasar: **S12**.
+</Quiz>
+
+<Quiz id="s4-05" title="Fase o estado">
+¿Cuál de estos términos es una **fase del ciclo de vida de la aplicación** y no un estado de una actividad?
+
+- [ ] Pausada.
+  > Es un estado de la actividad.
+- [ ] Reanudada.
+  > Es un estado de la actividad.
+- [x] Descubrimiento.
+  > Correcta (S12).
+- [ ] Detenida.
+  > Es un estado de la actividad.
+
+Repasar: **S12, S13**.
+</Quiz>
+
+<Quiz id="s4-06" title="Estado reanudada">
+¿Qué caracteriza a una actividad **reanudada**?
+
+- [x] Está en primer plano y tiene la atención (el foco) del usuario.
+  > Correcta; también se llama «en ejecución» (S13.2).
+- [ ] Está oculta pero sigue en memoria.
+  > Eso es detenida.
+- [ ] Es visible parcialmente, sin foco.
+  > Eso es pausada.
+- [ ] Ya no existe la instancia.
+  > Sería una actividad destruida.
+
+Repasar: **S13.2**.
+</Quiz>
+
+<Quiz id="s4-07" title="Estado pausada">
+La actividad A tiene encima otra actividad que es parcialmente transparente. A sigue en memoria y anexada al administrador de ventanas, pero sin foco. ¿En qué estado está A?
+
+- [ ] Reanudada.
+  > Le falta el foco.
+- [x] Pausada.
+  > Correcta (S13.2).
+- [ ] Detenida.
+  > Exigiría estar completamente oculta.
+- [ ] Destruida.
+  > La instancia sigue existiendo.
+
+Repasar: **S13.2**.
+</Quiz>
+
+<Quiz id="s4-08" title="Estado detenida">
+¿Qué afirmación sobre una actividad **detenida** es correcta?
+
+- [ ] Sigue anexada al administrador de ventanas.
+  > Eso describe a la pausada.
+- [ ] Es parcialmente visible.
+  > Está completamente oculta.
+- [ ] Se destruye inmediatamente al dejar de verse.
+  > Sigue viva hasta que el sistema necesite memoria.
+- [x] Sigue en memoria con su estado, no es visible ni está anexada al administrador de ventanas, y el sistema puede eliminarla si necesita memoria.
+  > Correcta (S13.2).
+
+Repasar: **S13.2**.
+</Quiz>
+
+<Quiz id="s4-09" title="Pausada frente a detenida">
+¿Qué diferencia a una actividad **pausada** de una **detenida**?
+
+- [ ] La pausada ya no está en memoria.
+  > Las dos siguen «vivas» en memoria.
+- [x] La pausada sigue parcialmente visible y anexada al administrador de ventanas; la detenida está oculta y desanexada.
+  > Correcta (S13.2).
+- [ ] La detenida tiene el foco.
+  > Ninguna de las dos tiene el foco.
+- [ ] No hay diferencia: son sinónimos.
+  > Son estados distintos.
+
+Repasar: **S13.2**.
+</Quiz>
+
+<Quiz id="s4-10" title="Volver tras eliminarla">
+Una actividad detenida ha sido eliminada por el sistema para liberar memoria. El usuario vuelve a ella. ¿Qué ocurre?
+
+- [ ] Se reanuda la misma instancia.
+  > La instancia ya no existe.
+- [ ] La app pasa a la fase de borrado.
+  > Confunde con el ciclo de vida de la app instalada.
+- [x] Hay que crearla de nuevo.
+  > Correcta (S13.2).
+- [ ] Se muestra la actividad anterior de la pila.
+  > El usuario vuelve a esta actividad.
+
+Repasar: **S13.2**.
+</Quiz>
+
+<Quiz id="s4-11" title="Estados del midlet">
+El temario enumera los estados **Activo**, **Pausa** y **Destruido**. ¿A qué corresponden?
+
+- [ ] A los estados de una Activity de Android.
+  > Los de la Activity son reanudada, pausada y detenida.
+- [ ] A las fases del ciclo de vida de la aplicación.
+  > Esas son cinco fases distintas.
+- [ ] A los tres bucles del ciclo de vida.
+  > Los bucles son completo, visible y en primer plano.
+- [x] A los estados de un midlet de Java ME.
+  > Correcta (S13.3).
+
+Repasar: **S13.3**.
+</Quiz>
+
+<Quiz id="s4-12" title="Midlet destruido">
+Según el temario, ¿qué caracteriza el estado **Destruido** de un midlet?
+
+- [x] Ya no está en ejecución ni puede pasar a otro estado, y se liberan todos sus recursos.
+  > Correcta (S13.3).
+- [ ] Puede volver a Activo cuando el usuario lo abra.
+  > No puede pasar a otro estado.
+- [ ] Sigue ejecutándose en segundo plano.
+  > No está en ejecución.
+- [ ] Conserva los recursos compartidos para volver rápido.
+  > Se liberan todos los recursos.
+
+Repasar: **S13.3**.
+</Quiz>
+
+<QuizResults />

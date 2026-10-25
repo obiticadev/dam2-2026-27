@@ -1,0 +1,35 @@
+---
+interface Props {
+  labels: {
+    correct: string;
+    wrong: string;
+    flagged: string;
+    answered: string;
+    correctCount: string;
+    finish: string;
+    restart: string;
+  };
+}
+
+const { labels } = Astro.props;
+---
+
+{/* Question grid, legend, score and actions; filled in by `<sl-quiz-nav>`. */}
+<div class="sl-quiz-nav-grid"></div>
+<ul class="sl-quiz-nav-legend">
+  <li><span class="sl-quiz-nav-swatch" data-state="correct"></span>{labels.correct}</li>
+  <li><span class="sl-quiz-nav-swatch" data-state="wrong"></span>{labels.wrong}</li>
+  <li><span class="sl-quiz-nav-swatch" data-flagged></span>{labels.flagged}</li>
+</ul>
+<div class="sl-quiz-progress-bar" aria-hidden="true">
+  <span class="sl-quiz-progress-bar-incorrect"></span>
+  <span class="sl-quiz-progress-bar-correct"></span>
+</div>
+<p class="sl-quiz-nav-stats">
+  {labels.answered}: <b class="sl-quiz-nav-answered">0</b> / <b class="sl-quiz-nav-total">0</b> ·{' '}
+  <b class="sl-quiz-nav-correct">0</b>{' '}{labels.correctCount}
+</p>
+<div class="sl-quiz-nav-actions">
+  <button type="button" class="sl-quiz-nav-finish">{labels.finish}</button>
+  <button type="button" class="sl-quiz-nav-restart">{labels.restart}</button>
+</div>

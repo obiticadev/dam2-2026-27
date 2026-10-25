@@ -1,0 +1,60 @@
+---
+title: Plantilla de preguntas
+description: Sintaxis para crear nuevos cuestionarios con starlight-quiz.
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Copia este archivo en `src/content/docs/<carpeta>/` con extensión `.mdx` para crear un cuestionario nuevo
+(esta copia está fuera de `src/content/docs/`, así que no se publica). Aparecerá solo en la barra lateral si
+la carpeta está en `autogenerate` de `astro.config.mjs`. La paginación y el navegador de preguntas se activan
+solos en cualquier página que tenga `<Quiz>`.
+
+## Respuesta única
+
+Una sola opción marcada con `[x]` → botones de opción (radio).
+
+<Quiz title="Respuesta única">
+¿Qué opción es correcta?
+
+- [ ] Opción A
+- [x] Opción B
+- [ ] Opción C
+  > Comentario que solo se muestra si se elige esta opción.
+
+Explicación general: se muestra al responder. Admite **Markdown**, `código` y tablas.
+
+</Quiz>
+
+## Respuesta múltiple
+
+Varias opciones con `[x]` → casillas de verificación; hay que acertarlas todas.
+
+<Quiz title="Respuesta múltiple">
+¿Qué opciones son correctas?
+
+- [x] Opción A
+- [ ] Opción B
+- [x] Opción C
+
+</Quiz>
+
+## Rellenar hueco
+
+La respuesta va entre dobles corchetes.
+
+<Quiz title="Rellenar hueco">
+La capital de España es [[Madrid]].
+</Quiz>
+
+## Opciones por pregunta
+
+Atributos útiles de `<Quiz>`: `shuffle={false}`, `autoSubmit`, `disableAfterSubmit={false}`
+(permite reintentar), `showCorrect={false}`, `id="pregunta-unica"` (identificador estable;
+si no se indica se calcula a partir del título, así que cambiar el título borra la respuesta guardada).
+
+## Resultados
+
+Coloca `<QuizResults />` al final de la página para mostrar la nota y el botón para reiniciar.
+
+<QuizResults confetti={false} />

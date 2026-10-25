@@ -1,0 +1,222 @@
+---
+title: "S2 · Activity, Java y XML"
+description: "Activity, pila LIFO, parte lógica y gráfica, manifiesto, MainActivity.java y activity_main.xml línea a línea (S05–S07, S17)."
+sidebar:
+  order: 2
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **S05–S07** y matices de **S17**. Cuatro opciones y una sola correcta por pregunta. El código es el del temario (biblioteca `android.support`); su equivalente actual usa AndroidX.
+
+<Quiz id="s2-01" title="Qué es una Activity">
+Según la definición de Android Developers que cita el temario, ¿qué es una Activity?
+
+- [ ] Un fichero XML con el diseño de la interfaz.
+  > Esa es solo su parte gráfica.
+- [x] Un componente de la aplicación con una pantalla con la que el usuario interactúa, y una ventana donde dibuja su interfaz.
+  > Correcta (S05.1).
+- [ ] Un proceso del kernel de Linux.
+  > No.
+- [ ] El gestor que instala y borra aplicaciones.
+  > Eso es el administrador de aplicaciones.
+
+Repasar: **S05.1**.
+</Quiz>
+
+<Quiz id="s2-02" title="Pila de actividades">
+La app muestra `Main`. `Main` abre `Detalle` y `Detalle` abre `Mapa`. El usuario pulsa **Atrás** una vez. ¿Qué ocurre?
+
+- [ ] Se destruye `Main` y se muestra `Mapa`.
+  > La pila es LIFO: sale la última en entrar.
+- [ ] Se cierran las tres actividades.
+  > Solo sale la de la cima.
+- [ ] Se reanuda `Main` y `Detalle` queda en la pila.
+  > Se reanuda la anterior a `Mapa`, que es `Detalle`.
+- [x] `Mapa` se quita de la pila y se destruye; se reanuda `Detalle`.
+  > Correcta: la pila es LIFO (S05.2).
+
+Repasar: **S05.2**.
+</Quiz>
+
+<Quiz id="s2-03" title="Actividad anterior">
+Cuando una actividad inicia otra nueva, ¿qué ocurre con la anterior según el temario?
+
+- [ ] Se destruye inmediatamente.
+  > Se conserva en la pila.
+- [x] Se detiene, pero el sistema la conserva en la pila de actividades.
+  > Correcta (S05.2).
+- [ ] Sigue en primer plano junto a la nueva.
+  > La nueva capta el foco.
+- [ ] Se convierte en la actividad principal.
+  > No.
+
+Repasar: **S05.2**.
+</Quiz>
+
+<Quiz id="s2-04" title="Parte lógica y gráfica">
+¿Qué reparto entre parte lógica y parte gráfica de una actividad es correcto?
+
+- [x] Lógica en el fichero `.java`; gráfica, normalmente en un fichero `.xml` con los elementos visibles y los layouts.
+  > Correcta (S05.3).
+- [ ] Lógica en el `.xml` y gráfica en el `.java`.
+  > Es al revés.
+- [ ] Ambas en `AndroidManifest.xml`.
+  > El manifiesto declara las actividades.
+- [ ] La interfaz solo puede crearse en XML.
+  > También puede crearse programáticamente en Java, aunque cuesta más.
+
+Repasar: **S05.3**.
+</Quiz>
+
+<Quiz id="s2-05" title="Función del manifiesto">
+Según el temario, ¿qué recoge `AndroidManifest.xml`?
+
+- [ ] El código Java de todas las actividades.
+  > Está en los ficheros `.java`.
+- [ ] El diseño de la interfaz de la actividad principal.
+  > Está en `activity_main.xml`.
+- [x] Todas las actividades de la app y cuál es la actividad con la que arranca.
+  > Correcta (S05.3).
+- [ ] La lista de dispositivos virtuales.
+  > No.
+
+Repasar: **S05.3**.
+</Quiz>
+
+<Quiz id="s2-06" title="Actividad de arranque">
+¿Cómo se marca en el manifiesto la actividad que aparece en el lanzador?
+
+- [ ] Con `tools:context` en su layout.
+  > Ese atributo solo sirve al editor.
+- [ ] Llamándola `MainActivity`.
+  > El nombre no basta.
+- [ ] Llamando a `setContentView` en su `onCreate`.
+  > Eso enlaza el layout, no la convierte en actividad de arranque.
+- [x] Con un `intent-filter` que combina la acción `MAIN` y la categoría `LAUNCHER`.
+  > Correcta (aclaración de S05.3).
+
+Repasar: **S05.3**.
+</Quiz>
+
+<Quiz id="s2-07" title="Herencia">
+En `public class MainActivity extends AppCompatActivity`, ¿qué indica `extends AppCompatActivity`?
+
+- [ ] Que `MainActivity` implementa una interfaz.
+  > `extends` es herencia de clase.
+- [x] Que `MainActivity` hereda lo necesario para comportarse como una actividad.
+  > Correcta (S06).
+- [ ] Que `MainActivity` es la actividad de arranque.
+  > Eso se indica en el manifiesto.
+- [ ] Que la actividad solo funciona en versiones antiguas.
+  > No.
+
+Repasar: **S06**.
+</Quiz>
+
+<Quiz id="s2-08" title="Primera línea de onCreate">
+En el `onCreate` del temario, ¿qué debe hacerse **lo primero**?
+
+- [ ] Llamar a `setContentView`.
+  > Va después.
+- [ ] Declarar el paquete.
+  > El paquete se declara al principio del fichero, no en el método.
+- [ ] Llamar a `finish()`.
+  > Cerraría la actividad.
+- [x] Llamar a `super.onCreate(savedInstanceState)`.
+  > Correcta; si falta, Android lanza `SuperNotCalledException` (S06).
+
+Repasar: **S06**.
+</Quiz>
+
+<Quiz id="s2-09" title="Enlazar lógica e interfaz">
+¿Qué instrucción hace que `MainActivity` muestre en ejecución la interfaz de `res/layout/activity_main.xml`?
+
+- [x] `setContentView(R.layout.activity_main);`
+  > Correcta (S06).
+- [ ] `SetContentView(R.Layout.activity_main);`
+  > No compila: Java distingue mayúsculas y minúsculas.
+- [ ] `setContentView(R.layout.activity_main.xml);`
+  > El identificador del recurso va sin extensión.
+- [ ] `tools:context="com.example.dell.holamundo.MainActivity"`
+  > Es un atributo del XML para el editor de diseño.
+
+Repasar: **S06, S06.1**.
+</Quiz>
+
+<Quiz id="s2-10" title="Clase R">
+¿Qué es `R` en `R.layout.activity_main`?
+
+- [ ] Una clase de la biblioteca estándar de Java.
+  > No.
+- [ ] Una variable que hay que declarar en `MainActivity`.
+  > No se declara a mano.
+- [x] Una clase generada automáticamente con un identificador por cada recurso.
+  > Correcta (S06.1).
+- [ ] El nombre del paquete de la app.
+  > No.
+
+Repasar: **S06.1**.
+</Quiz>
+
+<Quiz id="s2-11" title="savedInstanceState">
+¿Cuánto vale `savedInstanceState` cuando la actividad se crea por **primera vez**?
+
+- [ ] Un `Bundle` con el texto del layout.
+  > No.
+- [x] `null`.
+  > Correcta: solo contiene datos al recrear la actividad tras guardar estado (S06, S15.3).
+- [ ] Un `Bundle` vacío pero no nulo.
+  > En la primera creación es `null`.
+- [ ] El identificador `R.layout.activity_main`.
+  > No.
+
+Repasar: **S06, S15.3**.
+</Quiz>
+
+<Quiz id="s2-12" title="Centrar el TextView">
+En `activity_main.xml`, el `TextView` tiene cuatro restricciones `app:layout_constraint…_to…Of="parent"` (arriba, abajo, izquierda y derecha). ¿Qué efecto tienen?
+
+- [ ] Hacen que ocupe toda la pantalla.
+  > El tamaño lo fija `wrap_content`.
+- [ ] Lo colocan en la esquina superior izquierda.
+  > Faltarían las restricciones opuestas.
+- [x] Lo centran horizontal y verticalmente en el padre.
+  > Correcta (S07).
+- [ ] Ocultan el texto hasta que se pulsa.
+  > No.
+
+Repasar: **S07**.
+</Quiz>
+
+<Quiz id="s2-13" title="match_parent y wrap_content">
+¿Qué diferencia hay entre `match_parent` y `wrap_content`?
+
+- [ ] Son sinónimos.
+  > No son intercambiables.
+- [ ] `match_parent` mide lo justo para el contenido y `wrap_content` ocupa el padre.
+  > Es al revés.
+- [ ] Solo se pueden usar en `TextView`.
+  > Se usan en cualquier vista o layout.
+- [x] `match_parent` ocupa el tamaño del padre; `wrap_content` mide lo justo para el contenido.
+  > Correcta (S07).
+
+Repasar: **S07**.
+</Quiz>
+
+<Quiz id="s2-14" title="tools:context">
+¿Para qué sirve `tools:context` en el layout?
+
+- [ ] Para asociar el layout a la actividad en ejecución.
+  > Eso lo hace `setContentView`.
+- [x] Para dar contexto al editor de diseño; no llega a la app instalada.
+  > Correcta (aclaración de S07).
+- [ ] Para declarar la actividad en el manifiesto.
+  > No.
+- [ ] Para fijar el texto del `TextView`.
+  > Eso es `android:text`.
+
+Repasar: **S07**.
+</Quiz>
+
+<QuizResults />

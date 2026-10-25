@@ -1,0 +1,192 @@
+---
+title: "M5 · Tipos de aplicación y tecnologías"
+description: "Diapositivas de 1.D: nativas, web/PWA, híbridas y multiplataforma, comparativa, interfaz, optimización y tendencias (M13, M15)."
+sidebar:
+  order: 5
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloque **M13** (diapositivas de 1.D) y matices de **M15**. Cuatro opciones y una sola correcta por pregunta. Cuando una pregunta dice «según la diapositiva», se responde con la clasificación del material, no con la técnica actual.
+
+<Quiz id="m5-01" title="Tres rasgos de los dispositivos">
+¿Qué tres rasgos de los dispositivos móviles destaca la diapositiva de introducción?
+
+- [ ] Batería, teclado y pantalla pequeña.
+  > Son limitaciones del apartado 1.A.
+- [x] Diversidad de plataformas, variedad de tamaños y formatos, y hardware potente.
+  > Correcta (M13.1).
+- [ ] Java, XML y Android Studio.
+  > Es la elección del curso.
+- [ ] Nativas, híbridas y web.
+  > Son tipos de aplicación.
+
+Repasar: **M13.1**.
+</Quiz>
+
+<Quiz id="m5-02" title="SO de la presentación">
+En la diapositiva de SO móviles, ¿qué pareja sistema–desarrollador es correcta?
+
+- [ ] Tizen → Huawei.
+  > Tizen aparece con Samsung.
+- [ ] HarmonyOS → Samsung.
+  > HarmonyOS es de Huawei.
+- [x] Tizen → Samsung.
+  > Correcta (M13.2).
+- [ ] KaiOS → Google.
+  > KaiOS es de KaiOS Technologies.
+
+Repasar: **M13.2**.
+</Quiz>
+
+<Quiz id="m5-03" title="Fila de la comparativa">
+Según la comparativa rápida, ¿qué tipo de aplicación tiene acceso **limitado** al hardware y coste de desarrollo **bajo**?
+
+- [ ] Nativa.
+  > Acceso completo y coste alto.
+- [ ] Híbrida.
+  > Acceso moderado y coste medio.
+- [ ] Nativa con NDK.
+  > No es una fila de la tabla; sería una variante nativa.
+- [x] Web.
+  > Correcta (M13.3).
+
+Repasar: **M13.3**.
+</Quiz>
+
+<Quiz id="m5-04" title="La app nativa en la tabla">
+En la comparativa rápida, ¿qué valores tiene la aplicación **nativa**?
+
+- [x] Rendimiento alto, acceso completo, coste alto y mantenimiento alto.
+  > Correcta: «alto» en todo (M13.3).
+- [ ] Rendimiento alto, acceso completo, coste bajo y mantenimiento bajo.
+  > Coste y mantenimiento son altos.
+- [ ] Rendimiento medio, acceso moderado, coste medio y mantenimiento medio.
+  > Es la fila híbrida.
+- [ ] Rendimiento medio, acceso limitado, coste bajo y mantenimiento bajo.
+  > Es la fila web.
+
+Repasar: **M13.3**.
+</Quiz>
+
+<Quiz id="m5-05" title="Desventaja de las nativas">
+¿Cuál es una **desventaja** del desarrollo nativo según la diapositiva?
+
+- [ ] Peor acceso a las funciones del dispositivo.
+  > Es al contrario: mejor acceso.
+- [ ] Peor experiencia de usuario.
+  > La experiencia está optimizada.
+- [x] Dificultad para mantener versiones distintas de la aplicación.
+  > Correcta, junto a mayor coste y tiempo (M13.3).
+- [ ] Menor seguridad y control.
+  > Ofrece mayor seguridad y control.
+
+Repasar: **M13.3**.
+</Quiz>
+
+<Quiz id="m5-06" title="PWA">
+¿Qué característica de las aplicaciones web progresivas (PWA) destaca la diapositiva?
+
+- [ ] Solo funcionan en Android.
+  > Funcionan en cualquier navegador compatible.
+- [x] Se actualizan automáticamente, así que el usuario tiene siempre la última versión.
+  > Correcta, junto a experiencia de app y compatibilidad multiplataforma (M13.3).
+- [ ] Hay que instalarlas siempre desde una tienda oficial.
+  > Se distribuyen mediante el navegador.
+- [ ] No pueden enviar notificaciones *push*.
+  > La diapositiva cita las notificaciones *push*.
+
+Repasar: **M13.3**.
+</Quiz>
+
+<Quiz id="m5-07" title="Agrupación de la diapositiva 4">
+En la diapositiva «Apps nativas, híbridas y web», ¿en qué grupo aparecen React Native y Flutter?
+
+- [ ] Apps nativas.
+  > Ahí aparecen Android y Apple.
+- [ ] Apps web.
+  > Ahí aparecen HTML5, JS y PHP.
+- [x] Apps híbridas.
+  > Correcta según la diapositiva; técnicamente hoy se clasifican mejor como multiplataforma (M13.3).
+- [ ] No aparecen en la diapositiva.
+  > Sí aparecen.
+
+Repasar: **M13.3**.
+</Quiz>
+
+<Quiz id="m5-08" title="Precisión técnica">
+La diapositiva 8 dice que los marcos híbridos crean «una interfaz nativa dentro de un contenedor web». ¿Qué precisión técnica es correcta?
+
+- [ ] React Native y Flutter se ejecutan siempre dentro de un WebView.
+  > React Native usa componentes nativos y Flutter su propio motor gráfico.
+- [ ] Ionic no usa tecnologías web.
+  > Ionic se basa precisamente en tecnologías web.
+- [ ] Todas las apps multiplataforma dependen de Internet para funcionar.
+  > Depende de cada app; no es una limitación universal.
+- [x] Ionic o Cordova ejecutan una interfaz web en un WebView; React Native dibuja componentes nativos y Flutter usa su propio motor.
+  > Correcta (M13.3).
+
+Repasar: **M13.3**.
+</Quiz>
+
+<Quiz id="m5-09" title="Ventaja multiplataforma">
+Según la infografía, ¿cuál es la ventaja de las apps multiplataforma?
+
+- [x] Una sola base de código: más simple de construir y probar, con actualizaciones simultáneas en todas las plataformas.
+  > Correcta (M13.3).
+- [ ] Acceso más rápido al hardware que las nativas.
+  > La ventaja del acceso rápido se atribuye a las nativas.
+- [ ] Funcionan siempre sin conexión.
+  > La infografía dice que algunas funciones pueden no estar disponibles sin conexión.
+- [ ] Están optimizadas para cada SO por separado.
+  > Eso describe a las nativas.
+
+Repasar: **M13.3**.
+</Quiz>
+
+<Quiz id="m5-10" title="Tecnología y lenguaje">
+¿Qué pareja tecnología de interfaz–lenguaje es correcta?
+
+- [ ] Flutter → JavaScript.
+  > Flutter usa Dart.
+- [ ] React Native → C#.
+  > React Native usa JavaScript.
+- [ ] Xamarin → Dart.
+  > Xamarin usa C#.
+- [x] Flutter → Dart.
+  > Correcta (M13.4).
+
+Repasar: **M13.4**.
+</Quiz>
+
+<Quiz id="m5-11" title="Optimización">
+¿Qué medida corresponde a la **optimización de la red** en la diapositiva de rendimiento y batería?
+
+- [ ] Minimizar el uso de animaciones.
+  > Es minimización de recursos.
+- [ ] Liberar memoria de forma eficiente.
+  > Es gestión de memoria.
+- [x] Usar caché y compresión para reducir el consumo de datos.
+  > Correcta (M13.5).
+- [ ] Usar siempre la máxima resolución de imagen.
+  > Va en contra de las imágenes optimizadas.
+
+Repasar: **M13.5**.
+</Quiz>
+
+<Quiz id="m5-12" title="Tendencias">
+¿Qué lista coincide con las tendencias de la última diapositiva?
+
+- [ ] Java ME, Symbian, PDA y Windows Phone.
+  > Son tecnologías antiguas.
+- [x] Realidad virtual y aumentada, inteligencia artificial, computación en la nube e IoT.
+  > Correcta (M13.6).
+- [ ] Batería, memoria, red y pantalla.
+  > Son limitaciones.
+- [ ] Nativas, web, híbridas y multiplataforma.
+  > Son tipos de aplicación.
+
+Repasar: **M13.6**.
+</Quiz>
+
+<QuizResults />

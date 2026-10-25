@@ -1,0 +1,222 @@
+---
+title: "S5 · Callbacks, trazas y conservación del estado"
+description: "Seis callbacks y onRestart, tres bucles anidados, trazas de escenarios, onSaveInstanceState y giro de pantalla (S14–S15, S17)."
+sidebar:
+  order: 5
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **S14–S15** y matices de **S17**. Cuatro opciones y una sola correcta por pregunta. Las trazas siguen el comportamiento estándar de Android.
+
+<Quiz id="s5-01" title="Ciclo visible">
+¿Entre qué dos *callbacks* transcurre el ciclo de vida **visible** de una actividad?
+
+- [ ] `onCreate()` y `onDestroy()`.
+  > Es el ciclo completo.
+- [x] `onStart()` y `onStop()`.
+  > Correcta (S14.2).
+- [ ] `onResume()` y `onPause()`.
+  > Es el ciclo en primer plano.
+- [ ] `onRestart()` y `onResume()`.
+  > No delimita ningún bucle.
+
+Repasar: **S14.2**.
+</Quiz>
+
+<Quiz id="s5-02" title="Ciclo en primer plano">
+¿Qué caracteriza al ciclo en **primer plano** (`onResume()`–`onPause()`)?
+
+- [ ] Ocurre una sola vez en toda la vida de la actividad.
+  > Cambia con mucha frecuencia.
+- [ ] La actividad no es visible.
+  > Está al frente de todas.
+- [x] La actividad está al frente y tiene el foco; cambia a menudo, así que el código de esos métodos debe ser ligero.
+  > Correcta (S14.2).
+- [ ] Es el lugar para definir el diseño con `setContentView`.
+  > Eso se hace en `onCreate`.
+
+Repasar: **S14.2**.
+</Quiz>
+
+<Quiz id="s5-03" title="Dónde va cada tarea">
+Según el temario, una actividad crea un subproceso que descarga datos de la red en segundo plano. ¿Dónde se crea y dónde se detiene?
+
+- [ ] Se crea en `onResume()` y se detiene en `onPause()`.
+  > El ejemplo del temario usa el ciclo completo.
+- [ ] Se crea en `onStart()` y se detiene en `onRestart()`.
+  > No.
+- [ ] Se crea en `onPause()` y se detiene en `onResume()`.
+  > Invierte el orden.
+- [x] Se crea en `onCreate()` y se detiene en `onDestroy()`.
+  > Correcta (S14.2).
+
+Repasar: **S14.2**.
+</Quiz>
+
+<Quiz id="s5-04" title="Abrir la app">
+El usuario abre la app y aparece la actividad A. ¿Qué secuencia de *callbacks* recibe A?
+
+- [x] `onCreate` → `onStart` → `onResume`.
+  > Correcta (S14.4).
+- [ ] `onStart` → `onCreate` → `onResume`.
+  > `onCreate` va primero.
+- [ ] `onCreate` → `onResume` → `onStart`.
+  > `onStart` va antes de `onResume`.
+- [ ] `onRestart` → `onStart` → `onResume`.
+  > `onRestart` solo aparece al volver de detenida.
+
+Repasar: **S14.4**.
+</Quiz>
+
+<Quiz id="s5-05" title="A abre B">
+La actividad A, reanudada, inicia la actividad B a pantalla completa. ¿Qué secuencia es correcta?
+
+- [ ] A `onStop` → B `onCreate` → B `onStart` → B `onResume` → A `onPause`.
+  > Invierte la pausa y la detención de A.
+- [x] A `onPause` → B `onCreate` → B `onStart` → B `onResume` → A `onStop`.
+  > Correcta: A se pausa antes de crear B y se detiene cuando B ya se ve (S14.4).
+- [ ] A `onPause` → A `onStop` → A `onDestroy` → B `onCreate`.
+  > A no se destruye: queda en la pila.
+- [ ] B `onCreate` → B `onStart` → B `onResume` → A `onPause` → A `onStop`.
+  > A pierde el foco antes de crear B.
+
+Repasar: **S14.4**.
+</Quiz>
+
+<Quiz id="s5-06" title="Volver atrás">
+B está encima de A, que quedó detenida. El usuario pulsa **Atrás**. ¿Qué *callbacks* recibe A?
+
+- [ ] `onCreate` → `onStart` → `onResume`.
+  > La instancia de A sigue viva: no se crea de nuevo.
+- [ ] Solo `onResume`.
+  > A estaba detenida, no solo pausada.
+- [x] `onRestart` → `onStart` → `onResume`.
+  > Correcta; B recibe después `onStop` y `onDestroy` (S14.4).
+- [ ] `onRestoreInstanceState` → `onResume`.
+  > No hay que restaurar: la instancia está intacta.
+
+Repasar: **S14.3, S14.4**.
+</Quiz>
+
+<Quiz id="s5-07" title="Actividad translúcida">
+Sobre A, reanudada, se abre una actividad translúcida que no cubre toda la pantalla. ¿Qué recibe A?
+
+- [x] Solo `onPause`, porque sigue visible.
+  > Correcta (S14.4).
+- [ ] `onPause` y `onStop`.
+  > `onStop` exige dejar de ser visible.
+- [ ] `onPause`, `onStop` y `onDestroy`.
+  > No se destruye.
+- [ ] Ningún *callback*.
+  > Pierde el foco, así que se pausa.
+
+Repasar: **S14.4**.
+</Quiz>
+
+<Quiz id="s5-08" title="onDestroy no garantizado">
+La actividad está detenida y el sistema elimina su proceso por falta de memoria. ¿Qué afirmación es correcta?
+
+- [ ] Siempre se llama a `onDestroy()` antes de eliminar el proceso.
+  > No está garantizado.
+- [ ] El sistema llama a `onRestart()` para avisarla.
+  > No.
+- [ ] La app pasa a la fase de borrado.
+  > Sigue instalada.
+- [x] `onDestroy()` puede no llamarse; por eso no es un lugar fiable para guardar datos críticos.
+  > Correcta (S14.4).
+
+Repasar: **S14.4**.
+</Quiz>
+
+<Quiz id="s5-09" title="Llamada a la superclase">
+¿Qué regla da el temario sobre las implementaciones de los métodos del ciclo de vida?
+
+- [ ] Nunca deben llamar a la superclase.
+  > Al contrario.
+- [x] Deben llamar siempre a la implementación de la superclase antes de cualquier otra tarea.
+  > Correcta (S14.1).
+- [ ] Solo `onCreate` llama a la superclase.
+  > Todos los del esqueleto lo hacen.
+- [ ] Deben llamar a la superclase al final del método.
+  > El temario dice «antes de realizar cualquier otra tarea».
+
+Repasar: **S14.1**.
+</Quiz>
+
+<Quiz id="s5-10" title="Girar la pantalla">
+Con el comportamiento por defecto, el usuario gira el móvil con una actividad en primer plano. ¿Qué ocurre?
+
+- [ ] Solo se llaman `onPause()` y `onResume()`.
+  > Ignora la recreación.
+- [ ] Se llama a `onRestart()` y no se crea ninguna instancia nueva.
+  > Eso es volver a una actividad detenida intacta.
+- [x] La actividad se destruye y se crea una nueva instancia; el estado guardado llega en el `Bundle`.
+  > Correcta (S14.4, S15.2).
+- [ ] La app pasa a la fase de actualización.
+  > Confunde con el ciclo de vida de la app instalada.
+
+Repasar: **S15.2, S15.3**.
+</Quiz>
+
+<Quiz id="s5-11" title="Guardar el estado">
+¿Qué método se usa para guardar el estado temporal de la interfaz antes de que el sistema pueda destruir la actividad?
+
+- [ ] `onRestoreInstanceState(Bundle)`.
+  > Ese recupera el estado.
+- [ ] `onRestart()`.
+  > Se llama al volver de detenida.
+- [ ] `finish()`.
+  > Cierra la actividad.
+- [x] `onSaveInstanceState(Bundle)`.
+  > Correcta (S15.1).
+
+Repasar: **S15.1**.
+</Quiz>
+
+<Quiz id="s5-12" title="Restaurar el estado">
+Tras recrear la actividad, ¿dónde puede recuperarse el estado guardado?
+
+- [x] En `onCreate(Bundle)`, comprobando que no sea `null`, o en `onRestoreInstanceState(Bundle)`, que se llama después de `onStart()`.
+  > Correcta (S15.1, S15.3).
+- [ ] Solo en `onDestroy()`.
+  > No es el lugar de recuperación.
+- [ ] En `onRestoreInstanceState(Bundle)`, que se llama antes de `onCreate()`.
+  > Se llama después de `onStart()`.
+- [ ] En `onPause()`.
+  > No recibe el `Bundle`.
+
+Repasar: **S15.1, S15.3**.
+</Quiz>
+
+<Quiz id="s5-13" title="Instancia intacta">
+En la figura de guardar y restaurar el estado, la actividad dejó de ser visible pero su instancia sigue intacta. Al volver el usuario, ¿qué ruta sigue?
+
+- [ ] `onCreate()` u `onRestoreInstanceState()` para restaurar el estado.
+  > Esa es la ruta tras matar el proceso.
+- [x] `onRestart()` y vuelta a ejecución, sin necesidad de restaurar el estado.
+  > Correcta (S15.1).
+- [ ] `onSaveInstanceState()` otra vez.
+  > No.
+- [ ] `onDestroy()` y luego `onCreate()`.
+  > La instancia no se ha destruido.
+
+Repasar: **S15.1**.
+</Quiz>
+
+<Quiz id="s5-14" title="Cuándo no se guarda">
+¿En qué caso **no** se llama a `onSaveInstanceState`?
+
+- [ ] Al girar la pantalla.
+  > Ahí sí se llama, para recrear la actividad.
+- [ ] Al pulsar Inicio con la actividad en primer plano.
+  > Ahí sí se llama: el sistema podría eliminarla después.
+- [ ] Cuando el sistema detiene la actividad porque otra la cubre.
+  > Ahí sí se llama.
+- [x] Cuando el usuario cierra la actividad a propósito con Atrás o se llama a `finish()`.
+  > Correcta: no habrá nada que restaurar (S15.3).
+
+Repasar: **S15.3**.
+</Quiz>
+
+<QuizResults />

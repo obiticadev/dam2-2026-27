@@ -1,0 +1,162 @@
+---
+title: "M3 · Plataformas, lenguajes y elección del curso"
+description: "Plataforma de desarrollo y portabilidad, código nativo y gestionado, SDK y NDK, Java ME, Windows Phone y la elección del curso (M09–M10, M15)."
+sidebar:
+  order: 3
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **M09–M10** y matices de **M15**. Cuatro opciones y una sola correcta por pregunta.
+
+<Quiz id="m3-01" title="Qué genera una plataforma">
+Según el temario, una plataforma de desarrollo móvil permite generar código ejecutable…
+
+- [x] …sobre el sistema operativo, sobre una máquina virtual o sobre un intérprete instalado en el dispositivo.
+  > Correcta (M09.1).
+- [ ] …solo sobre el sistema operativo, nunca sobre una máquina virtual.
+  > Java ME, por ejemplo, se ejecuta sobre una máquina virtual.
+- [ ] …solo sobre un servidor web.
+  > No.
+- [ ] …solo en el emulador del IDE.
+  > El emulador sirve para probar; el destino es el dispositivo.
+
+Repasar: **M09.1**.
+</Quiz>
+
+<Quiz id="m3-02" title="Portabilidad">
+¿Qué ejemplo del temario muestra **mayor portabilidad**?
+
+- [ ] Una app en Objective-C con el SDK de Apple.
+  > Probablemente solo funcionará en dispositivos Apple con iOS.
+- [ ] Una app en C con el NDK de Android.
+  > El temario no la pone como ejemplo de portabilidad.
+- [x] Un midlet en Java ME, ejecutable en cualquier dispositivo con una pequeña máquina virtual de Java (KVM).
+  > Correcta (M09.1).
+- [ ] Una app para Windows Phone en C#.
+  > Ligada a Windows Phone.
+
+Repasar: **M09.1**.
+</Quiz>
+
+<Quiz id="m3-03" title="Nativo y gestionado">
+¿Qué distingue el código **gestionado** del código **nativo**?
+
+- [ ] El gestionado está escrito siempre en C o C++.
+  > C y C++ con el NDK generan código nativo.
+- [x] El gestionado se ejecuta sobre una máquina virtual o entorno de ejecución, como Java o C#.
+  > Correcta (M09.2).
+- [ ] El nativo necesita siempre conexión a Internet.
+  > No tiene relación con la red.
+- [ ] El nativo solo existe en iOS.
+  > En Android se genera con el NDK.
+
+Repasar: **M09.2**.
+</Quiz>
+
+<Quiz id="m3-04" title="NDK">
+¿Para qué sirve el **Android NDK**?
+
+- [ ] Para sustituir al SDK en todo el desarrollo de apps.
+  > El SDK sigue siendo el kit principal; el NDK lo complementa.
+- [ ] Para programar en Kotlin.
+  > Kotlin usa el SDK.
+- [ ] Para crear dispositivos virtuales.
+  > Eso es el AVD.
+- [x] Para programar partes en C o C++ que generan código nativo.
+  > Correcta (M09.2, M11.1).
+
+Repasar: **M09.2**.
+</Quiz>
+
+<Quiz id="m3-05" title="Java ME como excepción">
+¿Por qué el temario presenta Java ME como una **excepción** entre las plataformas?
+
+- [x] Porque no es un conjunto de herramientas de un SO, sino un subconjunto de la plataforma Java que necesita una máquina virtual en el dispositivo.
+  > Correcta (M09.3).
+- [ ] Porque es la única plataforma de pago.
+  > No es el motivo.
+- [ ] Porque solo funciona en iOS.
+  > No.
+- [ ] Porque no usa el lenguaje Java.
+  > Se programa en Java.
+
+Repasar: **M09.3**.
+</Quiz>
+
+<Quiz id="m3-06" title="Windows Phone">
+¿Qué tecnologías cita el temario para desarrollar en Windows Phone?
+
+- [ ] Xcode, Swift e Interface Builder.
+  > Son de Apple.
+- [ ] Android SDK y Eclipse con ADT.
+  > Son de Android.
+- [x] Silverlight, XNA y .NET Compact Framework, con C# como lenguaje habitual.
+  > Correcta (M09.3).
+- [ ] Java ME y KVM.
+  > Es otra plataforma.
+
+Repasar: **M09.3**.
+</Quiz>
+
+<Quiz id="m3-07" title="Razón para elegir Java">
+¿Cuál es la razón principal del temario para trabajar con Java en el curso?
+
+- [ ] Es el único lenguaje que admite Android.
+  > También se usa Kotlin, y C/C++ con el NDK.
+- [ ] Es el lenguaje oficial de iOS.
+  > No.
+- [ ] Es más rápido que cualquier otro lenguaje móvil.
+  > El temario no lo justifica así.
+- [x] Ya se aprendió en el módulo de Programación, así que el esfuerzo se centra en lo específico de los móviles.
+  > Correcta; además, es multiplataforma, adecuado para DAM (M10).
+
+Repasar: **M10**.
+</Quiz>
+
+<Quiz id="m3-08" title="Java ME o Android Studio">
+Entre las alternativas relacionadas con Java, ¿qué elige el curso y por qué?
+
+- [ ] Java ME, porque funciona en más dispositivos.
+  > El curso no elige Java ME.
+- [x] Android Studio, porque ha tenido la mayor progresión en los últimos años.
+  > Correcta (M10).
+- [ ] Eclipse con ADT, porque es el IDE oficial actual.
+  > Fue el IDE de los primeros años.
+- [ ] NetBeans, porque se usó en Programación.
+  > No es la elección del curso.
+
+Repasar: **M10**.
+</Quiz>
+
+<Quiz id="m3-09" title="Configuración del curso">
+¿Qué combinación de trabajo fija el curso?
+
+- [ ] Kotlin y Jetpack Compose con Android Studio.
+  > El curso usa Java y XML, aunque Google impulse Kotlin.
+- [ ] Swift y SwiftUI con Xcode.
+  > Es iOS.
+- [ ] Java ME con KVM y NetBeans.
+  > No.
+- [x] Java y XML, plataforma Android e IDE Android Studio, normalmente con el emulador del propio IDE.
+  > Correcta (M10).
+
+Repasar: **M10**.
+</Quiz>
+
+<Quiz id="m3-10" title="Elegir en el mundo real">
+Según el temario, en el mundo profesional, ¿de qué depende la elección de plataforma y lenguaje?
+
+- [ ] De las preferencias personales del programador.
+  > El temario dice explícitamente que no suele ser así.
+- [x] De las necesidades del cliente; por eso conviene estar siempre al día.
+  > Correcta (M10).
+- [ ] Siempre de usar Java, por ser multiplataforma.
+  > Java es una opción entre muchas.
+- [ ] Del IDE que se tenga instalado.
+  > No.
+
+Repasar: **M10**.
+</Quiz>
+
+<QuizResults />

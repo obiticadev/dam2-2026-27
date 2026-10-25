@@ -1,0 +1,222 @@
+---
+title: "M4 · Arquitectura de Android y máquinas virtuales"
+description: "Pila de Android, HAL, ART y bibliotecas nativas, framework, apps del sistema, JVM, Java ME, Dalvik y ART (M11–M12, M15)."
+sidebar:
+  order: 4
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+Bloques **M11–M12** y matices de **M15**. Cuatro opciones y una sola correcta por pregunta.
+
+<Quiz id="m4-01" title="Orden de las capas">
+¿Qué orden de capas de la plataforma Android, **de abajo arriba**, es correcto?
+
+- [ ] Framework de la API de Java → HAL → Kernel de Linux → Apps del sistema.
+  > El kernel es la base, no una capa intermedia.
+- [x] Kernel de Linux → HAL → ART y bibliotecas nativas → Framework de la API de Java → Apps del sistema.
+  > Correcta (M11.1).
+- [ ] HAL → Kernel de Linux → Framework → ART → Apps.
+  > La HAL está sobre el kernel, y ART bajo el framework.
+- [ ] Kernel de Linux → Framework → HAL → Apps del sistema.
+  > La HAL está justo encima del kernel.
+
+Repasar: **M11.1**.
+</Quiz>
+
+<Quiz id="m4-02" title="Función de la HAL">
+¿Qué capa ofrece interfaces estándar y carga un módulo de biblioteca por tipo de hardware, como la cámara o el Bluetooth?
+
+- [ ] El kernel de Linux.
+  > Aporta controladores y servicios base, no esas interfaces modulares hacia el framework.
+- [ ] El Android Runtime.
+  > Ejecuta el código DEX de las apps.
+- [x] La capa de abstracción de hardware (HAL).
+  > Correcta (M11.1).
+- [ ] Los proveedores de contenido.
+  > Comparten datos entre apps.
+
+Repasar: **M11.1**.
+</Quiz>
+
+<Quiz id="m4-03" title="Capas al mismo nivel">
+En la pila oficial, ¿qué dos bloques aparecen **al mismo nivel**, uno junto al otro?
+
+- [ ] HAL y framework de la API de Java.
+  > Están en niveles distintos.
+- [ ] Apps del sistema y kernel de Linux.
+  > Son la capa superior y la inferior.
+- [ ] Framework de la API de Java y apps del sistema.
+  > El framework está debajo de las apps.
+- [x] Bibliotecas C/C++ nativas y Android Runtime.
+  > Correcta (M11.1).
+
+Repasar: **M11.1**.
+</Quiz>
+
+<Quiz id="m4-04" title="Responsabilidades del kernel">
+¿Qué servicio base proporciona el **kernel de Linux** a Android?
+
+- [x] Seguridad, gestión de memoria y de procesos, pila de red y modelo de controladores.
+  > Correcta; además abstrae el hardware para el resto del software (M11.1).
+- [ ] El sistema de vistas para dibujar la interfaz.
+  > Pertenece al framework de la API de Java.
+- [ ] La compilación de las fuentes Java a DEX.
+  > La hacen las herramientas de compilación.
+- [ ] La sustitución del navegador predeterminado.
+  > No tiene relación con el kernel.
+
+Repasar: **M11.1**.
+</Quiz>
+
+<Quiz id="m4-05" title="Una instancia de ART">
+Desde Android 5.0, ¿cómo se ejecutan las apps según el temario?
+
+- [ ] Todas comparten una única instancia de ART.
+  > Contradice el temario.
+- [ ] Cada app se ejecuta dentro de la JVM de Java SE.
+  > Android no usa la JVM de Java SE.
+- [x] Cada app ejecuta su propio proceso con su propia instancia de ART.
+  > Correcta (M11.1).
+- [ ] Las apps no usan ningún runtime: se ejecutan como código nativo puro.
+  > Usan ART, salvo las partes NDK.
+
+Repasar: **M11.1, M12.3**.
+</Quiz>
+
+<Quiz id="m4-06" title="Framework de la API de Java">
+¿Qué elemento pertenece al **framework de la API de Java**?
+
+- [ ] El controlador de la pantalla (*display driver*).
+  > Está en el kernel.
+- [x] Los proveedores de contenido, que permiten compartir datos entre apps.
+  > Correcta, junto a vistas y gestores (M11.1).
+- [ ] La aplicación de Contactos.
+  > Es una app del sistema.
+- [ ] La biblioteca libc.
+  > Es una biblioteca nativa.
+
+Repasar: **M11.1**.
+</Quiz>
+
+<Quiz id="m4-07" title="Apps del sistema">
+¿Qué afirmación sobre las apps del sistema es correcta según el temario?
+
+- [ ] Tienen privilegios especiales y no pueden sustituirse.
+  > El temario dice lo contrario, salvo excepciones como Settings.
+- [ ] Son las únicas que pueden usar la API del framework.
+  > Los desarrolladores acceden a las mismas API.
+- [ ] Están escritas en C++ y se ejecutan sin ART.
+  > No.
+- [x] No tienen un estado especial: una app externa puede ser el navegador, el sistema de SMS o el teclado predeterminado.
+  > Correcta (M11.1).
+
+Repasar: **M11.1**.
+</Quiz>
+
+<Quiz id="m4-08" title="Lista de cinco componentes">
+La lista de cinco componentes de 1.C.3 y la pila oficial de seis capas describen la misma plataforma. ¿Qué capa **no** aparece en la lista de cinco?
+
+- [ ] El núcleo Linux.
+  > Sí aparece.
+- [ ] El runtime de Android.
+  > Sí aparece.
+- [x] La capa de abstracción de hardware (HAL).
+  > Correcta (M11.2).
+- [ ] Las bibliotecas.
+  > Sí aparecen, con ejemplos como SQLite.
+
+Repasar: **M11.2**.
+</Quiz>
+
+<Quiz id="m4-09" title="JVM">
+¿Qué hace la máquina virtual de Java (JVM)?
+
+- [x] Interpreta el bytecode de los programas Java precompilados, hace las llamadas al SO y vela por la seguridad, dando independencia de plataforma.
+  > Correcta (M12.1).
+- [ ] Compila el código fuente `.java` a código máquina antes de distribuirlo.
+  > Trabaja con el bytecode, no con el fuente.
+- [ ] Emula un teléfono Android completo para probar apps.
+  > Eso es el emulador (AVD).
+- [ ] Sustituye al sistema operativo del dispositivo.
+  > Se ejecuta sobre el SO.
+
+Repasar: **M12.1**.
+</Quiz>
+
+<Quiz id="m4-10" title="KVM y CVM">
+¿Qué afirmación sobre las máquinas virtuales de Java ME es correcta?
+
+- [ ] KVM significa *Kernel Virtual Machine*.
+  > La K hace referencia a los pocos kilobytes que ocupa.
+- [ ] La CVM es más ligera que la KVM.
+  > La CVM es algo más pesada.
+- [ ] Son las máquinas virtuales de Android.
+  > Android usaba Dalvik y ahora ART.
+- [x] La KVM ocupa unos pocos kilobytes; la CVM (*Compact Virtual Machine*) es algo más pesada.
+  > Correcta (M12.2).
+
+Repasar: **M12.2**.
+</Quiz>
+
+<Quiz id="m4-11" title="Configuraciones y perfiles">
+¿Por qué introdujo Java ME los conceptos de **configuración** y **perfil**?
+
+- [ ] Para poder ejecutar AWT completo en los móviles.
+  > Al contrario: AWT completo no cabe en pantallas pequeñas.
+- [x] Porque una única plataforma Java no encaja con todos los dispositivos posibles.
+  > Correcta: la configuración fija la base según la capacidad y el perfil añade API para un tipo de dispositivo (M12.2).
+- [ ] Para sustituir la máquina virtual por código nativo.
+  > No.
+- [ ] Para publicar apps en Google Play.
+  > No tiene relación.
+
+Repasar: **M12.2**.
+</Quiz>
+
+<Quiz id="m4-12" title="Dalvik">
+¿Qué afirmación sobre Dalvik es correcta?
+
+- [ ] Ejecuta directamente los `.class` de Java.
+  > Ejecuta `.dex`, tras convertir las clases con `dx`.
+- [ ] Es una máquina basada en pila, como la JVM.
+  > Está basada en registros.
+- [x] Es una máquina basada en registros que ejecuta archivos `.dex`, optimizados para memoria mínima.
+  > Correcta (M12.3).
+- [ ] Sigue siendo el runtime por defecto en Android 16.
+  > ART la sustituyó desde Android 5.0.
+
+Repasar: **M12.3**.
+</Quiz>
+
+<Quiz id="m4-13" title="Sustitución de Dalvik">
+¿Desde qué versión de Android ART es el entorno de ejecución en lugar de Dalvik?
+
+- [ ] Android 2.3 Gingerbread.
+  > No.
+- [ ] Android 4.0 Ice Cream Sandwich.
+  > No.
+- [x] Android 5.0 Lollipop (API 21).
+  > Correcta (M12.3).
+- [ ] Android 10.
+  > Mucho antes.
+
+Repasar: **M12.3**.
+</Quiz>
+
+<Quiz id="m4-14" title="Compatibilidad ART/Dalvik">
+Según el temario, una app que funciona bien en ART…
+
+- [x] …también debe funcionar en Dalvik, aunque lo contrario no está garantizado.
+  > Correcta (M12.3).
+- [ ] …nunca puede funcionar en Dalvik.
+  > Contradice el temario.
+- [ ] …solo funciona en Dalvik si se compila con el NDK.
+  > El NDK sirve para C/C++.
+- [ ] …y una que funciona en Dalvik tienen garantizada la compatibilidad en ambos sentidos.
+  > El temario solo garantiza un sentido.
+
+Repasar: **M12.3**.
+</Quiz>
+
+<QuizResults />
