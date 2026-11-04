@@ -1,0 +1,411 @@
+---
+title: "Mixto · Más difícil"
+description: "20 preguntas originales de diagnóstico y razonamiento: 10 de ficheros y 10 de XML."
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas originales · 10 de A y 10 de B · cuatro opciones · una correcta.** Mayor dificultad por combinar condiciones, seguir estados y distinguir una característica cierta de una solución suficiente. No se amplía el temario con API ajenas al curso. El reparto 10/10 es de práctica, no una ponderación oficial.
+
+Java 17 o posterior; JAXB 2 externo. Se omiten imports, manejo de excepciones y cierre de recursos para centrar la pregunta. Las operaciones tienen permisos y no hay cambios externos. Cada pregunta es independiente. Los XML no incluyen espacios entre etiquetas salvo indicación expresa. Las clases JAXB tienen constructor sin argumentos y mapeos válidos, sin configuración de validación adicional. Sin NIO.
+
+<Quiz id="md-01" title="Posición del campo tras una cabecera">
+Hay una cabecera de 8 bytes seguida de registros int + double, sin relleno. Se actualiza el double del registro de índice 3. ¿Qué posición necesita seek?
+
+```java
+raf.seek(/* posición */);
+raf.writeDouble(6.75);
+```
+
+- [ ] `40`
+  > Calcula 3 × 12 + 4, pero olvida los ocho bytes de cabecera.
+- [ ] `44`
+  > Calcula cabecera más registros anteriores, pero apunta al int del registro elegido.
+- [x] `48`
+  > Correcta: 8 de cabecera + 3 × 12 de registros previos + 4 del int anterior al double.
+- [ ] `52`
+  > Suma ocho bytes de desplazamiento interno cuando el único campo previo mide cuatro.
+
+Repasar: A §2.12, posiciones de registros y campos.
+</Quiz>
+
+<Quiz id="md-02" title="Dos significados de nombre">
+Se quiere leer solo el nombre del cliente, pero el resultado actual es `"EvaTienda"`. ¿Qué explica el fallo de selección?
+
+```xml
+<cliente>
+  <nombre>Eva</nombre>
+  <empresa><nombre>Tienda</nombre></empresa>
+</cliente>
+```
+
+```java
+String nombre = cliente.getTextContent();
+```
+
+- [ ] getTextContent incluye los nombres de las etiquetas.
+  > Concatena contenido textual; no incluye etiquetas como cliente o empresa.
+- [ ] DOM no permite distinguir elementos del mismo nombre.
+  > Se pueden distinguir por su relación padre/hijo y posición en el árbol.
+- [ ] Es obligatorio sustituir DOM por JAXB para leerlo.
+  > JAXB es una alternativa, pero DOM puede seleccionar correctamente el hijo directo.
+- [x] Se ha pedido el texto de todo el subárbol cliente.
+  > Correcta: incluye también el texto de empresa; hay que seleccionar el hijo nombre del cliente.
+
+Repasar: B §2.3, alcance de getTextContent.
+</Quiz>
+
+<Quiz id="md-03" title="Copiar un búfer reutilizado">
+El búfer tiene cuatro posiciones. Una lectura anterior dejó `[1,2,3,4]`; la siguiente devuelve 2 y deja `[8,9,3,4]`. ¿Qué escribe la línea errónea en esta segunda iteración?
+
+```java
+out.write(buffer);
+```
+
+- [x] `8, 9, 3, 4`
+  > Correcta: write(buffer) escribe el array entero e incluye los dos valores sobrantes de la lectura anterior.
+- [ ] `8, 9`
+  > Eso ocurriría al pasar explícitamente la cantidad leída: write(buffer, 0, 2).
+- [ ] `8, 9, 0, 0`
+  > read no pone a cero las posiciones del array que no rellena.
+- [ ] `1, 2, 3, 4`
+  > Las dos primeras posiciones sí se han actualizado con los datos de la nueva lectura.
+
+Repasar: A §2.7.
+</Quiz>
+
+<Quiz id="md-04" title="Eventos consumidos por una llamada auxiliar">
+Se leen `precio` y `stock` con StAX. ¿Qué valor acaba teniendo `cierres`?
+
+```xml
+<r><precio>12</precio><stock>3</stock></r>
+```
+
+```java
+int cierres = 0;
+while (r.hasNext()) {
+    int tipo = r.next();
+    if (tipo == XMLStreamConstants.START_ELEMENT
+            && r.getLocalName().equals("precio")) {
+        r.getElementText();
+    } else if (tipo == XMLStreamConstants.END_ELEMENT) {
+        cierres++;
+    }
+}
+System.out.println(cierres);
+```
+
+- [ ] `3`
+  > El cierre de precio se consume dentro de getElementText y no pasa por la rama de conteo.
+- [x] `2`
+  > Correcta: el bucle cuenta los cierres de stock y r; getElementText deja consumido el de precio.
+- [ ] `1`
+  > Además del cierre de la raíz, el de stock sí llega a la rama END_ELEMENT.
+- [ ] `0`
+  > getElementText solo consume precio, no los cierres del resto del documento.
+
+Repasar: B §4.2, estado del cursor.
+</Quiz>
+
+<Quiz id="md-05" title="Renombrado y existencia">
+Existe `a.txt`, no existe `b.txt` y el renombrado devuelve true. ¿Qué imprime?
+
+```java
+File a = new File("a.txt");
+File b = new File("b.txt");
+a.renameTo(b);
+System.out.println(a.exists() + " " + b.exists());
+```
+
+- [ ] `true true`
+  > Renombrar no copia el recurso manteniendo también el nombre anterior.
+- [ ] `true false`
+  > Es el estado previo; el renombrado exitoso ha cambiado el nombre físico.
+- [x] `false true`
+  > Correcta: a conserva la ruta antigua, ahora inexistente; b representa la nueva ruta existente.
+- [ ] `false false`
+  > La operación no elimina el contenido sin destino: el recurso pasa a b.txt.
+
+Repasar: A §2.4, referencia y recurso.
+</Quiz>
+
+<Quiz id="md-06" title="Eliminar con una lista DOM viva">
+`raiz` contiene tres hijos `item`, sin otros nodos. ¿Cuántos quedan tras el bucle?
+
+```java
+NodeList lista = raiz.getElementsByTagName("item");
+for (int i = 0; i < lista.getLength(); i++) {
+    raiz.removeChild(lista.item(i));
+}
+System.out.println(lista.getLength());
+```
+
+- [ ] `0`
+  > Al borrar, la lista viva se reindexa; el incremento de i salta un elemento.
+- [ ] `2`
+  > También se elimina el tercer elemento original, que pasa al índice 1.
+- [ ] `3`
+  > La lista refleja las eliminaciones del árbol; no es una copia inmutable.
+- [x] `1`
+  > Correcta: borra el primero, luego el tercero original; el segundo se desplaza a 0 y queda sin visitar.
+
+Repasar: B §2.3 y §2.5; precisión de DOM: NodeList vivo.
+</Quiz>
+
+<Quiz id="md-07" title="Una línea vacía no corta el archivo">
+`br` contiene exactamente `A\n\nB\nC`. ¿Qué imprime este bucle defectuoso?
+
+```java
+int n = 0;
+String s;
+while ((s = br.readLine()) != null && !s.isEmpty()) {
+    n++;
+}
+System.out.println(n);
+```
+
+- [x] `1`
+  > Correcta: cuenta A y se detiene al leer la línea vacía, antes de B y C.
+- [ ] `2`
+  > La línea vacía no se cuenta: hace falsa la condición de entrada.
+- [ ] `3`
+  > No omite la línea vacía para continuar; termina el bucle.
+- [ ] `4`
+  > Eso requeriría recorrer todas las líneas usando únicamente la comprobación contra null.
+
+Repasar: A §2.10, condición de final.
+</Quiz>
+
+<Quiz id="md-08" title="Corregir el contexto SAX">
+Un manejador acumula bien el texto, pero mezcla importes de facturas y devoluciones porque ambos usan la etiqueta `importe`. ¿Qué cambio resuelve esa confusión?
+
+- [ ] Aumentar la capacidad inicial del StringBuilder.
+  > Cambia la capacidad, no identifica a qué clase de registro pertenece el importe.
+- [x] Mantener el contexto padre al procesar cada importe.
+  > Correcta: el estado o una pila de contexto distingue iguales nombres en ramas con significado diferente.
+- [ ] Convertir todos los fragmentos a mayúsculas.
+  > Cambiar el texto no aporta la relación jerárquica que falta.
+- [ ] Sustituir append por asignación del último fragmento.
+  > Además de no resolver el contexto, perdería texto cuando characters llegue fragmentado.
+
+Repasar: B §3, gestión de estado y jerarquía.
+</Quiz>
+
+<Quiz id="md-09" title="Posición, longitud y sobrescritura">
+El fichero contiene exactamente 24 bytes. ¿Qué pareja imprime?
+
+```java
+try (RandomAccessFile raf = new RandomAccessFile("r.bin", "rw")) {
+    raf.seek(12);
+    raf.writeInt(99);
+    System.out.println(raf.getFilePointer() + " " + raf.length());
+}
+```
+
+- [ ] `16 28`
+  > La escritura no se anexa al final: reemplaza cuatro bytes dentro del tamaño existente.
+- [ ] `12 24`
+  > El tamaño se conserva, pero el puntero avanza tras escribir.
+- [x] `16 24`
+  > Correcta: escribe en 12–15, deja el puntero en 16 y no supera los 24 bytes existentes.
+- [ ] `4 16`
+  > Confunde cantidad escrita con posición y supone un truncado que rw no realiza.
+
+Repasar: A §2.12.
+</Quiz>
+
+<Quiz id="md-10" title="Objeto modificado, fichero sin cambios">
+El objeto JAXB refleja la nueva localidad, pero el XML de disco sigue igual. ¿Qué operación falta para actualizar ese fichero?
+
+```java
+Catalogo c = (Catalogo) um.unmarshal(new File("c.xml"));
+c.setLocalidad("Lugo");
+```
+
+- [ ] Volver a ejecutar unmarshal sobre c.xml.
+  > Volvería a leer los datos antiguos; no guarda el objeto modificado.
+- [ ] Configurar JAXB_FORMATTED_OUTPUT como true.
+  > Configura presentación, pero no escribe el nuevo estado.
+- [ ] Reconstruir únicamente el JAXBContext.
+  > Preparar el contexto no actualiza el fichero ni serializa el objeto.
+- [x] Ejecutar marshal con c y el fichero destino.
+  > Correcta: modificar objetos Java no persiste automáticamente; marshal produce el nuevo XML.
+
+Repasar: B §5.3.
+</Quiz>
+
+<Quiz id="md-11" title="Desplazamiento dentro del array">
+El archivo contiene los bytes `11,22,33,44,55`. El flujo está al inicio. ¿Cuál es el contenido final de `b`?
+
+```java
+byte[] b = {0, 0, 0, 0, 0};
+in.read(b, 2, 2); // esta llamada devuelve exactamente 2
+```
+
+- [x] `[0, 0, 11, 22, 0]`
+  > Correcta: off indica la posición de destino en el array; la lectura empieza en la posición actual del archivo.
+- [ ] `[0, 0, 33, 44, 0]`
+  > Trata off como desplazamiento dentro del archivo, pero no salta sus dos primeros bytes.
+- [ ] `[11, 22, 0, 0, 0]`
+  > Ignora el índice de destino 2 dentro del array.
+- [ ] `[0, 0, 11, 22, 33]`
+  > El límite len es dos: la última posición no recibe un tercer byte.
+
+Repasar: A §2.7, read con rango.
+</Quiz>
+
+<Quiz id="md-12" title="Configuración verdadera pero insuficiente">
+Una integración exige validar un catálogo contra un XSD durante la carga JAXB. ¿Cuál es la respuesta que atiende ese requisito?
+
+- [ ] Activar la indentación del Marshaller.
+  > Produce XML más legible, pero no comprueba el esquema durante la carga.
+- [x] Configurar validación con el esquema al deserializar.
+  > Correcta: la validación es una operación opcional que debe solicitarse; unmarshal no implica validar contra ese XSD.
+- [ ] Anotar la clase con un nombre de raíz explícito.
+  > El nombre de raíz establece un mapeo, no activa la validación requerida.
+- [ ] Abrir el XML con una ruta absoluta canónica.
+  > Localizar el fichero no comprueba sus restricciones de esquema.
+
+Repasar: B §5, fase opcional de validación.
+</Quiz>
+
+<Quiz id="md-13" title="Excluir no es ordenar">
+El directorio contiene `a.csv` como fichero ordinario, `b.csv` como directorio y `c.txt` como fichero ordinario. ¿Qué conjunto acepta el filtro?
+
+```java
+dir.list((d, n) -> n.endsWith(".csv")
+        && new File(d, n).isFile());
+```
+
+- [ ] `a.csv` y `b.csv`.
+  > b.csv no es un fichero ordinario y falla isFile.
+- [ ] `a.csv` y `c.txt`.
+  > c.txt es un fichero, pero no cumple la terminación solicitada.
+- [x] Únicamente `a.csv`.
+  > Correcta: solo a.csv satisface simultáneamente el criterio de nombre y el de tipo.
+- [ ] Las tres entradas del directorio.
+  > El AND exige ambas condiciones; no basta cumplir solo una.
+
+Repasar: A §2.6.
+</Quiz>
+
+<Quiz id="md-14" title="Una verdad que no responde al objetivo">
+Se necesita procesar un XML enorme y detener el consumo cuando la aplicación ya tenga suficientes resultados, pidiendo ella misma cada evento. ¿Qué justificación responde mejor a la elección de StAX?
+
+- [ ] DOM permite modificar los nodos del documento.
+  > Es cierto, pero la modificación no es el objetivo y el árbol completo consume memoria.
+- [ ] JAXB permite nombrar explícitamente la raíz.
+  > Es cierto, pero ese mapeo no justifica el control de consumo solicitado.
+- [ ] SAX procesa sin construir un árbol completo.
+  > Es cierto y útil, pero no responde a la condición de que la aplicación pida cada evento.
+- [x] StAX permite consumir incrementalmente bajo demanda.
+  > Correcta: combina streaming con control pull, las dos condiciones decisivas del caso.
+
+Repasar: B §1.1 y §4.
+</Quiz>
+
+<Quiz id="md-15" title="Borrar una fila sin arriesgar todo">
+Para eliminar una fila de longitud variable se propone abrir el mismo archivo con FileReader y FileWriter sin anexado y copiar las filas aceptadas. ¿Cuál es el problema principal?
+
+- [x] La apertura del escritor vacía el archivo de origen.
+  > Correcta: puede destruir los datos antes de copiarlos; se debe escribir en otro fichero y sustituir tras completar y cerrar.
+- [ ] FileReader convierte toda fila en un objeto serializado.
+  > Lee caracteres; no realiza deserialización de objetos.
+- [ ] BufferedReader impide trabajar con filas variables.
+  > readLine está diseñado precisamente para líneas que pueden tener distinta longitud.
+- [ ] Los escritores no permiten conservar saltos de línea.
+  > Se pueden escribir separadores; no es la causa del riesgo planteado.
+
+Repasar: A §2.10–2.11, apertura y reescritura.
+</Quiz>
+
+<Quiz id="md-16" title="El efecto de reutilizar un nodo">
+`a` y `b` son dos elementos distintos del mismo documento. Después del fragmento, ¿dónde queda `hijo`?
+
+```java
+Element hijo = doc.createElement("dato");
+a.appendChild(hijo);
+b.appendChild(hijo);
+```
+
+- [ ] En ambos padres, como una referencia compartida.
+  > Un nodo DOM no tiene simultáneamente dos padres.
+- [x] Solo dentro de b; se ha movido desde a.
+  > Correcta: appendChild quita el nodo de su padre anterior antes de insertarlo en el nuevo.
+- [ ] Solo dentro de a; se ignora la segunda llamada.
+  > La segunda llamada no se ignora; modifica la posición del nodo.
+- [ ] En ambos padres, como dos copias independientes.
+  > appendChild no clona el nodo; para una copia se necesitaría una operación explícita.
+
+Repasar: B §2.5; precisión de DOM: inserción de nodos existentes.
+</Quiz>
+
+<Quiz id="md-17" title="Leer el mismo formato que se escribió">
+Se escribe un int seguido de un double con DataOutputStream. ¿Qué lectura reconstruye ambos valores respetando el formato?
+
+- [ ] Dos llamadas sucesivas a readLine.
+  > Los datos son binarios tipados, no dos líneas textuales.
+- [ ] readDouble y después readInt.
+  > Invierte el formato y agrupa los bytes de manera distinta a la escritura.
+- [x] readInt y después readDouble.
+  > Correcta: deben coincidir el orden y el tipo de los campos con los usados al escribir.
+- [ ] Dos llamadas sucesivas a readObject.
+  > No es un flujo de objetos generado con ObjectOutputStream.
+
+Repasar: A §2.7, lectura y escritura tipada.
+</Quiz>
+
+<Quiz id="md-18" title="Evento guardado no implica retroceso">
+Una aplicación usa XMLEventReader y guarda algunos objetos XMLEvent en una lista. ¿Qué capacidad obtiene realmente?
+
+- [ ] Reposicionar el lector en cualquier evento guardado.
+  > Guardar un objeto no añade al lector una operación de retroceso.
+- [ ] Modificar el XML original al cambiar esa lista.
+  > La lista es estado de la aplicación; no es una representación editable ligada al fichero.
+- [ ] Transformar automáticamente los eventos en un DOM.
+  > El árbol requeriría construcción adicional; no aparece por conservar eventos.
+- [x] Consultar después la información de esos eventos.
+  > Correcta: puede revisar los objetos conservados sin que el flujo de entrada deje de ser secuencial.
+
+Repasar: B §4.3.
+</Quiz>
+
+<Quiz id="md-19" title="Final del flujo frente a número de datos">
+El archivo contiene exactamente `0,1,0,2`. ¿Qué cuenta realmente el siguiente bucle defectuoso?
+
+```java
+int cuenta = 0;
+while (in.read() > 0) {
+    cuenta++;
+}
+System.out.println(cuenta);
+```
+
+- [x] Imprime 0; se detiene en el primer byte cero.
+  > Correcta: con read() sin array, cero es un dato válido que hace falsa esa condición; el final es -1.
+- [ ] Imprime 2; cuenta solo los bytes no nulos.
+  > No sigue buscando tras un cero: el while termina en cuanto falla la condición.
+- [ ] Imprime 4; procesa todos los bytes del archivo.
+  > Eso requeriría comparar el resultado de read() con -1.
+- [ ] Imprime 1; cuenta también el byte de final.
+  > No llega al final ni entra una vez en el cuerpo.
+
+Repasar: A §2.7; diferencia entre read() y read(buffer).
+</Quiz>
+
+<Quiz id="md-20" title="Mapear atributo y elementos">
+El XML exige una raíz `pedido`, su identificador como atributo y una colección de `linea` dentro de `lineas`. ¿Qué reparto de anotaciones responde a esa estructura?
+
+- [ ] RootElement para pedido; Element para id; Wrapper y Element para la lista.
+  > La raíz y la colección quedarían mapeadas, pero id sería un elemento en lugar del atributo exigido.
+- [x] RootElement para pedido; Attribute para id; Wrapper y Element para la lista.
+  > Correcta: cada anotación atiende un nivel distinto: raíz, atributo, contenedor y miembros de la colección.
+- [ ] Type para pedido; Attribute para id; Wrapper y Element para la lista.
+  > XmlType configura el tipo XML, pero no sustituye a XmlRootElement para mapear la raíz solicitada.
+- [ ] RootElement para pedido; Attribute para id; Element sin Wrapper para la lista.
+  > Se mapearían los miembros, pero faltaría la etiqueta contenedora lineas exigida por el documento.
+
+Repasar: B §5.1–5.2. Se omite el prefijo Xml en las opciones para facilitar su lectura.
+</Quiz>
+
+<QuizResults />

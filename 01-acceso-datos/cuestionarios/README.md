@@ -21,14 +21,33 @@ PLANTILLA.mdx              # Ejemplo de cada tipo de pregunta (copiar para crear
 packages/starlight-quiz/   # Fork local del plugin de cuestionarios
 src/content/docs/
 ├── index.mdx              # Portada
-├── examen-mixto.mdx       # Simulacro de 40 preguntas (UT02-A + UT02-B)
-├── ut02a/                 # Ficheros, sin NIO: a1…a5, un bloque por página
-└── ut02b/                 # XML: b1…b5 (DOM, SAX, StAX, JAXB)
+├── examen-mixto.mdx       # 20 preguntas mixtas, dificultad normal
+├── examen-mixto-dificil.mdx # 20 preguntas mixtas, mayor dificultad
+├── ut02a/                 # sin-codigo.mdx y con-codigo.mdx, nivel normal
+└── ut02b/                 # sin-codigo.mdx y con-codigo.mdx, nivel normal
 ```
+
+`archivo/` conserva los once cuestionarios anteriores sin publicarlos. La selección activa contiene exactamente **seis cuestionarios y 120 preguntas**. Cada mixto tiene diez preguntas de A y diez de B; es una distribución de práctica, no una ponderación oficial. No se modificó la bóveda.
 
 Cada carpeta de unidad se añade sola a la barra lateral; para una unidad nueva crea `src/content/docs/utXX/` y añade el grupo en `sidebar` de `astro.config.mjs`.
 
-Convenciones de las preguntas: seis opciones, una sola `[x]`, un comentario `>` por opción, `id` estable y único (`a1-01`, `b4-07`, `mx-12`…) para no perder el progreso guardado, y al final una línea `Repasar: **Axx**` que remite al resumen de `../resumen`.
+Convenciones: **cuatro opciones**, una sola `[x]`, un comentario `>` por opción, `id` estable y único, y una referencia final `Repasar` al apartado del temario. Los prefijos nuevos (`an`, `ac`, `bn`, `bc`, `mn`, `md`) evitan reutilizar las respuestas guardadas de preguntas anteriores. Con `showCorrect: true`, al corregir se muestran las explicaciones de las cuatro opciones; si se desactiva, solo se explica la elegida.
+
+## Fuentes y criterio editorial
+
+Se consultaron en `D:/obsidian/DAM2` los temarios `Fuentes/AD/temario/UT02-A-manejo-de-ficheros.md` y `UT02-B-librerias-xml-java.md`, el índice de AD, la nota del primer examen, el repaso esencial y las aclaraciones DOM pertinentes. Las referencias § corresponden a los encabezados numerados de las fuentes. Los escenarios son práctica elaborada, no preguntas oficiales.
+
+Se conserva la exclusión de NIO que tenía el proyecto, aunque la nota del examen de la bóveda contempla ambos temas completos. JAXB usa la versión 2 (`javax.xml.bind`) con dependencias externas en Java 17+. Las precisiones añadidas al temario se identifican cuando procede.
+
+Las preguntas priorizan objetivos concretos, distractores cercanos y condiciones explícitas. Una opción puede expresar algo cierto pero insuficiente para el problema. Se evita convertir sistemáticamente la correcta en la más larga; la auditoría informa del reparto de longitudes, sin tratar esa métrica como prueba de calidad semántica.
+
+## Comprobaciones
+
+- `npm run build`: compila las páginas MDX y genera el sitio.
+- `npm run test:cuestionarios`: audita fuentes y HTML compilado (ejecutar después del build).
+- `npm run test:trazas`: ejecuta una selección de trazas Java, sin dependencias externas JAXB.
+
+Las comprobaciones automáticas no certifican la ausencia de ambigüedad semántica ni sustituyen la revisión pedagógica. Las pruebas Java verifican los casos indicados en su código; no ejecutan todos los fragmentos parciales de las preguntas ni los ejemplos JAXB.
 
 XML: todo documento con elementos anidados va en un bloque ```` ```xml ```` indentado, nunca en línea (también en las opciones, que necesitan un texto breve antes del bloque, p. ej. `- [ ] XML:`, para que el plugin las reconozca). Se entiende que el fichero **no** tiene espacios entre etiquetas; si la respuesta depende de los espacios, el enunciado dice que la indentación es real. Solo el contenido mixto (`<a>texto <b>x</b></a>`) se deja en una línea, porque indentarlo cambiaría el texto.
 

@@ -1,0 +1,428 @@
+---
+title: "A · Con código · Normal"
+description: "20 preguntas de lectura, elección y diagnóstico de código java.io."
+sidebar:
+  order: 2
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Java 17 o posterior. Se omiten imports y el tratamiento de excepciones; los fragmentos se ejecutan dentro de un método salvo que se indique una declaración de clase. Hay permisos suficientes, no hay cambios externos y las operaciones de E/S tienen éxito salvo el problema que se pregunte. Cada pregunta parte de su propio estado inicial. Sin NIO.
+
+<Quiz id="ac-01" title="Referencia a un fichero futuro">
+`nuevo.txt` no existe. ¿Qué imprime?
+
+```java
+File f = new File("nuevo.txt");
+System.out.println(f.exists());
+```
+
+- [ ] `true`
+  > Construir File no crea el fichero al que apunta.
+- [x] `false`
+  > Correcta: la referencia existe como objeto Java, pero su destino sigue sin existir en disco.
+- [ ] `null`
+  > exists devuelve un boolean, no una referencia que pueda ser null.
+- [ ] Lanza `FileNotFoundException`.
+  > No se ha abierto ningún flujo de lectura; representar una ruta inexistente es válido.
+
+Repasar: UT02-A §2.4.
+</Quiz>
+
+<Quiz id="ac-02" title="Crear sin vaciar">
+`notas.txt` ya existe y contiene texto. ¿Qué describe el resultado?
+
+```java
+File f = new File("notas.txt");
+System.out.println(f.createNewFile());
+```
+
+- [ ] `true`; conserva el texto.
+  > true significa que se creó un fichero nuevo, pero aquí ya existía.
+- [ ] `false`; elimina el texto.
+  > createNewFile no trunca un fichero existente.
+- [x] `false`; conserva el texto.
+  > Correcta: al existir, no crea nada y no modifica el contenido previo.
+- [ ] `true`; elimina el texto.
+  > Confunde la creación exclusiva con abrir un flujo que sobrescribe.
+
+Repasar: UT02-A §2.5.
+</Quiz>
+
+<Quiz id="ac-03" title="Nombre frente a ruta">
+¿Qué imprime, independientemente de que exista el archivo?
+
+```java
+File f = new File("informes", "enero.txt");
+System.out.println(f.getName());
+```
+
+- [ ] `informes`
+  > Ese es el directorio padre, no el último componente de la ruta.
+- [ ] `informes/enero.txt`
+  > Eso representa la ruta completa relativa, no getName.
+- [ ] `enero`
+  > getName conserva la extensión del nombre.
+- [x] `enero.txt`
+  > Correcta: devuelve el último componente, sin exigir que el recurso exista.
+
+Repasar: UT02-A §2.4.
+</Quiz>
+
+<Quiz id="ac-04" title="Filtro que no comprueba el tipo">
+El directorio contiene el fichero `a.txt`, el fichero `b.csv` y la carpeta `c.txt`. ¿Qué conjunto devuelve el listado, sin importar el orden?
+
+```java
+String[] nombres = dir.list((d, n) -> n.endsWith(".txt"));
+```
+
+- [x] `a.txt` y `c.txt`.
+  > Correcta: el filtro solo comprueba el nombre; también acepta la carpeta con esa terminación.
+- [ ] Únicamente `a.txt`.
+  > Haría falta comprobar además isFile para excluir la carpeta.
+- [ ] `a.txt`, `b.csv` y `c.txt`.
+  > b.csv no cumple endsWith(".txt").
+- [ ] Únicamente `c.txt`.
+  > El fichero a.txt cumple exactamente el mismo criterio por nombre.
+
+Repasar: UT02-A §2.6.
+</Quiz>
+
+<Quiz id="ac-05" title="Comprobar antes de contar">
+`f` representa un fichero ordinario, no un directorio. ¿Qué ocurre?
+
+```java
+String[] entradas = f.list();
+System.out.println(entradas.length);
+```
+
+- [ ] Imprime `0`.
+  > Un array vacío correspondería a un listado válido sin entradas; aquí list devuelve null.
+- [x] Lanza `NullPointerException`.
+  > Correcta: se intenta acceder a length sobre el null devuelto al listar algo que no es directorio.
+- [ ] Imprime el tamaño en bytes.
+  > El tamaño del fichero se consultaría con f.length(), no con un array del listado.
+- [ ] Imprime el número de líneas.
+  > list no lee el contenido ni cuenta líneas.
+
+Repasar: UT02-A §2.6.
+</Quiz>
+
+<Quiz id="ac-06" title="Subrango del búfer">
+`out` apunta a un destino vacío. ¿Qué bytes escribe esta llamada?
+
+```java
+byte[] b = {10, 20, 30, 40, 50};
+out.write(b, 1, 3);
+```
+
+- [ ] `10, 20, 30`
+  > Ignora el desplazamiento inicial 1 dentro del array.
+- [ ] `20, 30`
+  > El tercer argumento es una cantidad de bytes, no el índice final exclusivo.
+- [x] `20, 30, 40`
+  > Correcta: empieza en b[1] y escribe tres bytes: índices 1, 2 y 3.
+- [ ] `20, 30, 40, 50`
+  > Escribiría cuatro bytes, pero la cantidad solicitada es tres.
+
+Repasar: UT02-A §2.7, off y len.
+</Quiz>
+
+<Quiz id="ac-07" title="Una lectura parcial">
+El array se reutiliza y la última lectura devuelve `n = 2`. ¿Qué llamada copia solo los bytes válidos de esa lectura?
+
+```java
+byte[] buffer = new byte[8];
+int n = in.read(buffer);
+// n vale 2
+```
+
+- [ ] `out.write(buffer);`
+  > Escribe las ocho posiciones, incluidas las que no se han rellenado en esta lectura.
+- [ ] `out.write(buffer, n, 0);`
+  > Solicita escribir cero bytes; no copia los dos recibidos.
+- [ ] `out.write(buffer, n, n);`
+  > Empieza en el índice 2, pero los datos recibidos están desde el índice 0.
+- [x] `out.write(buffer, 0, n);`
+  > Correcta: copia exactamente las n posiciones que acaba de llenar read.
+
+Repasar: UT02-A §2.7.
+</Quiz>
+
+<Quiz id="ac-08" title="El cero también es un byte">
+El fichero contiene exactamente los bytes `0, 7`. ¿Qué imprime?
+
+```java
+int n = 0;
+while (in.read() != -1) {
+    n++;
+}
+System.out.println(n);
+```
+
+- [x] `2`
+  > Correcta: tanto 0 como 7 son datos; solo -1 indica final.
+- [ ] `0`
+  > El byte cero no detiene esta condición.
+- [ ] `1`
+  > El bucle cuenta también el primer byte, cuyo valor es cero.
+- [ ] `3`
+  > La lectura que devuelve -1 no entra en el cuerpo y no se cuenta.
+
+Repasar: UT02-A §2.7, read.
+</Quiz>
+
+<Quiz id="ac-09" title="Sobrescritura al abrir">
+`dato.bin` contiene `1, 2, 3`. ¿Qué bytes quedan después del bloque?
+
+```java
+try (FileOutputStream out = new FileOutputStream("dato.bin")) {
+    out.write(9);
+}
+```
+
+- [ ] `9, 2, 3`
+  > El constructor sin append trunca el fichero; no conserva la cola anterior.
+- [x] `9`
+  > Correcta: la apertura vacía el contenido previo y después se escribe un byte.
+- [ ] `1, 2, 3, 9`
+  > Ese resultado requeriría abrir con append=true.
+- [ ] `1, 2, 3`
+  > La escritura sí modifica el fichero y el cierre completa la operación.
+
+Repasar: UT02-A §2.7, FileOutputStream.
+</Quiz>
+
+<Quiz id="ac-10" title="Anexar bytes">
+`dato.bin` contiene `4, 5`. ¿Qué bytes quedan?
+
+```java
+try (FileOutputStream out = new FileOutputStream("dato.bin", true)) {
+    out.write(6);
+}
+```
+
+- [ ] `6`
+  > Eso correspondería a sobrescribir, pero el segundo argumento habilita anexado.
+- [ ] `6, 5`
+  > No se posiciona al inicio: escribe después de los datos existentes.
+- [x] `4, 5, 6`
+  > Correcta: append=true conserva el contenido y añade el byte al final.
+- [ ] `4, 6`
+  > Anexar no sustituye el último byte anterior.
+
+Repasar: UT02-A §2.7.
+</Quiz>
+
+<Quiz id="ac-11" title="Leer con tipo específico">
+El fichero contiene un objeto String serializado. ¿Qué expresión recupera su valor como String?
+
+```java
+ObjectInputStream in = new ObjectInputStream(new FileInputStream("s.obj"));
+String texto = /* completar */;
+```
+
+- [ ] `in.readLine()`
+  > No reconstruye el objeto escrito con writeObject; no es un fichero de líneas de texto.
+- [ ] `String.valueOf(in)`
+  > Obtiene una representación del flujo, no el objeto guardado en él.
+- [ ] `(String) in.read()`
+  > read devuelve un entero; ese casting a String no compila.
+- [x] `(String) in.readObject()`
+  > Correcta: readObject reconstruye el objeto y devuelve Object; el casting permite asignarlo a String.
+
+Repasar: UT02-A §2.8.
+</Quiz>
+
+<Quiz id="ac-12" title="Guardar no es describir">
+`Alumno` implementa Serializable. ¿Qué instrucción guarda el objeto con la serialización estándar?
+
+```java
+Alumno a = new Alumno("Eva");
+ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("a.obj"));
+```
+
+- [x] `out.writeObject(a);`
+  > Correcta: entrega el objeto para guardar su estado serializable.
+- [ ] `out.writeObject(a.toString());`
+  > Serializa una descripción String, no un objeto Alumno recuperable como tal.
+- [ ] `out.write(a);`
+  > No existe una sobrecarga write que reciba un Alumno.
+- [ ] `a.toString();`
+  > Calcula una descripción, pero ni siquiera la envía al flujo.
+
+Repasar: UT02-A §2.8–2.9.
+</Quiz>
+
+<Quiz id="ac-13" title="Leer una línea vacía">
+El texto del lector es exactamente `uno\n\ntres` —dos saltos entre uno y tres—. ¿Cuántas iteraciones realiza?
+
+```java
+int n = 0;
+String linea;
+while ((linea = br.readLine()) != null) {
+    n++;
+}
+System.out.println(n);
+```
+
+- [ ] `2`
+  > La línea vacía también se devuelve y se cuenta.
+- [x] `3`
+  > Correcta: devuelve "uno", "" y "tres"; la última línea no necesita salto final.
+- [ ] `1`
+  > El bucle compara con null, no con la cadena vacía.
+- [ ] `4`
+  > No hay una cuarta línea después de tres ni se cuenta el null final.
+
+Repasar: UT02-A §2.10.
+</Quiz>
+
+<Quiz id="ac-14" title="Construir el lector correcto">
+Se necesita leer por líneas un fichero UTF-8 sin depender de la codificación predeterminada. ¿Qué construcción lo permite?
+
+```java
+var a = new BufferedReader(new FileReader("a.txt"));
+var b = new FileInputStream("a.txt");
+var c = new BufferedReader(new InputStreamReader(new FileInputStream("a.txt"), "UTF-8"));
+var d = new InputStreamReader(new FileInputStream("a.txt"), "UTF-8");
+```
+
+- [ ] La construcción de `a`.
+  > Permite líneas, pero utiliza la codificación predeterminada al no indicarla.
+- [ ] La construcción de `b`.
+  > Lee bytes; no ofrece directamente líneas ni decodificación UTF-8.
+- [x] La construcción de `c`.
+  > Correcta: abre bytes, los decodifica explícitamente y añade lectura por líneas.
+- [ ] La construcción de `d`.
+  > Decodifica correctamente, pero por sí solo no dispone de readLine.
+
+Repasar: UT02-A §2.10.
+</Quiz>
+
+<Quiz id="ac-15" title="Conservar las líneas anteriores">
+¿Qué argumento permite que este escritor añada texto sin vaciar el archivo existente?
+
+```java
+BufferedWriter bw = new BufferedWriter(new FileWriter("log.txt", /* valor */));
+bw.write("Fin");
+bw.newLine();
+bw.close();
+```
+
+- [ ] `false`
+  > Deshabilita anexado y la apertura sobrescribe el contenido.
+- [ ] `0`
+  > Ese constructor espera boolean, no un desplazamiento numérico.
+- [ ] `"append"`
+  > No existe ese modo String para el segundo parámetro de FileWriter.
+- [x] `true`
+  > Correcta: activa el anexado; newLine solo añade un separador, no decide el modo de apertura.
+
+Repasar: UT02-A §2.10, FileWriter.
+</Quiz>
+
+<Quiz id="ac-16" title="Saltar a un registro">
+Cada registro contiene un int seguido de un double, sin cabeceras ni relleno. ¿Dónde empieza el registro de índice 3, contando desde 0?
+
+```java
+raf.seek(/* posición */);
+```
+
+- [x] `36`
+  > Correcta: cada registro mide 4 + 8 = 12 bytes; 3 × 12 = 36.
+- [ ] `24`
+  > Es la posición del índice 2, no la del índice 3.
+- [ ] `12`
+  > Es el tamaño de un registro y el inicio del índice 1.
+- [ ] `40`
+  > Es el comienzo del double del índice 3, no el comienzo del registro.
+
+Repasar: UT02-A §2.12.
+</Quiz>
+
+<Quiz id="ac-17" title="Solo cambiar un campo">
+Con el mismo formato int + double, ¿qué posición permite actualizar solo el double del registro de índice 2?
+
+```java
+raf.seek(/* posición */);
+raf.writeDouble(8.5);
+```
+
+- [ ] `24`
+  > Es el comienzo del registro; sobrescribiría también el int con parte del double.
+- [x] `28`
+  > Correcta: 2 × 12 bytes de registro + 4 bytes del int previo.
+- [ ] `32`
+  > Suma ocho bytes de desplazamiento interno cuando el campo anterior solo ocupa cuatro.
+- [ ] `20`
+  > No corresponde al double del registro de índice 2; el inicio de ese registro ya es 24.
+
+Repasar: UT02-A §2.12.
+</Quiz>
+
+<Quiz id="ac-18" title="El puntero también avanza al leer">
+El archivo tiene suficientes datos y el puntero empieza en 0. ¿Qué imprime?
+
+```java
+raf.readInt();
+raf.readDouble();
+System.out.println(raf.getFilePointer());
+```
+
+- [ ] `0`
+  > Leer también desplaza el puntero, aunque no modifique el contenido.
+- [ ] `2`
+  > Cuenta llamadas, pero el puntero mide bytes.
+- [x] `12`
+  > Correcta: se han consumido cuatro bytes del int y ocho del double.
+- [ ] `8`
+  > Omite los cuatro bytes consumidos por la primera lectura.
+
+Repasar: UT02-A §2.12.
+</Quiz>
+
+<Quiz id="ac-19" title="Modo rw no significa anexado">
+`r.bin` tiene exactamente 20 bytes. ¿Qué imprime al terminar la escritura?
+
+```java
+try (RandomAccessFile raf = new RandomAccessFile("r.bin", "rw")) {
+    raf.writeInt(7);
+    System.out.println(raf.length());
+}
+```
+
+- [ ] `24`
+  > La apertura no coloca automáticamente el puntero al final.
+- [ ] `4`
+  > rw no vacía el fichero existente; solo se sobrescriben sus primeros cuatro bytes.
+- [ ] `0`
+  > El fichero no se trunca a cero y se ha realizado una escritura.
+- [x] `20`
+  > Correcta: el puntero inicial es 0 y la escritura queda dentro de los 20 bytes existentes.
+
+Repasar: UT02-A §2.12.
+</Quiz>
+
+<Quiz id="ac-20" title="Cambiar nombre y seguir la referencia">
+Existe `viejo.txt`, no existe `nuevo.txt` y renameTo devuelve true. ¿Qué imprime después?
+
+```java
+File f = new File("viejo.txt");
+f.renameTo(new File("nuevo.txt"));
+System.out.println(f.getName());
+```
+
+- [x] `viejo.txt`
+  > Correcta: el recurso cambia de nombre, pero f conserva la ruta con la que se construyó.
+- [ ] `nuevo.txt`
+  > Supone que renameTo modifica la ruta almacenada en el objeto origen.
+- [ ] `null`
+  > f sigue siendo una referencia válida y getName devuelve el nombre de su ruta.
+- [ ] Lanza `FileNotFoundException`.
+  > Consultar el nombre abstracto no abre el fichero antiguo ni exige que siga existiendo.
+
+Repasar: UT02-A §2.4.
+</Quiz>
+
+<QuizResults />

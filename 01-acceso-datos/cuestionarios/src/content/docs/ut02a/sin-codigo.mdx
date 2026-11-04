@@ -1,0 +1,312 @@
+---
+title: "A · Sin código · Normal"
+description: "20 situaciones sobre ficheros, flujos, serialización y acceso aleatorio."
+sidebar:
+  order: 1
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Resuelve la necesidad del enunciado: una afirmación puede ser cierta y no justificar la decisión. Sin fragmentos de código; los nombres de API forman parte del temario. NIO queda fuera.
+
+<Quiz id="an-01" title="Datos entre sesiones">
+Una aplicación debe recuperar mañana las matrículas introducidas hoy, después de cerrar el programa. ¿Qué necesidad resuelve guardarlas en un fichero?
+
+- [x] Conservar los datos entre ejecuciones.
+  > Correcta: la persistencia permite recuperar información después de finalizar el proceso.
+- [ ] Agrupar los datos en objetos Java.
+  > Agrupar objetos organiza el modelo, pero no conserva por sí solo su estado tras el cierre.
+- [ ] Consultar los datos mediante índices.
+  > Un índice puede facilitar búsquedas; no es lo que garantiza que los datos sobrevivan.
+- [ ] Reducir el número de variables locales.
+  > Cambiar las variables no resuelve la pérdida del contenido de la memoria al terminar.
+
+Repasar: UT02-A §1, persistencia.
+</Quiz>
+
+<Quiz id="an-02" title="Dirección de la información">
+Un programa recibe datos de un sensor y guarda un informe en disco. ¿Cómo se clasifican esas dos operaciones desde el programa?
+
+- [ ] Sensor: salida; informe: entrada.
+  > Invierte el punto de vista: se considera lo que recibe o emite el programa.
+- [x] Sensor: entrada; informe: salida.
+  > Correcta: recibe información del sensor y envía información al fichero.
+- [ ] Sensor: entrada; informe: entrada.
+  > Que el disco reciba el informe no lo convierte en entrada para el programa.
+- [ ] Sensor: salida; informe: salida.
+  > El sensor emite datos, pero el programa los recibe: para este son entrada.
+
+Repasar: UT02-A §1, E/S.
+</Quiz>
+
+<Quiz id="an-03" title="Una abstracción útil">
+¿Qué problema resuelve utilizar flujos para leer tanto de un fichero como de una conexión de red?
+
+- [ ] Hacer que ambos orígenes sean persistentes.
+  > Un flujo no garantiza almacenamiento permanente; puede transportar datos que nunca se guardan.
+- [ ] Permitir retroceder en ambos orígenes.
+  > La abstracción de flujo no proporciona por sí misma acceso aleatorio.
+- [x] Unificar el tratamiento de distintos orígenes.
+  > Correcta: la API de flujo abstrae el dispositivo concreto que produce o consume los datos.
+- [ ] Convertir ambos contenidos en texto Unicode.
+  > Existen flujos de bytes y de caracteres; usar un flujo no implica decodificar texto.
+
+Repasar: UT02-A §2.1, streams.
+</Quiz>
+
+<Quiz id="an-04" title="Copiar sin interpretar">
+Se debe duplicar una imagen conservando exactamente su contenido. ¿Qué enfoque responde mejor a ese requisito?
+
+- [ ] Leer caracteres y volver a codificarlos.
+  > La decodificación trata los bytes como texto y puede alterar una imagen.
+- [ ] Leer líneas y reconstruir sus separadores.
+  > Es útil para texto, pero una imagen no se organiza en líneas de caracteres.
+- [ ] Leer objetos y escribir su representación.
+  > Una imagen corriente no es un flujo de objetos serializados con Java.
+- [x] Leer bytes y escribir los bytes recibidos.
+  > Correcta: copiar bytes evita interpretar y transformar el formato binario.
+
+Repasar: UT02-A §2.7, flujos de bytes.
+</Quiz>
+
+<Quiz id="an-05" title="Dos clasificaciones">
+Un fichero almacena valores numéricos binarios y se recorre desde el principio hasta el final. ¿Cómo se clasifica?
+
+- [x] Binario y de acceso secuencial.
+  > Correcta: la representación es binaria y el recorrido sigue el orden del fichero.
+- [ ] Binario y de acceso aleatorio.
+  > Ser binario no obliga a saltar entre posiciones; aquí se recorre de principio a fin.
+- [ ] Textual y de acceso secuencial.
+  > El recorrido sí es secuencial, pero los valores no se han almacenado como texto.
+- [ ] Textual y de acceso aleatorio.
+  > No coincide ni con la representación indicada ni con la forma de recorrido.
+
+Repasar: UT02-A §2.3, formas de acceso.
+</Quiz>
+
+<Quiz id="an-06" title="Representar no es crear">
+La aplicación necesita conservar una referencia a la ruta de un informe que aún no existe. ¿Qué aporta un objeto File en esta situación?
+
+- [ ] Abre el informe para leer su contenido.
+  > File representa una ruta; abrir el contenido requiere una clase de E/S.
+- [x] Representa la ruta sin crear el informe.
+  > Correcta: el constructor no necesita que exista el recurso ni lo crea físicamente.
+- [ ] Reserva en disco el tamaño del informe.
+  > El objeto no reserva espacio ni determina el tamaño del futuro fichero.
+- [ ] Crea el informe sin escribir contenido.
+  > Crear un fichero vacío es una operación distinta, como createNewFile.
+
+Repasar: UT02-A §2.4, clase File.
+</Quiz>
+
+<Quiz id="an-07" title="Preparar carpetas">
+Se necesita crear la carpeta de destino y también sus directorios padre, que todavía no existen. ¿Qué operación de File corresponde?
+
+- [ ] createNewFile.
+  > Crea un fichero, no la cadena de directorios necesaria para alojarlo.
+- [ ] mkdir.
+  > Crea el último directorio si su padre existe; no construye todos los padres ausentes.
+- [x] mkdirs.
+  > Correcta: intenta crear el directorio y los directorios padre que falten.
+- [ ] getParentFile.
+  > Obtiene una referencia al padre, pero no lo crea en disco.
+
+Repasar: UT02-A §2.5, creación de directorios.
+</Quiz>
+
+<Quiz id="an-08" title="Interpretar un listado">
+Un listado con File devuelve un array vacío, no null. ¿Cuál es la interpretación correcta?
+
+- [ ] La ruta no representa un directorio.
+  > Ese supuesto produce null, no un array vacío.
+- [ ] El listado ha fallado por un error de E/S.
+  > Un fallo de listado puede producir null; no es el significado del array vacío.
+- [ ] Los nombres se cargarán al recorrer el array.
+  > El resultado ya contiene las entradas aceptadas; no se rellena de forma diferida.
+- [x] No hay entradas que devolver en ese listado.
+  > Correcta: el directorio está vacío o, si hay filtro, ninguna entrada lo cumple.
+
+Repasar: UT02-A §2.6, list y filtros.
+</Quiz>
+
+<Quiz id="an-09" title="Filtrar entradas">
+Solo deben aparecer en el listado las entradas cuyo nombre termina en una extensión concreta. ¿Qué papel tiene FilenameFilter?
+
+- [x] Decidir qué nombres acepta el listado.
+  > Correcta: accept devuelve si cada entrada cumple el criterio que debe aplicar list.
+- [ ] Cambiar la extensión de cada fichero.
+  > Filtrar selecciona entradas; no renombra ni transforma los recursos.
+- [ ] Leer las líneas de cada fichero.
+  > El filtro recibe el directorio y un nombre, no un lector del contenido.
+- [ ] Ordenar alfabéticamente los nombres.
+  > Aceptar o rechazar no establece un orden de presentación.
+
+Repasar: UT02-A §2.6, FilenameFilter.
+</Quiz>
+
+<Quiz id="an-10" title="Reducir accesos físicos">
+Se procesarán muchas líneas de texto. ¿Qué ventaja justifica envolver un FileReader en un BufferedReader?
+
+- [ ] Cambiar automáticamente la codificación.
+  > La decodificación la determina el lector subyacente; el búfer no detecta la codificación.
+- [x] Amortizar lecturas y facilitar leer líneas.
+  > Correcta: agrupa lecturas mediante un búfer y ofrece readLine para procesar texto por líneas.
+- [ ] Cargar siempre el archivo entero en RAM.
+  > El búfer no exige almacenar el fichero completo; se va rellenando durante la lectura.
+- [ ] Poder modificar cualquier byte del fichero.
+  > BufferedReader es de lectura secuencial de caracteres, no de actualización aleatoria.
+
+Repasar: UT02-A §2.10, BufferedReader.
+</Quiz>
+
+<Quiz id="an-11" title="Texto con tildes">
+Un fichero está codificado en UTF-8 y se lee mal en otro equipo. ¿Qué decisión trata directamente la causa probable?
+
+- [ ] Aumentar el tamaño del búfer de lectura.
+  > Puede afectar al rendimiento, pero no corrige una interpretación incorrecta de los bytes.
+- [ ] Cambiar la extensión del fichero a txt.
+  > La extensión no modifica la codificación del contenido.
+- [x] Especificar UTF-8 al decodificar los bytes.
+  > Correcta: emisor y lector deben usar la misma codificación para interpretar bien los caracteres.
+- [ ] Convertir la ruta relativa en absoluta.
+  > Puede ayudar a localizar el recurso, no a interpretar sus caracteres una vez abierto.
+
+Repasar: UT02-A §2.10, InputStreamReader.
+</Quiz>
+
+<Quiz id="an-12" title="Seguir usando el escritor">
+Se quiere enviar al destino el texto pendiente en el búfer y continuar escribiendo con el mismo escritor. ¿Qué operación corresponde?
+
+- [ ] close.
+  > Vuelca y cierra; después no se puede seguir escribiendo con ese escritor.
+- [ ] newLine.
+  > Añade un separador de línea, pero no garantiza por sí mismo el vaciado del búfer.
+- [ ] write.
+  > Introduce contenido adicional; no es la operación específica para volcar lo pendiente.
+- [x] flush.
+  > Correcta: fuerza el volcado del búfer sin cerrar el escritor; no equivale a garantizar escritura física en disco.
+
+Repasar: UT02-A §2.10, Writer.
+</Quiz>
+
+<Quiz id="an-13" title="Final del texto">
+Un archivo contiene líneas vacías que deben conservarse al procesarlo. ¿Qué debe indicar el final al usar BufferedReader?
+
+- [x] Que readLine devuelva null.
+  > Correcta: null indica que no quedan líneas; una cadena vacía es una línea válida.
+- [ ] Que readLine devuelva una cadena vacía.
+  > Detendría el proceso en la primera línea vacía, aunque quedaran datos después.
+- [ ] Que una línea carezca de separadores.
+  > La última línea puede no acabar en salto, y readLine ya elimina los separadores de todas las líneas.
+- [ ] Que una línea contenga solo espacios.
+  > Los espacios son contenido; no constituyen el indicador de final del flujo.
+
+Repasar: UT02-A §2.10, readLine.
+</Quiz>
+
+<Quiz id="an-14" title="Recuperar objetos">
+Se quiere guardar un objeto Java para reconstruir después su estado, no solo mostrar una descripción. ¿Qué mecanismo corresponde?
+
+- [ ] Escribir su resultado de toString.
+  > Describe el objeto para lectura humana, pero no define un mecanismo general de reconstrucción.
+- [x] Serializarlo mediante ObjectOutputStream.
+  > Correcta: la serialización codifica el estado serializable para recuperarlo con ObjectInputStream.
+- [ ] Guardar únicamente el nombre de su clase.
+  > El nombre no incluye los valores de los campos del objeto concreto.
+- [ ] Representar su destino mediante File.
+  > File identifica una ruta; no codifica el estado de un objeto.
+
+Repasar: UT02-A §2.8–2.9, serialización.
+</Quiz>
+
+<Quiz id="an-15" title="Una interfaz sin métodos">
+¿Por qué declarar Serializable puede habilitar la serialización sin implementar nuevos métodos?
+
+- [ ] Porque añade un método writeObject heredado.
+  > Serializable no declara ese método; el flujo proporciona la escritura de objetos.
+- [ ] Porque convierte los campos en variables estáticas.
+  > No cambia la naturaleza de los campos ni los transforma en estado de clase.
+- [x] Porque marca la clase como serializable.
+  > Correcta: es una interfaz marcadora que reconoce el mecanismo de serialización.
+- [ ] Porque genera automáticamente un fichero destino.
+  > La declaración de la interfaz no abre flujos ni crea ficheros.
+
+Repasar: UT02-A §2.8, Serializable.
+</Quiz>
+
+<Quiz id="an-16" title="Objetos contenidos">
+Un pedido serializable contiene una dirección como campo de instancia no transient. ¿Qué condición requiere la serialización estándar de ese objeto dirección?
+
+- [ ] Que su clase tenga un método toString.
+  > Tener una descripción textual no habilita la serialización binaria.
+- [ ] Que su referencia esté declarada final.
+  > final evita reasignaciones, pero no convierte el objeto referenciado en serializable.
+- [ ] Que su clase use el mismo paquete del pedido.
+  > Compartir paquete no determina si un objeto puede serializarse.
+- [x] Que sea también un objeto serializable.
+  > Correcta: el mecanismo recorre los objetos referenciados incluidos en el estado que debe guardar.
+
+Repasar: UT02-A §2.8, objetos miembro.
+</Quiz>
+
+<Quiz id="an-17" title="Primitivos en binario">
+Se desea guardar enteros en formato binario y recuperarlos con su tipo, sin convertirlos en texto. ¿Qué pareja de clases encaja?
+
+- [x] DataOutputStream y DataInputStream.
+  > Correcta: ofrecen métodos emparejados para escribir y leer valores primitivos.
+- [ ] FileWriter y FileReader.
+  > Trabajan con caracteres; no son la pareja de escritura y lectura tipada de primitivos binarios.
+- [ ] BufferedWriter y BufferedReader.
+  > Añaden almacenamiento intermedio de caracteres, no el formato binario de los enteros.
+- [ ] StringWriter y StringReader.
+  > Trabajan sobre texto en memoria; no proporcionan ese formato binario tipado.
+
+Repasar: UT02-A §2.7, DataOutputStream.
+</Quiz>
+
+<Quiz id="an-18" title="Eliminar un registro textual">
+Un archivo secuencial contiene una línea por cliente, de longitud variable. ¿Qué estrategia elimina un cliente conservando el resto?
+
+- [ ] Reemplazar su línea por espacios del mismo tamaño.
+  > Conserva bytes y deja una línea de relleno; no elimina realmente el registro del archivo.
+- [x] Reescribir las líneas que deben conservarse.
+  > Correcta: se genera un archivo sin el registro y se sustituye el original tras completar la operación.
+- [ ] Cerrar el lector cuando aparezca el cliente.
+  > Interrumpe la lectura, pero no modifica ningún dato del archivo.
+- [ ] Borrar el fichero mediante su objeto File.
+  > Eliminaría todos los clientes, no únicamente el registro solicitado.
+
+Repasar: UT02-A §2.11, operaciones secuenciales; aplicación por reescritura.
+</Quiz>
+
+<Quiz id="an-19" title="Actualizar sin recorrer todo">
+Un archivo contiene registros de tamaño fijo y se conoce el índice del que hay que actualizar. ¿Qué ventaja del acceso aleatorio resuelve el requisito?
+
+- [ ] Representar el destino con una ruta portable.
+  > La representación de rutas es útil, pero no evita recorrer los registros anteriores.
+- [ ] Leer todos los registros con un solo búfer.
+  > Cargar todo el archivo no es necesario para acceder a una posición calculable.
+- [x] Situarse en el desplazamiento del registro.
+  > Correcta: el tamaño fijo permite calcular su posición y saltar directamente a ella.
+- [ ] Guardar cada número como texto legible.
+  > La representación textual no garantiza posiciones fijas ni acceso directo al registro.
+
+Repasar: UT02-A §2.12, RandomAccessFile.
+</Quiz>
+
+<Quiz id="an-20" title="Añadir con acceso aleatorio">
+Un RandomAccessFile se abre en modo de lectura y escritura sobre un archivo existente. Para añadir un registro sin sobrescribir los anteriores, ¿qué debe hacerse antes de escribir?
+
+- [ ] Situar el puntero al inicio del archivo.
+  > La escritura empezaría sobre el contenido previo, no después de él.
+- [ ] Volver a abrirlo en modo de solo lectura.
+  > El modo de solo lectura impide escribir el nuevo registro.
+- [ ] Crear de nuevo el objeto File de la ruta.
+  > Una referencia de ruta nueva no reposiciona el puntero del RandomAccessFile.
+- [x] Situar el puntero en la longitud actual.
+  > Correcta: length indica el desplazamiento inmediatamente posterior al último byte existente.
+
+Repasar: UT02-A §2.12, seek y length.
+</Quiz>
+
+<QuizResults />

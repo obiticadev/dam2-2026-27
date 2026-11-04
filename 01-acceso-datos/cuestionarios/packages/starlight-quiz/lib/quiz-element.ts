@@ -442,14 +442,13 @@ class StarlightQuizElement extends HTMLElement {
   }
 
   /**
-   * One feedback box per selected answer that carries feedback, each tagged
-   * with a badge naming the answer it responds to — essential when more than
-   * one answer's feedback is shown at once.
+   * Explain every option after submission when solutions may be revealed.
+   * Keep unselected feedback hidden when showCorrect is disabled.
    */
   #perAnswerFeedbackItems(): HTMLElement[] {
     const items: HTMLElement[] = [];
     for (const answer of this.#answers) {
-      if (answer.input.checked && answer.feedback) {
+      if ((answer.input.checked || this.#showCorrect) && answer.feedback) {
         const item = this.#feedbackItem(answer.correct);
         item.append(this.#feedbackBadge(answer));
         item.append(...Array.from(answer.feedback.cloneNode(true).childNodes));

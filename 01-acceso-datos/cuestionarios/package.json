@@ -7,7 +7,9 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test:cuestionarios": "node scripts/verificar-cuestionarios.mjs",
+    "test:trazas": "java --source 17 scripts/VerificarTrazas.java"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.42.6",

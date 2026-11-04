@@ -25,7 +25,13 @@ export default defineConfig({
 					label: 'UT02-B · XML',
 					items: [{ autogenerate: { directory: 'ut02b' } }],
 				},
-				{ label: 'Examen mixto', slug: 'examen-mixto' },
+				{
+					label: 'Simulacros mixtos · 20 preguntas',
+					items: [
+						{ label: 'Normal', slug: 'examen-mixto' },
+						{ label: 'Más difícil', slug: 'examen-mixto-dificil' },
+					],
+				},
 			],
 			plugins: [
 				starlightQuiz({

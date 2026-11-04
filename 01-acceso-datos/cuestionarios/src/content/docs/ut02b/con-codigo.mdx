@@ -1,0 +1,434 @@
+---
+title: "B · Con código · Normal"
+description: "20 preguntas prácticas de DOM, SAX, StAX y JAXB."
+sidebar:
+  order: 2
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Java 17 o posterior, con JAXB 2 externo cuando proceda. Se omiten imports, gestión de excepciones y cierre de recursos para centrar cada fragmento en su objetivo. Los objetos indicados están inicializados y las entradas son válidas salvo el defecto preguntado. Los XML de ejemplo no contienen espacios entre etiquetas, aunque se presenten indentados, salvo indicación expresa. Las clases JAXB tienen constructor sin argumentos y propiedades accesibles; no hay mapeos duplicados ni configuraciones adicionales.
+
+<Quiz id="bc-01" title="Crear el analizador DOM">
+¿Qué completa la creación del constructor de documentos?
+
+```java
+DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+DocumentBuilder builder = /* completar */;
+```
+
+- [ ] `new DocumentBuilder()`
+  > DocumentBuilder es abstracta y no se instancia directamente.
+- [x] `factory.newDocumentBuilder()`
+  > Correcta: la factoría proporciona el analizador configurado.
+- [ ] `factory.newDocument()`
+  > newDocument pertenece al builder y devuelve Document, no DocumentBuilder.
+- [ ] `DocumentBuilder.newInstance()`
+  > La operación newInstance está en la factoría, no en DocumentBuilder.
+
+Repasar: UT02-B §2.
+</Quiz>
+
+<Quiz id="bc-02" title="Un árbol inicialmente vacío">
+¿Qué hace este fragmento?
+
+```java
+Document doc = builder.newDocument();
+System.out.println(doc.getDocumentElement() == null);
+```
+
+- [ ] Imprime `false`; crea una raíz predeterminada.
+  > No se genera ninguna etiqueta raíz automáticamente.
+- [ ] Lanza una excepción; falta indicar un fichero.
+  > newDocument crea un documento en memoria sin requerir una entrada.
+- [x] Imprime `true`; todavía no hay elemento raíz.
+  > Correcta: existe el documento, pero aún no se le ha añadido una raíz.
+- [ ] Imprime `false`; Document es su propia raíz.
+  > Document no es el Element raíz; son nodos distintos.
+
+Repasar: UT02-B §2 y §2.5.
+</Quiz>
+
+<Quiz id="bc-03" title="Valor del elemento">
+`e` es el Element correspondiente a la etiqueta siguiente. ¿Qué imprime?
+
+```xml
+<nombre>Eva</nombre>
+```
+
+```java
+System.out.println(e.getNodeValue());
+```
+
+- [ ] `Eva`
+  > Es el contenido textual, accesible mediante getTextContent o el nodo Text hijo.
+- [ ] `nombre`
+  > Es el nombre del elemento, no su nodeValue.
+- [ ] Una cadena vacía.
+  > Element tiene nodeValue null, no una cadena vacía.
+- [x] `null`
+  > Correcta: el valor del nodo Element es null aunque contenga un hijo Text.
+
+Repasar: UT02-B §2.3.
+</Quiz>
+
+<Quiz id="bc-04" title="Recuperar el atributo">
+`e` representa este elemento. ¿Qué expresión obtiene el identificador?
+
+```xml
+<alumno id="A7">Eva</alumno>
+```
+
+- [x] `e.getAttribute("id")`
+  > Correcta: consulta el atributo por su nombre y devuelve "A7".
+- [ ] `e.getTextContent()`
+  > Devuelve "Eva", no el valor del atributo.
+- [ ] `e.getNodeName()`
+  > Devuelve "alumno", el nombre de la etiqueta.
+- [ ] `e.getNodeValue()`
+  > Devuelve null para un Element, no sus atributos.
+
+Repasar: UT02-B §2.3–2.4.
+</Quiz>
+
+<Quiz id="bc-05" title="La búsqueda llega más abajo">
+`raiz` es el Element `grupo`. ¿Qué imprime?
+
+```xml
+<grupo>
+  <alumno/>
+  <subgrupo><alumno/></subgrupo>
+</grupo>
+```
+
+```java
+System.out.println(raiz.getElementsByTagName("alumno").getLength());
+```
+
+- [ ] `0`
+  > Ambos elementos alumno son descendientes de grupo.
+- [x] `2`
+  > Correcta: incluye el alumno directo y el contenido en subgrupo.
+- [ ] `1`
+  > Esa cuenta limita erróneamente la búsqueda a hijos inmediatos.
+- [ ] `3`
+  > subgrupo no coincide con el nombre alumno.
+
+Repasar: UT02-B §2.3.
+</Quiz>
+
+<Quiz id="bc-06" title="No todos los hijos son elementos">
+En este caso la indentación y los saltos mostrados **sí existen** en la entrada. Con un parser DOM predeterminado, ¿qué tipo tiene el primer hijo de `grupo`?
+
+```xml
+<grupo>
+  <alumno/>
+</grupo>
+```
+
+```java
+Node primero = raiz.getFirstChild();
+```
+
+- [ ] `Element`, correspondiente a alumno.
+  > Antes de alumno hay texto de salto e indentación conservado por el parser.
+- [ ] `Attr`, correspondiente al nombre grupo.
+  > grupo es un elemento y el espacio de indentación no es un atributo.
+- [x] `Text`, con el espacio de indentación.
+  > Correcta: getFirstChild no salta automáticamente los nodos de texto.
+- [ ] `Document`, correspondiente al XML entero.
+  > Document es el contenedor superior, no un hijo del elemento raíz.
+
+Repasar: UT02-B §2.3.
+</Quiz>
+
+<Quiz id="bc-07" title="Índice fuera de la lista">
+`lista` contiene exactamente dos nodos. ¿Qué devuelve esta expresión?
+
+```java
+lista.item(2)
+```
+
+- [ ] El segundo nodo de la lista.
+  > Los índices válidos son 0 y 1, no 1 y 2.
+- [ ] El último nodo repetido.
+  > NodeList no ajusta el índice al último elemento disponible.
+- [ ] Lanza `IndexOutOfBoundsException`.
+  > NodeList.item devuelve null cuando el índice queda fuera de rango.
+- [x] `null`.
+  > Correcta: no existe un nodo de índice 2 en una lista de longitud 2.
+
+Repasar: UT02-B §2.3, NodeList.
+</Quiz>
+
+<Quiz id="bc-08" title="Conectar el nuevo elemento">
+`raiz` ya pertenece a `doc`. ¿Qué instrucción falta para que `nuevo` sea hijo de la raíz?
+
+```java
+Element nuevo = doc.createElement("alumno");
+nuevo.setTextContent("Eva");
+// completar
+```
+
+- [x] `raiz.appendChild(nuevo);`
+  > Correcta: conecta el nodo creado al lugar que debe ocupar en el árbol.
+- [ ] `doc.createElement("alumno");`
+  > Crea otro nodo desconectado, sin insertar ninguno de los dos.
+- [ ] `nuevo.appendChild(raiz);`
+  > Invierte la relación: intenta colocar la raíz dentro del nuevo nodo.
+- [ ] `nuevo.getParentNode();`
+  > Solo consulta el padre; no establece ninguna relación.
+
+Repasar: UT02-B §2.5.
+</Quiz>
+
+<Quiz id="bc-09" title="XML desde un árbol">
+¿Qué pareja de adaptadores permite guardar el DOM en un fichero?
+
+```java
+Transformer t = TransformerFactory.newInstance().newTransformer();
+t.transform(/* origen */, /* destino */);
+```
+
+- [ ] `new StreamSource(fichero)`, `new DOMResult(doc)`
+  > Es una entrada de flujo hacia un resultado DOM, no la dirección solicitada.
+- [x] `new DOMSource(doc)`, `new StreamResult(fichero)`
+  > Correcta: el árbol es el origen y el fichero es el destino XML.
+- [ ] `new DOMResult(doc)`, `new StreamSource(fichero)`
+  > Invierte los tipos requeridos: transform espera Source y después Result.
+- [ ] `new StreamResult(fichero)`, `new DOMSource(doc)`
+  > Son los adaptadores adecuados pero en posiciones incompatibles con la firma.
+
+Repasar: UT02-B §2.5.
+</Quiz>
+
+<Quiz id="bc-10" title="Contenido mixto">
+`e` representa el elemento `p`. ¿Qué imprime?
+
+```xml
+<p>Hola <b>Eva</b>!</p>
+```
+
+```java
+System.out.println(e.getTextContent());
+```
+
+- [ ] `Hola !`
+  > getTextContent incluye también el texto de los elementos descendientes.
+- [ ] `Hola <b>Eva</b>!`
+  > Devuelve texto concatenado, no la serialización de las etiquetas.
+- [x] `Hola Eva!`
+  > Correcta: concatena el texto directo y el contenido textual de b, en orden.
+- [ ] `Eva`
+  > No se limita al texto del elemento anidado; incluye los demás nodos Text.
+
+Repasar: UT02-B §2.3.
+</Quiz>
+
+<Quiz id="bc-11" title="Poner en marcha SAX">
+`MiHandler` extiende DefaultHandler. ¿Qué inicia el análisis con ese manejador?
+
+```java
+SAXParser p = SAXParserFactory.newInstance().newSAXParser();
+MiHandler h = new MiHandler();
+```
+
+- [ ] `h.parse(new File("a.xml"), p);`
+  > DefaultHandler no proporciona ese método de análisis.
+- [ ] `p.newDocument(h);`
+  > SAXParser no crea un Document ni admite esa llamada.
+- [ ] `h.startDocument();`
+  > Invoca un callback aislado, pero no hace leer el XML al parser.
+- [x] `p.parse(new File("a.xml"), h);`
+  > Correcta: el parser lee el fichero y notifica sus eventos a h.
+
+Repasar: UT02-B §3.1–3.2.
+</Quiz>
+
+<Quiz id="bc-12" title="Rango de characters">
+Esta es una llamada concreta al manejador. ¿Qué texto debe añadirse al acumulador?
+
+```java
+char[] ch = {'X', 'E', 'v', 'a', 'Y'};
+handler.characters(ch, 1, 3);
+```
+
+- [x] `Eva`
+  > Correcta: start es 1 y length es 3; se toman los índices 1, 2 y 3.
+- [ ] `XEv`
+  > Usa longitud tres, pero olvida el desplazamiento inicial.
+- [ ] `Ev`
+  > Trata el tercer argumento como límite exclusivo en vez de cantidad.
+- [ ] `EvaY`
+  > Copia hasta el final del array, aunque el rango válido solo contiene tres caracteres.
+
+Repasar: UT02-B §3.2.
+</Quiz>
+
+<Quiz id="bc-13" title="Acumular en vez de reemplazar">
+Durante un elemento de texto simple se reciben dos callbacks con los fragmentos `"12"` y `"5"`. ¿Qué cuerpo conserva todo el valor?
+
+```java
+public void characters(char[] ch, int start, int length) {
+    // texto es un StringBuilder reiniciado al abrir el elemento
+}
+```
+
+- [ ] `texto = new StringBuilder(new String(ch, start, length));`
+  > Sustituye lo anterior en cada llamada y acabaría conservando solo "5".
+- [x] `texto.append(ch, start, length);`
+  > Correcta: agrega ambos rangos y el acumulador termina con "125".
+- [ ] `texto.append(ch);`
+  > Añade todo el array, que puede contener posiciones ajenas al fragmento válido.
+- [ ] `texto.setLength(0);`
+  > Borra lo acumulado y no incorpora los caracteres recibidos.
+
+Repasar: UT02-B §3.2.
+</Quiz>
+
+<Quiz id="bc-14" title="Atributo de apertura SAX">
+En startElement se está procesando un alumno con atributo `id="A7"`. ¿Qué expresión recupera ese valor?
+
+```java
+public void startElement(String uri, String localName,
+        String qName, Attributes attributes) {
+    // recuperar aquí el identificador
+}
+```
+
+- [ ] `qName.getAttribute("id")`
+  > qName es un String con el nombre de la etiqueta, no un elemento DOM.
+- [ ] `attributes.getValue("alumno")`
+  > alumno es la etiqueta; el atributo solicitado se llama id.
+- [x] `attributes.getValue("id")`
+  > Correcta: Attributes permite consultar por nombre los atributos del elemento que empieza.
+- [ ] `new String(ch, start, length)`
+  > Esos parámetros pertenecen a characters y representan texto, no los atributos de apertura.
+
+Repasar: UT02-B §3.2.
+</Quiz>
+
+<Quiz id="bc-15" title="Lo que devuelve el cursor">
+¿Qué tipo corresponde a la variable `evento`?
+
+```java
+XMLStreamReader r = factory.createXMLStreamReader(entrada);
+// mientras existe un siguiente evento:
+var evento = r.next();
+```
+
+- [ ] `XMLEvent`
+  > Es el objeto que devuelve nextEvent en la API de iteradores.
+- [ ] `Element`
+  > Element es un nodo DOM; el cursor StAX no lo crea automáticamente.
+- [ ] `String`
+  > El avance no devuelve directamente el nombre o texto del evento.
+- [x] `int`
+  > Correcta: next devuelve un código de tipo de evento, comparable con XMLStreamConstants.
+
+Repasar: UT02-B §4.2.
+</Quiz>
+
+<Quiz id="bc-16" title="Leer el texto consume eventos">
+El cursor está en START_ELEMENT de `precio`, cuyo contenido es solo `12`. ¿Dónde queda tras la llamada?
+
+```java
+String valor = r.getElementText();
+```
+
+- [x] En el END_ELEMENT de precio.
+  > Correcta: consume el contenido y llega al cierre del elemento actual.
+- [ ] En el mismo START_ELEMENT de precio.
+  > No es una consulta sin avance: getElementText consume eventos.
+- [ ] En el START_ELEMENT del siguiente hermano.
+  > No consume también la apertura del siguiente elemento.
+- [ ] En el END_DOCUMENT de toda la entrada.
+  > Lee el elemento actual, no necesariamente el documento completo.
+
+Repasar: UT02-B §4.2.
+</Quiz>
+
+<Quiz id="bc-17" title="Objetos de evento">
+¿Qué llamada completa el recorrido con la API de iteradores StAX?
+
+```java
+XMLEventReader r = factory.createXMLEventReader(entrada);
+while (r.hasNext()) {
+    XMLEvent e = /* completar */;
+}
+```
+
+- [ ] `r.getEventType()`
+  > No proporciona el siguiente objeto XMLEvent; confunde interfaces de cursor e iteradores.
+- [x] `r.nextEvent()`
+  > Correcta: consume y devuelve el siguiente evento como objeto tipado.
+- [ ] `r.hasNext()`
+  > Devuelve boolean y no consume el evento.
+- [ ] `r.getElementText()`
+  > Devuelve String y solo sirve en la posición apropiada para leer texto de un elemento.
+
+Repasar: UT02-B §4.3.
+</Quiz>
+
+<Quiz id="bc-18" title="Nombres en una colección JAXB">
+En una propiedad de colección, ¿qué nombres XML establecen estas anotaciones?
+
+```java
+@XmlElementWrapper(name = "libros")
+@XmlElement(name = "libro")
+public void setLista(List<Libro> lista) { this.lista = lista; }
+```
+
+- [ ] Cada miembro es libros y su contenedor es libro.
+  > Invierte el papel de Wrapper y Element.
+- [ ] Cada miembro es lista y su contenedor es libros.
+  > El nombre explícito libro sustituye al nombre de la propiedad para los miembros.
+- [x] Cada miembro es libro y su contenedor es libros.
+  > Correcta: Wrapper nombra la envoltura y Element cada entrada de la colección.
+- [ ] Cada miembro es libro y no existe contenedor.
+  > Omite el nivel que añade XmlElementWrapper.
+
+Repasar: UT02-B §5.1–5.2.
+</Quiz>
+
+<Quiz id="bc-19" title="Orden de elementos JAXB">
+¿Qué efecto relevante tiene esta anotación sobre una clase con esas propiedades mapeadas como elementos?
+
+```java
+@XmlType(propOrder = {"autor", "titulo"})
+public class Libro { /* propiedades autor y titulo */ }
+```
+
+- [ ] Convierte autor y titulo en atributos XML.
+  > XmlType.propOrder no sustituye a XmlAttribute.
+- [ ] Ordena alfabéticamente los libros de la lista.
+  > No ordena objetos de una colección; controla el orden de propiedades como elementos.
+- [ ] Establece autor como etiqueta raíz del XML.
+  > La raíz se mapea con XmlRootElement, no con propOrder.
+- [x] Sitúa autor antes que titulo al serializar.
+  > Correcta: propOrder fija el orden de los elementos correspondientes a las propiedades indicadas.
+
+Repasar: UT02-B §5.1.
+</Quiz>
+
+<Quiz id="bc-20" title="Del objeto al fichero XML">
+`catalogo` es un objeto correctamente mapeado con JAXB. ¿Qué operación escribe su XML?
+
+```java
+JAXBContext contexto = JAXBContext.newInstance(Catalogo.class);
+Marshaller m = contexto.createMarshaller();
+```
+
+- [x] `m.marshal(catalogo, new File("catalogo.xml"));`
+  > Correcta: marshal convierte el objeto mapeado al XML del destino indicado.
+- [ ] `m.unmarshal(new File("catalogo.xml"));`
+  > Unmarshal es la operación inversa y pertenece a Unmarshaller.
+- [ ] `contexto.createUnmarshaller();`
+  > Solo crea un componente de lectura; no escribe el catálogo.
+- [ ] `m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);`
+  > Configura la presentación del XML, pero no ejecuta su escritura.
+
+Repasar: UT02-B §5.3.
+</Quiz>
+
+<QuizResults />

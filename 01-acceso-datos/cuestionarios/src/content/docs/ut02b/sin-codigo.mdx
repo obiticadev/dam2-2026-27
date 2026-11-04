@@ -1,0 +1,312 @@
+---
+title: "B · Sin código · Normal"
+description: "20 decisiones sobre XML, DOM, SAX, StAX y JAXB."
+sidebar:
+  order: 1
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Sin fragmentos de código. Elige la opción que resuelve la situación, no una característica verdadera pero irrelevante. JAXB se refiere a JAXB 2, con paquetes `javax.xml.bind`.
+
+<Quiz id="bn-01" title="Compartir información">
+Dos aplicaciones de lenguajes distintos deben intercambiar datos jerárquicos. ¿Qué aporta XML para resolver esa necesidad?
+
+- [ ] La obligación de compartir clases Java.
+  > XML no exige usar Java; precisamente permite intercambiar datos entre tecnologías distintas.
+- [ ] La conservación de referencias de memoria.
+  > Las direcciones internas de un proceso no se comparten mediante etiquetas XML.
+- [x] Un formato textual estructurado y portable.
+  > Correcta: etiquetas y atributos representan la información sin depender del modelo interno de cada aplicación.
+- [ ] Un tamaño siempre menor que el binario.
+  > XML no garantiza esa ventaja de tamaño y ese no es el requisito planteado.
+
+Repasar: UT02-B §1.
+</Quiz>
+
+<Quiz id="bn-02" title="El trabajo del analizador">
+Una aplicación recibe un XML y necesita interpretar sus etiquetas y jerarquía. ¿Qué tarea corresponde al parser?
+
+- [ ] Elegir el significado empresarial de cada dato.
+  > El significado del negocio lo establece la aplicación; el parser analiza la estructura XML.
+- [ ] Convertir cualquier XML en objetos del dominio.
+  > Ese enlace requiere un mapeo como JAXB; no es una propiedad de todo parser.
+- [ ] Guardar automáticamente los cambios en el origen.
+  > Analizar el documento no implica modificar ni reescribir su fichero.
+- [x] Analizar la estructura y exponer su contenido.
+  > Correcta: reconoce el documento y ofrece sus componentes mediante la representación o eventos de la API.
+
+Repasar: UT02-B §1.1.
+</Quiz>
+
+<Quiz id="bn-03" title="Editar una configuración pequeña">
+Se consultará repetidamente una configuración XML pequeña y se reorganizarán sus elementos antes de guardarla. ¿Qué elección encaja mejor?
+
+- [x] DOM, por su árbol navegable y modificable.
+  > Correcta: conservar la jerarquía en memoria facilita consultas repetidas y cambios estructurales.
+- [ ] SAX, por sus notificaciones durante la lectura.
+  > Es una característica real, pero no proporciona un árbol editable para esas consultas y cambios.
+- [ ] StAX, por avanzar cuando lo pide el programa.
+  > El control pull es útil, pero no mantiene por sí solo el árbol que necesita esta edición.
+- [ ] File, por representar rutas de archivos XML.
+  > Identifica el recurso, pero no interpreta ni modifica su jerarquía XML.
+
+Repasar: UT02-B §1.1–1.2 y §2.
+</Quiz>
+
+<Quiz id="bn-04" title="Un único recorrido con callbacks">
+Se contará información de un XML enorme en una sola pasada, sin modificarlo, mediante un manejador que recibe avisos. ¿Qué API responde al planteamiento?
+
+- [ ] DOM, con el árbol completo en memoria.
+  > Permite consultar, pero cargar todo el árbol no se ajusta a la restricción ni al modelo de avisos.
+- [x] SAX, con eventos enviados al manejador.
+  > Correcta: el parser notifica los eventos mientras lee, sin construir el árbol completo.
+- [ ] StAX, con peticiones del próximo evento.
+  > También permite streaming, pero el modelo descrito es push con callbacks, no pull.
+- [ ] JAXB, con objetos enlazados al documento.
+  > El binding no es el modelo de manejador de eventos solicitado.
+
+Repasar: UT02-B §3.
+</Quiz>
+
+<Quiz id="bn-05" title="Controlar el avance">
+La aplicación debe pedir el siguiente evento XML solo cuando esté preparada para procesarlo. ¿Qué característica de StAX satisface ese requisito?
+
+- [ ] La materialización del documento como árbol.
+  > StAX no conserva automáticamente el árbol completo; ese es el modelo DOM.
+- [ ] El envío de callbacks desde el manejador.
+  > Los callbacks iniciados por el parser corresponden al modelo push de SAX.
+- [x] El consumo de eventos bajo un modelo pull.
+  > Correcta: la aplicación solicita activamente el avance y controla cuándo consume cada evento.
+- [ ] La generación de clases desde un esquema.
+  > Es una capacidad del entorno de binding, no la razón del control de avance de StAX.
+
+Repasar: UT02-B §4.
+</Quiz>
+
+<Quiz id="bn-06" title="Documento y raíz">
+En DOM, ¿qué relación existe entre Document y el elemento raíz del XML?
+
+- [ ] Son dos nombres del mismo nodo.
+  > Document y Element son nodos distintos, aunque ambos formen parte del mismo árbol.
+- [ ] El elemento raíz contiene al Document.
+  > La relación está invertida: el documento contiene el elemento raíz.
+- [ ] Document representa solo el texto de la raíz.
+  > El texto es contenido representado por nodos Text; Document abarca el documento.
+- [x] Document contiene al elemento raíz.
+  > Correcta: el documento representa el XML completo y su raíz es un nodo Element.
+
+Repasar: UT02-B §2.3.
+</Quiz>
+
+<Quiz id="bn-07" title="Leer no es empezar de cero">
+Se desea cargar un XML existente en un árbol DOM. ¿Qué operación corresponde?
+
+- [x] Parsear el fichero con DocumentBuilder.
+  > Correcta: parse analiza la entrada y construye su representación Document en memoria.
+- [ ] Pedir un documento nuevo a DocumentBuilder.
+  > newDocument crea un árbol vacío; no carga el contenido del fichero.
+- [ ] Transformar un Document hacia StreamResult.
+  > Es la dirección de escritura desde el árbol, no la carga del fichero.
+- [ ] Crear un elemento con el nombre del fichero.
+  > El nombre del recurso no contiene ni reconstruye su estructura XML.
+
+Repasar: UT02-B §2, parseo.
+</Quiz>
+
+<Quiz id="bn-08" title="Guardar lo modificado">
+Ya se ha modificado un árbol DOM en memoria. ¿Qué acción persiste esos cambios como XML en un fichero?
+
+- [ ] Consultar otra vez el elemento raíz.
+  > La consulta no serializa ni escribe el árbol.
+- [x] Transformar el DOM hacia un StreamResult.
+  > Correcta: Transformer recibe el DOMSource y produce la salida XML en el destino indicado.
+- [ ] Normalizar los nodos de texto del árbol.
+  > normalize afecta a la organización de nodos Text, pero no guarda el documento.
+- [ ] Volver a parsear el fichero original.
+  > Eso vuelve a leer el estado guardado, no escribe el árbol modificado.
+
+Repasar: UT02-B §2.5.
+</Quiz>
+
+<Quiz id="bn-09" title="Saltos que también son nodos">
+Al recorrer los hijos DOM de un elemento con XML indentado aparecen nodos Text entre las etiquetas. ¿Por qué?
+
+- [ ] Porque cada atributo se convierte en un hijo Text.
+  > Los atributos son Attr; no explican los espacios entre las etiquetas.
+- [ ] Porque DOM duplica todos los elementos al parsear.
+  > No existe esa duplicación automática del árbol.
+- [x] Porque la indentación también es texto del XML.
+  > Correcta: los saltos y espacios pueden conservarse como nodos Text al analizar el documento.
+- [ ] Porque las etiquetas vacías carecen de nodo Element.
+  > Una etiqueta vacía también corresponde a un Element; no desaparece por no tener texto.
+
+Repasar: UT02-B §2.3.
+</Quiz>
+
+<Quiz id="bn-10" title="Seleccionar solo hijos directos">
+Se necesita procesar únicamente los elementos hijo inmediatos, no los que estén más abajo en la jerarquía DOM. ¿Qué estrategia cumple el requisito?
+
+- [ ] Buscar el nombre con getElementsByTagName.
+  > Busca descendientes de cualquier profundidad; puede devolver más de lo solicitado.
+- [ ] Recoger todos los nodos Text del documento.
+  > Ni selecciona elementos ni limita la búsqueda a los hijos inmediatos.
+- [ ] Recorrer los hermanos del elemento padre.
+  > Los hermanos están al mismo nivel que el padre, no dentro de él.
+- [x] Recorrer sus hijos y filtrar los Element.
+  > Correcta: getChildNodes limita al nivel inmediato y el tipo permite descartar texto y otros nodos.
+
+Repasar: UT02-B §2.3, navegación.
+</Quiz>
+
+<Quiz id="bn-11" title="Crear un nodo no lo inserta">
+Se crea un Element mediante Document, pero no aparece al guardar el árbol. ¿Qué paso puede faltar?
+
+- [x] Añadir ese nodo al padre correspondiente.
+  > Correcta: createElement crea un nodo asociado al documento, pero aún desconectado del árbol.
+- [ ] Volver a crear la factoría del analizador.
+  > La factoría no inserta nodos en el documento ya construido.
+- [ ] Convertir el nombre del elemento en una ruta.
+  > Las rutas localizan ficheros; no establecen relaciones entre nodos DOM.
+- [ ] Consultar el valor textual del nodo nuevo.
+  > Leer el texto no conecta el nodo con ningún padre.
+
+Repasar: UT02-B §2.3 y §2.5.
+</Quiz>
+
+<Quiz id="bn-12" title="Texto SAX fragmentado">
+Un importe puede llegar repartido entre varias llamadas a characters. ¿Qué estrategia evita perder parte de su valor?
+
+- [ ] Convertir cada fragmento por separado a número.
+  > Un fragmento puede no ser el número completo; convertirlo antes de tiempo cambia o invalida el resultado.
+- [x] Acumular fragmentos y convertir al cerrar la etiqueta.
+  > Correcta: endElement delimita el momento en que ya se ha recibido todo el texto simple del importe.
+- [ ] Conservar únicamente el último fragmento recibido.
+  > Sobrescribir el acumulador pierde los fragmentos anteriores.
+- [ ] Suponer una llamada por cada etiqueta de texto.
+  > La API no garantiza una única notificación de characters para cada elemento.
+
+Repasar: UT02-B §3.2.
+</Quiz>
+
+<Quiz id="bn-13" title="Atributos en SAX">
+Se necesita recuperar el identificador declarado como atributo al abrir un elemento. ¿Dónde se recibe esa información?
+
+- [ ] En los caracteres de indentación previos.
+  > La indentación no codifica los atributos.
+- [ ] En el argumento textual de endDocument.
+  > endDocument no recibe un conjunto de atributos ni texto del elemento.
+- [x] En Attributes durante startElement.
+  > Correcta: la apertura entrega los atributos del elemento para consultarlos por nombre.
+- [ ] En un Document creado por DefaultHandler.
+  > SAX y su manejador no construyen automáticamente un árbol DOM.
+
+Repasar: UT02-B §3.1–3.2.
+</Quiz>
+
+<Quiz id="bn-14" title="No confundir lectura con escritura">
+Un programa necesita generar un XML secuencialmente, sin construir un árbol. ¿Qué componente ofrece esa capacidad?
+
+- [ ] El manejador DefaultHandler de SAX.
+  > Recibe notificaciones de lectura; no es un escritor XML.
+- [ ] El lector XMLStreamReader de StAX.
+  > Pertenece a StAX, pero su función concreta es leer, no emitir XML.
+- [ ] El analizador SAXParser de SAX.
+  > Analiza entradas; SAX no proporciona ese escritor de salida.
+- [x] El escritor XMLStreamWriter de StAX.
+  > Correcta: la API de cursor incluye un componente para producir XML de forma secuencial.
+
+Repasar: UT02-B §4 y §4.2.
+</Quiz>
+
+<Quiz id="bn-15" title="Cursor frente a objetos de evento">
+La aplicación quiere conservar referencias a eventos StAX ya recibidos para consultarlos más tarde. ¿Qué estilo se ajusta directamente a esa representación?
+
+- [x] Iteradores, que entregan objetos XMLEvent.
+  > Correcta: se pueden guardar los objetos recibidos; eso no permite retroceder el lector automáticamente.
+- [ ] Cursor, que devuelve un Document completo.
+  > El cursor expone el evento actual; no devuelve un árbol DOM.
+- [ ] SAX, que hereda de XMLEventReader.
+  > SAX usa un manejador push y no es una variante de XMLEventReader.
+- [ ] JAXB, que transforma cada evento en Attr.
+  > JAXB enlaza XML con objetos del modelo; Attr pertenece a DOM.
+
+Repasar: UT02-B §4.3.
+</Quiz>
+
+<Quiz id="bn-16" title="Volver a un dato anterior">
+Un lector StAX ya consumió un elemento y no se guardó su información. ¿Qué limitación importa si ahora se necesita consultar ese dato?
+
+- [ ] Debe convertirse el fichero XML a binario.
+  > La representación textual no es la causa de la limitación del lector.
+- [x] El lector no retrocede; habrá que releer la entrada.
+  > Correcta: ambas variantes StAX avanzan hacia delante; guardar eventos sería una decisión de la aplicación.
+- [ ] Solo se puede consultar usando getPreviousSibling.
+  > Ese método pertenece a un árbol DOM, que StAX no mantiene automáticamente.
+- [ ] Basta con cambiar al modo de escritura del lector.
+  > Un lector no cambia de modo para recuperar eventos pasados.
+
+Repasar: UT02-B §4.
+</Quiz>
+
+<Quiz id="bn-17" title="Trabajar con el modelo del negocio">
+El objetivo es cargar un catálogo XML como objetos Libro y modificar sus propiedades sin recorrer etiquetas manualmente. ¿Qué aporta JAXB?
+
+- [ ] Un algoritmo para comprimir los ficheros XML.
+  > La compresión no es el problema que resuelve el binding.
+- [ ] Una ruta portable para localizar cada libro.
+  > Localizar ficheros no establece correspondencia entre propiedades y etiquetas.
+- [x] Un enlace entre el XML y las clases Java.
+  > Correcta: el mapeo permite acceder al contenido a través del modelo de objetos.
+- [ ] Un árbol DOM con búsquedas XPath obligatorias.
+  > JAXB no exige manipular un Document ni usar XPath para cada propiedad.
+
+Repasar: UT02-B §5.
+</Quiz>
+
+<Quiz id="bn-18" title="Dirección de la conversión">
+Ya se dispone de objetos Java mapeados y se quiere producir el XML que los representa. ¿Qué operación de JAXB corresponde?
+
+- [ ] Parse con DocumentBuilder.
+  > Construye un DOM desde XML; no transforma objetos del dominio mediante JAXB.
+- [ ] Unmarshal con Unmarshaller.
+  > Realiza la dirección inversa: XML hacia objetos Java.
+- [ ] Next con XMLStreamReader.
+  > Consume el siguiente evento de lectura StAX; no serializa los objetos.
+- [x] Marshal con Marshaller.
+  > Correcta: toma los objetos mapeados y produce su representación XML.
+
+Repasar: UT02-B §5.3.
+</Quiz>
+
+<Quiz id="bn-19" title="Contenedor de una colección">
+Se debe distinguir el nombre del contenedor de una lista del nombre de cada elemento de la lista. ¿Qué combinación de anotaciones JAXB lo expresa?
+
+- [x] XmlElementWrapper y XmlElement.
+  > Correcta: Wrapper define la etiqueta envolvente y Element la etiqueta de cada miembro.
+- [ ] XmlRootElement y XmlAttribute.
+  > Definen raíz y atributo, no los dos niveles de una colección.
+- [ ] XmlType y XmlRootElement.
+  > Configuran el tipo y la raíz; no reemplazan el mapeo del contenedor y sus elementos.
+- [ ] XmlAttribute y XmlType.
+  > Un atributo y la configuración del tipo no crean la estructura solicitada de lista.
+
+Repasar: UT02-B §5.1–5.2.
+</Quiz>
+
+<Quiz id="bn-20" title="JAXB en Java actual">
+Los ejemplos usan JAXB 2 y deben ejecutarse en JDK 17. ¿Qué preparación responde al requisito?
+
+- [ ] Importar javax.xml.bind sin añadir dependencias.
+  > Los imports no instalan la API ni su implementación, ausentes del JDK 17.
+- [x] Añadir API e implementación compatibles de JAXB 2.
+  > Correcta: desde Java 11 JAXB es externo; se conserva javax para los ejemplos del temario.
+- [ ] Cambiar solo los imports a jakarta.xml.bind.
+  > No instala dependencias y mezcla una versión distinta sin adaptar el proyecto.
+- [ ] Activar JAXB mediante DocumentBuilderFactory.
+  > La factoría DOM no instala ni configura el motor de binding JAXB.
+
+Repasar: UT02-B §5, versiones y dependencias.
+</Quiz>
+
+<QuizResults />
