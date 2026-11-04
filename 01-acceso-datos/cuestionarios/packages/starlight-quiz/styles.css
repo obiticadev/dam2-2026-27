@@ -187,7 +187,7 @@
 
   .sl-quiz-answer--correct {
     border-color: var(--slq-correct);
-    background: var(--slq-correct-bg);
+    background: color-mix(in srgb, var(--slq-correct) 8%, var(--slq-bg));
   }
 
   .sl-quiz-answer--correct input {
@@ -196,11 +196,46 @@
 
   .sl-quiz-answer--wrong {
     border-color: var(--slq-wrong);
-    background: var(--slq-wrong-bg);
+    background: color-mix(in srgb, var(--slq-wrong) 8%, var(--slq-bg));
   }
 
   .sl-quiz-answer--wrong input {
     accent-color: var(--slq-wrong);
+  }
+
+  .sl-quiz-answer--neutral {
+    background: var(--slq-surface);
+    border-color: var(--slq-border);
+    color: var(--slq-muted);
+  }
+
+  .sl-quiz[data-answered] .sl-quiz-answer {
+    align-items: start;
+  }
+
+  .sl-quiz[data-answered] .sl-quiz-answer input {
+    margin-top: 0.2em;
+  }
+
+  .sl-quiz-answer-status {
+    grid-column: 2;
+    margin: 0.5rem 0 0;
+    font-size: 0.8125rem;
+    font-weight: 700;
+  }
+
+  .sl-quiz-answer--correct .sl-quiz-answer-status {
+    color: var(--slq-correct-high);
+  }
+
+  .sl-quiz-answer--wrong .sl-quiz-answer-status {
+    color: var(--slq-wrong-high);
+  }
+
+  .sl-quiz-answer-status[hidden],
+  .sl-quiz-answer-feedback[hidden],
+  .sl-quiz-feedback[hidden] {
+    display: none;
   }
 
   .sl-quiz-answer-feedback {
@@ -212,6 +247,15 @@
 
   .sl-quiz-answer-feedback > :first-child {
     margin-top: 0;
+  }
+
+  .sl-quiz-answer-feedback > :last-child {
+    margin-bottom: 0;
+  }
+
+  .sl-quiz-answer--correct .sl-quiz-answer-feedback,
+  .sl-quiz-answer--wrong .sl-quiz-answer-feedback {
+    color: var(--slq-text);
   }
 
   /* Fill-in-the-blank inputs */
@@ -241,17 +285,13 @@
     background: var(--slq-wrong-bg);
   }
 
-  /* Feedback panel: a stack of tinted boxes — one per shown answer's feedback,
-     or a single generic message. Each box is badged with the answer it relates
-     to so multiple feedbacks stay distinguishable (mirrors mkdocs-quiz). */
+  /* Generic feedback for blanks. Choice explanations are rendered inline. */
   .sl-quiz-feedback {
     display: flex;
     flex-direction: column;
     gap: 0.875rem;
-    /* The top space lets the first box's badge (which overhangs the top edge)
-       clear the answers above it. */
     margin: 0;
-    padding-top: 1.5rem;
+    padding-top: 0.875rem;
   }
 
   .sl-quiz-feedback:focus-visible {
@@ -287,32 +327,6 @@
 
   .sl-quiz-feedback-item > :last-child {
     margin-bottom: 0;
-  }
-
-  /* Badge straddling the top-inline-start edge, naming the answer. */
-  .sl-quiz-feedback-badge {
-    position: absolute;
-    top: -0.6rem;
-    inset-inline-start: 0.6rem;
-    max-inline-size: calc(100% - 1.2rem);
-    padding: 0.15rem 0.45rem;
-    border-radius: 0.25rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    line-height: 1.25;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .sl-quiz-feedback-item--correct .sl-quiz-feedback-badge {
-    background: var(--slq-correct);
-    color: var(--slq-bg);
-  }
-
-  .sl-quiz-feedback-item--wrong .sl-quiz-feedback-badge {
-    background: var(--slq-wrong);
-    color: var(--slq-bg);
   }
 
   .sl-quiz-feedback-message {

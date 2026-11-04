@@ -33,6 +33,8 @@ Cada carpeta de unidad se añade sola a la barra lateral; para una unidad nueva 
 
 Convenciones: **cuatro opciones**, una sola `[x]`, un comentario `>` por opción, `id` estable y único, y una referencia final `Repasar` al apartado del temario. Los prefijos nuevos (`an`, `ac`, `bn`, `bc`, `mn`, `md`) evitan reutilizar las respuestas guardadas de preguntas anteriores. Con `showCorrect: true`, al corregir se muestran las explicaciones de las cuatro opciones; si se desactiva, solo se explica la elegida.
 
+Las explicaciones aparecen dentro de cada opción, sin repetir las respuestas en cajas separadas. Al corregir, la correcta se marca en verde, solo una elección incorrecta se marca en rojo y las demás quedan en gris. Un indicador textual con ✓/✕ complementa el color; el resultado también se anuncia mediante una región accesible. Reiniciar oculta explicaciones y restaura los colores iniciales.
+
 ## Fuentes y criterio editorial
 
 Se consultaron en `D:/obsidian/DAM2` los temarios `Fuentes/AD/temario/UT02-A-manejo-de-ficheros.md` y `UT02-B-librerias-xml-java.md`, el índice de AD, la nota del primer examen, el repaso esencial y las aclaraciones DOM pertinentes. Las referencias § corresponden a los encabezados numerados de las fuentes. Los escenarios son práctica elaborada, no preguntas oficiales.

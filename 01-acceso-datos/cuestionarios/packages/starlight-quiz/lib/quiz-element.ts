@@ -18,6 +18,7 @@ interface ChoiceAnswer {
   correct: boolean;
   index: number;
   feedback: HTMLElement | null;
+  status: HTMLParagraphElement;
 }
 
 const DEFAULT_LABELS: QuizLabels = {
@@ -274,9 +275,19 @@ class StarlightQuizElement extends HTMLElement {
     }
 
     wrapper.append(input, label);
+    const status = document.createElement('p');
+    status.className = 'sl-quiz-answer-status';
+    status.id = `${input.id}-status`;
+    status.hidden = true;
+    wrapper.append(status);
+    input.setAttribute('aria-describedby', status.id);
+    if (feedback) {
+      feedback.id = `${input.id}-feedback`;
+      input.setAttribute('aria-describedby', `${status.id} ${feedback.id}`);
+    }
     if (feedback) wrapper.append(feedback);
 
-    return { wrapper, input, correct, index, feedback };
+    return { wrapper, input, correct, index, feedback, status };
   }
 
   #buildBlanks(source: HTMLElement, form: HTMLFormElement): void {
@@ -396,8 +407,9 @@ class StarlightQuizElement extends HTMLElement {
     }
 
     if (focus) {
-      this.#feedback.tabIndex = -1;
-      this.#feedback.focus();
+      const target = this.#answers.find((answer) => answer.input.checked)?.wrapper ?? this.#feedback;
+      target.tabIndex = -1;
+      target.focus({ preventScroll: true });
     }
   }
 
@@ -406,14 +418,22 @@ class StarlightQuizElement extends HTMLElement {
     // correct answer, or when the submission was right anyway.
     const revealCorrect = this.#showCorrect || correct;
     for (const answer of this.#answers) {
-      answer.wrapper.classList.remove('sl-quiz-answer--correct', 'sl-quiz-answer--wrong');
-      if (answer.feedback) answer.feedback.hidden = true;
+      answer.wrapper.classList.remove('sl-quiz-answer--correct', 'sl-quiz-answer--wrong', 'sl-quiz-answer--neutral');
+      if (answer.feedback) answer.feedback.hidden = !(answer.input.checked || this.#showCorrect);
+      answer.status.hidden = true;
+      answer.status.textContent = '';
 
       const selected = answer.input.checked;
       if (selected && !answer.correct) {
         answer.wrapper.classList.add('sl-quiz-answer--wrong');
+        answer.status.textContent = `✕ ${this.#labels.incorrect}`;
+        answer.status.hidden = false;
       } else if (answer.correct && (selected || revealCorrect)) {
         answer.wrapper.classList.add('sl-quiz-answer--correct');
+        answer.status.textContent = `✓ ${this.#labels.correct}`;
+        answer.status.hidden = false;
+      } else {
+        answer.wrapper.classList.add('sl-quiz-answer--neutral');
       }
     }
   }
@@ -434,28 +454,17 @@ class StarlightQuizElement extends HTMLElement {
     this.#feedback.classList.toggle('sl-quiz-feedback--correct', correct);
     this.#feedback.classList.toggle('sl-quiz-feedback--wrong', !correct);
 
-    const items = this.#type === 'blank' ? [] : this.#perAnswerFeedbackItems();
-    if (items.length === 0) items.push(this.#fallbackFeedbackItem(correct));
-
-    this.#feedback.append(...items);
-    this.#feedback.hidden = false;
-  }
-
-  /**
-   * Explain every option after submission when solutions may be revealed.
-   * Keep unselected feedback hidden when showCorrect is disabled.
-   */
-  #perAnswerFeedbackItems(): HTMLElement[] {
-    const items: HTMLElement[] = [];
-    for (const answer of this.#answers) {
-      if ((answer.input.checked || this.#showCorrect) && answer.feedback) {
-        const item = this.#feedbackItem(answer.correct);
-        item.append(this.#feedbackBadge(answer));
-        item.append(...Array.from(answer.feedback.cloneNode(true).childNodes));
-        items.push(item);
-      }
+    // Choice explanations stay inside their original options. Keep only an
+    // accessible verdict here, so the live region announces the overall result
+    // without duplicating every answer below the fieldset.
+    const isChoice = this.#type !== 'blank';
+    this.#feedback.classList.toggle('sr-only', isChoice);
+    if (isChoice) {
+      this.#feedback.textContent = this.#fallbackMessage(correct);
+    } else {
+      this.#feedback.append(this.#fallbackFeedbackItem(correct));
     }
-    return items;
+    this.#feedback.hidden = false;
   }
 
   /** A single generic feedback box, used when no per-answer feedback applies. */
@@ -484,15 +493,6 @@ class StarlightQuizElement extends HTMLElement {
     const variant = isCorrect ? 'sl-quiz-feedback-item--correct' : 'sl-quiz-feedback-item--wrong';
     item.className = `sl-quiz-feedback-item ${variant}`;
     return item;
-  }
-
-  /** A badge naming the answer a per-answer feedback box responds to. */
-  #feedbackBadge(answer: ChoiceAnswer): HTMLSpanElement {
-    const badge = document.createElement('span');
-    badge.className = 'sl-quiz-feedback-badge';
-    // Collapse the line breaks and indentation of answers holding code blocks.
-    badge.textContent = answer.wrapper.querySelector('label')?.textContent?.replace(/\s+/g, ' ').trim() ?? '';
-    return badge;
   }
 
   #buildBlankCorrections(): HTMLElement {
@@ -540,8 +540,10 @@ class StarlightQuizElement extends HTMLElement {
     delete this.dataset['answered'];
     for (const answer of this.#answers) {
       answer.input.checked = false;
-      answer.wrapper.classList.remove('sl-quiz-answer--correct', 'sl-quiz-answer--wrong');
+      answer.wrapper.classList.remove('sl-quiz-answer--correct', 'sl-quiz-answer--wrong', 'sl-quiz-answer--neutral');
       if (answer.feedback) answer.feedback.hidden = true;
+      answer.status.hidden = true;
+      answer.status.textContent = '';
     }
     for (const input of this.#blanks) {
       input.value = '';
