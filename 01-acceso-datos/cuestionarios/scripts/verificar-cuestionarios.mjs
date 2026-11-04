@@ -5,6 +5,24 @@ import { extractQuizzesFromHtml } from '../packages/starlight-quiz/lib/manifest.
 
 const root = new URL('../', import.meta.url);
 const read = (path) => readFileSync(new URL(path, root), 'utf8');
+function checkXmlLayout(body, id) {
+  const outsideBlocks = body.replace(/```[^\n]*\n[\s\S]*?```/g, '');
+  assert.doesNotMatch(outsideBlocks, /`[^`\n]*<\/?[A-Za-z][^`\n]*>/,
+    `${id}: el XML debe ir en un bloque, no entre backticks en línea`);
+  for (const [, xml] of body.matchAll(/```xml\n([\s\S]*?)```/g)) {
+    for (const line of xml.split('\n')) {
+      // A leaf such as <nombre>Eva</nombre> is fine. Nested elements,
+      // siblings and consecutive closing tags must occupy separate lines.
+      assert.doesNotMatch(line, /<[^!?/][^>]*>[\s\S]*<[^!?/][^>]*>|<\/[^>]+>\s*</,
+        `${id}: XML compactado; mostrar cada nivel y cada hermano en su propia línea`);
+    }
+  }
+}
+// Regression examples for the layout guard itself.
+assert.throws(() => checkXmlLayout('```xml\n<r><a>1</a><b/>\n</r>\n```', 'prueba'));
+assert.throws(() => checkXmlLayout('```xml\n<r>\n<a>1</a></r>\n```', 'prueba'));
+assert.throws(() => checkXmlLayout('XML: `<r/>`', 'prueba'));
+checkXmlLayout('```xml\n<r>\n  <a>1</a>\n  <b/>\n</r>\n```', 'prueba');
 const routes = [
   ['ut02a/sin-codigo', 'an', false],
   ['ut02a/con-codigo', 'ac', true],
@@ -42,6 +60,7 @@ for (const [route, prefix, code] of routes) {
     assert.equal(options.filter((o) => o[1] === 'x').length, 1, `${id}: una correcta`);
     assert.equal(new Set(options.map((o) => o[2])).size, 4, `${id}: opciones distintas`);
     assert.match(body, /Repasar: /, `${id}: referencia de estudio`);
+    checkXmlLayout(body, id);
     const hasCode = /```(?:java|xml)/.test(body);
     if (hasCode) codeQuestions++;
     if (code === false) assert.ok(!hasCode, `${id}: no debe haber bloques de código`);

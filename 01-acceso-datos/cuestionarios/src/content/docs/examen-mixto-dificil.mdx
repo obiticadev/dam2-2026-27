@@ -35,7 +35,9 @@ Se quiere leer solo el nombre del cliente, pero el resultado actual es `"EvaTien
 ```xml
 <cliente>
   <nombre>Eva</nombre>
-  <empresa><nombre>Tienda</nombre></empresa>
+  <empresa>
+    <nombre>Tienda</nombre>
+  </empresa>
 </cliente>
 ```
 
@@ -78,7 +80,10 @@ Repasar: A §2.7.
 Se leen `precio` y `stock` con StAX. ¿Qué valor acaba teniendo `cierres`?
 
 ```xml
-<r><precio>12</precio><stock>3</stock></r>
+<r>
+  <precio>12</precio>
+  <stock>3</stock>
+</r>
 ```
 
 ```java

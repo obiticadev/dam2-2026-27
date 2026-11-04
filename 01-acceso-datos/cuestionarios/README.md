@@ -51,7 +51,7 @@ Las preguntas priorizan objetivos concretos, distractores cercanos y condiciones
 
 Las comprobaciones automáticas no certifican la ausencia de ambigüedad semántica ni sustituyen la revisión pedagógica. Las pruebas Java verifican los casos indicados en su código; no ejecutan todos los fragmentos parciales de las preguntas ni los ejemplos JAXB.
 
-XML: todo documento con elementos anidados va en un bloque ```` ```xml ```` indentado, nunca en línea (también en las opciones, que necesitan un texto breve antes del bloque, p. ej. `- [ ] XML:`, para que el plugin las reconozca). Se entiende que el fichero **no** tiene espacios entre etiquetas; si la respuesta depende de los espacios, el enunciado dice que la indentación es real. Solo el contenido mixto (`<a>texto <b>x</b></a>`) se deja en una línea, porque indentarlo cambiaría el texto.
+XML: toda estructura se presenta en un bloque ```` ```xml ```` con formato de árbol y sangría, nunca como XML en línea. Cada elemento anidado o hermano ocupa su propia línea; las hojas pueden mostrar su texto entre apertura y cierre en la misma línea. También se aplica a las opciones, que necesitan un texto breve antes del bloque, p. ej. `- [ ] XML:`, para que el plugin las reconozca. Se entiende que el fichero **no** tiene espacios entre etiquetas; si la respuesta depende de los espacios, el enunciado dice que la indentación es real. En contenido mixto se mantiene el árbol y se especifican los nodos de texto exactos para distinguirlos de los saltos y la sangría de presentación. La auditoría impide volver a compactar estructuras anidadas o incluir XML entre backticks en línea en los cuestionarios activos.
 
 ## Sintaxis rápida
 

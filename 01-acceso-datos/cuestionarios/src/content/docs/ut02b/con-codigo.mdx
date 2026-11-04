@@ -97,7 +97,9 @@ Repasar: UT02-B §2.3–2.4.
 ```xml
 <grupo>
   <alumno/>
-  <subgrupo><alumno/></subgrupo>
+  <subgrupo>
+    <alumno/>
+  </subgrupo>
 </grupo>
 ```
 
@@ -205,8 +207,14 @@ Repasar: UT02-B §2.5.
 <Quiz id="bc-10" title="Contenido mixto">
 `e` representa el elemento `p`. ¿Qué imprime?
 
+Los saltos y la sangría del bloque son solo visuales: el texto directo de `p` es exactamente `Hola ` antes de `b` y `!` después. El espacio que sigue a `Hola` sí forma parte del contenido.
+
 ```xml
-<p>Hola <b>Eva</b>!</p>
+<p>
+  Hola
+  <b>Eva</b>
+  !
+</p>
 ```
 
 ```java
@@ -215,7 +223,7 @@ System.out.println(e.getTextContent());
 
 - [ ] `Hola !`
   > getTextContent incluye también el texto de los elementos descendientes.
-- [ ] `Hola <b>Eva</b>!`
+- [ ] El texto junto con las etiquetas de `b`.
   > Devuelve texto concatenado, no la serialización de las etiquetas.
 - [x] `Hola Eva!`
   > Correcta: concatena el texto directo y el contenido textual de b, en orden.
