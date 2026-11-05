@@ -22,16 +22,17 @@
 .route-card { background: #eee3f0; padding: 18px 22px; border-radius: 14px; display: grid; gap: 6px; font-size: 16px; }
 .large-word { font-size: 29px; font-weight: 800; }
 .route-arrow { font-size: 35px; text-align: center; color: var(--purple); }
-.roots-bottom { display: grid; grid-template-columns: 270px 1fr; align-items: center; gap: 32px; }
-.roots-bottom .story-art { height: 240px; width: 270px; }
+.roots-bottom { margin-top: 14px; display: grid; grid-template-columns: 343px 1fr; align-items: center; gap: 32px; }
+.roots-bottom .story-art { height: 240px; width: 343px; }
 .small-note { font-size: 15px; line-height: 1.6; margin-top: 12px; color: #66576b; }
-.night { background: #302a43; color: #fff3df; }
+.night { background: #302a43; color: #fff3df; isolation: isolate; }
 .night::before { border-color: #fff3df22; }
 .night .eyebrow { color: #d9c0ed; }
 .night h1 em { color: #f6bd79; }
 .night .prompt { color: #d9c8e3; border-color: #fff3df30; }
 .three-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 35px; }
-.three-steps article { border-top: 2px solid #c5a4d5; padding-top: 18px; }
+.three-steps article { border-top: 2px solid #c5a4d5; padding-top: 18px; position: relative; }
+.three-steps .step-icon { position: absolute; right: 0; top: 10px; width: 58px; height: 58px; }
 .step-number { font-size: 18px; color: #f6bd79; display: block; margin-bottom: 12px; }
 .three-steps p { font-size: 18px; }
 .ribbon { margin-top: 36px; background: #ffffff0e; border-radius: 8px; padding: 16px 22px; font-size: 21px; }
@@ -43,14 +44,15 @@
 .clue-stack > div { border-left: 4px solid #9471a4; padding: 8px 0 8px 18px; }
 .clue-stack span { display: block; font-size: 11px; letter-spacing: 1px; font-weight: 800; color: var(--purple); margin-bottom: 6px; }
 .clue-stack strong { font-size: 23px; }
-.crossing { display: flex; justify-content: space-between; align-items: center; padding: 0 16px; }
+.crossing { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 0 16px; }
 .night .tag { color: #e5bee9; }
 .ocean-arrow { font-size: 60px; color: #f6bd79; }
 .vegetables { display: grid; grid-template-columns: 390px 1fr; align-items: center; gap: 30px; }
-.vegetables .story-art { height: 205px; width: 360px; }
+.vegetables .story-art { height: 205px; width: 293px; }
 .night .mini-fact { color: #d9c8e3; font-size: 15px !important; margin-top: 8px; }
 .compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-.compare-grid article { padding: 22px 26px; background: #eee3f0; border-radius: 13px; }
+.compare-grid article { padding: 22px 26px; background: #eee3f0; border-radius: 13px; position: relative; }
+.compare-grid .step-icon { position: absolute; right: 22px; top: 18px; width: 86px; height: 86px; }
 .compare-grid article:last-child { background: #f8e0c4; }
 .compare-grid h2 { font-size: 37px; margin-bottom: 12px; }
 .compare-grid p { font-size: 19px; margin-top: 6px; }
@@ -68,4 +70,16 @@ a:focus-visible { outline: 3px solid #bf7337; outline-offset: 6px; }
 .deck-footer { position: absolute; z-index: 2; bottom: 24px; left: 54px; right: 54px; display: flex; justify-content: space-between; font-family: 'Manrope Variable', sans-serif; font-size: 11px; letter-spacing: 1px; font-weight: 750; color: #6c5b74; pointer-events: none; }
 .deck-footer.on-night { color: #d9c8e3; }
 .slidev-layout .story-art { overflow: visible; }
-@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+/* Entrada escalonada: se repite cada vez que la diapositiva aparece y termina. */
+@keyframes deck-rise { from { opacity: 0; transform: translateY(16px) } to { opacity: 1; transform: none } }
+@keyframes deck-pop { from { opacity: 0; transform: scale(.4) rotate(-12deg) } 70% { transform: scale(1.12) } to { opacity: 1; transform: none } }
+.tickets span, .route-card, .route-arrow, .three-steps article, .ribbon, .word-list > div, .clue-stack > div, .crossing > div, .compare-grid article, .shared, .ending, .source-list > * { animation: deck-rise .6s cubic-bezier(.22, 1, .36, 1) both; }
+.step-icon { animation: deck-pop .7s cubic-bezier(.34, 1.56, .64, 1) both; }
+:is(.tickets, .route-row, .three-steps, .word-list, .clue-stack, .compare-grid, .source-list) > :nth-child(1) { animation-delay: .25s; }
+:is(.tickets, .route-row, .three-steps, .word-list, .clue-stack, .compare-grid, .source-list) > :nth-child(2) { animation-delay: .45s; }
+:is(.tickets, .route-row, .three-steps, .word-list, .clue-stack, .compare-grid, .source-list) > :nth-child(3) { animation-delay: .65s; }
+.crossing > div:last-child { animation-delay: 1.6s; }
+.three-steps article:nth-child(1) .step-icon { animation-delay: .5s; } .three-steps article:nth-child(2) .step-icon { animation-delay: .7s; } .three-steps article:nth-child(3) .step-icon { animation-delay: .9s; }
+.compare-grid .step-icon { animation-delay: .7s; }
+.ribbon, .shared, .ending { animation-delay: .9s; }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; } }

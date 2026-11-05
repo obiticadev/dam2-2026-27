@@ -46,9 +46,11 @@ class: roots
 class: night
 ---
 
+<NightSky moon />
+
 <div class="eyebrow">02 / UK · WHAT KIND OF CELEBRATION?</div>
 <h1>Pagan? Religious?<br><em>A little history helps.</em></h1>
-<div class="three-steps"><article><span class="step-number">01</span><h2>Pagan roots</h2><p>Samhain · end of harvest</p></article><article><span class="step-number">02</span><h2>Christian links</h2><p>All Saints’ Day · 1 November</p></article><article><span class="step-number">03</span><h2>Today</h2><p>Mostly costumes &amp; fun</p></article></div>
+<div class="three-steps"><article><StepIcon name="harvest" /><span class="step-number">01</span><h2>Pagan roots</h2><p>Samhain · end of harvest</p></article><article><StepIcon name="candle" /><span class="step-number">02</span><h2>Christian links</h2><p>All Saints’ Day · 1 November</p></article><article><StepIcon name="mask" /><span class="step-number">03</span><h2>Today</h2><p>Mostly costumes &amp; fun</p></article></div>
 <div class="ribbon">Different families celebrate in different ways.</div>
 <div class="prompt">Old roots → new ways to celebrate</div>
 
@@ -62,6 +64,7 @@ class: night
 
 ---
 class: picture
+transition: slide-left
 ---
 
 <div class="eyebrow">04 / ENGLAND · A MAKE-BELIEVE HALLOWEEN</div>
@@ -73,9 +76,11 @@ class: picture
 class: night
 ---
 
+<NightSky />
+
 <div class="eyebrow">05 / USA · ACROSS THE ATLANTIC</div>
 <h1>Old stories.<br><em>A new home.</em></h1>
-<div class="crossing"><div><span class="tag">1800s</span><h2>Irish &amp; Scottish<br>immigrants</h2></div><span class="ocean-arrow">→</span><div><span class="tag">UNITED STATES</span><h2>New traditions<br>grow</h2></div></div>
+<div class="crossing"><Voyage /><div><span class="tag">1800s</span><h2>Irish &amp; Scottish<br>immigrants</h2></div><span class="ocean-arrow">→</span><div><span class="tag">UNITED STATES</span><h2>New traditions<br>grow</h2></div></div>
 <div class="vegetables"><StoryArt scene="vegetables" label="A small turnip lantern and a large orange pumpkin lantern side by side" /><div><h2>Turnip → pumpkin</h2><p>A new home for the lantern</p><p class="mini-fact">“Jack-o’-lantern” = a carved lantern</p></div></div>
 <div class="prompt">They brought… · people started… · has changed…</div>
 
@@ -102,13 +107,15 @@ class: comparison
 
 <div class="eyebrow">08 / TWO STOPS · WHAT IS DIFFERENT?</div>
 <h1>Different words.<br><em>Lots in common.</em></h1>
-<div class="compare-grid"><article><span class="tag">ENGLAND / UK FOCUS</span><h2>Sweets</h2><p>Older customs: soul cakes</p><p>Ghosts &amp; witches</p></article><article><span class="tag">UNITED STATES</span><h2>Candy</h2><p>Pumpkin lanterns became popular</p><p>Superheroes, too!</p></article></div>
+<div class="compare-grid"><article><StepIcon name="soulcake" /><span class="tag">ENGLAND / UK FOCUS</span><h2>Sweets</h2><p>Older customs: soul cakes</p><p>Ghosts &amp; witches</p></article><article><StepIcon name="pail" /><span class="tag">UNITED STATES</span><h2>Candy</h2><p>Pumpkin lanterns became popular</p><p>Superheroes, too!</p></article></div>
 <div class="shared">BOTH · costumes · pumpkins · trick-or-treating</div>
 <div class="prompt">Often bigger celebrations in the US — but not every family!</div>
 
 ---
 class: night finale
 ---
+
+<NightSky />
 
 <div class="eyebrow">09 / ONE LAST LITTLE QUESTION</div>
 <h1>A ghost or<br><em>a superhero?</em></h1>

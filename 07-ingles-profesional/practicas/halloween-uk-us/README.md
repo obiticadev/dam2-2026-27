@@ -8,7 +8,8 @@ Presentación **Slidev en inglés**, orientada a niños de unos 8–11 años. Di
 - **[GUIA-LINGUISTICA.md](./GUIA-LINGUISTICA.md)**: traducciones, pronunciación, vocabulario de la bóveda y cuatro tiempos del presente por persona.
 - **[FUENTES.md](./FUENTES.md)**: fuentes culturales, cobertura y matices, incluida la diferencia Inglaterra/UK.
 - `slides.md`: únicamente apoyo visual y palabras clave, sin el discurso completo.
-- `components/StoryArt.vue`: ocho escenas SVG originales, sin recursos de imagen remotos.
+- `components/StoryArt.vue`: ocho escenas SVG originales e ilustradas (cielo, decorado y personajes), sin recursos de imagen remotos.
+- `components/NightSky.vue`, `Voyage.vue` y `StepIcon.vue`: cielo de las diapositivas nocturnas, barco del cruce del Atlántico e iconos de tarjetas. Todo decorativo (`aria-hidden`).
 - `style.css` y `slide-bottom.vue`: identidad de cuento ilustrado, navegación y relevo visibles.
 - `scripts/check-presentation.mjs`: comprobaciones y capturas del build.
 
@@ -21,7 +22,7 @@ npm ci
 npm run dev
 ```
 
-Abrir `http://localhost:3031`. Flecha derecha / espacio: siguiente. Flecha izquierda: anterior. `O`: vista general. Pantalla completa desde la barra de Slidev. Las únicas transiciones son fundidos discretos; no hay pasos ocultos que puedan dejar a alguien sin una pista. No hay sonidos, sustos ni movimiento continuo. Se respeta movimiento reducido.
+Abrir `http://localhost:3031`. Flecha derecha / espacio: siguiente. Flecha izquierda: anterior. `O`: vista general. Pantalla completa desde la barra de Slidev. Las transiciones son fundidos, salvo el relevo 5 → 6, que se desliza como un viaje. Al entrar en cada diapositiva, las ilustraciones y las tarjetas aparecen con una animación breve que termina sola (unos 2–3 s); no hay pasos ocultos que puedan dejar a alguien sin una pista. No hay sonidos, sustos ni movimiento continuo. Se respeta movimiento reducido.
 
 La intervención infantil dura unos segundos, sin depender de que el público conteste. La diapositiva 10 cierra la charla. El enlace **Our sources** abre la 11; no hace falta avanzar a ella durante el speaking. En móvil, usar orientación horizontal: es una presentación 16:9, no una web de lectura vertical.
 
