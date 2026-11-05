@@ -1,0 +1,484 @@
+---
+title: "1 · Salidas y fundamentos"
+description: "20 preguntas de UT03: código breve, tipos, funciones, módulos y recursividad."
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · objetivo: 30 minutos · una sola respuesta correcta.** Se aplican las [condiciones y referencias de la portada](/). En las opciones, ` / ` indica salto de línea. Cada fragmento es independiente.
+
+<Quiz id="py2-s1-01" title="Contar resultados booleanos">
+¿Qué imprime?
+
+```python
+def mayor(edad):
+    return edad >= 18
+r = mayor(18) + mayor(12) + mayor(20)
+print(r, type(r).__name__)
+```
+
+- [x] `2 int`
+  > True aporta 1 y False aporta 0; la suma aritmética produce el entero 2, no un bool.
+- [ ] `True bool`
+  > Eso confunde la suma aritmética con una operación lógica: aquí se suman tres valores.
+- [ ] `2 bool`
+  > El valor es 2, pero su tipo es int; bool solo tiene los valores True y False.
+- [ ] No imprime nada: `TypeError`.
+  > Los booleanos sí admiten suma numérica en Python.
+
+Repasar: F, ejercicio 3; precisión añadida: aritmética de booleanos.
+</Quiz>
+
+<Quiz id="py2-s1-02" title="Un rango con dos comparaciones">
+¿Qué imprime?
+
+```python
+def dentro(x):
+    return 4 < x < 10
+print(dentro(4), dentro(7), dentro(10))
+```
+
+- [ ] `True True True`
+  > Los extremos no están incluidos: se utiliza menor estricto, no menor o igual.
+- [ ] No imprime nada: `SyntaxError`.
+  > Python permite comparaciones encadenadas; el ejercicio de fechas utiliza esta sintaxis.
+- [x] `False True False`
+  > Equivale, para esta variable, a x mayor que 4 y menor que 10; solo 7 cumple ambas condiciones.
+- [ ] `False False False`
+  > El 7 sí es mayor que 4 y menor que 10.
+
+Repasar: F, ejercicio 18 (comparaciones encadenadas).
+</Quiz>
+
+<Quiz id="py2-s1-03" title="El cero no activa el valor por defecto">
+¿Qué imprime?
+
+```python
+def precio(base, iva=20):
+    return base + base * iva / 100
+print(precio(10), precio(10, 0))
+```
+
+- [ ] `12 10`
+  > El operador / produce float, aunque ambos resultados sean matemáticamente enteros.
+- [x] `12.0 10.0`
+  > La primera llamada usa el 20 %; la segunda recibe explícitamente 0 y no usa el defecto.
+- [ ] `12.0 12.0`
+  > El defecto se usa al omitir el argumento, no cuando el argumento vale cero.
+- [ ] No imprime nada: `TypeError`.
+  > La firma acepta tanto uno como dos argumentos.
+
+Repasar: T a; F, ejercicio 2 (porcentaje adaptado para cálculo mental).
+</Quiz>
+
+<Quiz id="py2-s1-04" title="Mostrar no es devolver">
+¿Qué imprime?
+
+```python
+def doble(n):
+    print(n * 2)
+print(doble(3))
+```
+
+- [ ] `6`
+  > Falta considerar el print exterior: recibe el valor de retorno de doble.
+- [ ] `None / 6`
+  > Primero se evalúa doble(3), que imprime 6; solo después actúa el print exterior.
+- [ ] `6 / 6`
+  > Imprimir 6 dentro no implica devolver 6.
+- [x] `6 / None`
+  > La función imprime 6 y termina sin return; el print exterior muestra su retorno implícito None.
+
+Repasar: T a (return opcional).
+</Quiz>
+
+<Quiz id="py2-s1-05" title="Solo se recorre un camino">
+¿Qué imprime?
+
+```python
+def signo(n):
+    if n > 0:
+        return "positivo"
+    print("resto")
+print(signo(1))
+```
+
+- [ ] `resto / positivo`
+  > return termina la llamada antes del print de resto.
+- [ ] `positivo / None`
+  > El resultado no se imprime dentro: se devuelve y lo imprime el print exterior una sola vez.
+- [x] `positivo`
+  > Se entra en el if y se retorna inmediatamente el texto.
+- [ ] `resto / None`
+  > Esa sería la salida al llamar con 0, no con 1.
+
+Repasar: T a (return finaliza la función).
+</Quiz>
+
+<Quiz id="py2-s1-06" title="Una local con el mismo nombre">
+¿Qué imprime?
+
+```python
+puntos = 5
+def cambiar(puntos):
+    puntos = puntos + 2
+    return puntos
+print(cambiar(puntos), puntos)
+```
+
+- [x] `7 5`
+  > El parámetro local pasa a referirse a 7, pero el nombre exterior sigue asociado a 5.
+- [ ] `7 7`
+  > Devolver un resultado no lo asigna automáticamente a la variable exterior.
+- [ ] `5 5`
+  > La función sí devuelve la suma local, que es 7.
+- [ ] No imprime nada: `UnboundLocalError`.
+  > El parámetro puntos ya está inicializado al entrar en la llamada.
+
+Repasar: T b; F, ejercicios 8 y 10.
+</Quiz>
+
+<Quiz id="py2-s1-07" title="Cambiar una lista y devolver None">
+¿Qué imprime?
+
+```python
+def anadir(datos, n):
+    datos.append(n)
+v = [1]
+r = anadir(v, 2)
+print(v, r)
+```
+
+- [ ] `[1] None`
+  > append modifica el mismo objeto al que apunta v.
+- [ ] `[1, 2] [1, 2]`
+  > No hay return de la lista; modificarla y devolverla son operaciones diferentes.
+- [ ] `[1] [1, 2]`
+  > No se crea ni devuelve una lista nueva: se modifica la existente.
+- [x] `[1, 2] None`
+  > La mutación se observa fuera y la llamada devuelve None implícitamente.
+
+Repasar: T b; F, ejercicio 7.
+</Quiz>
+
+<Quiz id="py2-s1-08" title="Reasignación de un parámetro mutable">
+¿Qué imprime?
+
+```python
+def reiniciar(datos):
+    datos = []
+    datos.append(9)
+v = [1]
+reiniciar(v)
+print(v)
+```
+
+- [ ] `[9]`
+  > append actúa sobre la lista nueva local, no sobre la lista original.
+- [x] `[1]`
+  > Reasignar el parámetro rompe su asociación local con la lista de v; v no cambia.
+- [ ] `[1, 9]`
+  > Eso ocurriría si no se hubiera reasignado datos antes de append.
+- [ ] `[]`
+  > datos = [] no vacía el objeto que ya existía fuera.
+
+Repasar: T b (sustituir una lista).
+</Quiz>
+
+<Quiz id="py2-s1-09" title="Orden de los resultados">
+¿Qué imprime?
+
+```python
+def medidas(b, h):
+    return b * h, 2 * (b + h)
+p, a = medidas(2, 3)
+print(p, a)
+```
+
+- [ ] `10 6`
+  > Los nombres p y a no reorganizan los valores: se asignan por su posición.
+- [ ] `(6, 10)`
+  > La tupla se desempaqueta y se imprimen dos argumentos, no la tupla completa.
+- [x] `6 10`
+  > El primer valor devuelto es el área 6 y se guarda en p, aunque el nombre resulte engañoso.
+- [ ] No imprime nada: `ValueError`.
+  > Hay dos valores y dos destinos: el desempaquetado es válido.
+
+Repasar: F, ejercicio 5; variante del orden usado en tu laboratorio.
+</Quiz>
+
+<Quiz id="py2-s1-10" title="Sangría válida, resultado inesperado">
+¿Qué imprime? La sangría es exactamente la mostrada.
+
+```python
+def contar(texto):
+    n = 0
+    for letra in texto:
+        if letra != "a":
+            n += 1
+        return n
+print(contar("ba"))
+```
+
+- [x] `1`
+  > return está dentro del for: tras procesar la primera letra b devuelve 1.
+- [ ] `2`
+  > No cuenta todas las letras y, además, la a no cumpliría la condición.
+- [ ] `0`
+  > La primera letra es b y sí incrementa n antes de retornar.
+- [ ] No imprime nada: `IndentationError`.
+  > La sangría es sintácticamente válida; el fallo es lógico, por la posición de return.
+
+Repasar: F, ejercicios 4 y 16 (acumulador y retorno fuera del bucle).
+</Quiz>
+
+<Quiz id="py2-s1-11" title="Importación con autoprueba">
+Se ejecuta `principal.py`. ¿Qué aparece?
+
+```python
+# archivo: saludo.py
+print("carga")
+def hola():
+    return "hola"
+if __name__ == "__main__":
+    print("prueba")
+```
+
+```python
+# archivo: principal.py
+import saludo
+print(saludo.hola())
+```
+
+- [ ] `carga / prueba / hola`
+  > Al importar, __name__ del módulo es saludo, no __main__.
+- [ ] `hola`
+  > El print de nivel superior no está protegido: sí se ejecuta durante la importación.
+- [x] `carga / hola`
+  > Se ejecuta el código de nivel superior, se omite la autoprueba y después se llama a hola.
+- [ ] `prueba / hola`
+  > Omite la carga que sí ocurre y añade una autoprueba que no se ejecuta.
+
+Repasar: F, ejercicio 11.
+</Quiz>
+
+<Quiz id="py2-s1-12" title="El nombre que crea un alias">
+¿Qué ocurre?
+
+```python
+import math as m
+print(m.sqrt(9))
+print(math.sqrt(4))
+```
+
+- [ ] `3.0 / 2.0`
+  > El import con alias crea m en este archivo, no el nombre math.
+- [x] Imprime `3.0` y después falla con `NameError`.
+  > La primera llamada es válida; la segunda usa math, nombre no definido en este fragmento.
+- [ ] No imprime nada: `ModuleNotFoundError`.
+  > math es un módulo de la biblioteca estándar y la importación es válida.
+- [ ] Imprime `3.0` y después falla con `AttributeError`.
+  > No llega a buscar el atributo sqrt: primero falla la resolución del nombre math.
+
+Repasar: F, ejercicio 14 (alias); T a (módulo math).
+</Quiz>
+
+<Quiz id="py2-s1-13" title="Reutilizar funciones dentro del módulo">
+Se ejecuta `principal.py`. ¿Qué imprime?
+
+```python
+# archivo: geometria.py
+def rectangulo(b, h):
+    return b * h
+def cuadrado(lado):
+    return rectangulo(lado, lado)
+```
+
+```python
+# archivo: principal.py
+from geometria import cuadrado
+print(cuadrado(3))
+```
+
+- [ ] No imprime nada: `NameError` por rectangulo.
+  > La función cuadrado resuelve rectangulo en su propio módulo, donde sí está definida.
+- [ ] `6`
+  > rectangulo multiplica ambos lados, no los suma.
+- [ ] `None`
+  > Ambas funciones tienen return y el resultado llega al print.
+- [x] `9`
+  > No es necesario importar rectangulo en principal para que cuadrado pueda utilizarla internamente.
+
+Repasar: F, ejercicio 20.
+</Quiz>
+
+<Quiz id="py2-s1-14" title="Suma con caso base cero">
+¿Qué imprime?
+
+```python
+def suma(n):
+    if n == 0:
+        return 0
+    return n + suma(n - 1)
+print(suma(3))
+```
+
+- [ ] `3`
+  > No devuelve solo n: suma también los resultados de las llamadas con 2 y 1.
+- [x] `6`
+  > La traza es 3 + 2 + 1 + 0, con cuatro llamadas incluida la del caso base.
+- [ ] `4`
+  > Cuatro es el número de llamadas, no la suma que se devuelve.
+- [ ] No imprime nada: `RecursionError`.
+  > La secuencia 3, 2, 1, 0 alcanza el caso base.
+
+Repasar: R, ejercicio 21.
+</Quiz>
+
+<Quiz id="py2-s1-15" title="Paridad y booleanos">
+¿Qué imprime?
+
+```python
+def par(n):
+    if n == 0:
+        return True
+    if n == 1:
+        return False
+    return par(n - 2)
+print(par(3), par(4))
+```
+
+- [x] `False True`
+  > 3 llega a 1 y devuelve False; 4 llega a 0 y devuelve True.
+- [ ] `True False`
+  > Invierte los valores de los dos casos base.
+- [ ] `1 0`
+  > Los valores devueltos son bool y print los muestra como False y True, no como enteros.
+- [ ] No imprime nada: `RecursionError`.
+  > Existen casos base para las dos paridades.
+
+Repasar: R, ejercicio 22.
+</Quiz>
+
+<Quiz id="py2-s1-16" title="Ceros dentro del número">
+¿Qué imprime?
+
+```python
+def digitos(n):
+    if n < 10:
+        return 1
+    return 1 + digitos(n // 10)
+print(digitos(100))
+```
+
+- [ ] `1`
+  > Los ceros también ocupan posiciones decimales: el número tiene tres cifras.
+- [ ] `2`
+  > Cuenta las dos reducciones, pero falta el dígito reconocido por el caso base.
+- [x] `3`
+  > Se visitan 100, 10 y 1; cada nivel aporta un dígito.
+- [ ] `100`
+  > Se cuenta la cantidad de dígitos, no se reconstruye el número.
+
+Repasar: R, ejercicio 24.
+</Quiz>
+
+<Quiz id="py2-s1-17" title="Construir una cadena binaria">
+¿Qué imprime?
+
+```python
+def binario(n):
+    if n < 2:
+        return str(n)
+    return binario(n // 2) + str(n % 2)
+r = binario(6)
+print(r, type(r).__name__)
+```
+
+- [ ] `110 int`
+  > La representación es correcta, pero str y la concatenación producen texto.
+- [ ] `011 str`
+  > Eso correspondería a colocar los restos delante de la llamada recursiva.
+- [ ] `6 str`
+  > La función calcula los dígitos binarios, no convierte sin más el 6 decimal a texto.
+- [x] `110 str`
+  > binario(3) devuelve 11 y se concatena el resto 0; el resultado es una cadena.
+
+Repasar: R, ejercicio 25.
+</Quiz>
+
+<Quiz id="py2-s1-18" title="Invertir no conserva ceros iniciales">
+¿Qué imprime?
+
+```python
+def invertir(n, acc=0):
+    if n == 0:
+        return acc
+    return invertir(n // 10, acc * 10 + n % 10)
+print(invertir(20))
+```
+
+- [ ] `02`
+  > El retorno es un entero; no conserva un cero inicial como haría una cadena.
+- [x] `2`
+  > Las llamadas llevan (20, 0), (2, 0) y (0, 2); el caso base devuelve 2.
+- [ ] `20`
+  > Devuelve el acumulador invertido, no el argumento original.
+- [ ] `0`
+  > El caso base retorna acc, no n.
+
+Repasar: R, ejercicio 27.
+</Quiz>
+
+<Quiz id="py2-s1-19" title="La vuelta de la recursión">
+¿Qué imprime?
+
+```python
+def traza(n):
+    if n == 0:
+        return
+    print(n)
+    traza(n - 1)
+    print(n)
+traza(2)
+```
+
+- [x] `2 / 1 / 1 / 2`
+  > Primero imprimen las llamadas al bajar; al retornar se reanudan las pendientes en orden inverso.
+- [ ] `2 / 1 / 0 / 1 / 2`
+  > El caso con 0 retorna antes de ejecutar los print.
+- [ ] `2 / 2 / 1 / 1`
+  > El segundo print de la llamada con 2 espera a que termine la llamada con 1.
+- [ ] `2 / 1 / None`
+  > El retorno None no se imprime por sí mismo: no hay un print exterior envolviendo la llamada.
+
+Repasar: T c (pila de llamadas); traza añadida.
+</Quiz>
+
+<Quiz id="py2-s1-20" title="Historial y bytes no viajan igual">
+¿Qué imprime esta simplificación de RA3, sin acceso al disco?
+
+```python
+def registrar(historial, total):
+    historial.append("a.txt")
+    total = total + 4
+    return total
+h = []
+t = 0
+r = registrar(h, t)
+print(t, r, h)
+```
+
+- [ ] `4 4 ['a.txt']`
+  > La suma cambia el nombre local total, no la variable exterior t.
+- [ ] `0 4 []`
+  > La lista sí se modifica porque se comparte el mismo objeto.
+- [x] `0 4 ['a.txt']`
+  > El historial recibe el movimiento; t conserva 0 y el valor calculado se guarda en r.
+- [ ] `0 None ['a.txt']`
+  > En este caso sí hay un return explícito del entero calculado.
+
+Repasar: RA3, requisitos 7 y 8; T b.
+</Quiz>
+
+<QuizResults />

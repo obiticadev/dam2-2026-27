@@ -1,0 +1,46 @@
+---
+title: Python · Segundo examen
+description: Tres simulacros de UT03 con código breve, casos límite y explicaciones de todas las opciones.
+---
+
+import { LinkCard, CardGrid, Aside } from '@astrojs/starlight/components';
+
+**Tres simulacros distintos de 20 preguntas · cuatro opciones · una sola correcta.** Dedica unos **30 minutos a cada uno** (90 segundos por pregunta de media). Predomina el código breve: salidas de `print`, tipos, errores, sangría y pequeñas trazas recursivas. No necesitas calculadora.
+
+<Aside type="note" title="Solo el segundo examen · UT03">
+Funciones, parámetros, ámbito, módulos, recursividad y organizador de carpetas RA3. Los tipos, operadores, condiciones y errores de UT01/UT02 se usan como prerrequisitos dentro de esos problemas. No se pregunta el temario de colecciones de UT04: solo aparecen listas con `append`, y tuplas de retorno/desempaquetado ya utilizadas en UT03.
+</Aside>
+
+<CardGrid>
+  <LinkCard title="1 · Salidas y fundamentos" href="/py-examen-2/simulacro-1/" description="20 preguntas · Funciones, tipos, módulos y trazas recursivas pequeñas" />
+  <LinkCard title="2 · Errores y casos límite" href="/py-examen-2/simulacro-2/" description="20 preguntas · Sangría, llamadas incorrectas, retornos y casos base" />
+  <LinkCard title="3 · Variantes y práctica RA3" href="/py-examen-2/simulacro-3/" description="20 preguntas · Variantes de ejercicios y razonamiento sobre el organizador" />
+</CardGrid>
+
+## Condiciones de las preguntas
+
+- **Python 3.13**, cada pregunta en un proceso nuevo; no hay variables ni imports ocultos. Ejecución como **archivo**, no como órdenes sueltas en una consola interactiva. La sangría mostrada es literal, con espacios y sin tabuladores.
+- En salidas de varias líneas, **` / ` separa líneas** en las opciones, no es texto que imprima el programa. Las comillas delimitadoras de una opción no se imprimen salvo indicación expresa.
+- En preguntas con varios archivos, están en la misma carpeta y se ejecuta `principal.py`, salvo indicación contraria. No hay módulos homónimos externos ni importaciones anteriores.
+- Si hay un error, se pide la **clase más específica** y lo impreso **antes** de él, no el texto completo del traceback. `IndentationError` es una subclase de `SyntaxError`; `UnboundLocalError`, de `NameError`.
+- Los 30 minutos son una **referencia de entrenamiento**, no un límite automático: el cronómetro heredado cuenta el tiempo visible desde la primera respuesta. La corrección muestra aciertos, sin aplicar una penalización oficial supuesta.
+
+## Cómo estudiar
+
+Contesta antes de corregir. Revisa la explicación de **cada opción** y el apartado **Repasar**. Puedes marcar dudas, navegar entre preguntas y reiniciar para barajar preguntas y respuestas. El progreso se guarda en tu navegador; las rutas e identificadores de Python son distintos a los de Acceso a Datos.
+
+<Aside type="caution" title="Práctica elaborada, no preguntas oficiales">
+El alcance procede de la nota del segundo examen de la bóveda. Los fragmentos son adaptaciones breves del temario y de tus laboratorios, no copias literales de todos los ejercicios. Las precisiones atípicas añadidas (booleanos como enteros, cortocircuito, ámbito local o evaluación de argumentos) se identifican en el repaso. No constituyen una ampliación oficial del examen.
+</Aside>
+
+## Referencias de repaso
+
+Referencias abreviadas a archivos de `D:/obsidian/DAM2`:
+
+- **T a/b/c**: `Fuentes/PY/aula-virtual/UT3/01 - Funciones módulos y recursividad.md`, apartados a) funciones, b) parámetros y c) recursividad.
+- **F, ejercicio N**: `Fuentes/PY/aula-virtual/UT3/02 - Ejercicios adicionales - Funciones y módulos.md` (1–20).
+- **R, ejercicio N**: `Fuentes/PY/aula-virtual/UT3/03 - Ejercicios adicionales - Recursividad.md` (21–30).
+- **RA3, requisito N**: `Fuentes/PY/aula-virtual/Prácticas/RA3 - Práctica evaluable - Organizador de carpetas.md`, apartado 2.
+- Alcance: `Exámenes/PY/PY - Examen 2 - UT03.md`. Laboratorios consultados: `dam2-2026-27-python-labs/practicas/UT3. Ejercicios adicionales`.
+
+No se modifican la bóveda ni los laboratorios. Cada simulacro es una selección de práctica, no una distribución oficial de contenidos.

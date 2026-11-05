@@ -1,0 +1,469 @@
+---
+title: "2 · Errores y casos límite"
+description: "20 preguntas de UT03 sobre sangría, llamadas, retornos y casos base."
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · objetivo: 30 minutos · una sola respuesta correcta.** [Condiciones y referencias](/). ` / ` separa líneas. Se ejecuta cada fragmento como archivo independiente; se pide la clase de error más específica. No todos los fragmentos fallan.
+
+<Quiz id="py2-s2-01" title="Una sangría extra">
+¿Qué ocurre al ejecutar este archivo completo? No hay tabuladores.
+
+```python
+print("inicio")
+def f():
+    x = 1
+        return x
+print(f())
+```
+
+- [ ] Imprime `inicio` y falla con `IndentationError`.
+  > En un archivo completo el error de compilación se detecta antes de ejecutar el primer print.
+- [x] No imprime nada: `IndentationError`.
+  > return tiene un nivel extra de sangría sin un bloque que lo permita; no se ejecuta ninguna línea.
+- [ ] Imprime `inicio / 1`.
+  > No toda sangría adicional es válida: aquí no hay if, for ni otra cabecera que abra ese nivel.
+- [ ] No imprime nada: `TypeError`.
+  > El fallo es de estructura del código, no de tipos durante una llamada.
+
+Repasar: T a (cuerpo indentado); precisión añadida: compilación del archivo.
+</Quiz>
+
+<Quiz id="py2-s2-02" title="Dos espacios también pueden ser válidos">
+¿Qué imprime? El cuerpo usa exactamente dos espacios por nivel.
+
+```python
+def f(n):
+  if n > 0:
+    return n + 1
+  return 0
+print(f(1))
+```
+
+- [ ] No imprime nada: `IndentationError`.
+  > Cuatro espacios es la convención recomendada, no el único tamaño válido para la sangría.
+- [ ] `0`
+  > El return 0 se omite porque la rama positiva ya ha retornado.
+- [x] `2`
+  > Los niveles son coherentes; el if se cumple y devuelve 1 + 1.
+- [ ] `None`
+  > La ruta ejecutada sí tiene return explícito.
+
+Repasar: T a; precisión añadida: sangría coherente frente a convención de estilo.
+</Quiz>
+
+<Quiz id="py2-s2-03" title="Return fuera de la función">
+¿Qué ocurre al ejecutar el archivo completo?
+
+```python
+def f():
+    x = 2
+return x
+print(f())
+```
+
+- [x] No imprime nada: `SyntaxError`.
+  > return está en el nivel del módulo y solo puede usarse dentro de una función.
+- [ ] No imprime nada: `NameError`.
+  > No se llega a evaluar x: antes se rechaza return fuera de función.
+- [ ] `2`
+  > La desindentación deja return fuera del cuerpo, por lo que no devuelve la x local.
+- [ ] `None`
+  > No se puede ejecutar la función porque el archivo no compila.
+
+Repasar: T a (cuerpo y sentencia return).
+</Quiz>
+
+<Quiz id="py2-s2-04" title="Parámetro obligatorio detrás de uno opcional">
+¿Qué ocurre?
+
+```python
+def precio(iva=20, base):
+    return base + base * iva / 100
+print(precio(10))
+```
+
+- [ ] `12.0`
+  > Esa llamada podría servir con base primero e iva después, pero no con esta cabecera inválida.
+- [ ] No imprime nada: `TypeError`.
+  > El error aparece al compilar la definición, antes de resolver argumentos de la llamada.
+- [ ] `None`
+  > No se define ni ejecuta la función.
+- [x] No imprime nada: `SyntaxError`.
+  > En esta firma sencilla, un parámetro obligatorio no puede ir después de otro con valor por defecto.
+
+Repasar: T a; F, ejercicio 2.
+</Quiz>
+
+<Quiz id="py2-s2-05" title="Una anotación no sustituye un valor por defecto">
+¿Qué ocurre?
+
+```python
+def precio(base: float, iva: float):
+    return base + base * iva / 100
+print(precio(10))
+```
+
+- [ ] `12.1`
+  > El 21 % del enunciado original no se aplica si no aparece como valor por defecto en la firma.
+- [x] No imprime nada: `TypeError`.
+  > Falta el argumento obligatorio iva; la anotación float no proporciona ningún valor.
+- [ ] No imprime nada: `SyntaxError`.
+  > La definición es válida; lo incorrecto es invocarla con un argumento menos.
+- [ ] `10.0`
+  > Python no sustituye automáticamente un argumento omitido por cero.
+
+Repasar: F, ejercicio 2; variante de tu laboratorio con el defecto omitido.
+</Quiz>
+
+<Quiz id="py2-s2-06" title="El mismo parámetro recibe dos valores">
+¿Qué ocurre?
+
+```python
+def suma(a, b=1):
+    print("dentro")
+    return a + b
+print(suma(2, a=3))
+```
+
+- [ ] `dentro / 5`
+  > El primer argumento posicional ya corresponde a a; el argumento con nombre no se asigna a b.
+- [ ] Imprime `dentro` y falla con `TypeError`.
+  > El conflicto se detecta al asociar argumentos, antes de entrar en el cuerpo.
+- [x] No imprime nada: `TypeError`.
+  > a recibe 2 por posición y 3 por nombre; no se llega al print interno.
+- [ ] `dentro / 4`
+  > El último valor de a no reemplaza al anterior: Python rechaza la duplicación.
+
+Repasar: T a; precisión añadida: asociación de argumentos.
+</Quiz>
+
+<Quiz id="py2-s2-07" title="Anotar no convierte los argumentos">
+¿Qué imprime?
+
+```python
+def doble(n: int) -> int:
+    return n * 2
+print(doble("3"))
+```
+
+- [x] `33`
+  > Las anotaciones no fuerzan conversiones en tiempo de ejecución; una cadena por 2 se repite.
+- [ ] `6`
+  > No hay int(n) ni conversión automática por la anotación.
+- [ ] No imprime nada: `TypeError`.
+  > Multiplicar una cadena por un entero es válido, aunque no coincida con la anotación.
+- [ ] `3 3`
+  > La repetición no inserta espacios entre las dos copias.
+
+Repasar: T a; precisión añadida sobre las anotaciones usadas en tus laboratorios.
+</Quiz>
+
+<Quiz id="py2-s2-08" title="Lectura de una local antes de asignarla">
+¿Qué ocurre?
+
+```python
+contador = 8
+def aumentar():
+    contador += 1
+    return contador
+print(aumentar())
+```
+
+- [ ] `9`
+  > La asignación dentro de la función hace local el nombre; no se modifica implícitamente la global.
+- [ ] `8`
+  > La llamada falla antes de poder devolver un resultado.
+- [ ] No imprime nada: `TypeError`.
+  > Sumar enteros sería válido; el problema es que la local aún no tiene valor.
+- [x] No imprime nada: `UnboundLocalError`.
+  > += necesita leer la local contador antes de que se le haya asignado un valor; se pide la clase específica.
+
+Repasar: F, ejercicios 4 y 10; precisión añadida: resolución de variables locales.
+</Quiz>
+
+<Quiz id="py2-s2-09" title="El return quedó dentro del bucle">
+¿Qué imprime para la cadena vacía?
+
+```python
+def contar(texto):
+    n = 0
+    for letra in texto:
+        n += 1
+        return n
+print(contar(""))
+```
+
+- [ ] `0`
+  > n vale 0, pero no hay un return que lo devuelva si el bucle no se ejecuta.
+- [x] `None`
+  > El for no entra ninguna vez y la función termina sin ejecutar return.
+- [ ] `1`
+  > Una cadena vacía no tiene ninguna letra que active el cuerpo.
+- [ ] No imprime nada: `IndentationError`.
+  > La sintaxis es válida: el error es colocar el retorno en un lugar que deja una ruta sin devolver n.
+
+Repasar: F, ejercicios 4 y 16.
+</Quiz>
+
+<Quiz id="py2-s2-10" title="Un idioma sin rama">
+¿Qué imprime?
+
+```python
+def saludo(nombre, idioma="es"):
+    if idioma == "es":
+        return "Hola " + nombre
+    if idioma == "en":
+        return "Hi " + nombre
+print(saludo("Ana", "fr"))
+```
+
+- [ ] `Hola Ana`
+  > El defecto es es solo al omitir el argumento, no al recibir uno sin rama.
+- [ ] No imprime nada: `ValueError`.
+  > No hay ninguna instrucción que lance esa excepción por un idioma desconocido.
+- [x] `None`
+  > No se cumple ninguno de los if y la función termina sin return.
+- [ ] `Hi Ana`
+  > La rama en exige exactamente ese código, no cualquier idioma distinto de es.
+
+Repasar: F, ejercicio 6; variante de la cobertura incompleta de tu laboratorio.
+</Quiz>
+
+<Quiz id="py2-s2-11" title="Usar un retorno que no existe">
+¿Qué ocurre?
+
+```python
+def area(b, h):
+    print(b * h)
+print(area(2, 3) + 1)
+```
+
+- [ ] `6 / 7`
+  > El 6 se imprime dentro, pero no se devuelve para la suma exterior.
+- [ ] No imprime nada: `TypeError`.
+  > La función sí imprime 6 antes de que se intente sumar None y 1.
+- [ ] `6 / None`
+  > Antes del print exterior se intenta una suma inválida; no llega a imprimir None.
+- [x] Imprime `6` y después falla con `TypeError`.
+  > area retorna None implícitamente; None + 1 no es una operación válida.
+
+Repasar: T a (print frente a return).
+</Quiz>
+
+<Quiz id="py2-s2-12" title="Importar una función no crea el nombre del módulo">
+Se ejecuta `principal.py`. ¿Qué ocurre?
+
+```python
+# archivo: operaciones.py
+def sumar(a, b):
+    return a + b
+```
+
+```python
+# archivo: principal.py
+from operaciones import sumar
+print(operaciones.sumar(1, 2))
+```
+
+- [x] No imprime nada: `NameError`.
+  > Se ha creado el nombre sumar en principal, no el nombre operaciones.
+- [ ] `3`
+  > Sería válido llamar directamente a sumar o importar el módulo completo.
+- [ ] No imprime nada: `ImportError`.
+  > La función sí existe en el módulo y la importación se completa.
+- [ ] No imprime nada: `AttributeError`.
+  > No se llega a buscar sumar como atributo: operaciones no está definido en principal.
+
+Repasar: F, ejercicios 12 y 13.
+</Quiz>
+
+<Quiz id="py2-s2-13" title="El nombre importado no existe">
+Se ejecuta `principal.py`. ¿Qué ocurre?
+
+```python
+# archivo: operaciones.py
+def sumar(a, b):
+    return a + b
+```
+
+```python
+# archivo: principal.py
+from operaciones import sumar, dividir
+print(sumar(1, 2))
+```
+
+- [ ] `3`
+  > La sentencia import debe completarse antes de alcanzar el print siguiente.
+- [x] No imprime nada: `ImportError`.
+  > El módulo existe, pero no contiene el nombre dividir solicitado.
+- [ ] No imprime nada: `ModuleNotFoundError`.
+  > No falta el archivo del módulo: falta uno de los nombres dentro de él.
+- [ ] No imprime nada: `ZeroDivisionError`.
+  > No se ejecuta ninguna división ni se invoca una función dividir.
+
+Repasar: F, ejercicio 12; precisión añadida: nombre inexistente en un import.
+</Quiz>
+
+<Quiz id="py2-s2-14" title="División controlada">
+¿Qué imprime?
+
+```python
+def dividir(a, b):
+    try:
+        return a / b
+    except ZeroDivisionError:
+        return None
+print(dividir(4, 0), dividir(4, 2))
+```
+
+- [ ] No imprime nada: `ZeroDivisionError`.
+  > La excepción se captura dentro de la primera llamada.
+- [ ] `None 2`
+  > La división con / devuelve float, no int.
+- [x] `None 2.0`
+  > La primera llamada retorna None desde el except y la segunda retorna el cociente float.
+- [ ] `0 2.0`
+  > El except devuelve None expresamente, no cero.
+
+Repasar: F, ejercicio 12.
+</Quiz>
+
+<Quiz id="py2-s2-15" title="Falta un caso base de paridad">
+¿Qué ocurre?
+
+```python
+def par(n):
+    if n == 0:
+        return True
+    return par(n - 2)
+print(par(3))
+```
+
+- [x] No imprime nada: `RecursionError`.
+  > Se visitan 3, 1, -1, -3 y así sucesivamente sin llegar a cero; se supera el límite de recursión.
+- [ ] `False`
+  > La función no contiene una rama que devuelva False para los impares.
+- [ ] `True`
+  > Restar 2 a un impar no lo convierte en cero.
+- [ ] No imprime nada: `ValueError`.
+  > Los negativos no producen por sí mismos ValueError al restarles 2.
+
+Repasar: R, ejercicio 22.
+</Quiz>
+
+<Quiz id="py2-s2-16" title="La llamada recursiva sin return">
+¿Qué imprime?
+
+```python
+def suma(n):
+    if n == 0:
+        return 0
+    suma(n - 1)
+print(suma(2))
+```
+
+- [ ] `3`
+  > No hay ninguna suma de n ni un return en el caso recursivo.
+- [ ] `0`
+  > El cero llega al llamador inmediato, pero no se propaga si las demás llamadas no lo devuelven.
+- [ ] No imprime nada: `RecursionError`.
+  > Las llamadas sí alcanzan cero y terminan; lo que se pierde es el resultado.
+- [x] `None`
+  > Las llamadas con 1 y 2 ignoran el retorno de la siguiente y terminan con None implícito.
+
+Repasar: R, ejercicio 21 (propagación del retorno).
+</Quiz>
+
+<Quiz id="py2-s2-17" title="Un None que se usa en una suma">
+¿Qué ocurre?
+
+```python
+def suma(n):
+    if n == 0:
+        return 0
+    suma(n - 1) + n
+print(suma(2))
+```
+
+- [ ] `3`
+  > Calcular una expresión sin return no devuelve automáticamente su valor.
+- [ ] `None`
+  > Con n igual a 2 se intenta sumar el None devuelto por suma(1), y eso falla.
+- [x] No imprime nada: `TypeError`.
+  > suma(1) evalúa 0 + 1 pero no lo devuelve; suma(2) intenta None + 2.
+- [ ] No imprime nada: `RecursionError`.
+  > El caso base se alcanza; el error surge al volver de las llamadas.
+
+Repasar: R, ejercicio 21; cuaderno de repaso, error E1.
+</Quiz>
+
+<Quiz id="py2-s2-18" title="La división ocurre antes de la siguiente llamada">
+¿Qué ocurre al llamar con 0, aunque el ejercicio original pida positivos?
+
+```python
+def armonica(n):
+    if n == 1:
+        return 1.0
+    return 1 / n + armonica(n - 1)
+print(armonica(0))
+```
+
+- [ ] `0.0`
+  > La función no define un caso base para cero.
+- [x] No imprime nada: `ZeroDivisionError`.
+  > Se evalúa primero 1 / 0; falla antes de llegar a la llamada con -1.
+- [ ] No imprime nada: `RecursionError`.
+  > No llega a profundizar en la recursión porque antes divide entre cero.
+- [ ] `1.0`
+  > Ese retorno solo se aplica si n vale exactamente 1.
+
+Repasar: R, ejercicio 28; precisión añadida: orden de evaluación y entrada fuera del dominio.
+</Quiz>
+
+<Quiz id="py2-s2-19" title="No todo texto se convierte a entero">
+¿Qué ocurre?
+
+```python
+def incrementar(texto):
+    return int(texto) + 1
+print(incrementar("2.5"))
+```
+
+- [ ] `3`
+  > int de una cadena no trunca una representación decimal con punto.
+- [ ] No imprime nada: `TypeError`.
+  > int acepta cadenas como tipo de entrada; aquí el contenido no representa un entero válido.
+- [ ] `3.5`
+  > El código usa int y no float, y la conversión falla antes de sumar.
+- [x] No imprime nada: `ValueError`.
+  > La cadena 2.5 no es un literal entero válido para int.
+
+Repasar: T a; prerrequisito UT01/UT02: conversión y validación de entradas.
+</Quiz>
+
+<Quiz id="py2-s2-20" title="Una local no aparece fuera">
+¿Qué ocurre?
+
+```python
+def calcular():
+    resultado = 4
+    return resultado
+calcular()
+print(resultado)
+```
+
+- [ ] `4`
+  > return entrega un valor, pero no crea fuera una variable con el mismo nombre.
+- [x] No imprime nada: `NameError`.
+  > resultado es local; la llamada devuelve 4, pero el programa no lo asigna a ningún nombre exterior.
+- [ ] `None`
+  > El print no recibe None: la evaluación de resultado falla antes de llamarlo.
+- [ ] No imprime nada: `UnboundLocalError`.
+  > Aquí el nombre se busca en el módulo y no existe; no es una local de función leída antes de asignarla.
+
+Repasar: T a; F, ejercicio 10.
+</Quiz>
+
+<QuizResults />

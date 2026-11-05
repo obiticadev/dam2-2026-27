@@ -1,0 +1,443 @@
+---
+title: "3 · Variantes y práctica RA3"
+description: "20 preguntas de UT03: casos atípicos, variantes de ejercicios y organizador de carpetas."
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · objetivo: 30 minutos · una sola respuesta correcta.** [Condiciones y referencias](/). ` / ` separa líneas. Cada pregunta parte de cero. Las situaciones de RA3 son ejercicios de razonamiento, no ejecutan movimientos de archivos reales.
+
+<Quiz id="py2-s3-01" title="El cortocircuito evita una división">
+¿Qué imprime?
+
+```python
+def comprobar(x):
+    return x != 0 and 8 / x > 1
+print(comprobar(0), comprobar(4))
+```
+
+- [ ] No imprime nada: `ZeroDivisionError`.
+  > Con x igual a cero, el primer operando es False y and no evalúa la división.
+- [ ] `True True`
+  > Cero incumple la primera condición de la función.
+- [x] `False True`
+  > La primera llamada se corta en False; en la segunda, 8 / 4 es 2 y supera 1.
+- [ ] `False False`
+  > Con 4 se cumplen las dos condiciones.
+
+Repasar: F, ejercicio 14 (and); precisión añadida: evaluación en cortocircuito.
+</Quiz>
+
+<Quiz id="py2-s3-02" title="Or no devuelve siempre un bool">
+¿Qué imprime?
+
+```python
+def elegir(x):
+    return x or 5
+print(elegir(0), elegir(2))
+```
+
+- [x] `5 2`
+  > or devuelve un operando: 0 es falso y da paso a 5; 2 es verdadero y se devuelve directamente.
+- [ ] `True True`
+  > or no convierte automáticamente los operandos en valores bool.
+- [ ] `0 2`
+  > Con el cero se evalúa y devuelve el segundo operando.
+- [ ] `5 5`
+  > El segundo operando no sustituye a un primer operando que ya sea verdadero.
+
+Repasar: T a; precisión añadida: valor de retorno de operadores lógicos.
+</Quiz>
+
+<Quiz id="py2-s3-03" title="Argumentos evaluados de izquierda a derecha">
+¿Qué imprime?
+
+```python
+def marca(n):
+    print(n)
+    return n
+print(marca(1) + marca(2))
+```
+
+- [ ] `3 / 1 / 2`
+  > El print exterior espera a evaluar la suma de sus argumentos.
+- [ ] `1 / 3 / 2`
+  > La suma no puede completarse sin obtener primero el retorno de marca(2).
+- [ ] `2 / 1 / 3`
+  > Se evalúa primero el operando de la izquierda, marca(1).
+- [x] `1 / 2 / 3`
+  > Cada llamada imprime su número durante la evaluación; después el print exterior muestra 1 + 2.
+
+Repasar: T a; precisión añadida: orden de evaluación de expresiones y llamadas.
+</Quiz>
+
+<Quiz id="py2-s3-04" title="Cambiar el orden por nombre">
+¿Qué imprime?
+
+```python
+def resta(a, b=2):
+    return a - b
+print(resta(b=5, a=3), resta(3))
+```
+
+- [ ] `2 1`
+  > Los argumentos con nombre no se asocian por el orden en que aparecen escritos.
+- [x] `-2 1`
+  > La primera llamada calcula 3 - 5; la segunda usa el valor por defecto b igual a 2.
+- [ ] `-2 -2`
+  > Pasar b igual a 5 en una llamada no cambia el valor por defecto de la siguiente.
+- [ ] No imprime nada: `SyntaxError`.
+  > Todos los argumentos de la primera llamada son nombrados y pueden escribirse en ese orden.
+
+Repasar: T a; precisión añadida: argumentos por nombre.
+</Quiz>
+
+<Quiz id="py2-s3-05" title="Una documentación que no impone un retorno">
+¿Qué imprime?
+
+```python
+def calcular():
+    """Devuelve 7."""
+    7
+print(calcular())
+```
+
+- [ ] `7`
+  > Ni el docstring ni la última expresión sustituyen a return.
+- [ ] `Devuelve 7.`
+  > El docstring documenta la función; no se imprime al invocarla.
+- [x] `None`
+  > La función evalúa el literal 7 y termina sin return, devolviendo None.
+- [ ] No imprime nada: `SyntaxError`.
+  > Tanto el docstring como una expresión aislada son sintácticamente válidos.
+
+Repasar: T a (docstring y retorno).
+</Quiz>
+
+<Quiz id="py2-s3-06" title="Dos valores, tres destinos">
+¿Qué ocurre?
+
+```python
+def medidas(b, h):
+    return 2 * (b + h), b * h
+p, a, extra = medidas(1, 2)
+print(p, a)
+```
+
+- [x] No imprime nada: `ValueError`.
+  > La función devuelve dos valores, pero el desempaquetado exige tres.
+- [ ] `6 2`
+  > El error en la asignación impide alcanzar el print.
+- [ ] No imprime nada: `TypeError`.
+  > La tupla sí se puede desempaquetar; lo incorrecto es la cantidad de valores, no su tipo.
+- [ ] `6 2 None`
+  > Python no rellena con None los destinos sobrantes.
+
+Repasar: F, ejercicio 5; precisión añadida: aridad del desempaquetado.
+</Quiz>
+
+<Quiz id="py2-s3-07" title="Sumar no garantiza una suma numérica">
+¿Qué imprime?
+
+```python
+def sumar(a, b):
+    return a + b
+print(sumar("2", "3"), sumar(True, 2))
+```
+
+- [ ] `5 3`
+  > Dos cadenas con + se concatenan: no se convierten automáticamente a enteros.
+- [ ] `23 True`
+  > La suma de True y 2 produce el entero 3, no un booleano.
+- [ ] No imprime nada: `TypeError`.
+  > Ambas operaciones son válidas: concatenación de cadenas y suma de bool con int.
+- [x] `23 3`
+  > El mismo operador concatena los textos y, en la segunda llamada, suma 1 + 2.
+
+Repasar: F, ejercicio 12; precisión añadida: operadores según el tipo recibido.
+</Quiz>
+
+<Quiz id="py2-s3-08" title="La función usa su propio módulo global">
+Se ejecuta `principal.py`. ¿Qué imprime?
+
+```python
+# archivo: geometria.py
+FACTOR = 2
+def escalar(n):
+    return n * FACTOR
+```
+
+```python
+# archivo: principal.py
+from geometria import escalar
+FACTOR = 10
+print(escalar(3))
+```
+
+- [ ] `30`
+  > La global de principal no sustituye a la global que usa una función definida en geometria.
+- [x] `6`
+  > escalar busca FACTOR en el módulo donde fue definida y allí vale 2.
+- [ ] No imprime nada: `NameError`.
+  > FACTOR sí existe en el entorno global de la función.
+- [ ] `3`
+  > La multiplicación se realiza y el factor del módulo es 2, no 1.
+
+Repasar: F, ejercicios 15 y 20; precisión añadida: ámbito global de una función importada.
+</Quiz>
+
+<Quiz id="py2-s3-09" title="Describir una fecha no cambia su validación">
+¿Qué imprime esta versión simplificada del aula?
+
+```python
+def fecha(dia, mes):
+    return 1 <= dia <= 31 and 1 <= mes <= 12
+print(fecha(31, 2), fecha(0, 1))
+```
+
+- [ ] `False False`
+  > Aunque el 31 de febrero no existe en el calendario, el código solo comprueba dos intervalos.
+- [ ] `True True`
+  > El día 0 queda fuera del intervalo permitido.
+- [x] `True False`
+  > 31 y 2 pasan los rangos; 0 y 1 fallan por el día. Se razona sobre el código, no sobre su nombre.
+- [ ] No imprime nada: `ValueError`.
+  > No se construye un objeto fecha ni se lanza ninguna excepción.
+
+Repasar: F, ejercicio 18; contraste con la validación por meses de tu laboratorio.
+</Quiz>
+
+<Quiz id="py2-s3-10" title="El caso especial del año 2000">
+¿Qué imprime esta versión incompleta de la regla gregoriana?
+
+```python
+def bisiesto(anio):
+    return anio % 4 == 0 and anio % 100 != 0
+print(bisiesto(2000), bisiesto(2024))
+```
+
+- [x] `False True`
+  > El código rechaza 2000 por ser múltiplo de 100; le falta la excepción para múltiplos de 400.
+- [ ] `True True`
+  > Eso sería lo correcto según el calendario, pero no lo que devuelve esta implementación.
+- [ ] `False False`
+  > 2024 es múltiplo de 4 y no de 100, por lo que cumple ambas condiciones.
+- [ ] `True False`
+  > Invierte los resultados del código en ambos casos.
+
+Repasar: F, ejercicio 18; variante del fallo de tu laboratorio.
+</Quiz>
+
+<Quiz id="py2-s3-11" title="Producto y su elemento neutro aditivo">
+¿Qué imprime?
+
+```python
+def producto(a, b):
+    if b == 0:
+        return 0
+    return a + producto(a, b - 1)
+print(producto(3, 2), producto(3, 0))
+```
+
+- [ ] `6 1`
+  > El caso base de este producto por sumas es 0, no el 1 de una potencia.
+- [ ] `5 0`
+  > No se suman a y b: se suma a tantas veces como indica b.
+- [ ] No imprime nada: `RecursionError`.
+  > La segunda coordenada baja hasta cero y la llamada directa con cero termina inmediatamente.
+- [x] `6 0`
+  > La primera llamada calcula 3 + 3 + 0; la segunda entra directamente en el caso base.
+
+Repasar: R, ejercicio 23.
+</Quiz>
+
+<Quiz id="py2-s3-12" title="Límite impar en una suma de pares">
+¿Qué imprime?
+
+```python
+def pares(n):
+    if n <= 0:
+        return 0
+    if n % 2 != 0:
+        return pares(n - 1)
+    return n + pares(n - 2)
+print(pares(5))
+```
+
+- [ ] `15`
+  > Eso sumaría todos los naturales; los impares no se acumulan en esta función.
+- [x] `6`
+  > El 5 se omite y queda 4 + 2 + 0.
+- [ ] `9`
+  > Eso sumaría 5 + 3 + 1, justamente los impares que se descartan.
+- [ ] `4`
+  > Tras sumar 4 todavía se procesa el 2 antes del caso base.
+
+Repasar: R, ejercicio 26.
+</Quiz>
+
+<Quiz id="py2-s3-13" title="Interés con cero años">
+¿Qué imprime?
+
+```python
+def capital(c, tasa, anios):
+    if anios == 0:
+        return c
+    return capital(c * (1 + tasa), tasa, anios - 1)
+print(capital(8, 0.5, 0), capital(8, 0.5, 1))
+```
+
+- [ ] `8.0 12.0`
+  > Con cero años se devuelve directamente el entero 8, sin ejecutar ninguna operación con la tasa.
+- [ ] `0 4.0`
+  > La función devuelve el capital total, no solo el interés generado.
+- [x] `8 12.0`
+  > El caso base conserva el tipo del capital recibido; un año calcula 8 por 1.5 y devuelve un float.
+- [ ] `12.0 12.0`
+  > En cero años no se aplica ningún interés.
+
+Repasar: R, ejercicio 29.
+</Quiz>
+
+<Quiz id="py2-s3-14" title="El cero como fin del recorrido de dígitos">
+¿Qué imprime esta función concreta? Se prueba también fuera del dominio positivo del enunciado.
+
+```python
+def contar(n, d):
+    if n == 0:
+        return 0
+    return (n % 10 == d) + contar(n // 10, d)
+print(contar(10, 0), contar(0, 0))
+```
+
+- [x] `1 0`
+  > El cero de 10 sí se inspecciona; n igual a 0 entra directamente en el caso base y no se inspecciona.
+- [ ] `1 1`
+  > Sería otra especificación razonable para el número cero, pero no la implementada aquí.
+- [ ] `0 0`
+  > En la primera llamada, 10 % 10 sí vale 0 y aporta True, equivalente a 1 en la suma.
+- [ ] `True False`
+  > Las sumas recursivas producen enteros y el caso base devuelve el entero 0.
+
+Repasar: R, ejercicio 30; precisión añadida: suma de booleanos y entrada cero.
+</Quiz>
+
+<Quiz id="py2-s3-15" title="Extraer la última extensión">
+¿Qué imprime este fragmento de RA3?
+
+```python
+import os
+def extension(nombre):
+    base, ext = os.path.splitext(nombre)
+    return ext.lower() or "sin_extension"
+print(extension("copia.TAR.GZ"), extension("LEEME"))
+```
+
+- [ ] `gz sin_extension`
+  > splitext conserva el punto de la extensión; este fragmento no lo elimina.
+- [ ] `.tar.gz sin_extension`
+  > splitext separa únicamente la última extensión en este nombre.
+- [ ] `.GZ sin_extension`
+  > lower convierte la extensión extraída a minúsculas.
+- [x] `.gz sin_extension`
+  > El fragmento no cumple todavía el requisito de quitar el punto; para LEEME la extensión vacía activa el texto alternativo.
+
+Repasar: RA3, requisito 3; precisión añadida: retorno de or.
+</Quiz>
+
+<Quiz id="py2-s3-16" title="El umbral de 1024 bytes">
+¿Qué imprime esta versión reducida a bytes y KB?
+
+```python
+def tamano(n):
+    if n >= 1024:
+        return f"{n / 1024:.2f} KB"
+    return f"{n} bytes"
+print(tamano(1024))
+```
+
+- [ ] `1024 bytes`
+  > El operador mayor o igual incluye exactamente el umbral 1024.
+- [x] `1.00 KB`
+  > 1024 dividido entre 1024 da 1; el formato .2f muestra dos decimales.
+- [ ] `1 KB`
+  > La conversión numérica es correcta, pero el formato solicita dos cifras decimales.
+- [ ] `1.00 MB`
+  > Este fragmento solo convierte una vez de bytes a KB, no a MB.
+
+Repasar: RA3, requisito 4 (variante reducida para cálculo mental).
+</Quiz>
+
+<Quiz id="py2-s3-17" title="Un prefijo de nombre no basta para anidar rutas">
+En RA3, tras obtener las rutas absolutas, se añade `os.sep` al final de ambas antes de comparar sus prefijos. ¿Qué problema evita directamente?
+
+- [ ] Que la comparación distinga mayúsculas de minúsculas.
+  > Añadir un separador no cambia la sensibilidad a mayúsculas de una comparación de cadenas.
+- [ ] Que una ruta relativa se convierta en absoluta.
+  > Precisamente se convierten primero a absolutas; el separador no realiza esa conversión.
+- [x] Confundir carpetas hermanas llamadas `fotos` y `fotos2`.
+  > El separador exige un límite de componente: fotos2 no empieza por fotos seguido de separador.
+- [ ] Que dos rutas iguales sean rechazadas como coincidentes.
+  > Dos rutas iguales siguen coincidiendo tras añadirles el mismo separador.
+
+Repasar: RA3, requisito 5. Caso conceptual; no requiere acceso al disco.
+</Quiz>
+
+<Quiz id="py2-s3-18" title="Buscar el siguiente nombre libre">
+RA3 prueba el nombre original y, si existe, sufijos `_1`, `_2`, etc. En la carpeta destino solo existen `notas.txt` y `notas_2.txt`. ¿Qué nombre debe elegir para otro `notas.txt`?
+
+- [x] `notas_1.txt`
+  > Es el primer candidato libre; no hace falta elegir un sufijo mayor que todos los existentes.
+- [ ] `notas_3.txt`
+  > Ese nombre estaría libre, pero no es el primero según el procedimiento indicado.
+- [ ] `notas.txt`
+  > Ya existe y elegirlo incumpliría la condición de no sobrescribir.
+- [ ] `notas.txt_1`
+  > El sufijo debe ir antes de la extensión, no después de ella.
+
+Repasar: RA3, requisito 6. Caso conceptual con estado del destino explícito.
+</Quiz>
+
+<Quiz id="py2-s3-19" title="Olvidar acumular el retorno de una subcarpeta">
+¿Qué imprime esta simplificación de dos niveles, sin acceso al disco?
+
+```python
+def recorrer(nivel, h):
+    if nivel == 0:
+        h.append("fichero")
+        return 4
+    total = 0
+    recorrer(nivel - 1, h)
+    return total
+h = []
+print(recorrer(1, h), h)
+```
+
+- [ ] `4 ['fichero']`
+  > El retorno 4 de la llamada interna se ignora: no se suma a total.
+- [ ] `0 []`
+  > Aunque se pierdan los bytes devueltos, la mutación de la lista compartida sí permanece.
+- [ ] `None ['fichero']`
+  > La llamada exterior sí tiene return: devuelve su total local, que vale 0.
+- [x] `0 ['fichero']`
+  > El historial registra el archivo, pero faltaría acumular el retorno de la subllamada para sumar sus bytes.
+
+Repasar: RA3, requisitos 7 y 8.
+</Quiz>
+
+<Quiz id="py2-s3-20" title="Elegir iteración o recursividad con criterio">
+Una función calcula Fibonacci mediante `f(n - 1) + f(n - 2)` sin guardar resultados previos. Otra usa un bucle con dos acumuladores. Para valores crecientes de n, ¿qué explica la desventaja de esta versión recursiva?
+
+- [ ] Python convierte todos sus resultados a float.
+  > La recursividad no cambia por sí misma el tipo numérico.
+- [x] Repite subproblemas y mantiene llamadas pendientes en la pila.
+  > El árbol ingenuo recalcula términos y la profundidad añade memoria; no implica que toda recursión sea siempre peor.
+- [ ] El bucle no necesita ninguna operación aritmética.
+  > La versión iterativa también suma para generar cada término.
+- [ ] La versión recursiva es incapaz de alcanzar sus casos base.
+  > Con los casos base correctos para 0 y 1 sí termina; el problema indicado es el trabajo repetido.
+
+Repasar: T c (Fibonacci, pila y comparación con iteración). Caso conceptual; no se pide cronometrar.
+</Quiz>
+
+<QuizResults />
