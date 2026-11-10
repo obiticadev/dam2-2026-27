@@ -1,0 +1,354 @@
+---
+title: "9 · Siglas técnicas e indicadores"
+description: "SGBD, ORM, API, conectores, formatos y métricas para interpretar resultados."
+sidebar:
+  order: 9
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta · nivel inicial.** Piensa tu respuesta y pulsa **Corregir**. Después lee las cuatro explicaciones: incluyen significados, usos y diferencias entre conceptos. No necesitas consultar teoría para aprovechar la corrección.
+
+Las preguntas y opciones se barajan. Marca tus dudas y vuelve a intentarlo más tarde.
+
+<Quiz id="sge-v1-ut2-siglas-integracion-01">
+¿Qué significa SGBD y qué aporta a un ERP?
+
+- [x] Sistema gestor de bases de datos: persistencia e integridad.
+  > Correcta. El SGBD almacena y administra datos. PostgreSQL, SQL Server, Oracle Database y SAP HANA son ejemplos; hay que comprobar compatibilidad con producto y versión.
+- [ ] Servicio general de búsqueda documental: campañas comerciales.
+  > Un SGBD no se define como una herramienta de marketing ni solo de búsqueda documental.
+- [ ] Sistema global de balance diario: diseño de productos.
+  > No es el desarrollo de SGBD y el diseño pertenece a otras herramientas.
+- [ ] Servidor gráfico de botones digitales: apariencia de la web.
+  > El aspecto visual no es la finalidad del gestor de bases de datos.
+
+---
+
+**Para situarlo:** UT2 §3.1.21 · Sistemas gestores de bases de datos. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-02">
+¿Qué significa ORM y qué conecta?
+
+- [ ] Order Resource Management: clientes y campañas.
+  > No es el desarrollo de ORM en el acceso a datos del ERP.
+- [x] Object-Relational Mapping: objetos y datos relacionales.
+  > Correcta. El mapeo objeto-relacional permite trabajar desde objetos de la aplicación con información de una base relacional, dentro de la capa de persistencia.
+- [ ] Online Report Monitor: pantallas y colores.
+  > Un monitor de informes no describe el mapeo entre objetos y tablas.
+- [ ] Operational Risk Model: seguros y proveedores.
+  > El análisis de riesgo es otro concepto; ORM aquí se refiere a persistencia.
+
+---
+
+**Para situarlo:** UT2 §3.1.21 · Sistemas gestores de bases de datos. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-03">
+¿Por qué puede ser peligroso modificar directamente con SQL las tablas de un ERP?
+
+- [ ] Porque SQL solo permite cambiar colores de una pantalla.
+  > SQL trabaja con datos, no se limita a la presentación visual.
+- [ ] Porque cualquier modificación SQL crea un cliente nuevo.
+  > El efecto depende de la instrucción y del modelo; no hay ese comportamiento universal.
+- [x] Puede saltarse reglas de negocio y romper coherencia.
+  > Correcta. SQL —Structured Query Language, lenguaje de consulta estructurada— opera sobre datos. El ERP puede validar y coordinar operaciones desde su lógica de aplicación; saltarla entraña riesgos.
+- [ ] Porque una base relacional nunca admite actualizaciones.
+  > Las bases relacionales sí admiten cambios; el riesgo está en eludir controles y relaciones del ERP.
+
+---
+
+**Para situarlo:** UT2 §3.1.21 · Sistemas gestores de bases de datos. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-04">
+¿Qué describe una integración mediante API REST con JSON?
+
+- [ ] Un diseño 3D que controla directamente una fresadora.
+  > El diseño y el mecanizado se relacionan con CAD, CAM y CNC.
+- [ ] Un modelo que calcula la cantidad económica de pedido.
+  > Ese cálculo corresponde a EOQ, no a la interfaz de integración.
+- [ ] Un cuestionario que mide la recomendación del cliente.
+  > La recomendación se asocia al NPS; no define API, REST ni JSON.
+- [x] Aplicaciones que intercambian datos por una interfaz.
+  > Correcta. API es Application Programming Interface; REST, Representational State Transfer, es un estilo de arquitectura. JSON —JavaScript Object Notation— es un formato de intercambio de datos.
+
+---
+
+**Para situarlo:** UT2 §3.1.21 · Sistemas gestores de bases de datos. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-05">
+¿Qué asociación es correcta en una integración empresarial?
+
+- [x] SOAP: protocolo de mensajes; XML: formato estructurado.
+  > Correcta. SOAP se desarrolla habitualmente como Simple Object Access Protocol. XML es eXtensible Markup Language, lenguaje de marcado extensible; el tema los cita como vía de integración.
+- [ ] SOAP: dimensión temporal; XML: medida de ventas.
+  > No son elementos de un modelo multidimensional.
+- [ ] SOAP: módulo de nóminas; XML: proveedor de nube.
+  > Un protocolo y un lenguaje de marcado no son esos productos o módulos.
+- [ ] SOAP: indicador de bajas; XML: índice de recomendación.
+  > Las bajas se asocian a churn y la recomendación a NPS, no a SOAP/XML.
+
+---
+
+**Para situarlo:** UT2 §3.1.21 · Sistemas gestores de bases de datos. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-06">
+¿Para qué se utilizan ODBC y JDBC?
+
+- [ ] Para modelar piezas y generar instrucciones de mecanizado.
+  > Esas tareas se relacionan con CAD y CAM.
+- [x] Para conectar aplicaciones con bases de datos.
+  > Correcta. ODBC es Open Database Connectivity; JDBC es Java Database Connectivity, la API de conectividad de Java con bases de datos. No garantizan compatibilidad con cualquier ERP sin configuración.
+- [ ] Para segmentar clientes según sus preferencias comerciales.
+  > La segmentación es analítica; los conectores pueden aportar acceso a datos, pero no realizan esa tarea por definición.
+- [ ] Para definir misión, visión y razón de ser de la empresa.
+  > Son conceptos de planificación, no de conectividad técnica.
+
+---
+
+**Para situarlo:** UT2 §3.1.21 · Sistemas gestores de bases de datos. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-07">
+¿Qué papel pueden tener archivos CSV o Excel en una arquitectura BI?
+
+- [ ] Garantizar automáticamente que no existen datos duplicados.
+  > El formato de archivo no garantiza calidad ni unicidad.
+- [ ] Sustituir cualquier necesidad de definir indicadores.
+  > Los objetivos e indicadores siguen siendo necesarios con independencia de la fuente.
+- [x] Ser fuentes que se preparan e integran para analizar.
+  > Correcta. CSV significa Comma-Separated Values, valores separados por comas. Los archivos pueden aportar información, pero necesitan validación y coherencia igual que otras fuentes.
+- [ ] Impedir por definición cargar información en un DW.
+  > Son fuentes que el tema incluye expresamente en la preparación analítica.
+
+---
+
+**Para situarlo:** UT2 §3.4.2 · Almacén de datos (DW, Data Warehouse). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-08">
+En regresión, ¿qué relación existe entre MSE y RMSE?
+
+- [ ] MSE es el número de clientes y RMSE su dirección.
+  > No son atributos de clientes, sino métricas de error.
+- [ ] RMSE siempre es el doble del MSE.
+  > La relación es raíz cuadrada, no multiplicación por dos.
+- [ ] Ambas métricas definen el precio de la licencia del ERP.
+  > Evalúan predicciones; no determinan costes comerciales.
+- [x] RMSE es la raíz cuadrada del MSE.
+  > Correcta. MSE es Mean Squared Error, error cuadrático medio; RMSE es Root Mean Squared Error, su raíz. Se usan para evaluar errores de predicción numérica.
+
+---
+
+**Para situarlo:** UT2 §3.4.4 · Minería de datos (DM, Data Mining). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-09">
+¿Qué asociación de métricas de regresión es correcta?
+
+- [x] MAE: error absoluto medio; R²: coeficiente de determinación.
+  > Correcta. MAE es Mean Absolute Error, media de magnitudes absolutas de error. R² valora el ajuste respecto a una referencia; no son indicadores de satisfacción.
+- [ ] MAE: altas de clientes; R²: tasa de recomendación.
+  > Altas y recomendación son métricas de clientes, no estas métricas de regresión.
+- [ ] MAE: tamaño de la base; R²: memoria del servidor.
+  > La capacidad técnica no es el significado de esas medidas.
+- [ ] MAE: venta cruzada; R²: aumento de gama del producto.
+  > Cross-selling y up-selling son técnicas comerciales distintas de evaluar modelos.
+
+---
+
+**Para situarlo:** UT2 §3.4.4 · Minería de datos (DM, Data Mining). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-10">
+Para detectar fraude, interesa saber qué parte de los fraudes reales se ha detectado. ¿Qué medida expresa eso?
+
+- [ ] Precisión de los casos marcados como fraude.
+  > Indica qué parte de los señalados es realmente fraude; no qué parte de todos los fraudes se detecta.
+- [x] Recall o exhaustividad.
+  > Correcta. Recall compara positivos detectados con todos los positivos reales. Precisión compara aciertos positivos con positivos predichos; F1 combina ambas y la matriz de confusión resume aciertos y errores por clase.
+- [ ] Número total de columnas del archivo analizado.
+  > La estructura del archivo no mide la detección de positivos reales.
+- [ ] Precio de la suscripción a la plataforma analítica.
+  > Un coste no indica la calidad de la detección.
+
+---
+
+**Para situarlo:** UT2 §3.4.4 · Minería de datos (DM, Data Mining). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-11">
+¿Qué distingue exactitud global de precisión en clasificación?
+
+- [ ] Ambas miden siempre únicamente el coste del entrenamiento.
+  > Son métricas de predicción, no importes económicos.
+- [ ] Exactitud solo cuenta falsos positivos; precisión, filas vacías.
+  > Ninguna definición coincide con sus fórmulas ni finalidades.
+- [x] Exactitud cuenta aciertos globales; precisión, aciertos positivos.
+  > Correcta. Accuracy o exactitud es la proporción total de predicciones acertadas. Precision o precisión considera los positivos predichos. No deben confundirse por su traducción.
+- [ ] Exactitud define una licencia; precisión define un sistema operativo.
+  > Son conceptos analíticos, no condiciones de software o plataformas.
+
+---
+
+**Para situarlo:** UT2 §3.4.4 · Minería de datos (DM, Data Mining). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-12">
+¿Qué significa OEE en un panel industrial?
+
+- [ ] Online Enterprise Ecommerce: venta online global.
+  > No es el desarrollo de OEE ni su uso en el panel industrial.
+- [ ] Operational Employee Email: correo de la plantilla.
+  > La comunicación interna no define esta métrica de equipos.
+- [ ] Open ERP Edition: licencia de código abierto.
+  > OEE no clasifica licencias ni ediciones de ERP.
+- [x] Overall Equipment Effectiveness: eficacia global de los equipos.
+  > Correcta. OEE permite interpretar el desempeño de equipos de producción. El tema lo presenta como indicador industrial, no como una medida comercial de clientes.
+
+---
+
+**Para situarlo:** UT2 §3.4.6 · CMI frente a dashboard. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-13">
+¿Qué asociación es correcta en un panel de clientes?
+
+- [x] NPS mide recomendación; churn expresa bajas.
+  > Correcta. NPS es Net Promoter Score, indicador de recomendación. Churn expresa pérdida o tasa de bajas de clientes en un periodo y población definidos.
+- [ ] NPS mide piezas defectuosas; churn, memoria del servidor.
+  > Son ámbitos distintos de los indicadores de clientes.
+- [ ] NPS mide bajas; churn, recomendación.
+  > Intercambia el significado de ambos conceptos.
+- [ ] NPS define el precio base; churn, el impuesto de venta.
+  > Son componentes de precios, no los indicadores de relación con clientes.
+
+---
+
+**Para situarlo:** UT2 §3.4.6 · CMI frente a dashboard. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-14">
+¿Qué significa BOM en un ERP industrial?
+
+- [ ] Business Online Marketing: campañas por Internet.
+  > Marketing digital no es el concepto BOM de producción.
+- [x] Bill of Materials: lista de materiales.
+  > Correcta. Relaciona los componentes necesarios para fabricar un producto y ayuda a planificar necesidades y costes de producción.
+- [ ] Backup Operation Mode: estado de las copias de seguridad.
+  > Las copias son operación técnica, no lista de componentes del producto.
+- [ ] Budget Office Manager: responsable de presupuestos.
+  > No designa un puesto ni una persona de la empresa.
+
+---
+
+**Para situarlo:** UT2 §3.1.14 · Empresas que se benefician de un ERP. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-15">
+En un ERP local, ¿para qué puede utilizarse una VPN?
+
+- [ ] Para calcular la cantidad económica de cada pedido.
+  > Esa finalidad corresponde a EOQ.
+- [ ] Para generar modelos 3D de piezas industriales.
+  > Esa tarea corresponde al diseño asistido por ordenador, CAD.
+- [x] Para acceder remotamente mediante una red privada virtual.
+  > Correcta. VPN significa Virtual Private Network. Puede facilitar acceso a la red de la organización; por sí sola no convierte el ERP en SaaS ni sustituye permisos y autenticación.
+- [ ] Para clasificar automáticamente la recomendación de clientes.
+  > La recomendación se mide con indicadores como NPS; no es la finalidad de una VPN.
+
+---
+
+**Para situarlo:** UT2 §3.1.7 · Modelos de implementación: del ERP local a la nube. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-16">
+¿Qué tienen en común AWS, Azure y Google Cloud en el tema?
+
+- [ ] Son tres nombres distintos del módulo de nóminas de Odoo.
+  > Son plataformas de nube de proveedores diferentes.
+- [ ] Son formatos de archivo para guardar tickets de compra.
+  > Los formatos de datos son otra categoría, como CSV, JSON o XML.
+- [ ] Son operaciones para rotar un cubo OLAP.
+  > Las operaciones OLAP incluyen pivotar, slice, dice, roll-up y drill-down.
+- [x] Son plataformas donde pueden desplegarse sistemas empresariales.
+  > Correcta. AWS significa Amazon Web Services. Azure es la plataforma de Microsoft y Google Cloud la de Google; no son por sí mismas módulos de contabilidad.
+
+---
+
+**Para situarlo:** UT2 §3.1.20 · Sistemas operativos sobre los que funciona un ERP. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-17">
+¿Qué significa PWA y qué uso ilustra el tema?
+
+- [x] Progressive Web App: aplicación web progresiva.
+  > Correcta. Puede ofrecer funciones similares a una aplicación instalada. El tema propone usar el móvil para leer códigos QR y actualizar inventario mediante una PWA conectada al ERP.
+- [ ] Product Warehouse Analysis: calcular la recomendación del cliente.
+  > La recomendación se asocia al NPS; PWA designa un tipo de aplicación web.
+- [ ] Private Workforce Access: definir la razón de ser empresarial.
+  > La razón de ser es un concepto estratégico, no el desarrollo de PWA.
+- [ ] Payment Workflow Audit: cambiar la licencia del ERP.
+  > Una aplicación progresiva no cambia por sí sola los derechos de licencia del producto.
+
+---
+
+**Para situarlo:** UT2 §3.1.8 · ERP en la nube: un nuevo modelo de entrega. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-18">
+El temario reproduce cifras de adopción de ERP atribuidas a Flandes. ¿Cómo deben utilizarse?
+
+- [ ] Como porcentajes válidos para todas las empresas del mundo.
+  > El alcance geográfico y la población de estudio no pueden eliminarse.
+- [x] Conservando su ámbito, fecha y fuente.
+  > Correcta. No deben presentarse como cifras universales ni como datos de España. Las estadísticas sirven para aprender tendencias dentro de su contexto.
+- [ ] Como cuotas de mercado de cada fabricante de CRM.
+  > Adopción de ERP y cuota de proveedores CRM son estadísticas diferentes.
+- [ ] Como garantías del resultado de una implantación concreta.
+  > Una tasa de uso no garantiza rentabilidad ni éxito de un proyecto.
+
+---
+
+**Para situarlo:** UT2 §3.1.11 · Estadísticas de uso del ERP. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-19">
+Un gráfico atribuido a IDC muestra cuotas de ingresos de software CRM. ¿Qué indica esa cuota?
+
+- [ ] El porcentaje de aciertos de un modelo de clasificación.
+  > Es una métrica de predicción, no participación económica de proveedores.
+- [ ] La proporción de empleados que trabaja en remoto.
+  > La cuota de ingresos compara proveedores de software, no la organización laboral de los empleados.
+- [x] Una participación en ingresos de la categoría estudiada.
+  > Correcta. Deben mantenerse año, fuente y definición de mercado. No equivale al porcentaje de todas las empresas que usan el producto ni prueba cuál es el mejor.
+- [ ] La probabilidad de que cualquier cliente compre ese producto.
+  > Los ingresos del mercado no predicen automáticamente una compra individual.
+
+---
+
+**Para situarlo:** UT2 §3.5.2.3 · Estadísticas: proveedores y cuota de mercado. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-siglas-integracion-20">
+Un panel muestra +20 % de incidencias y +12 % de ventas. ¿Cómo debe interpretarse?
+
+- [ ] Cualquier aumento debe aparecer siempre en verde.
+  > El sentido favorable depende de qué se mide.
+- [ ] Toda disminución de un indicador es siempre negativa.
+  > Menos defectos, retrasos o costes puede ser positivo.
+- [ ] El color del panel demuestra por sí solo una causa.
+  > Un estado visual alerta o resume; no prueba qué produjo el cambio.
+- [x] Cada indicador necesita contexto y criterio de valoración.
+  > Correcta. Más ventas puede ser favorable, mientras que más incidencias exige atención. También conviene relacionarlas con volumen, periodo y metas antes de actuar.
+
+---
+
+**Para situarlo:** UT2 §3.4.6 · CMI frente a dashboard. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<QuizResults />

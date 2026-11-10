@@ -1,0 +1,354 @@
+---
+title: "4 · Nube y tecnologías del ERP"
+description: "IaaS, PaaS, SaaS, IA, IoT, fabricación asistida y despliegue."
+sidebar:
+  order: 4
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta · nivel inicial.** Piensa tu respuesta y pulsa **Corregir**. Después lee las cuatro explicaciones: incluyen significados, usos y diferencias entre conceptos. No necesitas consultar teoría para aprovechar la corrección.
+
+Las preguntas y opciones se barajan. Marca tus dudas y vuelve a intentarlo más tarde.
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-01">
+¿Qué caracteriza un ERP on-premises?
+
+- [x] La organización gestiona su infraestructura de ejecución.
+  > Correcta. On-premises es despliegue local en infraestructura propia. CPD significa centro de procesamiento de datos, donde pueden alojarse servidores y almacenamiento.
+- [ ] El proveedor entrega siempre la aplicación como SaaS.
+  > SaaS es un servicio gestionado por el proveedor, distinto del despliegue local.
+- [ ] El usuario solo puede acceder mediante un teléfono.
+  > El tipo de dispositivo no define que un ERP sea local o de nube.
+- [ ] La aplicación funciona sin ningún sistema operativo.
+  > Un ERP requiere una plataforma de ejecución, también cuando está en local.
+
+---
+
+**Para situarlo:** UT2 §3.1.4 · Tendencias modernas y conceptos de nube. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-02">
+Una empresa conserva recursos privados y utiliza además recursos de nube pública. ¿Qué modelo utiliza?
+
+- [ ] Nube únicamente privada.
+  > El caso incorpora también recursos públicos, por lo que no es solo privada.
+- [x] Nube híbrida.
+  > Correcta. Combina recursos privados y públicos. La privada es de uso exclusivo de una organización; la pública ofrece recursos de un proveedor externo.
+- [ ] Nube únicamente pública.
+  > Se conservan recursos privados; el modelo combina ambos ámbitos.
+- [ ] Instalación exclusivamente local.
+  > La utilización de nube pública contradice un despliegue exclusivamente local.
+
+---
+
+**Para situarlo:** UT2 §3.1.4 · Tendencias modernas y conceptos de nube. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-03">
+¿Qué significa IaaS y qué suele aportar el proveedor?
+
+- [ ] Intelligence as a Service: informes comerciales.
+  > IaaS no designa un servicio de inteligencia de negocio.
+- [ ] Integration as a System: clientes y campañas.
+  > La gestión de clientes corresponde al CRM; no define IaaS.
+- [x] Infrastructure as a Service: infraestructura.
+  > Correcta. Infraestructura como servicio aporta red, almacenamiento, servidores y virtualización. La empresa gestiona normalmente el sistema operativo y las capas superiores.
+- [ ] Inventory as a Software: existencias y tarifas.
+  > Inventario es una función de negocio, no el significado de IaaS.
+
+---
+
+**Para situarlo:** UT2 §3.1.4 · Tendencias modernas y conceptos de nube. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-04">
+Un equipo quiere desarrollar su aplicación sin administrar el sistema operativo del servidor. ¿Qué modelo encaja mejor?
+
+- [ ] IaaS: Infrastructure as a Service.
+  > En IaaS el cliente normalmente sigue administrando el sistema operativo y el runtime.
+- [ ] Local: toda la plataforma es propia.
+  > El equipo asumiría la gestión que quiere evitar.
+- [ ] SCM: Supply Chain Management.
+  > SCM coordina la cadena de suministro; no es un modelo de servicio de nube.
+- [x] PaaS: Platform as a Service.
+  > Correcta. Plataforma como servicio proporciona infraestructura y entorno de ejecución. El equipo se centra en la aplicación y sus datos.
+
+---
+
+**Para situarlo:** UT2 §3.1.4 · Tendencias modernas y conceptos de nube. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-05">
+¿Qué significa SaaS en un ERP contratado por suscripción?
+
+- [x] Software as a Service.
+  > Correcta. Software como servicio: el proveedor opera la aplicación y su plataforma; la empresa utiliza y configura el servicio dentro de lo permitido.
+- [ ] Storage as a Specification.
+  > No es el desarrollo de SaaS; almacenar datos es solo una parte de la plataforma.
+- [ ] Supply as a Strategy.
+  > La estrategia de aprovisionamiento no define el modelo de entrega de software.
+- [ ] Security as a Server.
+  > La seguridad es una responsabilidad compartida, no el significado de SaaS.
+
+---
+
+**Para situarlo:** UT2 §3.1.4 · Tendencias modernas y conceptos de nube. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-06">
+Una empresa usa ERP SaaS. ¿Qué responsabilidad sigue teniendo?
+
+- [ ] Administrar obligatoriamente el kernel del proveedor.
+  > La operación del sistema subyacente corresponde normalmente al proveedor en SaaS.
+- [x] Gestionar usuarios, permisos y uso de sus datos.
+  > Correcta. El proveedor asume gran parte de la operación técnica, pero la organización debe controlar accesos, configuración y uso adecuado de su información.
+- [ ] Reparar físicamente los discos del centro de datos.
+  > No es una tarea habitual del cliente SaaS.
+- [ ] Desentenderse de cualquier control de acceso.
+  > Contratar SaaS no elimina las obligaciones de seguridad y gestión de usuarios.
+
+---
+
+**Para situarlo:** UT2 §3.1.4 · Tendencias modernas y conceptos de nube. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-07">
+¿Qué diferencia hay entre runtime y middleware?
+
+- [ ] Runtime almacena muebles; middleware contrata personal.
+  > Ninguno es un concepto de almacén físico o contratación de personas.
+- [ ] Runtime calcula sueldos; middleware fija descuentos.
+  > Son funciones de negocio posibles, no la distinción entre capas técnicas.
+- [x] Runtime ejecuta; middleware conecta o intermedia.
+  > Correcta. El runtime es el entorno de ejecución, como JVM —Java Virtual Machine, máquina virtual de Java— o Python. Middleware facilita comunicación o servicios entre componentes.
+- [ ] Runtime es una factura; middleware es un proveedor.
+  > Se trata de componentes de software, no de documentos ni actores comerciales.
+
+---
+
+**Para situarlo:** UT2 §3.1.4 · Tendencias modernas y conceptos de nube. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-08">
+¿Qué relación existe entre IA y ML?
+
+- [ ] IA es solo una técnica dentro de ML.
+  > Invierte la relación: la inteligencia artificial es el campo más amplio.
+- [ ] IA y ML significan exactamente base de datos.
+  > Una base de datos almacena información; IA y ML se refieren a capacidades y métodos de procesamiento inteligente.
+- [ ] ML exige escribir manualmente cada respuesta futura.
+  > El aprendizaje automático usa datos para ajustar modelos, no una lista exhaustiva de respuestas programadas.
+- [x] ML es una técnica dentro del campo de la IA.
+  > Correcta. IA es inteligencia artificial; ML significa Machine Learning, aprendizaje automático. Aprende patrones de datos sin programar explícitamente cada respuesta.
+
+---
+
+**Para situarlo:** UT2 §3.1.2 · Diferencia entre ERP y finanzas. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-09">
+Un frigorífico conectado avisa cuando falta un producto. ¿Qué tecnología ilustra?
+
+- [x] IoT: Internet of Things.
+  > Correcta. Internet de las cosas conecta dispositivos físicos para recopilar e intercambiar datos y actuar sobre ellos.
+- [ ] EOQ: Economic Order Quantity.
+  > EOQ calcula cantidades de pedido; no es el concepto de dispositivo conectado.
+- [ ] OLAP: Online Analytical Processing.
+  > OLAP sirve para análisis multidimensional; no define la conexión del frigorífico.
+- [ ] BPR: Business Process Reengineering.
+  > BPR rediseña procesos de negocio; no es el nombre de esta tecnología.
+
+---
+
+**Para situarlo:** UT2 §3.1.2 · Diferencia entre ERP y finanzas. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-10">
+Sensores de una máquina detectan vibraciones anómalas para anticipar una avería. ¿Qué concepto encaja?
+
+- [ ] CRM aplicado a la captación de contactos.
+  > Un CRM gestiona relaciones con clientes, no define la red de sensores industriales.
+- [x] IIoT aplicado al mantenimiento predictivo.
+  > Correcta. IIoT significa Industrial Internet of Things, internet industrial de las cosas. Sus datos ayudan a anticipar fallos y reducir paradas.
+- [ ] PIM aplicado a descripciones del catálogo.
+  > Un PIM organiza información de producto; no caracteriza esta recogida de señales de máquinas.
+- [ ] CMI aplicado únicamente a estados financieros.
+  > El CMI es un modelo estratégico con varias perspectivas; no es la tecnología de sensores.
+
+---
+
+**Para situarlo:** UT2 §3.1.2 · Diferencia entre ERP y finanzas. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-11">
+¿Qué característica define mejor blockchain?
+
+- [ ] Documento editable sin historial de modificaciones.
+  > La trazabilidad y el encadenamiento buscan lo contrario: detectar o dificultar alteraciones.
+- [ ] Base local que un único usuario modifica sin control.
+  > No refleja la distribución ni los mecanismos de consenso de una cadena de bloques.
+- [x] Registro distribuido que dificulta alterar transacciones.
+  > Correcta. Los bloques enlazados y la validación por la red aportan trazabilidad y resistencia a alteraciones. No todas las redes usan minería.
+- [ ] Sistema que obliga a minar cualquier tipo de operación.
+  > El consenso depende de la red; minería no es un requisito universal.
+
+---
+
+**Para situarlo:** UT2 §3.1.2 · Diferencia entre ERP y finanzas. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-12">
+Un empleado pide por voz «busca las facturas pendientes». ¿Qué función utiliza?
+
+- [ ] Un registro maestro de materiales por sí solo.
+  > El registro aporta datos, pero no interpreta la petición en lenguaje natural.
+- [ ] Un cálculo EOQ sin acceso a la información.
+  > EOQ calcula cantidades de pedido, no resuelve una consulta conversacional de facturas.
+- [ ] Una copia de seguridad de los servidores.
+  > Una copia conserva datos para recuperación; no proporciona por sí misma la interacción por voz.
+- [x] Un asistente digital en lenguaje natural.
+  > Correcta. El asistente facilita consultas y acciones por texto o voz. Debe respetar los permisos del usuario y los datos del ERP.
+
+---
+
+**Para situarlo:** UT2 §3.1.2 · Diferencia entre ERP y finanzas. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-13">
+¿Qué significa CIM en fabricación?
+
+- [x] Computer Integrated Manufacturing.
+  > Correcta. CIM es fabricación integrada por ordenador: conecta tecnologías de diseño, fabricación y gestión, como CAD, CAM, CNC y ERP.
+- [ ] Customer Information Management.
+  > El contexto de CIM aquí es la integración de fabricación, no la gestión de clientes.
+- [ ] Cloud Inventory Middleware.
+  > Inventario y middleware pueden participar en sistemas industriales, pero no desarrollan estas siglas.
+- [ ] Central Invoice Monitoring.
+  > Supervisar facturas es una actividad financiera, no el significado de CIM.
+
+---
+
+**Para situarlo:** UT2 §3.1.2 · Diferencia entre ERP y finanzas. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-14">
+¿Para qué se utiliza CAD?
+
+- [ ] Ejecutar físicamente el mecanizado de una pieza.
+  > Esa ejecución corresponde a una máquina, como una CNC; CAD crea el diseño.
+- [x] Crear y analizar diseños asistidos por ordenador.
+  > Correcta. CAD significa Computer-Aided Design. Permite crear, modificar y optimizar diseños, incluidos modelos 3D.
+- [ ] Registrar campañas de venta y contactos comerciales.
+  > Es una actividad propia del CRM, no de diseño asistido.
+- [ ] Calcular la satisfacción de clientes después de comprar.
+  > Es análisis de clientes, no el propósito de CAD.
+
+---
+
+**Para situarlo:** UT2 §3.1.2 · Diferencia entre ERP y finanzas. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-15">
+Tras diseñar una pieza con CAD, ¿qué relación hay entre CAM y CNC?
+
+- [ ] CAM cobra la factura; CNC envía el correo al cliente.
+  > No son herramientas de facturación ni comunicación comercial.
+- [ ] CAM registra clientes; CNC decide la visión empresarial.
+  > Son funciones ajenas a las herramientas de fabricación descritas.
+- [x] CAM prepara instrucciones; CNC las ejecuta en la máquina.
+  > Correcta. CAM significa Computer-Aided Manufacturing, fabricación asistida por ordenador. CNC significa Computer Numerical Control, control numérico por ordenador.
+- [ ] CAM ejecuta el corte; CNC diseña el logotipo de la web.
+  > CAM genera o prepara instrucciones; la máquina CNC realiza el proceso físico.
+
+---
+
+**Para situarlo:** UT2 §3.1.2 · Diferencia entre ERP y finanzas. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-16">
+Una empresa sustituye parte de la compra inicial de servidores por una suscripción. ¿Qué cambio económico ilustra?
+
+- [ ] Eliminar todo gasto de operación para siempre.
+  > La suscripción sigue siendo un coste recurrente y puede haber otros gastos.
+- [ ] Convertir todos los usuarios en proveedores de equipos.
+  > No cambia el papel de los usuarios; cambia la forma de contratar recursos.
+- [ ] Pasar todos los gastos corrientes a inversión física.
+  > Es la dirección opuesta a sustituir compra de servidores por servicios.
+- [x] Pasar parte del CAPEX a OPEX.
+  > Correcta. CAPEX es Capital Expenditure, inversión en activos. OPEX es Operating Expenditure, gasto operativo. Una suscripción puede reducir inversión inicial, pero no garantiza menor coste total.
+
+---
+
+**Para situarlo:** UT2 §3.1.14 · Empresas que se benefician de un ERP. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-17">
+Al comparar Linux y Windows Server para un ERP, ¿qué significa evaluar el TCO?
+
+- [x] Valorar el coste total de propiedad.
+  > Correcta. TCO significa Total Cost of Ownership: incluye licencias, soporte, administración, infraestructura y otros costes del ciclo de vida, no solo el precio inicial.
+- [ ] Elegir únicamente el sistema con licencia más barata.
+  > El precio de licencia es solo una parte del coste total.
+- [ ] Ignorar los costes de personal técnico y mantenimiento.
+  > Ambos forman parte del coste real de tener y operar el sistema.
+- [ ] Comprar siempre el servidor con más memoria disponible.
+  > La capacidad técnica importa, pero TCO es una evaluación económica más amplia.
+
+---
+
+**Para situarlo:** UT2 §3.1.20 · Sistemas operativos sobre los que funciona un ERP. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-18">
+¿Qué relación tienen Docker y Kubernetes con el despliegue de aplicaciones?
+
+- [ ] Docker registra nóminas; Kubernetes calcula impuestos.
+  > Pueden alojar aplicaciones que hagan esas tareas, pero no son sus funciones propias.
+- [x] Docker trabaja con contenedores; Kubernetes los orquesta.
+  > Correcta. Los contenedores empaquetan aplicación y dependencias. Kubernetes coordina despliegue y operación de grupos de contenedores; no es un ERP.
+- [ ] Docker diseña piezas; Kubernetes controla máquinas CNC.
+  > Son conceptos de CAD y fabricación, no de estas herramientas de despliegue.
+- [ ] Docker almacena clientes; Kubernetes genera oportunidades.
+  > Son funciones de CRM, no el propósito de contenedores y orquestación.
+
+---
+
+**Para situarlo:** UT2 §3.1.20 · Sistemas operativos sobre los que funciona un ERP. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-19">
+¿Qué asociación de sigla y uso es correcta?
+
+- [ ] API: convertir cualquier imagen en texto legible.
+  > API significa Application Programming Interface, interfaz de programación de aplicaciones: permite comunicación entre programas.
+- [ ] PWA: calcular automáticamente el balance contable.
+  > PWA significa Progressive Web App, aplicación web progresiva; puede ofrecer capacidades como uso móvil e instalación, no define una función contable.
+- [x] OCR: extraer texto de una factura escaneada.
+  > Correcta. OCR significa Optical Character Recognition, reconocimiento óptico de caracteres. Puede ayudar a capturar datos antes de validarlos y contabilizarlos.
+- [ ] OCR: conectar por contrato dos aplicaciones web.
+  > La conexión se realiza mediante interfaces o conectores; OCR reconoce caracteres en imágenes.
+
+---
+
+**Para situarlo:** UT2 §3.1.8 · ERP en la nube: un nuevo modelo de entrega. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-nube-tecnologia-20">
+¿Qué actuación reduce un riesgo importante al implantar un ERP?
+
+- [ ] Instalarlo sin hablar con sus futuros usuarios.
+  > Puede dejar necesidades sin cubrir y provocar rechazo o errores de uso.
+- [ ] Elegirlo solo por la apariencia de la pantalla inicial.
+  > La interfaz no sustituye el análisis de requisitos, integración, costes y soporte.
+- [ ] Confiar en que la nube elimina cualquier fallo organizativo.
+  > La nube cambia la operación técnica, pero no corrige por sí sola problemas de organización.
+- [x] Implicar a dirección, formar usuarios y revisar procesos.
+  > Correcta. Implantar un ERP afecta personas, procesos y tecnología. La gestión del cambio importa tanto como instalar el software.
+
+---
+
+**Para situarlo:** UT2 §3.1.9 · Tipos comunes, ventajas y desventajas. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<QuizResults />

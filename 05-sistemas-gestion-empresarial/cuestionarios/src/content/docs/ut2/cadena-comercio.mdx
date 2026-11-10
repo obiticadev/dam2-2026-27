@@ -1,0 +1,354 @@
+---
+title: "5 · Cadena de suministro y comercio"
+description: "SCM, SRM, B2B, B2C, PIM, inventario y precios coordinados con el ERP."
+sidebar:
+  order: 5
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta · nivel inicial.** Piensa tu respuesta y pulsa **Corregir**. Después lee las cuatro explicaciones: incluyen significados, usos y diferencias entre conceptos. No necesitas consultar teoría para aprovechar la corrección.
+
+Las preguntas y opciones se barajan. Marca tus dudas y vuelve a intentarlo más tarde.
+
+<Quiz id="sge-v1-ut2-cadena-comercio-01">
+¿Qué significa SCM?
+
+- [x] Supply Chain Management.
+  > Correcta. SCM es gestión de la cadena de suministro: coordina materiales, información y dinero desde proveedores hasta clientes.
+- [ ] Sales Campaign Marketing.
+  > Las campañas pertenecen a marketing; no son el significado de SCM.
+- [ ] Server Configuration Model.
+  > Configurar servidores es una tarea técnica, no gestionar la cadena de suministro.
+- [ ] Single Customer Metric.
+  > Una métrica de clientes no define la coordinación de toda la cadena.
+
+---
+
+**Para situarlo:** UT2 §3.2 · El SCM: gestión de la cadena de suministro. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-02">
+¿Qué secuencia representa una cadena de suministro simplificada?
+
+- [ ] Cliente, contraseña, servidor y navegador.
+  > Mezcla un actor con elementos técnicos y no representa el recorrido del producto.
+- [x] Proveedor, fabricante, distribuidor y cliente.
+  > Correcta. Son actores del flujo de materiales. En la práctica hay redes, información en ambos sentidos, pagos y devoluciones.
+- [ ] Factura, asiento, balance y cuenta contable.
+  > Es una secuencia de conceptos contables, no de actores de suministro.
+- [ ] Diseño, logotipo, tipografía y color corporativo.
+  > Son elementos de diseño y marca, no de aprovisionamiento y entrega.
+
+---
+
+**Para situarlo:** UT2 §3.2.1 · La cadena de suministro. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-03">
+¿Qué tres flujos coordina el SCM?
+
+- [ ] Únicamente fotografías, vídeos y logotipos.
+  > Son contenidos útiles para un catálogo, pero no los tres flujos de la cadena.
+- [ ] Solo salarios, vacaciones y fichajes.
+  > Son datos de recursos humanos, no el conjunto de flujos del SCM.
+- [x] Materiales, información y dinero.
+  > Correcta. La mercancía circula junto a datos de pedidos, demanda, existencias y entregas; los pagos completan el flujo económico.
+- [ ] Exclusivamente claves, permisos y contraseñas.
+  > Son controles de acceso, no flujos de suministro.
+
+---
+
+**Para situarlo:** UT2 §3.2 · El SCM: gestión de la cadena de suministro. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-04">
+¿Qué significa SRM y con qué relación se vincula?
+
+- [ ] Sales Revenue Monitoring: consumidores finales.
+  > No desarrolla SRM; se está preguntando por relaciones con proveedores.
+- [ ] Server Resource Mapping: empleados internos.
+  > La asignación de recursos de servidor no es el concepto empresarial SRM.
+- [ ] Stock Return Method: equipos comerciales.
+  > Las devoluciones pueden afectar existencias, pero no definen estas siglas.
+- [x] Supplier Relationship Management: proveedores.
+  > Correcta. La gestión de relaciones con proveedores ayuda en selección, negociación, calidad y continuidad del suministro.
+
+---
+
+**Para situarlo:** UT2 §3.2.1 · La cadena de suministro. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-05">
+¿Qué diferencia distingue ERP y SCM sin presentarlos como rivales?
+
+- [x] ERP integra la empresa; SCM coordina la cadena completa.
+  > Correcta. El ERP conecta sobre todo procesos internos y el SCM atiende el suministro de extremo a extremo. Sus ámbitos se solapan y pueden integrarse.
+- [ ] ERP solo sirve para publicidad; SCM solo para nóminas.
+  > Sus funciones principales son integración de recursos y cadena de suministro, respectivamente.
+- [ ] ERP elimina proveedores; SCM elimina clientes.
+  > La cadena necesita actores externos y ambos sistemas buscan coordinarlos, no eliminarlos.
+- [ ] ERP prohíbe integraciones; SCM trabaja siempre sin datos.
+  > Los dos necesitan datos e integración para resultar útiles.
+
+---
+
+**Para situarlo:** UT2 §3.2.3 · ERP frente a SCM. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-06">
+Una empresa pasa de intercambiar archivos cada noche a comunicar pedidos por eventos. ¿Qué mejora busca?
+
+- [ ] Impedir que el almacén conozca nuevos pedidos.
+  > La integración busca dar visibilidad, no ocultar eventos.
+- [x] Compartir novedades con menor demora.
+  > Correcta. Batch significa procesamiento por lotes. La comunicación por eventos permite reaccionar antes, aunque el tiempo real depende de la arquitectura concreta.
+- [ ] Dejar de registrar cambios de existencias.
+  > Los cambios deben seguir registrándose para reservar y reponer productos.
+- [ ] Eliminar la necesidad de controlar errores de conexión.
+  > Una arquitectura por eventos también requiere controles, reintentos y seguimiento.
+
+---
+
+**Para situarlo:** UT2 §3.2.2 · Breve historia del SCM. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-07">
+Tras una entrega retrasada se crea una tarea urgente. ¿Qué datos permiten hacer seguimiento?
+
+- [ ] Solo el color del botón para cerrarla.
+  > La apariencia no permite saber quién actúa, qué falta ni cuándo debe resolverse.
+- [ ] Únicamente el nombre del fabricante del ordenador.
+  > No informa del asunto, del responsable ni de su evolución.
+- [x] Estado, responsable y fecha límite.
+  > Correcta. Una tarea de control suele incluir también código, título, descripción, apertura, prioridad, anexos y comunicaciones.
+- [ ] Solo el número total de empleados de la empresa.
+  > El tamaño de la plantilla no basta para gestionar la incidencia concreta.
+
+---
+
+**Para situarlo:** UT2 §3.2.4 · Tareas de control en un SCM. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-08">
+¿Cuál es un ejemplo claro de comercio electrónico?
+
+- [ ] Publicar una fotografía sin permitir ningún pedido.
+  > La publicación informa o promociona, pero no describe por sí sola una compraventa electrónica.
+- [ ] Archivar una nómina en la red interna.
+  > Es gestión interna digital, no una venta electrónica.
+- [ ] Crear una copia de seguridad del servidor.
+  > Es operación técnica, no comercio electrónico.
+- [x] Realizar un pedido mediante una tienda virtual.
+  > Correcta. El e-commerce es compraventa por medios electrónicos. Publicar un catálogo sin posibilidad de pedido no constituye por sí solo una transacción.
+
+---
+
+**Para situarlo:** UT2 §3.3 · El e-commerce: comercio electrónico. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-09">
+Una tienda vende un casco a una persona para su uso particular. ¿Qué modalidad representa?
+
+- [x] B2C: Business to Consumer.
+  > Correcta. B2C es venta de una empresa al consumidor final. B2B, Business to Business, son transacciones entre empresas.
+- [ ] B2B: Business to Business.
+  > El comprador del caso es un consumidor particular, no otra empresa.
+- [ ] SCM: Supply Chain Management.
+  > SCM gestiona la cadena; no nombra la modalidad empresa-consumidor.
+- [ ] SRM: Supplier Relationship Management.
+  > SRM trata relaciones con proveedores, no clasifica esta venta al consumidor.
+
+---
+
+**Para situarlo:** UT2 §3.3 · El e-commerce: comercio electrónico. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-10">
+Un fabricante vende 500 componentes a otra fábrica. ¿Qué modalidad corresponde?
+
+- [ ] B2C: venta a un consumidor particular.
+  > La fábrica compradora los usa en su negocio, no como consumidor particular.
+- [x] B2B: operación entre empresas.
+  > Correcta. Business to Business incluye ventas de materiales, componentes y servicios de una empresa a otra.
+- [ ] PIM: información del producto.
+  > El PIM puede describir los componentes, pero no clasifica la relación comercial.
+- [ ] NPS: recomendación del cliente.
+  > NPS es un indicador de recomendación, no un modelo de transacción.
+
+---
+
+**Para situarlo:** UT2 §3.3 · El e-commerce: comercio electrónico. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-11">
+La tienda muestra los artículos y el ERP centraliza tarifas y existencias. ¿Qué asociación es correcta?
+
+- [ ] Tienda: backoffice; ERP: frontend.
+  > Invierte los papeles descritos en el caso.
+- [ ] Tienda y ERP: dos catálogos sin relación.
+  > La integración busca coherencia entre lo que ve el cliente y los datos internos.
+- [x] Tienda: frontend; ERP: backoffice.
+  > Correcta. El frontend es la presentación al cliente y el backoffice gestiona procesos internos. El ERP puede ser SSOT, Single Source of Truth: fuente única y fiable de información.
+- [ ] Tienda y ERP: dos sistemas sin reglas de precios.
+  > Las tarifas y las reglas deben existir y mantenerse coordinadas.
+
+---
+
+**Para situarlo:** UT2 §3.3.2 · El ERP como backoffice del e-commerce. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-12">
+Se elige una tienda especializada independiente del ERP. ¿Qué hace falta para evitar duplicar datos a mano?
+
+- [ ] Copiar cada precio manualmente en ambas aplicaciones.
+  > Aumenta el trabajo y el riesgo de divergencias.
+- [ ] Mantener el inventario de cada canal sin comunicarlo.
+  > Podría ofrecerse la misma última unidad varias veces.
+- [ ] Prohibir que el ERP reciba pedidos de la tienda.
+  > Se rompe el flujo que permite preparar, facturar y seguir las ventas.
+- [x] Integrar pedidos, catálogo, existencias y estados.
+  > Correcta. El enfoque best-of-breed elige soluciones especializadas y las conecta. La sincronización bidireccional comunica pedidos hacia el ERP y datos actualizados hacia la tienda.
+
+---
+
+**Para situarlo:** UT2 §3.3.1 · Integración entre e-commerce y ERP. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-13">
+¿Qué significa PIM y qué información organiza?
+
+- [x] Product Information Management: datos de producto.
+  > Correcta. Gestiona especificaciones, variantes, compatibilidades, imágenes y documentación; puede integrarse con inventario y ERP.
+- [ ] Payment Invoice Management: claves de acceso.
+  > No es el desarrollo de PIM ni su ámbito de información.
+- [ ] Production Internet Monitoring: salarios.
+  > Los salarios pertenecen a recursos humanos; PIM describe productos.
+- [ ] Platform Integration Method: turnos de fábrica.
+  > Los turnos son planificación de personal o producción, no el propósito del PIM.
+
+---
+
+**Para situarlo:** UT2 §3.3.3 · Gestión de la información del producto (PIM). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-14">
+Al comprar una bicicleta se ofrece un casco. ¿Qué técnica se utiliza?
+
+- [ ] Up-selling: sustituir por una gama superior.
+  > Aquí no se propone otra bicicleta superior, sino un complemento.
+- [x] Cross-selling: venta cruzada de un complemento.
+  > Correcta. Se ofrece un producto relacionado. Up-selling propone una alternativa de mayor valor, como una bicicleta de gama superior.
+- [ ] Overselling: vender más unidades de las disponibles.
+  > Overselling es un problema de stock, no la recomendación de un casco.
+- [ ] Backorder: dejar el pedido pendiente de reposición.
+  > Un pedido pendiente no define la venta de productos complementarios.
+
+---
+
+**Para situarlo:** UT2 §3.3.3 · Gestión de la información del producto (PIM). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-15">
+Dos canales venden a la vez la última unidad porque sus datos no están sincronizados. ¿Qué ocurre?
+
+- [ ] Up-selling: se vende un artículo de mayor gama.
+  > No se ha cambiado la gama del producto; se ha comprometido stock insuficiente.
+- [ ] Cross-selling: se venden artículos complementarios.
+  > El caso trata la misma unidad, no complementos.
+- [x] Overselling: se vende más stock del disponible.
+  > Correcta. El inventario multisitio gestiona existencias de varias ubicaciones o canales. Sin sincronización y reservas pueden comprometerse unidades inexistentes.
+- [ ] Data mining: se descubre una asociación de compra.
+  > No se está analizando un patrón, sino gestionando mal la disponibilidad.
+
+---
+
+**Para situarlo:** UT2 §3.3.4 · Inventario adaptado a la venta online. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-16">
+¿Qué medida evita que dos compradores confirmen simultáneamente la misma última unidad?
+
+- [ ] Mostrar una fotografía de mayor resolución.
+  > Mejora la presentación, pero no controla la concurrencia sobre existencias.
+- [ ] Cambiar el color del botón de pago.
+  > La interfaz no sustituye el control de reservas y disponibilidad.
+- [ ] Eliminar toda comunicación con el ERP.
+  > Sin sincronización aumentan los riesgos de información desactualizada.
+- [x] Reservarla temporalmente durante la compra.
+  > Correcta. Una reserva bloquea disponibilidad durante un tiempo. El stock de seguridad es un colchón para incertidumbre, no el mismo mecanismo.
+
+---
+
+**Para situarlo:** UT2 §3.3.4 · Inventario adaptado a la venta online. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-17">
+No queda un producto, pero se acepta el pedido para entregarlo tras reponer. ¿Cómo se denomina?
+
+- [x] Backorder: pedido pendiente de existencias.
+  > Correcta. Se admite una entrega futura cuando proceda. Back in stock es el aviso de que el producto vuelve a estar disponible, no necesariamente un pedido.
+- [ ] Cross-selling: recomendación de un complemento.
+  > No se está ofreciendo un producto adicional.
+- [ ] Roll-up: agregación de datos a un nivel superior.
+  > Es una operación analítica de OLAP, ajena al pedido pendiente.
+- [ ] Churn: pérdida de clientes durante un periodo.
+  > La tasa de bajas no es el nombre del pedido a la espera de reposición.
+
+---
+
+**Para situarlo:** UT2 §3.3.4 · Inventario adaptado a la venta online. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-18">
+¿Qué actividad forma parte de la logística inversa?
+
+- [ ] Enviar por primera vez el pedido al comprador.
+  > Es distribución de salida, no el flujo de retorno.
+- [x] Recibir, inspeccionar y gestionar una devolución.
+  > Correcta. El producto vuelve desde el cliente. Si es apto se reincorpora al stock. El tema cita 14 días de desistimiento en consumo a distancia en la UE, con condiciones y excepciones.
+- [ ] Captar un nuevo candidato para una vacante.
+  > Es selección de personal, no una devolución de producto.
+- [ ] Aplicar automáticamente 14 días a toda compra B2B.
+  > El derecho de consumo citado no es una regla universal para operaciones entre empresas.
+
+---
+
+**Para situarlo:** UT2 §3.3.4 · Inventario adaptado a la venta online. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-19">
+¿Por qué conviene centralizar las reglas de precios en el ERP?
+
+- [ ] Para garantizar que todos los clientes paguen siempre igual.
+  > Pueden existir tarifas por contrato, grupo o cantidad; coherencia no significa igualdad universal.
+- [ ] Para impedir que el cliente vea el desglose antes de pagar.
+  > Se busca transparencia, no ocultación del cálculo.
+- [x] Para mantener tarifas y condiciones coherentes entre canales.
+  > Correcta. El motor puede aplicar precio base, descuentos, impuestos, transporte y otros costes permitidos, evitando lógica divergente en cada tienda.
+- [ ] Para añadir cualquier recargo sin comprobar su legalidad.
+  > Los costes solo pueden repercutirse cuando la normativa lo permita.
+
+---
+
+**Para situarlo:** UT2 §3.3.5 · Precio basado en las reglas del ERP. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-cadena-comercio-20">
+¿Qué combinación ayuda a mejorar una cadena de suministro?
+
+- [ ] Ocultar la demanda y evitar toda comunicación.
+  > La falta de visibilidad dificulta planificar suministros y capacidad.
+- [ ] Reducir existencias sin considerar retrasos ni demanda.
+  > Una reducción indiscriminada puede provocar roturas de stock y fallos de servicio.
+- [ ] Medir únicamente el color de los embalajes.
+  > La apariencia no sustituye métricas de plazos, costes, calidad y satisfacción.
+- [x] Colaborar, automatizar y analizar resultados.
+  > Correcta. Compartir previsiones con proveedores, automatizar tareas y monitorizar indicadores permite detectar problemas y mejorar servicio y costes.
+
+---
+
+**Para situarlo:** UT2 §3.2.1 · La cadena de suministro. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<QuizResults />

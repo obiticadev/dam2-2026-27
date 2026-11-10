@@ -1,0 +1,2495 @@
+{
+  "uniqueQuestions": 180,
+  "tests": [
+    {
+      "route": "/ut1/empresa/",
+      "count": 20
+    },
+    {
+      "route": "/ut1/decisiones/",
+      "count": 20
+    },
+    {
+      "route": "/ut2/procesos-erp/",
+      "count": 20
+    },
+    {
+      "route": "/ut2/nube-tecnologia/",
+      "count": 20
+    },
+    {
+      "route": "/ut2/cadena-comercio/",
+      "count": 20
+    },
+    {
+      "route": "/ut2/bi-datos/",
+      "count": 20
+    },
+    {
+      "route": "/ut2/analitica-decisiones/",
+      "count": 20
+    },
+    {
+      "route": "/ut2/clientes-crm/",
+      "count": 20
+    },
+    {
+      "route": "/ut2/siglas-integracion/",
+      "count": 20
+    },
+    {
+      "route": "/repaso-mixto/",
+      "count": 20
+    }
+  ],
+  "concepts": {
+    "empresa": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-01",
+        "unit": 1,
+        "section": "2"
+      }
+    ],
+    "sistema": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-02",
+        "unit": 1,
+        "section": "2.1"
+      }
+    ],
+    "subsistema": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-02",
+        "unit": 1,
+        "section": "2.1"
+      }
+    ],
+    "sistema abierto": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-03",
+        "unit": 1,
+        "section": "2.1"
+      }
+    ],
+    "inputs": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-04",
+        "unit": 1,
+        "section": "2.1"
+      }
+    ],
+    "outputs": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-04",
+        "unit": 1,
+        "section": "2.1"
+      }
+    ],
+    "recursos naturales": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-05",
+        "unit": 1,
+        "section": "2.1"
+      }
+    ],
+    "recursos humanos": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-05",
+        "unit": 1,
+        "section": "2.1"
+      }
+    ],
+    "recursos tecnológicos": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-06",
+        "unit": 1,
+        "section": "2.1"
+      }
+    ],
+    "recursos financieros": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-06",
+        "unit": 1,
+        "section": "2.1"
+      }
+    ],
+    "producción": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-07",
+        "unit": 1,
+        "section": "2.2"
+      }
+    ],
+    "logística": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-07",
+        "unit": 1,
+        "section": "2.2"
+      }
+    ],
+    "RR. HH.": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-08",
+        "unit": 1,
+        "section": "2.2"
+      }
+    ],
+    "comercial": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-09",
+        "unit": 1,
+        "section": "2.2"
+      }
+    ],
+    "marketing": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-09",
+        "unit": 1,
+        "section": "2.2"
+      }
+    ],
+    "finanzas": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-10",
+        "unit": 1,
+        "section": "2.2"
+      },
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-10",
+        "unit": 2,
+        "section": "3.1.2"
+      }
+    ],
+    "contabilidad": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-10",
+        "unit": 1,
+        "section": "2.2"
+      }
+    ],
+    "gerencia": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-11",
+        "unit": 1,
+        "section": "2.2"
+      }
+    ],
+    "SI": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-12",
+        "unit": 1,
+        "section": "2.2"
+      }
+    ],
+    "TIC": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-12",
+        "unit": 1,
+        "section": "2.2"
+      }
+    ],
+    "posventa": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-13",
+        "unit": 1,
+        "section": "2.2"
+      }
+    ],
+    "I+D": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-14",
+        "unit": 1,
+        "section": "2.2"
+      }
+    ],
+    "razón de ser": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-15",
+        "unit": 1,
+        "section": "2.3"
+      }
+    ],
+    "misión": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-16",
+        "unit": 1,
+        "section": "2.3"
+      },
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-19",
+        "unit": 1,
+        "section": "2.3"
+      }
+    ],
+    "unidad de negocio": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-17",
+        "unit": 1,
+        "section": "2.3"
+      }
+    ],
+    "cliente": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-17",
+        "unit": 1,
+        "section": "2.3"
+      }
+    ],
+    "canal": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-17",
+        "unit": 1,
+        "section": "2.3"
+      }
+    ],
+    "producto": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-17",
+        "unit": 1,
+        "section": "2.3"
+      }
+    ],
+    "visión": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-18",
+        "unit": 1,
+        "section": "2.3"
+      },
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-19",
+        "unit": 1,
+        "section": "2.3"
+      }
+    ],
+    "planificación estratégica": [
+      {
+        "slug": "ut1/empresa",
+        "id": "sge-v1-ut1-empresa-20",
+        "unit": 1,
+        "section": "2.3"
+      }
+    ],
+    "objetivo": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-01",
+        "unit": 1,
+        "section": "2.3.1"
+      }
+    ],
+    "objetivo medible": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-02",
+        "unit": 1,
+        "section": "2.3.1"
+      }
+    ],
+    "responsable": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-03",
+        "unit": 1,
+        "section": "2.3.1"
+      }
+    ],
+    "control periódico": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-03",
+        "unit": 1,
+        "section": "2.3.1"
+      }
+    ],
+    "objetivos generales": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-04",
+        "unit": 1,
+        "section": "2.3.1"
+      }
+    ],
+    "objetivos departamentales": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-04",
+        "unit": 1,
+        "section": "2.3.1"
+      }
+    ],
+    "estrategia": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-05",
+        "unit": 1,
+        "section": "2.3.2"
+      },
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-10",
+        "unit": 1,
+        "section": "2.3.2"
+      },
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-14",
+        "unit": 1,
+        "section": "2.4"
+      },
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-02",
+        "unit": 2,
+        "section": "3.5"
+      }
+    ],
+    "beneficios tangibles": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-06",
+        "unit": 1,
+        "section": "2.3.2"
+      }
+    ],
+    "beneficios intangibles": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-06",
+        "unit": 1,
+        "section": "2.3.2"
+      }
+    ],
+    "DAFO": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-07",
+        "unit": 1,
+        "section": "2.3.2"
+      }
+    ],
+    "fortaleza": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-08",
+        "unit": 1,
+        "section": "2.3.2"
+      }
+    ],
+    "debilidad": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-08",
+        "unit": 1,
+        "section": "2.3.2"
+      }
+    ],
+    "amenaza": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-09",
+        "unit": 1,
+        "section": "2.3.2"
+      }
+    ],
+    "oportunidad": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-09",
+        "unit": 1,
+        "section": "2.3.2"
+      },
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-03",
+        "unit": 2,
+        "section": "3.5"
+      }
+    ],
+    "incertidumbre": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-10",
+        "unit": 1,
+        "section": "2.3.2"
+      }
+    ],
+    "táctica": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-11",
+        "unit": 1,
+        "section": "2.4"
+      },
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-14",
+        "unit": 1,
+        "section": "2.4"
+      }
+    ],
+    "acción": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-12",
+        "unit": 1,
+        "section": "2.4"
+      }
+    ],
+    "tarea": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-12",
+        "unit": 1,
+        "section": "2.4"
+      }
+    ],
+    "presupuesto": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-13",
+        "unit": 1,
+        "section": "2.4"
+      }
+    ],
+    "calendario": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-13",
+        "unit": 1,
+        "section": "2.4"
+      }
+    ],
+    "integración horizontal": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-15",
+        "unit": 1,
+        "section": "3.1"
+      }
+    ],
+    "integración vertical": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-16",
+        "unit": 1,
+        "section": "3.1"
+      }
+    ],
+    "sistemas de transacciones": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-17",
+        "unit": 1,
+        "section": "3.1"
+      }
+    ],
+    "nivel operativo": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-18",
+        "unit": 1,
+        "section": "3.1"
+      }
+    ],
+    "nivel táctico": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-19",
+        "unit": 1,
+        "section": "3.1"
+      }
+    ],
+    "nivel estratégico": [
+      {
+        "slug": "ut1/decisiones",
+        "id": "sge-v1-ut1-decisiones-20",
+        "unit": 1,
+        "section": "3.1"
+      }
+    ],
+    "proceso empresarial": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-01",
+        "unit": 2,
+        "section": "2.1"
+      }
+    ],
+    "ISO": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-01",
+        "unit": 2,
+        "section": "2.1"
+      }
+    ],
+    "eficacia": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-02",
+        "unit": 2,
+        "section": "2.1"
+      }
+    ],
+    "eficiencia": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-02",
+        "unit": 2,
+        "section": "2.1"
+      }
+    ],
+    "modelo de negocio": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-03",
+        "unit": 2,
+        "section": "2.2"
+      }
+    ],
+    "optimización global": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-04",
+        "unit": 2,
+        "section": "2.2.1"
+      }
+    ],
+    "silos de información": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-05",
+        "unit": 2,
+        "section": "2.2.2"
+      }
+    ],
+    "KPI": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-06",
+        "unit": 2,
+        "section": "2.2.3"
+      },
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-07",
+        "unit": 2,
+        "section": "2.2.3"
+      },
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-16",
+        "unit": 2,
+        "section": "3.4.2"
+      },
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-20",
+        "unit": 2,
+        "section": "3.4.6"
+      }
+    ],
+    "meta": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-07",
+        "unit": 2,
+        "section": "2.2.3"
+      }
+    ],
+    "e-business": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-08",
+        "unit": 2,
+        "section": "3"
+      }
+    ],
+    "e-commerce": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-08",
+        "unit": 2,
+        "section": "3"
+      },
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-08",
+        "unit": 2,
+        "section": "3.3"
+      }
+    ],
+    "ERP": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-09",
+        "unit": 2,
+        "section": "3.1"
+      },
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-10",
+        "unit": 2,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-05",
+        "unit": 2,
+        "section": "3.2.3"
+      },
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-02",
+        "unit": 2,
+        "section": "3.4"
+      },
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-19",
+        "unit": 2,
+        "section": "3.5.2.5"
+      }
+    ],
+    "EPM": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-10",
+        "unit": 2,
+        "section": "3.1.2"
+      }
+    ],
+    "base de datos común": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-11",
+        "unit": 2,
+        "section": "3.1.3"
+      }
+    ],
+    "registro maestro": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-12",
+        "unit": 2,
+        "section": "3.1.3"
+      }
+    ],
+    "trazabilidad": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-12",
+        "unit": 2,
+        "section": "3.1.3"
+      }
+    ],
+    "EOQ": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-13",
+        "unit": 2,
+        "section": "3.1.6"
+      }
+    ],
+    "MRP": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-14",
+        "unit": 2,
+        "section": "3.1.6"
+      }
+    ],
+    "MRP II": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-14",
+        "unit": 2,
+        "section": "3.1.6"
+      }
+    ],
+    "flujo de trabajo": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-15",
+        "unit": 2,
+        "section": "3.1.13"
+      }
+    ],
+    "ERP modular": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-16",
+        "unit": 2,
+        "section": "3.1.15"
+      }
+    ],
+    "módulos básicos": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-17",
+        "unit": 2,
+        "section": "3.1.16"
+      }
+    ],
+    "módulos opcionales": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-17",
+        "unit": 2,
+        "section": "3.1.16"
+      }
+    ],
+    "horizontal": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-18",
+        "unit": 2,
+        "section": "3.1.16"
+      }
+    ],
+    "vertical": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-18",
+        "unit": 2,
+        "section": "3.1.16"
+      }
+    ],
+    "LIMS": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-18",
+        "unit": 2,
+        "section": "3.1.16"
+      }
+    ],
+    "open source": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-19",
+        "unit": 2,
+        "section": "3.1.17"
+      },
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-16",
+        "unit": 2,
+        "section": "3.5.2.2"
+      }
+    ],
+    "Odoo": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-19",
+        "unit": 2,
+        "section": "3.1.17"
+      }
+    ],
+    "ROI": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-20",
+        "unit": 2,
+        "section": "3.1.19"
+      }
+    ],
+    "selección ERP": [
+      {
+        "slug": "ut2/procesos-erp",
+        "id": "sge-v1-ut2-procesos-erp-20",
+        "unit": 2,
+        "section": "3.1.19"
+      }
+    ],
+    "on-premises": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-01",
+        "unit": 2,
+        "section": "3.1.4"
+      }
+    ],
+    "CPD": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-01",
+        "unit": 2,
+        "section": "3.1.4"
+      }
+    ],
+    "nube privada": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-02",
+        "unit": 2,
+        "section": "3.1.4"
+      }
+    ],
+    "nube pública": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-02",
+        "unit": 2,
+        "section": "3.1.4"
+      }
+    ],
+    "nube híbrida": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-02",
+        "unit": 2,
+        "section": "3.1.4"
+      }
+    ],
+    "IaaS": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-03",
+        "unit": 2,
+        "section": "3.1.4"
+      }
+    ],
+    "PaaS": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-04",
+        "unit": 2,
+        "section": "3.1.4"
+      }
+    ],
+    "SaaS": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-05",
+        "unit": 2,
+        "section": "3.1.4"
+      },
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-06",
+        "unit": 2,
+        "section": "3.1.4"
+      }
+    ],
+    "responsabilidad compartida": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-06",
+        "unit": 2,
+        "section": "3.1.4"
+      }
+    ],
+    "runtime": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-07",
+        "unit": 2,
+        "section": "3.1.4"
+      }
+    ],
+    "JVM": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-07",
+        "unit": 2,
+        "section": "3.1.4"
+      }
+    ],
+    "middleware": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-07",
+        "unit": 2,
+        "section": "3.1.4"
+      }
+    ],
+    "IA": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-08",
+        "unit": 2,
+        "section": "3.1.2"
+      }
+    ],
+    "ML": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-08",
+        "unit": 2,
+        "section": "3.1.2"
+      }
+    ],
+    "IoT": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-09",
+        "unit": 2,
+        "section": "3.1.2"
+      }
+    ],
+    "IIoT": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-10",
+        "unit": 2,
+        "section": "3.1.2"
+      }
+    ],
+    "mantenimiento predictivo": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-10",
+        "unit": 2,
+        "section": "3.1.2"
+      }
+    ],
+    "blockchain": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-11",
+        "unit": 2,
+        "section": "3.1.2"
+      }
+    ],
+    "asistente digital": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-12",
+        "unit": 2,
+        "section": "3.1.2"
+      }
+    ],
+    "CIM": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-13",
+        "unit": 2,
+        "section": "3.1.2"
+      }
+    ],
+    "CAD": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-13",
+        "unit": 2,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-14",
+        "unit": 2,
+        "section": "3.1.2"
+      }
+    ],
+    "CAM": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-13",
+        "unit": 2,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-15",
+        "unit": 2,
+        "section": "3.1.2"
+      }
+    ],
+    "CNC": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-13",
+        "unit": 2,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-15",
+        "unit": 2,
+        "section": "3.1.2"
+      }
+    ],
+    "CAPEX": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-16",
+        "unit": 2,
+        "section": "3.1.14"
+      }
+    ],
+    "OPEX": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-16",
+        "unit": 2,
+        "section": "3.1.14"
+      }
+    ],
+    "TCO": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-17",
+        "unit": 2,
+        "section": "3.1.20"
+      }
+    ],
+    "Linux": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-17",
+        "unit": 2,
+        "section": "3.1.20"
+      }
+    ],
+    "Windows Server": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-17",
+        "unit": 2,
+        "section": "3.1.20"
+      }
+    ],
+    "Docker": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-18",
+        "unit": 2,
+        "section": "3.1.20"
+      }
+    ],
+    "Kubernetes": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-18",
+        "unit": 2,
+        "section": "3.1.20"
+      }
+    ],
+    "contenedores": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-18",
+        "unit": 2,
+        "section": "3.1.20"
+      }
+    ],
+    "API": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-19",
+        "unit": 2,
+        "section": "3.1.8"
+      },
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-04",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "OCR": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-19",
+        "unit": 2,
+        "section": "3.1.8"
+      }
+    ],
+    "PWA": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-19",
+        "unit": 2,
+        "section": "3.1.8"
+      },
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-17",
+        "unit": 2,
+        "section": "3.1.8"
+      }
+    ],
+    "implantación": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-20",
+        "unit": 2,
+        "section": "3.1.9"
+      }
+    ],
+    "gestión del cambio": [
+      {
+        "slug": "ut2/nube-tecnologia",
+        "id": "sge-v1-ut2-nube-tecnologia-20",
+        "unit": 2,
+        "section": "3.1.9"
+      }
+    ],
+    "SCM": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-01",
+        "unit": 2,
+        "section": "3.2"
+      },
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-05",
+        "unit": 2,
+        "section": "3.2.3"
+      }
+    ],
+    "cadena de suministro": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-02",
+        "unit": 2,
+        "section": "3.2.1"
+      }
+    ],
+    "flujos de materiales": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-03",
+        "unit": 2,
+        "section": "3.2"
+      }
+    ],
+    "información": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-03",
+        "unit": 2,
+        "section": "3.2"
+      }
+    ],
+    "dinero": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-03",
+        "unit": 2,
+        "section": "3.2"
+      }
+    ],
+    "SRM": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-04",
+        "unit": 2,
+        "section": "3.2.1"
+      }
+    ],
+    "batch": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-06",
+        "unit": 2,
+        "section": "3.2.2"
+      }
+    ],
+    "tiempo real": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-06",
+        "unit": 2,
+        "section": "3.2.2"
+      }
+    ],
+    "tarea de control": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-07",
+        "unit": 2,
+        "section": "3.2.4"
+      }
+    ],
+    "B2C": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-09",
+        "unit": 2,
+        "section": "3.3"
+      }
+    ],
+    "B2B": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-09",
+        "unit": 2,
+        "section": "3.3"
+      },
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-10",
+        "unit": 2,
+        "section": "3.3"
+      }
+    ],
+    "frontend": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-11",
+        "unit": 2,
+        "section": "3.3.2"
+      }
+    ],
+    "backoffice": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-11",
+        "unit": 2,
+        "section": "3.3.2"
+      },
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-05",
+        "unit": 2,
+        "section": "3.5"
+      }
+    ],
+    "SSOT": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-11",
+        "unit": 2,
+        "section": "3.3.2"
+      }
+    ],
+    "integración bidireccional": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-12",
+        "unit": 2,
+        "section": "3.3.1"
+      }
+    ],
+    "best-of-breed": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-12",
+        "unit": 2,
+        "section": "3.3.1"
+      }
+    ],
+    "PIM": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-13",
+        "unit": 2,
+        "section": "3.3.3"
+      }
+    ],
+    "cross-selling": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-14",
+        "unit": 2,
+        "section": "3.3.3"
+      }
+    ],
+    "up-selling": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-14",
+        "unit": 2,
+        "section": "3.3.3"
+      }
+    ],
+    "overselling": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-15",
+        "unit": 2,
+        "section": "3.3.4"
+      }
+    ],
+    "inventario multisitio": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-15",
+        "unit": 2,
+        "section": "3.3.4"
+      }
+    ],
+    "stock de seguridad": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-16",
+        "unit": 2,
+        "section": "3.3.4"
+      }
+    ],
+    "reserva temporal": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-16",
+        "unit": 2,
+        "section": "3.3.4"
+      }
+    ],
+    "backorder": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-17",
+        "unit": 2,
+        "section": "3.3.4"
+      }
+    ],
+    "back in stock": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-17",
+        "unit": 2,
+        "section": "3.3.4"
+      }
+    ],
+    "logística inversa": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-18",
+        "unit": 2,
+        "section": "3.3.4"
+      }
+    ],
+    "desistimiento": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-18",
+        "unit": 2,
+        "section": "3.3.4"
+      }
+    ],
+    "motor de precios": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-19",
+        "unit": 2,
+        "section": "3.3.5"
+      }
+    ],
+    "previsión de demanda": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-20",
+        "unit": 2,
+        "section": "3.2.1"
+      }
+    ],
+    "colaboración": [
+      {
+        "slug": "ut2/cadena-comercio",
+        "id": "sge-v1-ut2-cadena-comercio-20",
+        "unit": 2,
+        "section": "3.2.1"
+      }
+    ],
+    "BI": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-01",
+        "unit": 2,
+        "section": "3.4"
+      },
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-02",
+        "unit": 2,
+        "section": "3.4"
+      }
+    ],
+    "OLTP": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-03",
+        "unit": 2,
+        "section": "3.4"
+      }
+    ],
+    "OLAP": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-03",
+        "unit": 2,
+        "section": "3.4"
+      },
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-02",
+        "unit": 2,
+        "section": "3.4.3"
+      }
+    ],
+    "beneficios BI": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-04",
+        "unit": 2,
+        "section": "3.4.1"
+      }
+    ],
+    "ticket medio": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-05",
+        "unit": 2,
+        "section": "3.4"
+      }
+    ],
+    "análisis de ventas": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-06",
+        "unit": 2,
+        "section": "3.4"
+      }
+    ],
+    "DW": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-07",
+        "unit": 2,
+        "section": "3.4.2"
+      },
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-08",
+        "unit": 2,
+        "section": "3.4.2"
+      },
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-09",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "data warehouse": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-07",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "temático": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-08",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "integrado": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-08",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "no volátil": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-09",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "histórico": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-09",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "ETL": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-10",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "calidad de datos": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-11",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "metadatos": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-12",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "definición de métricas": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-13",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "data mart": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-14",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "data mart dependiente": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-15",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "independiente": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-15",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "top-down": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-16",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "CSF": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-16",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "tabla de hechos": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-17",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "medida": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-17",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "dimensión": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-18",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "estrella": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-19",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "copo de nieve": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-19",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "granularidad": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-20",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "ticket": [
+      {
+        "slug": "ut2/bi-datos",
+        "id": "sge-v1-ut2-bi-datos-20",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "DSS": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-01",
+        "unit": 2,
+        "section": "3.4.3"
+      }
+    ],
+    "cubo": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-02",
+        "unit": 2,
+        "section": "3.4.3"
+      }
+    ],
+    "FASMI": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-03",
+        "unit": 2,
+        "section": "3.4.3"
+      }
+    ],
+    "slice": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-04",
+        "unit": 2,
+        "section": "3.4.3"
+      }
+    ],
+    "dice": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-04",
+        "unit": 2,
+        "section": "3.4.3"
+      }
+    ],
+    "roll-up": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-05",
+        "unit": 2,
+        "section": "3.4.3"
+      }
+    ],
+    "drill-down": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-05",
+        "unit": 2,
+        "section": "3.4.3"
+      }
+    ],
+    "pivotar": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-06",
+        "unit": 2,
+        "section": "3.4.3"
+      }
+    ],
+    "tabla dinámica": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-06",
+        "unit": 2,
+        "section": "3.4.3"
+      }
+    ],
+    "EIS": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-07",
+        "unit": 2,
+        "section": "3.4.3"
+      }
+    ],
+    "informe de excepción": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-07",
+        "unit": 2,
+        "section": "3.4.3"
+      }
+    ],
+    "dashboard": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-08",
+        "unit": 2,
+        "section": "3.4.3"
+      },
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-19",
+        "unit": 2,
+        "section": "3.4.6"
+      }
+    ],
+    "DM": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-09",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "data mining": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-09",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "preparación de datos": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-10",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "evaluación": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-10",
+        "unit": 2,
+        "section": "3.4.4"
+      },
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-16",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "regresión": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-11",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "clasificación": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-11",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "clustering": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-12",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "aprendizaje no supervisado": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-12",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "aprendizaje supervisado": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-13",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "red neuronal": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-13",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "series temporales": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-14",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "asociación": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-15",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "causalidad": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-15",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "generalización": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-16",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "CMI": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-17",
+        "unit": 2,
+        "section": "3.4.5"
+      },
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-19",
+        "unit": 2,
+        "section": "3.4.6"
+      }
+    ],
+    "BSC": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-17",
+        "unit": 2,
+        "section": "3.4.5"
+      }
+    ],
+    "perspectivas CMI": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-18",
+        "unit": 2,
+        "section": "3.4.5"
+      }
+    ],
+    "interpretación KPI": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-20",
+        "unit": 2,
+        "section": "3.4.6"
+      }
+    ],
+    "periodo de comparación": [
+      {
+        "slug": "ut2/analitica-decisiones",
+        "id": "sge-v1-ut2-analitica-decisiones-20",
+        "unit": 2,
+        "section": "3.4.6"
+      }
+    ],
+    "CRM": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-01",
+        "unit": 2,
+        "section": "3.5"
+      },
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-02",
+        "unit": 2,
+        "section": "3.5"
+      },
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-18",
+        "unit": 2,
+        "section": "3.5.2.4"
+      },
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-19",
+        "unit": 2,
+        "section": "3.5.2.5"
+      },
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-19",
+        "unit": 2,
+        "section": "3.5.2.3"
+      }
+    ],
+    "lead": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-03",
+        "unit": 2,
+        "section": "3.5"
+      }
+    ],
+    "visión 360° del cliente": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-04",
+        "unit": 2,
+        "section": "3.5"
+      }
+    ],
+    "front office": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-05",
+        "unit": 2,
+        "section": "3.5"
+      }
+    ],
+    "omnicanalidad": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-06",
+        "unit": 2,
+        "section": "3.5"
+      }
+    ],
+    "implantación CRM": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-07",
+        "unit": 2,
+        "section": "3.5"
+      }
+    ],
+    "BPR": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-08",
+        "unit": 2,
+        "section": "3.5"
+      }
+    ],
+    "buyer persona": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-09",
+        "unit": 2,
+        "section": "3.5.1"
+      }
+    ],
+    "mercado objetivo": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-09",
+        "unit": 2,
+        "section": "3.5.1"
+      }
+    ],
+    "protección de datos": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-10",
+        "unit": 2,
+        "section": "3.5.1"
+      }
+    ],
+    "datos sensibles": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-10",
+        "unit": 2,
+        "section": "3.5.1"
+      }
+    ],
+    "CRM operativo": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-11",
+        "unit": 2,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-14",
+        "unit": 2,
+        "section": "3.5.2"
+      }
+    ],
+    "CRM analítico": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-12",
+        "unit": 2,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-14",
+        "unit": 2,
+        "section": "3.5.2"
+      }
+    ],
+    "CRM colaborativo": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-13",
+        "unit": 2,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-14",
+        "unit": 2,
+        "section": "3.5.2"
+      }
+    ],
+    "CRM local": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-15",
+        "unit": 2,
+        "section": "3.5.2.1"
+      }
+    ],
+    "CRM nube": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-15",
+        "unit": 2,
+        "section": "3.5.2.1"
+      }
+    ],
+    "freemium": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-16",
+        "unit": 2,
+        "section": "3.5.2.2"
+      }
+    ],
+    "propietario": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-16",
+        "unit": 2,
+        "section": "3.5.2.2"
+      }
+    ],
+    "SuiteCRM": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-17",
+        "unit": 2,
+        "section": "3.5.2.2"
+      }
+    ],
+    "SugarCRM": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-17",
+        "unit": 2,
+        "section": "3.5.2.2"
+      }
+    ],
+    "licencia": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-17",
+        "unit": 2,
+        "section": "3.5.2.2"
+      }
+    ],
+    "selección": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-18",
+        "unit": 2,
+        "section": "3.5.2.4"
+      }
+    ],
+    "integración": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-19",
+        "unit": 2,
+        "section": "3.5.2.5"
+      }
+    ],
+    "fidelización": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-20",
+        "unit": 2,
+        "section": "3.5.1"
+      }
+    ],
+    "personalización": [
+      {
+        "slug": "ut2/clientes-crm",
+        "id": "sge-v1-ut2-clientes-crm-20",
+        "unit": 2,
+        "section": "3.5.1"
+      }
+    ],
+    "SGBD": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-01",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "PostgreSQL": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-01",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "SQL Server": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-01",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "SAP HANA": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-01",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "ORM": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-02",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "SQL": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-03",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "reglas de negocio": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-03",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "REST": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-04",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "JSON": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-04",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "SOAP": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-05",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "XML": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-05",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "ODBC": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-06",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "JDBC": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-06",
+        "unit": 2,
+        "section": "3.1.21"
+      }
+    ],
+    "CSV": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-07",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "Excel": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-07",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "fuentes externas": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-07",
+        "unit": 2,
+        "section": "3.4.2"
+      }
+    ],
+    "MSE": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-08",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "RMSE": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-08",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "MAE": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-09",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "R²": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-09",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "precisión": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-10",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "recall": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-10",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "F1": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-10",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "matriz de confusión": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-10",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "exactitud": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-11",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "precision": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-11",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "accuracy": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-11",
+        "unit": 2,
+        "section": "3.4.4"
+      }
+    ],
+    "OEE": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-12",
+        "unit": 2,
+        "section": "3.4.6"
+      }
+    ],
+    "NPS": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-13",
+        "unit": 2,
+        "section": "3.4.6"
+      }
+    ],
+    "churn": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-13",
+        "unit": 2,
+        "section": "3.4.6"
+      }
+    ],
+    "BOM": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-14",
+        "unit": 2,
+        "section": "3.1.14"
+      }
+    ],
+    "VPN": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-15",
+        "unit": 2,
+        "section": "3.1.7"
+      }
+    ],
+    "AWS": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-16",
+        "unit": 2,
+        "section": "3.1.20"
+      }
+    ],
+    "Azure": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-16",
+        "unit": 2,
+        "section": "3.1.20"
+      }
+    ],
+    "Google Cloud": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-16",
+        "unit": 2,
+        "section": "3.1.20"
+      }
+    ],
+    "estadísticas ERP": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-18",
+        "unit": 2,
+        "section": "3.1.11"
+      }
+    ],
+    "contexto": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-18",
+        "unit": 2,
+        "section": "3.1.11"
+      }
+    ],
+    "cuota de mercado": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-19",
+        "unit": 2,
+        "section": "3.5.2.3"
+      }
+    ],
+    "IDC": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-19",
+        "unit": 2,
+        "section": "3.5.2.3"
+      }
+    ],
+    "interpretación de desviaciones": [
+      {
+        "slug": "ut2/siglas-integracion",
+        "id": "sge-v1-ut2-siglas-integracion-20",
+        "unit": 2,
+        "section": "3.4.6"
+      }
+    ]
+  }
+}

@@ -1,0 +1,354 @@
+---
+title: "7 · Análisis y cuadros de mando"
+description: "DSS, OLAP, FASMI, minería de datos, aprendizaje automático y CMI."
+sidebar:
+  order: 7
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta · nivel inicial.** Piensa tu respuesta y pulsa **Corregir**. Después lee las cuatro explicaciones: incluyen significados, usos y diferencias entre conceptos. No necesitas consultar teoría para aprovechar la corrección.
+
+Las preguntas y opciones se barajan. Marca tus dudas y vuelve a intentarlo más tarde.
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-01">
+¿Qué significa DSS y qué uso lo caracteriza?
+
+- [x] Decision Support System: comparar alternativas de decisión.
+  > Correcta. Un sistema de ayuda a la decisión combina datos y modelos; permite explorar variables y escenarios «qué pasaría si».
+- [ ] Daily Sales Storage: registrar únicamente cobros diarios.
+  > El registro de cobros es transaccional; DSS apoya el análisis de decisiones.
+- [ ] Digital Server Security: cambiar contraseñas corporativas.
+  > La seguridad de servidores no desarrolla el concepto DSS.
+- [ ] Document Sending Service: repartir correo publicitario.
+  > Enviar comunicaciones no es la finalidad de un sistema de ayuda a la decisión.
+
+---
+
+**Para situarlo:** UT2 §3.4.3 · Sistemas de ayuda a la decisión (DSS). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-02">
+¿Qué representa un cubo OLAP?
+
+- [ ] Una representación limitada a exactamente tres dimensiones.
+  > La imagen del cubo ayuda a visualizarlo, pero un modelo OLAP puede trabajar con más de tres dimensiones.
+- [x] Medidas observadas desde varias dimensiones.
+  > Correcta. Puede analizar unidades vendidas por cliente, libro y año. No está limitado a tres dimensiones aunque se use la palabra cubo.
+- [ ] Un conjunto de cobros que solo permite insertar operaciones.
+  > Esa prioridad es transaccional, OLTP; OLAP facilita consultas, agregaciones y exploración.
+- [ ] Una única medida sin contexto de tiempo, cliente o producto.
+  > Las dimensiones aportan precisamente las perspectivas desde las que se analiza una medida.
+
+---
+
+**Para situarlo:** UT2 §3.4.3 · Sistemas de ayuda a la decisión (DSS). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-03">
+¿Qué resume FASMI en una herramienta OLAP?
+
+- [ ] Finance, Accounting, Sales, Marketing, Inventory.
+  > Son áreas de negocio, no los requisitos FASMI de OLAP.
+- [ ] Files, Archives, Servers, Memory, Internet.
+  > Son elementos tecnológicos, no el desarrollo de FASMI.
+- [x] Fast, Analysis, Shared, Multidimensional, Information.
+  > Correcta. Exige rapidez, capacidad analítica, uso compartido, visión multidimensional e información relevante; son cualidades de análisis, no módulos de contabilidad.
+- [ ] Forecast, Audit, Stock, Materials, Invoices.
+  > Son términos de negocio, pero no las cinco cualidades definidas por el acrónimo.
+
+---
+
+**Para situarlo:** UT2 §3.4.3 · Sistemas de ayuda a la decisión (DSS). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-04">
+En OLAP se fija el año 2026 para ver solo sus datos. ¿Qué operación se realiza?
+
+- [ ] Roll-up: subir a un nivel más agregado.
+  > No se están sumando años o cambiando a una jerarquía más general, sino filtrando uno.
+- [ ] Pivotar: intercambiar filas y columnas.
+  > Rotar ejes cambia la disposición, no fija por sí mismo un año.
+- [ ] Drill-down: bajar del año a sus meses.
+  > El caso no cambia el nivel de detalle; selecciona un valor.
+- [x] Slice: seleccionar una sección por un valor.
+  > Correcta. Slice fija un valor de una dimensión. Dice selecciona un subconjunto de valores de varias dimensiones.
+
+---
+
+**Para situarlo:** UT2 §3.4.3 · Sistemas de ayuda a la decisión (DSS). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-05">
+Un analista pasa de ventas por mes a ventas por año. ¿Qué operación realiza?
+
+- [x] Roll-up: agregar a un nivel superior.
+  > Correcta. Reúne valores mensuales en años. Drill-down hace lo contrario: desciende por una jerarquía hacia más detalle.
+- [ ] Drill-down: bajar hacia más detalle.
+  > Pasar de meses a años reduce el detalle; no lo aumenta.
+- [ ] Slice: escoger un único cliente.
+  > No se fija un cliente ni otro valor: se cambia el nivel de agregación temporal.
+- [ ] Pivotar: cambiar la orientación de los ejes.
+  > Cambiar la disposición no equivale a sumar meses por año.
+
+---
+
+**Para situarlo:** UT2 §3.4.3 · Sistemas de ayuda a la decisión (DSS). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-06">
+En una tabla dinámica se intercambian ciudades y promociones entre filas y columnas. ¿Qué cambia?
+
+- [ ] La identidad de cada compra registrada originalmente.
+  > La tabla cambia la vista, no los hechos originales.
+- [x] La disposición de los ejes del análisis.
+  > Correcta. Es pivotar o rotar. Ciudades y promociones actúan como dimensiones; la suma de unidades o importe es la medida.
+- [ ] El precio que pagaron todos los clientes.
+  > Reorganizar el informe no altera las transacciones pasadas.
+- [ ] La medida se convierte obligatoriamente en una contraseña.
+  > La medida sigue siendo una cantidad analizable, no una credencial.
+
+---
+
+**Para situarlo:** UT2 §3.4.3 · Sistemas de ayuda a la decisión (DSS). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-07">
+¿Qué significa EIS y a quién se dirige?
+
+- [ ] Employee Inventory Service: operarios de almacén.
+  > El control de existencias no define el sistema ejecutivo del tema.
+- [ ] Electronic Invoice Storage: archivo de facturas.
+  > Archivar facturas es una función documental, no la finalidad principal de EIS.
+- [x] Executive Information System: alta dirección.
+  > Correcta. Un sistema de información para ejecutivos ofrece una visión global con KPI y puede alertar mediante informes de excepción ante desviaciones relevantes.
+- [ ] External Internet Security: proveedores de red.
+  > Es un concepto de apoyo a ejecutivos, no el desarrollo de una herramienta de seguridad.
+
+---
+
+**Para situarlo:** UT2 §3.4.3 · Sistemas de ayuda a la decisión (DSS). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-08">
+¿Qué es un dashboard?
+
+- [ ] Un repositorio histórico integrado para consultas analíticas.
+  > Eso describe un DW. El dashboard muestra indicadores y puede consultar ese repositorio.
+- [ ] Un modelo estratégico con cuatro perspectivas obligatorias.
+  > Eso describe el CMI/BSC. Un dashboard puede mostrarlo, pero no exige por sí mismo esas cuatro perspectivas.
+- [ ] Un proceso de extracción, transformación y carga de datos.
+  > Eso es ETL. Prepara los datos; el dashboard es una forma de presentarlos y explorarlos.
+- [x] Un panel visual de métricas e indicadores.
+  > Correcta. Combina gráficos, tablas, tarjetas y filtros para monitorizar y explorar resultados. No cualquier dashboard es un EIS ni un CMI.
+
+---
+
+**Para situarlo:** UT2 §3.4.3 · Sistemas de ayuda a la decisión (DSS). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-09">
+¿Qué significa DM en este apartado del BI?
+
+- [x] Data Mining: descubrir patrones en datos.
+  > Correcta. La minería de datos utiliza técnicas matemáticas, estadísticas y de aprendizaje automático para hallar relaciones, tendencias y modelos descriptivos o predictivos.
+- [ ] Direct Mail: enviar publicidad por correo.
+  > En otros contextos puede tener ese uso, pero aquí DM se refiere a minería de datos.
+- [ ] Document Manager: archivar contratos firmados.
+  > La gestión documental no es la técnica analítica preguntada.
+- [ ] Disk Memory: ampliar espacio de almacenamiento.
+  > Más disco no equivale a descubrir patrones ni construir modelos.
+
+---
+
+**Para situarlo:** UT2 §3.4.4 · Minería de datos (DM, Data Mining). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-10">
+¿Qué secuencia resume mejor un proyecto de minería de datos?
+
+- [ ] Modelar, borrar objetivos y publicar sin comprobar.
+  > Sin objetivos ni evaluación no se sabe si el modelo es útil o fiable.
+- [x] Definir objetivos, preparar datos, modelar y evaluar.
+  > Correcta. Es un proceso iterativo: si se detectan errores o resultados inadecuados se vuelve a fases previas y se comprueba el valor generado.
+- [ ] Publicar resultados y después inventar los datos.
+  > Los resultados deben derivar de datos reales preparados y analizados.
+- [ ] Elegir colores y omitir cualquier revisión de calidad.
+  > La visualización no sustituye la preparación y validación de datos.
+
+---
+
+**Para situarlo:** UT2 §3.4.4 · Minería de datos (DM, Data Mining). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-11">
+Se quiere predecir un importe numérico de ventas. ¿Qué tipo de tarea encaja mejor?
+
+- [ ] Clasificación de clientes en dos categorías.
+  > Asigna etiquetas, no predice directamente un importe continuo.
+- [ ] Clustering de compradores sin etiquetas previas.
+  > Descubre grupos de casos similares, pero no tiene por objetivo predecir el importe solicitado.
+- [x] Regresión.
+  > Correcta. Predice valores numéricos. Clasificación asigna categorías, como riesgo alto o bajo; la elección concreta del modelo depende de los datos.
+- [ ] Reglas de asociación entre productos de una cesta.
+  > Identifican compras relacionadas. Son útiles para recomendaciones, no equivalen a pronosticar un valor numérico de ventas.
+
+---
+
+**Para situarlo:** UT2 §3.4.4 · Minería de datos (DM, Data Mining). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-12">
+Se agrupan compradores por hábitos parecidos sin etiquetas previas. ¿Qué técnica se utiliza?
+
+- [ ] Clasificación con etiquetas ya conocidas.
+  > Esa tarea aprende categorías previas; el caso indica que no existen etiquetas.
+- [ ] Regresión para estimar un importe de compra.
+  > La regresión predice una magnitud numérica; aquí se quieren descubrir grupos sin categorías previas.
+- [ ] Agregación de las ventas por mes en un informe.
+  > La agregación resume datos siguiendo un criterio conocido; clustering descubre grupos según similitudes.
+- [x] Clustering mediante aprendizaje no supervisado.
+  > Correcta. Clustering descubre grupos similares. El aprendizaje no supervisado busca estructura sin proporcionar etiquetas de resultado.
+
+---
+
+**Para situarlo:** UT2 §3.4.4 · Minería de datos (DM, Data Mining). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-13">
+Un modelo aprende a detectar fraude usando operaciones etiquetadas como fraudulentas o legítimas. ¿Qué aprendizaje es?
+
+- [x] Supervisado, porque conoce las etiquetas de entrenamiento.
+  > Correcta. Un modelo, incluida una red neuronal, ajusta sus parámetros con ejemplos de entrada y resultado conocido. Red neuronal no significa reproducción literal del cerebro.
+- [ ] No supervisado, porque descubre grupos sin resultados conocidos.
+  > Aquí sí existen etiquetas de fraude o legitimidad: los resultados conocidos guían el entrenamiento.
+- [ ] Regresión, porque cualquier salida de un modelo es continua.
+  > Fraude y legítima son categorías. Una regresión predice valores numéricos, no es la clasificación descrita.
+- [ ] No supervisado, porque se utiliza una red neuronal.
+  > La arquitectura no decide por sí sola el tipo de aprendizaje. Una red puede entrenarse con ejemplos etiquetados.
+
+---
+
+**Para situarlo:** UT2 §3.4.4 · Minería de datos (DM, Data Mining). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-14">
+¿Qué técnica resulta especialmente adecuada para estudiar ciclos estacionales de ventas?
+
+- [ ] Cambio aleatorio de las fechas originales.
+  > Romper el orden temporal destruye información relevante para detectar ciclos.
+- [x] Análisis de series temporales.
+  > Correcta. Examina datos ordenados en el tiempo para estudiar evolución, ciclos, estacionalidad y posibles previsiones.
+- [ ] Borrado de los periodos con menos ventas.
+  > Eliminar datos sin justificación puede sesgar el análisis.
+- [ ] Sustitución de los importes por nombres de empleados.
+  > Cambia la variable que se quiere estudiar y no analiza la evolución de ventas.
+
+---
+
+**Para situarlo:** UT2 §3.4.4 · Minería de datos (DM, Data Mining). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-15">
+Se observa que dos productos se compran juntos. ¿Qué conclusión es prudente?
+
+- [ ] Uno de los productos causa siempre la compra del otro.
+  > La asociación no acredita una causa universal.
+- [ ] No puede existir ningún patrón útil para el negocio.
+  > La relación puede ser útil aunque no sea causal.
+- [x] Existe una asociación que conviene estudiar.
+  > Correcta. Puede inspirar promociones o colocación conjunta, pero una relación observada no demuestra por sí sola que un producto cause la compra del otro.
+- [ ] La coincidencia obliga a retirar ambos del catálogo.
+  > El patrón no justifica esa decisión; debe interpretarse según objetivos y contexto.
+
+---
+
+**Para situarlo:** UT2 §3.4.4 · Minería de datos (DM, Data Mining). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-16">
+¿Por qué conviene evaluar un modelo con datos que no usó para entrenar?
+
+- [ ] Para garantizar un acierto perfecto en cualquier situación.
+  > Ninguna evaluación elimina toda incertidumbre futura.
+- [ ] Para evitar definir qué problema se quiere resolver.
+  > Los objetivos deben definirse desde el comienzo.
+- [ ] Para poder omitir cualquier revisión de los resultados.
+  > La evaluación requiere precisamente revisar errores y calidad.
+- [x] Para comprobar su comportamiento ante ejemplos nuevos.
+  > Correcta. Ayuda a detectar que haya memorizado el entrenamiento sin generalizar. Además de precisión, se revisan utilidad, interpretación y limitaciones.
+
+---
+
+**Para situarlo:** UT2 §3.4.4 · Minería de datos (DM, Data Mining). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-17">
+¿Qué significan CMI y BSC?
+
+- [x] Cuadro de mando integral y Balanced Scorecard.
+  > Correcta. Son nombres del modelo de gestión estratégica de Kaplan y Norton, que traduce visión y estrategia a objetivos, indicadores, metas y acciones.
+- [ ] Control mensual de inventario y Basic Stock Calculation.
+  > Es una combinación de términos de almacén, no el modelo estratégico CMI/BSC.
+- [ ] Catálogo maestro de imágenes y Business Server Cloud.
+  > No desarrollan las siglas de las herramientas estratégicas del tema.
+- [ ] Cálculo mínimo de ingresos y Budget Sales Control.
+  > El CMI no se limita a ingresos ni esas son sus denominaciones.
+
+---
+
+**Para situarlo:** UT2 §3.4.5 · Cuadro de mando integral (CMI/BSC). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-18">
+¿Cuáles son las cuatro perspectivas del CMI?
+
+- [ ] Hardware, software, red y almacenamiento.
+  > Son capas técnicas, no perspectivas del cuadro de mando integral.
+- [x] Financiera, cliente, procesos internos y aprendizaje.
+  > Correcta. La cuarta se formula como aprendizaje y crecimiento. Las perspectivas conectan capacidades, procesos, clientes y resultados mediante hipótesis estratégicas.
+- [ ] Publicidad, logotipo, tipografía y colores.
+  > Son elementos de comunicación y marca, no las cuatro perspectivas.
+- [ ] Cobros, pagos, caja y bancos.
+  > Son aspectos financieros; el CMI supera una visión exclusivamente económica.
+
+---
+
+**Para situarlo:** UT2 §3.4.5 · Cuadro de mando integral (CMI/BSC). [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-19">
+¿Qué diferencia hay entre CMI y dashboard?
+
+- [ ] CMI muestra solo colores; dashboard define toda estrategia.
+  > Invierte sus papeles y reduce indebidamente el CMI a presentación.
+- [ ] CMI y dashboard son siempre la misma aplicación.
+  > Son conceptos distintos que pueden complementarse en una herramienta.
+- [x] CMI organiza estrategia; dashboard visualiza indicadores.
+  > Correcta. El CMI es un modelo de gestión estratégica. Un panel puede representar sus resultados, pero mostrar gráficos no crea por sí solo ese modelo.
+- [ ] CMI sustituye los objetivos por datos sin contexto.
+  > Traduce la estrategia precisamente en objetivos e indicadores relacionados.
+
+---
+
+**Para situarlo:** UT2 §3.4.6 · CMI frente a dashboard. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<Quiz id="sge-v1-ut2-analitica-decisiones-20">
+La meta es mejorar beneficio un 15 % interanual. El panel muestra +12 % frente al mes anterior. ¿Qué se puede concluir?
+
+- [ ] La meta anual se ha superado automáticamente.
+  > El 12 % mensual no se puede comparar directamente con el 15 % interanual.
+- [ ] La meta anual se ha incumplido de forma demostrada.
+  > Tampoco puede demostrarse el incumplimiento sin el dato interanual.
+- [ ] Cualquier subida porcentual usa siempre la misma base.
+  > El porcentaje depende del valor y del periodo de referencia.
+- [x] Falta comparar con el mismo periodo del año anterior.
+  > Correcta. Son bases de comparación diferentes. Una mejora mensual no prueba el cumplimiento de una meta interanual.
+
+---
+
+**Para situarlo:** UT2 §3.4.6 · CMI frente a dashboard. [Temario de consulta opcional](/temario/ut02-sistemas-de-gestion-empresarial.md).
+</Quiz>
+
+<QuizResults />

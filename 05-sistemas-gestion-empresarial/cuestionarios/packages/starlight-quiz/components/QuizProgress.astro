@@ -1,0 +1,54 @@
+---
+import { createStringResolver } from '../lib/i18n';
+
+interface Props {
+  /** Extra class names for the widget. */
+  class?: string;
+  /** Override the heading. */
+  headingLabel?: string;
+  /** Override the label in front of the answered/total count. */
+  answeredLabel?: string;
+  /** Override the label in front of the correct count. */
+  correctLabel?: string;
+  /** Override the reset button label. */
+  resetLabel?: string;
+  /** Render the heading. Set false for compact placements (e.g. page footer). */
+  showHeading?: boolean;
+}
+
+const { class: className, headingLabel, answeredLabel, correctLabel, resetLabel, showHeading = true } = Astro.props;
+
+const resolve = createStringResolver(Astro.locals);
+const heading = resolve('starlightQuiz.progressHeading', headingLabel);
+const answered = resolve('starlightQuiz.results.answered', answeredLabel);
+const correct = resolve('starlightQuiz.progressCorrect', correctLabel);
+const reset = resolve('starlightQuiz.reset', resetLabel);
+const confirmReset = resolve('starlightQuiz.results.confirmReset');
+---
+
+<sl-quiz-progress class:list={['sl-quiz-progress', className]} data-confirm-label={confirmReset} hidden>
+  {showHeading && <h2 class="sl-quiz-progress-heading">{heading}</h2>}
+  <p class="sl-quiz-progress-stats">
+    <span class="sl-quiz-progress-label">{answered}</span>:{' '}
+    <span class="sl-quiz-progress-answered">0</span> / <span class="sl-quiz-progress-total">0</span>
+    {' '}<span class="sl-quiz-progress-percent">(<span class="sl-quiz-progress-percentage">0%</span>)</span>
+  </p>
+  <div class="sl-quiz-progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-label={heading}>
+    <span class="sl-quiz-progress-bar-incorrect"></span>
+    <span class="sl-quiz-progress-bar-correct"></span>
+  </div>
+  <div class="sl-quiz-progress-footer">
+    <p class="sl-quiz-progress-stats">
+      <span class="sl-quiz-progress-label">{correct}</span>:{' '}
+      <span class="sl-quiz-progress-correct">0</span> / <span class="sl-quiz-progress-total">0</span>
+      {' '}<span class="sl-quiz-progress-percent">(<span class="sl-quiz-progress-score">0%</span>)</span>
+    </p>
+    <button type="button" class="sl-quiz-progress-reset">{reset}</button>
+  </div>
+</sl-quiz-progress>
+
+<script>
+  import { defineQuizProgressElement } from '../lib/progress-element';
+
+  defineQuizProgressElement();
+</script>
