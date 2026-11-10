@@ -1,0 +1,107 @@
+[
+  {
+    "title": "Avisos Foro",
+    "section": "General",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/forum/view.php?id=209559",
+    "type": "forum",
+    "status": "omitido",
+    "warnings": [
+      "Actividad no descargada: no se envían formularios ni se recorren tareas, foros o cuestionarios."
+    ]
+  },
+  {
+    "title": "GUIA DIDÁCTICA DIGITALIZACIÓN Archivo PDF",
+    "section": "General",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/resource/view.php?id=209561",
+    "type": "resource",
+    "status": "guardado",
+    "warnings": [],
+    "files": [
+      "General/209561-GUIA DIDÁCTICA DIGITALIZACIÓN Archivo PDF/contenido.html",
+      "General/209561-GUIA DIDÁCTICA DIGITALIZACIÓN Archivo PDF/32499e07ed-GuiaDidacticaDigitalizaciÃ³n_ GS_2026-27_v1.pdf"
+    ]
+  },
+  {
+    "title": "Clase Jitsi",
+    "section": "General",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/jitsi/view.php?id=209562",
+    "type": "jitsi",
+    "status": "omitido",
+    "warnings": [
+      "Actividad no descargada: no se envían formularios ni se recorren tareas, foros o cuestionarios."
+    ]
+  },
+  {
+    "title": "Digitalización aplicada a los sectores productivos Archivo",
+    "section": "General",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/resource/view.php?id=209564",
+    "type": "resource",
+    "status": "guardado",
+    "warnings": [],
+    "files": [
+      "General/209564-Digitalización aplicada a los sectores productivos Archivo/eb8b390370-PresentaciÃ³n_u.01.pdf"
+    ]
+  },
+  {
+    "title": "ActividadUT1 (copia) Tarea",
+    "section": "General",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/assign/view.php?id=217603",
+    "type": "assign",
+    "status": "omitido",
+    "warnings": [
+      "Actividad no descargada: no se envían formularios ni se recorren tareas, foros o cuestionarios."
+    ]
+  },
+  {
+    "title": "tecnologías habilitadoras digitales",
+    "section": "General",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/resource/view.php?id=209568",
+    "type": "resource",
+    "status": "guardado",
+    "warnings": [],
+    "files": [
+      "General/209568-tecnologías habilitadoras digitales/ac31c4f57b-PresentaciÃ³n_u.02.pdf"
+    ]
+  },
+  {
+    "title": "Sistemas basados en la nube (Cloud) y sistemas conectados Archivo",
+    "section": "General",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/resource/view.php?id=209571",
+    "type": "resource",
+    "status": "guardado",
+    "warnings": [],
+    "files": [
+      "General/209571-Sistemas basados en la nube (Cloud) y sistemas conectados Archivo/c9ff516e07-PresentaciÃ³n_u.03.pdf"
+    ]
+  },
+  {
+    "title": "Sección no leída",
+    "section": "Avisos",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/course/section.php?id=22067",
+    "type": "section",
+    "status": "omitido",
+    "warnings": [
+      "HTTP 404: https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/course/section.php?id=22067"
+    ]
+  },
+  {
+    "title": "Sección no leída",
+    "section": "Avisos",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/course/section.php?id=22068",
+    "type": "section",
+    "status": "omitido",
+    "warnings": [
+      "HTTP 404: https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/course/section.php?id=22068"
+    ]
+  },
+  {
+    "title": "Sección no leída",
+    "section": "Avisos",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/course/section.php?id=22069",
+    "type": "section",
+    "status": "omitido",
+    "warnings": [
+      "HTTP 404: https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/course/section.php?id=22069"
+    ]
+  }
+]

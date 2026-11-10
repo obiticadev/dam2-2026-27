@@ -1,0 +1,237 @@
+---
+title: "UT1 B · Integración en la práctica"
+description: "15 situaciones sobre integración IT-OT, mantenimiento, seguridad y pequeños comercios."
+sidebar:
+  order: 2
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**15 preguntas · cuatro opciones · una correcta.** Aplica los conceptos a procesos físicos y decisiones del negocio.
+
+<Quiz id="dig-1b-01" title="De la medida a la planificación">
+Los contadores de una máquina envían unidades producidas al sistema que planifica las entregas. ¿Dónde está el valor de integrar ambos sistemas?
+
+- [ ] En evitar que la máquina necesite mantenimiento.
+  > Compartir sus datos no impide desgaste ni averías: el mantenimiento sigue siendo necesario.
+- [ ] En mantener aislados los datos de producción.
+  > El caso hace circular los datos entre producción y planificación; aislarlos eliminaría esa ventaja.
+- [x] En ajustar el negocio con datos de la operación.
+  > Correcta: IT aprovecha datos OT para planificar inventario y entregas con información más actualizada.
+- [ ] En sustituir toda decisión por una lectura física.
+  > Medir aporta información; decidir cómo organizar entregas requiere reglas o interpretación del negocio.
+
+Repasar: UT1 §3.1, eficiencia e integración IT-OT.
+</Quiz>
+
+<Quiz id="dig-1b-02" title="Prever una avería">
+El análisis de vibraciones detecta un patrón de desgaste y se programa una revisión antes de que falle el motor. ¿Qué mejora representa?
+
+- [x] Mantenimiento predictivo del motor.
+  > Correcta: usar datos del estado de la máquina para anticipar fallos permite planificar la intervención antes de la avería.
+- [ ] Mantenimiento solo tras la rotura del motor.
+  > Eso sería una actuación correctiva posterior al fallo, no una anticipación basada en datos.
+- [ ] Publicidad personalizada para mantenimiento.
+  > El patrón analizado describe el estado físico del motor, no preferencias de un cliente.
+- [ ] Actualización del organigrama comercial.
+  > Cambiar departamentos no explica detectar desgaste a partir de medidas.
+
+Repasar: UT1 §3.1, mantenimiento predictivo.
+</Quiz>
+
+<Quiz id="dig-1b-03" title="Lotes bajo demanda">
+Una fábrica cambia el tamaño de los lotes según los pedidos que recibe su plataforma comercial. ¿Qué efecto de la integración destaca?
+
+- [ ] Un ciclo de vida idéntico para IT y OT.
+  > Ajustar lotes no hace que aplicaciones y maquinaria tengan la misma duración o renovación.
+- [ ] La desaparición de los controles de calidad.
+  > Fabricar bajo demanda no exime de verificar el producto ni el proceso.
+- [ ] Una separación mayor entre ventas y planta.
+  > Ventas está influyendo en producción mediante datos compartidos, no alejándose de ella.
+- [x] Mayor flexibilidad de la producción.
+  > Correcta: conectar demanda e información operativa permite adaptar el proceso a necesidades cambiantes y personalizar la oferta.
+
+Repasar: UT1 §3.1, flexibilidad y fabricación bajo demanda.
+</Quiz>
+
+<Quiz id="dig-1b-04" title="Un ataque con efectos físicos">
+Un ataque altera el sistema que controla la refrigeración del almacén. ¿Por qué no basta con proteger únicamente los archivos de oficina?
+
+- [ ] Porque los archivos de oficina carecen de valor.
+  > Los archivos también necesitan protección; el error sería olvidar el control físico, no dejar de proteger datos.
+- [x] Porque la seguridad debe abarcar también OT.
+  > Correcta: un incidente puede afectar a procesos y bienes físicos; la protección integral incluye sistemas IT y control industrial.
+- [ ] Porque los controladores no intercambian datos.
+  > Los sistemas OT sí manejan datos y pueden conectarse con otros sistemas; por eso requieren protección.
+- [ ] Porque cualquier ataque es solo un fallo mecánico.
+  > Un ataque informático puede provocar consecuencias mecánicas o físicas, pero no es lo mismo que desgaste natural.
+
+Repasar: UT1 §3.1, seguridad integral.
+</Quiz>
+
+<Quiz id="dig-1b-05" title="Equipos con distinta duración">
+Una línea conserva un controlador durante años, mientras su aplicación comercial se renueva con frecuencia. ¿Qué diferencia del tema ayuda a interpretarlo?
+
+- [x] OT suele tener ciclos de vida más largos.
+  > Correcta: el coste de equipos y la estabilidad de producción favorecen ciclos OT largos; IT tiende a renovarse más deprisa.
+- [ ] IT nunca necesita cambios de tecnología.
+  > El caso muestra renovaciones de la aplicación; IT está sujeto a cambios y actualizaciones.
+- [ ] OT se sustituye siempre antes que una aplicación.
+  > Es contrario a la tendencia descrita; además, las duraciones concretas dependen de cada sistema.
+- [ ] Ambos ciclos deben durar exactamente lo mismo.
+  > Integrar sistemas no exige que tengan idénticos plazos de renovación.
+
+Repasar: UT1 §3.2, diferencias de ciclo de vida.
+</Quiz>
+
+<Quiz id="dig-1b-06" title="Datos con distinto propósito">
+Un sistema guarda facturas y otro registra velocidad y temperatura de una línea. ¿Qué tienen en común y qué cambia?
+
+- [ ] Solo las facturas son datos utilizables.
+  > Las medidas físicas también son datos y permiten controlar o analizar la operación.
+- [ ] Ambos pertenecen a OT por guardar números.
+  > El formato numérico no decide la clasificación; importan la finalidad y el contexto.
+- [x] Ambos gestionan datos en contextos diferentes.
+  > Correcta: IT maneja información del negocio y OT datos operativos como rendimiento o estado de equipos.
+- [ ] Solo las medidas necesitan protección de acceso.
+  > Facturas y medidas pueden ser sensibles o críticas; ambos entornos necesitan controles adecuados.
+
+Repasar: UT1 §3.2, semejanzas y gestión de datos.
+</Quiz>
+
+<Quiz id="dig-1b-07" title="Colaborar antes de conectar">
+El equipo IT quiere conectar una línea sin consultar a quienes la operan. ¿Qué objeción es la más razonable?
+
+- [ ] OT debe renunciar a toda comunicación por red.
+  > Aislar sin analizar necesidades no es la única opción; se puede integrar con arquitectura y controles adecuados.
+- [x] La integración exige coordinar ambos equipos.
+  > Correcta: IT y OT aportan conocimientos diferentes; colaborar permite implantar tecnología de forma efectiva y segura.
+- [ ] IT no puede utilizar información de producción.
+  > La integración busca precisamente aprovechar datos operativos en la gestión empresarial.
+- [ ] La producción deja de importar al digitalizarse.
+  > La tecnología debe servir a las operaciones; no elimina sus requisitos de disponibilidad y funcionamiento.
+
+Repasar: UT1 §3.2, colaboración y mejora de la eficiencia.
+</Quiz>
+
+<Quiz id="dig-1b-08" title="Actualizar sin parar la planta">
+Hay una actualización de firmware para un controlador crítico. ¿Qué actuación combina protección y continuidad del proceso?
+
+- [ ] Ignorar cualquier actualización durante su vida útil.
+  > Dejar vulnerabilidades sin evaluar puede aumentar el riesgo; estabilidad no significa renunciar a mantener el sistema.
+- [ ] Actualizar durante un lote sin comprobar efectos.
+  > Puede comprometer la operación; en OT conviene evaluar compatibilidad y planificar la intervención.
+- [ ] Cambiar todas las contraseñas y no revisar el firmware.
+  > Las contraseñas no corrigen por sí mismas un problema del software integrado en el dispositivo.
+- [x] Validarla y programar una ventana de intervención.
+  > Correcta: actualizar firmware ayuda a proteger el equipo, pero debe hacerse considerando disponibilidad y seguridad física.
+
+Repasar: UT1 §3, protección frente a ciberataques y aclaración sobre OT.
+</Quiz>
+
+<Quiz id="dig-1b-09" title="Una contraseña robada">
+Una cuenta de gestión añade un segundo factor además de la contraseña. ¿Qué riesgo reduce de forma más directa?
+
+- [x] Que la contraseña por sí sola permita entrar.
+  > Correcta: la autenticación de dos factores exige otro elemento; conocer la contraseña no debería bastar para acceder.
+- [ ] Que una máquina sufra desgaste en sus piezas.
+  > La autenticación protege acceso, no evita el deterioro físico de componentes.
+- [ ] Que cualquier copia de seguridad quede obsoleta.
+  > La actualización y restauración de copias requieren medidas distintas del segundo factor.
+- [ ] Que la plantilla necesite aprender nuevas herramientas.
+  > El aprendizaje sigue siendo necesario y puede incluir el uso correcto del segundo factor.
+
+Repasar: UT1 §3, protección frente a ciberataques.
+</Quiz>
+
+<Quiz id="dig-1b-10" title="Un adjunto inesperado">
+Llega un correo que pide abrir urgentemente un adjunto para recuperar la cuenta. No se esperaba ese mensaje. ¿Qué conducta encaja mejor con el tema?
+
+- [ ] Abrirlo si contiene el logotipo de la empresa.
+  > Un logotipo puede copiarse y no demuestra que el mensaje sea auténtico.
+- [ ] Desactivar el antivirus para comprobar el archivo.
+  > Retirar protección aumenta el riesgo y no sirve para verificar la legitimidad del mensaje.
+- [ ] Enviar la contraseña al remitente para validarlo.
+  > Eso puede entregar la credencial a un atacante; la urgencia del mensaje no lo convierte en fiable.
+- [x] Evitar abrirlo y verificar el aviso por otra vía.
+  > Correcta: no abrir adjuntos desconocidos y contrastar su origen reduce el riesgo de phishing y software malicioso.
+
+Repasar: UT1 §3 y §6, ciberataques y phishing.
+</Quiz>
+
+<Quiz id="dig-1b-11" title="Una papelería comienza el cambio">
+Una papelería quiere integrar inventario y ventas. Antes de elegir herramientas, ¿qué paso responde al reto profesional del tema?
+
+- [ ] Comprar la solución más avanzada del mercado.
+  > Elegir por novedad, sin conocer el proceso, puede dejar sin resolver las necesidades reales.
+- [x] Estudiar cómo trabaja y qué problemas tiene.
+  > Correcta: el reto comienza con la situación actual y después propone tecnologías IT-OT y un plan de implantación.
+- [ ] Publicar los datos completos de sus clientes.
+  > Compartir datos personales no es un requisito de digitalización y puede causar un problema de privacidad.
+- [ ] Sustituir los productos por una actividad industrial.
+  > La integración también se aplica a pequeños comercios; no requiere convertirlos en fábricas.
+
+Repasar: UT1 §5, reto del pequeño comercio.
+</Quiz>
+
+<Quiz id="dig-1b-12" title="Una mejora comprobable">
+Después de conectar producción y gestión, la empresa quiere saber si ha mejorado la eficiencia. ¿Qué evidencia sería más útil?
+
+- [ ] Un mayor número de pantallas instaladas.
+  > Tener más dispositivos mide inversión, no necesariamente una mejora del proceso.
+- [ ] Un cambio de nombre del departamento técnico.
+  > La denominación no acredita reducción de recursos, tiempos o errores.
+- [x] Menos tiempo y errores en el mismo proceso.
+  > Correcta: la eficiencia se relaciona con mejorar resultados y reducir recursos o fallos, no con acumular tecnología.
+- [ ] Un catálogo más amplio de marcas contratadas.
+  > El número de proveedores no demuestra que la integración aporte valor al negocio.
+
+Repasar: UT1 §3.1, mejora de la eficiencia.
+</Quiz>
+
+<Quiz id="dig-1b-13" title="Una tarea con respuesta física">
+Un sistema recibe una medida de temperatura y ordena cerrar una válvula de gas si supera el límite. ¿Qué ámbito caracteriza esa función principal?
+
+- [ ] Marketing, al utilizar una regla de decisión.
+  > Las reglas también existen fuera del marketing; aquí se está controlando una instalación física.
+- [ ] Desarrollo multimedia, por presentar medidas.
+  > Mostrar información no es la función decisiva del caso: la orden modifica el proceso físico.
+- [ ] Gestión contable, por registrar valores numéricos.
+  > Registrar números no convierte una medida industrial en una operación económica.
+- [x] OT, por supervisar y controlar el proceso físico.
+  > Correcta: supervisar variables y actuar sobre válvulas o máquinas forma parte del control y automatización operativa.
+
+Repasar: UT1 §2 y §3.2, función y tecnologías OT.
+</Quiz>
+
+<Quiz id="dig-1b-14" title="Cumplir normas al integrar">
+La nueva plataforma conecta dispositivos y registra datos personales de operarios. ¿Qué debe incluir el plan además del rendimiento?
+
+- [x] Requisitos normativos y protección de datos.
+  > Correcta: la integración debe considerar regulaciones, estándares y uso adecuado de la información personal.
+- [ ] Publicación de todos los registros de actividad.
+  > Tener datos no justifica hacerlos públicos; se deben limitar acceso y uso a lo necesario.
+- [ ] Eliminación del control sobre los dispositivos.
+  > La conexión no sustituye la supervisión ni la seguridad de los sistemas.
+- [ ] Acceso común sin distinguir usuarios autorizados.
+  > Compartir información no implica que toda persona deba disponer de los mismos permisos.
+
+Repasar: UT1 §3.1, cumplimiento normativo y datos personales.
+</Quiz>
+
+<Quiz id="dig-1b-15" title="Externalizar sin cambiar la función">
+Una empresa contrata fuera el mantenimiento de su web y sus contenidos. ¿Qué afirmación sigue siendo válida?
+
+- [ ] El servicio deja de pertenecer al ámbito IT.
+  > La función tecnológica no cambia porque la realice un proveedor externo.
+- [ ] El proveedor convierte la web en un sistema OT.
+  > Controlar procesos físicos define OT; no lo hace la forma de contratar un servicio.
+- [x] El servicio sigue siendo IT si se externaliza.
+  > Correcta: la presentación indica que las áreas IT pueden organizarse con nombres distintos o prestarse externamente.
+- [ ] La empresa ya no necesita coordinar ese trabajo.
+  > Externalizar la ejecución no elimina la necesidad de definir objetivos y supervisar el servicio.
+
+Repasar: UT1 §2.2, departamentos y externalización.
+</Quiz>
+
+<QuizResults />

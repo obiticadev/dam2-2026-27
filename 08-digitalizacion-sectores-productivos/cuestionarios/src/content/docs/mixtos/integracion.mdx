@@ -1,0 +1,237 @@
+---
+title: "Mixto A · Integración"
+description: "15 preguntas nuevas: cinco de cada unidad, con conexiones entre conceptos."
+sidebar:
+  order: 1
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**15 preguntas · cinco por tema · cuatro opciones · una correcta.** Son escenarios nuevos, no una selección de los cuestionarios anteriores. Todos los cuestionarios mantienen una dificultad intermedia.
+
+<Quiz id="dig-ma-01" title="Un gimnasio conectado">
+Un gimnasio integra sus reservas y cobros con el registro de uso de máquinas conectadas. ¿Qué describe mejor el cambio global?
+
+- [ ] Aislar la actividad física de la gestión comercial.
+  > Se están compartiendo datos entre operación y negocio, no separándolos.
+- [x] Integrar información del negocio y operación física.
+  > Correcta: reservas y cobros pertenecen a la gestión IT; las máquinas aportan información operativa OT para coordinar el servicio.
+- [ ] Convertir todas las tareas del gimnasio en publicidad.
+  > La conexión incluye operaciones y gestión, no únicamente captación o comunicación comercial.
+- [ ] Sustituir las máquinas por documentos electrónicos.
+  > Digitalizar e integrar no elimina necesariamente la instalación ni el proceso físico.
+
+Repasar: UT1 §2 y §3.1, relación IT-OT.
+</Quiz>
+
+<Quiz id="dig-ma-02" title="Elegir antes de comprar">
+El gimnasio quiere saber qué tecnología necesita, pero todavía no ha identificado sus problemas de servicio. ¿Qué criterio es más adecuado?
+
+- [ ] Elegir la solución con mayor número de funciones.
+  > Más funciones no garantiza resolver los problemas reales y puede añadir coste y complejidad.
+- [ ] Copiar sin cambios la instalación de una gran fábrica.
+  > Otro contexto puede tener necesidades distintas; las tecnologías deben adaptarse al negocio.
+- [ ] Renovar todos los equipos antes de analizar procesos.
+  > La inversión debería justificarse a partir de lo que se necesita mejorar.
+- [x] Analizar la situación y después proponer mejoras.
+  > Correcta: el diagnóstico del proceso precede a la selección tecnológica, como en el reto del pequeño comercio.
+
+Repasar: UT1 §5, estudio de situación y propuesta IT-OT.
+</Quiz>
+
+<Quiz id="dig-ma-03" title="Turnos de mantenimiento informados">
+Se combinan horas de uso y señales de desgaste para decidir cuándo revisar las máquinas del gimnasio. ¿Qué beneficio destaca?
+
+- [x] Anticipar averías y planificar revisiones.
+  > Correcta: el mantenimiento predictivo utiliza datos de los equipos para intervenir antes del fallo y organizar mejor los recursos.
+- [ ] Eliminar toda avería por disponer de un registro.
+  > Los datos ayudan a anticipar, pero no aseguran que nunca falle un componente.
+- [ ] Sustituir los técnicos por una campaña comercial.
+  > La planificación del mantenimiento no equivale a publicidad ni elimina las tareas físicas de reparación.
+- [ ] Mantener oculto el estado real de las instalaciones.
+  > Usar señales operativas busca aumentar la visibilidad, no esconder información relevante.
+
+Repasar: UT1 §3.1, mantenimiento predictivo.
+</Quiz>
+
+<Quiz id="dig-ma-04" title="Trabajo conjunto tras la implantación">
+Recepción y mantenimiento tienen datos actualizados, pero usan criterios incompatibles para cancelar una máquina averiada. ¿Qué sigue faltando?
+
+- [ ] Un logotipo nuevo para el panel compartido.
+  > La identidad visual no resuelve una regla de trabajo contradictoria entre áreas.
+- [ ] Un número mayor de bases de datos sin conexión.
+  > Aumentar silos puede empeorar la coordinación; no fija un procedimiento común.
+- [x] Coordinación de equipos y rutinas compartidas.
+  > Correcta: la integración requiere procesos y colaboración humana, no solo datos conectados o software instalado.
+- [ ] Un cambio de sector de la empresa a industria pesada.
+  > Las necesidades de coordinación existen también en servicios y pequeños negocios.
+
+Repasar: UT1 §1.3 y §3.2, cambio organizativo y colaboración.
+</Quiz>
+
+<Quiz id="dig-ma-05" title="Acceso comercial sin control físico">
+Un panel permite estudiar ingresos y bajas de socios, pero no puede regular las máquinas. ¿Cuál es su función principal?
+
+- [ ] OT por utilizarlo dentro de un gimnasio.
+  > El lugar de uso no basta: se está analizando información de negocio, no controlando procesos físicos.
+- [x] IT, al gestionar información del negocio.
+  > Correcta: analizar ingresos y clientes pertenece al ámbito de tecnologías de la información.
+- [ ] OT porque presenta cantidades numéricas.
+  > Tanto IT como OT manejan datos numéricos; su finalidad es lo que diferencia el caso.
+- [ ] Biometría, por gestionar nombres de socios.
+  > Guardar nombres no implica utilizar rasgos físicos o de comportamiento para verificar identidad.
+
+Repasar: UT1 §2 y §3.2, enfoque de IT.
+</Quiz>
+
+<Quiz id="dig-ma-06" title="Conexión y reconocimiento">
+Un reloj recoge actividad y un modelo detecta patrones para ajustar recomendaciones. ¿Qué combinación de THD es la más pertinente?
+
+- [ ] Impresión 3D y blockchain para analizar hábitos.
+  > Fabricación y registro distribuido no describen la captura conectada ni el aprendizaje de patrones.
+- [ ] VR y fabricación aditiva para medir actividad.
+  > Simular entornos y fabricar objetos no corresponde a las funciones del reloj y del modelo.
+- [ ] Biometría y robótica para emitir publicidad en vídeo.
+  > No se está controlando un robot ni generando anuncios; el caso describe datos de actividad y patrones.
+- [x] IoT para datos y aprendizaje automático.
+  > Correcta: el dispositivo conectado aporta datos y el aprendizaje automático permite encontrar patrones para recomendaciones.
+
+Repasar: UT2 §2.1, IoT e IA.
+</Quiz>
+
+<Quiz id="dig-ma-07" title="Una app que aprende de los datos">
+Un responsable afirma que un sistema de aprendizaje automático no necesita ejemplos ni proceso de aprendizaje. ¿Qué matiz es correcto?
+
+- [x] Aprende con datos, aunque no se programe cada regla.
+  > Correcta: evitar programar manualmente todas las reglas no significa aprender sin datos ni entrenamiento.
+- [ ] Solo aprende cuando se imprime su código en papel.
+  > El soporte del código no determina el aprendizaje del modelo ni aporta ejemplos útiles.
+- [ ] Cualquier aplicación conectada aprende automáticamente.
+  > Estar conectada no implica incorporar un modelo de aprendizaje automático.
+- [ ] Nunca requiere revisar la calidad de los datos usados.
+  > Los datos y su calidad influyen en los patrones aprendidos y deben evaluarse.
+
+Repasar: UT2 introducción y §2.1, aclaración sobre entrenamiento.
+</Quiz>
+
+<Quiz id="dig-ma-08" title="Recomendaciones distintas por persona">
+La aplicación ofrece ejercicios diferentes según el historial del usuario. ¿Qué característica de las THD se materializa?
+
+- [ ] Escalabilidad, porque cada usuario tiene un nombre.
+  > Escalar es adaptar capacidad al crecimiento, no diferenciar contenido por historial.
+- [ ] Ciberseguridad, porque todos ven el mismo ejercicio.
+  > El caso no dice que todos vean lo mismo ni describe un control de protección.
+- [x] Personalización según el historial del usuario.
+  > Correcta: adaptar propuestas a preferencias o necesidades individuales es personalización.
+- [ ] Economía circular, porque se almacenan registros.
+  > Guardar datos no implica prolongar el uso de materiales ni cerrar ciclos de recursos.
+
+Repasar: UT2 §3, personalización.
+</Quiz>
+
+<Quiz id="dig-ma-09" title="Una pantalla para aprender a reparar">
+Un visor añade flechas y etiquetas sobre una máquina real durante una reparación. ¿Por qué es AR y no VR?
+
+- [ ] Porque todo visor pertenece siempre a realidad aumentada.
+  > El dispositivo no determina por sí solo la experiencia: también existen visores de realidad virtual.
+- [x] Porque añade elementos digitales al entorno real.
+  > Correcta: la AR conserva el mundo físico observado y lo enriquece; la VR crea un entorno simulado.
+- [ ] Porque la realidad virtual exige fabricar piezas físicas.
+  > VR no depende de fabricar objetos; se define por representar un entorno digital simulado.
+- [ ] Porque los datos se guardan necesariamente en una nube.
+  > La ubicación del almacenamiento no distingue realidad aumentada y virtual.
+
+Repasar: UT2 §2.1, AR frente a VR.
+</Quiz>
+
+<Quiz id="dig-ma-10" title="Un balance ambiental completo">
+El gimnasio elimina fichas en papel, pero sustituye cada seis meses tabletas que todavía funcionan. ¿Cómo valorar el resultado ambiental?
+
+- [ ] Darlo por positivo únicamente por ahorrar papel.
+  > El ahorro de papel es parcial: deben considerarse también fabricación, residuos y consumo de equipos.
+- [ ] Darlo por negativo sin medir ningún efecto del cambio.
+  > El balance exige datos de ambos lados, no una conclusión automática por un solo impacto.
+- [ ] Ignorar los dispositivos por tratarse de una actividad digital.
+  > Lo digital tiene soporte físico y sus equipos generan impactos durante todo su ciclo de vida.
+- [x] Contrastar el ahorro con materiales y residuos generados.
+  > Correcta: una evaluación considera beneficios y daños; prolongar equipos útiles puede reducir residuos electrónicos.
+
+Repasar: UT2 §5, balance ambiental y circularidad.
+</Quiz>
+
+<Quiz id="dig-ma-11" title="Reservas durante una campaña">
+El servicio de reservas aumenta recursos solo durante la matrícula de septiembre. ¿Qué ventaja de nube aprovecha?
+
+- [x] Escalar recursos durante el pico de demanda.
+  > Correcta: ajustar capacidad a un pico permite responder a usuarios sin mantener siempre el mismo tamaño, controlando costes.
+- [ ] Hacer que cualquier caída sea imposible.
+  > Más capacidad no garantiza disponibilidad absoluta ni elimina fallos del proveedor.
+- [ ] Eliminar las facturas por uso de infraestructura.
+  > La capacidad adicional puede tener coste; hay que revisar el modelo de facturación.
+- [ ] Convertir una nube pública en un sensor doméstico.
+  > El escalado no cambia la infraestructura remota por un dispositivo de captura.
+
+Repasar: UT3 §3.2, escalado.
+</Quiz>
+
+<Quiz id="dig-ma-12" title="Reservas como servicio terminado">
+El gimnasio utiliza una aplicación de reservas ya mantenida por su proveedor. No programa la aplicación. ¿Qué modelo de servicio consume?
+
+- [ ] IaaS para instalar su propio sistema operativo.
+  > En ese caso administraría capas de una infraestructura; aquí utiliza una aplicación completa.
+- [ ] PaaS para desplegar su propio código de reservas.
+  > No desarrolla ni despliega código: consume funciones de una aplicación ofrecida por el proveedor.
+- [x] SaaS con la aplicación administrada por el proveedor.
+  > Correcta: software como servicio proporciona una aplicación completa administrada por el proveedor.
+- [ ] Mist para realizar cálculos en un sensor del gimnasio.
+  > Mist describe proximidad de procesamiento, no el modelo de contratación de una aplicación terminada.
+
+Repasar: UT3 §5.1, SaaS.
+</Quiz>
+
+<Quiz id="dig-ma-13" title="Una conexión interrumpida">
+El gimnasio depende de una aplicación remota y pierde Internet. ¿Qué consideración debería haber incluido su propuesta?
+
+- [ ] Que cualquier servicio de nube funciona sin red.
+  > Los recursos remotos requieren conectividad para acceder a ellos; puede haber funciones locales, pero no se deben suponer.
+- [x] La dependencia de conectividad y un plan de continuidad.
+  > Correcta: valorar nube incluye inconvenientes y recuperación, no solo ventajas comerciales o de almacenamiento.
+- [ ] Que una suscripción sustituye las copias de seguridad.
+  > El contrato no garantiza por sí solo copias y restauración adecuadas a las necesidades del negocio.
+- [ ] Que ampliar la pantalla evita problemas de comunicación.
+  > El tamaño de la interfaz no restablece la conexión con los servidores remotos.
+
+Repasar: UT3 §3.2 y §7, límites y valoración de propuestas.
+</Quiz>
+
+<Quiz id="dig-ma-14" title="Una decisión urgente cerca del origen">
+Un dispositivo debe responder a una anomalía sin esperar a enviar todas las lecturas a servidores lejanos. ¿Qué cambio arquitectónico encaja mejor?
+
+- [ ] Trasladar cualquier decisión a un archivo de correo.
+  > El correo no aporta el procesamiento cercano y de respuesta rápida solicitado.
+- [ ] Aumentar las dependencias de comunicaciones remotas.
+  > Eso puede aumentar la demora o el efecto de una interrupción, contrario al objetivo.
+- [ ] Cambiar el nombre de SaaS por nube privada.
+  > Renombrar o mezclar clasificaciones no mueve el cálculo cerca del origen.
+- [x] Procesar parte de los datos cerca del dispositivo.
+  > Correcta: edge o mist pueden reducir la dependencia del envío remoto; no sustituyen diseñar y validar la seguridad del proceso.
+
+Repasar: UT3 §4.1, procesamiento cercano.
+</Quiz>
+
+<Quiz id="dig-ma-15" title="Servicio y despliegue en la misma frase">
+¿Qué descripción utiliza correctamente dos clasificaciones distintas de nube?
+
+- [x] PaaS en una nube pública.
+  > Correcta: PaaS describe las capas ofrecidas; pública indica el modelo de despliegue. Ambas etiquetas pueden coexistir.
+- [ ] PaaS como otro nombre para una nube privada.
+  > Plataforma y privacidad del despliegue no son equivalentes.
+- [ ] SaaS como medida de latencia de los dispositivos.
+  > SaaS es un modelo de servicio, no una magnitud de tiempo de respuesta.
+- [ ] IaaS como tipo de copia de seguridad desconectada.
+  > IaaS ofrece infraestructura; no clasifica por sí mismo un método de respaldo.
+
+Repasar: UT3 §4.2, §5 y §6, despliegue y modelo de servicio.
+</Quiz>
+
+<QuizResults />

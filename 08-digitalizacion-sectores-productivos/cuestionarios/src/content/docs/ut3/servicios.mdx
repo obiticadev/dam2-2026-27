@@ -1,0 +1,237 @@
+---
+title: "UT3 A · Servicios y costes"
+description: "15 preguntas sobre nube, servicios y tres cálculos de gasto informático."
+sidebar:
+  order: 1
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**15 preguntas · cuatro opciones · una correcta.** Incluye tres cálculos. Usa los porcentajes que da cada enunciado sobre los ingresos; no son precios de un proveedor. Las operaciones se explican al corregir.
+
+<Quiz id="dig-3a-01" title="Más que una carpeta remota">
+Una empresa ejecuta una aplicación en servidores de Internet, además de guardar archivos. ¿Qué interpretación de la nube es más adecuada?
+
+- [ ] Solo sirve para guardar copias de fotografías.
+  > El almacenamiento es un uso, pero la nube también ejecuta aplicaciones y proporciona procesamiento y otros servicios.
+- [ ] Es un disco físico conectado al ordenador local.
+  > Un disco local no describe recursos y servicios remotos accesibles por red.
+- [x] Ofrece recursos y procesamiento remotos.
+  > Correcta: la nube permite almacenar datos, ejecutar aplicaciones y utilizar capacidad informática a través de Internet.
+- [ ] Obliga a ejecutar todas las tareas en el cliente.
+  > Precisamente permite que parte del trabajo se realice en servidores remotos, no únicamente en el dispositivo del usuario.
+
+Repasar: UT3 §1, concepto de nube.
+</Quiz>
+
+<Quiz id="dig-3a-02" title="No todo fallo es un ataque">
+Un empleado borra una carpeta por error y otro equipo se avería por un derrame. ¿Qué causas de pérdida de datos representan?
+
+- [x] Borrado humano y daño físico del equipo.
+  > Correcta: el tema distingue borrados accidentales, fallos físicos o mecánicos y virus; no toda pérdida es ciberdelincuencia.
+- [ ] Dos ejemplos de falta de ancho de banda.
+  > La capacidad de transmisión no explica borrar una carpeta ni dañar un equipo con líquido.
+- [ ] Dos procesos de escalado de infraestructura.
+  > Escalar ajusta recursos a una necesidad; no clasifica estas causas de pérdida.
+- [ ] Un caso de PaaS y otro de nube híbrida.
+  > Son clasificaciones de servicios y despliegue, no de incidentes con datos.
+
+Repasar: UT3 §1.1, seguridad de los datos.
+</Quiz>
+
+<Quiz id="dig-3a-03" title="Sincronizar no siempre es respaldar">
+Al borrar un archivo local, desaparece también de su carpeta sincronizada. ¿Qué comprobación ayudaría a garantizar su recuperación?
+
+- [ ] Que la carpeta tenga un nombre más descriptivo.
+  > Nombrarla mejor no garantiza conservar versiones ni recuperar datos eliminados.
+- [ ] Que los usuarios compartan la misma contraseña.
+  > Compartir credenciales empeora el control de acceso y no conserva copias independientes.
+- [ ] Que el disco local se encuentre casi lleno.
+  > La ocupación del disco no demuestra que haya versiones restaurables o copias separadas.
+- [x] Que existan copias o versiones restaurables.
+  > Correcta: hay que conocer retención, versionado y restauración; una sincronización puede propagar el borrado y no basta como respaldo.
+
+Repasar: UT3 §1.1, aclaración sobre sincronización y copias.
+</Quiz>
+
+<Quiz id="dig-3a-04" title="Un servidor local también calcula">
+Un servidor de la oficina ejecuta la contabilidad. ¿Qué afirmación evita una confusión de la comparación local/nube?
+
+- [ ] Solo un servidor de nube puede ejecutar programas.
+  > Es falso: un servidor local también puede procesar información y ejecutar aplicaciones.
+- [x] La diferencia no es guardar frente a calcular.
+  > Correcta: ubicación, provisión y gestión de recursos distinguen los modelos; ambos pueden almacenar y procesar datos.
+- [ ] Todo servidor de oficina es una aplicación SaaS.
+  > Ejecutar software local no lo convierte en una aplicación ofrecida por un proveedor como servicio.
+- [ ] El cliente nunca puede conectarse a un servidor local.
+  > Un equipo cliente puede solicitar servicios a un servidor local; es una arquitectura habitual.
+
+Repasar: UT3 §2.1 y §2.2, modelos y límites de la comparación.
+</Quiz>
+
+<Quiz id="dig-3a-05" title="Ajustar la contratación">
+Una empresa quiere disponer de más capacidad en campaña sin comprar servidores para todo el año. ¿Qué idea del coste de nube es pertinente?
+
+- [x] Contratar recursos según la necesidad.
+  > Correcta: el modelo permite ajustar recursos y uso; aun así, hay que revisar tarifas, suscripciones y compromisos del contrato.
+- [ ] Suponer que todo consumo adicional es gratuito.
+  > Poder escalar no significa no pagar; aumentar recursos puede incrementar la factura.
+- [ ] Comprar siempre capacidad para el máximo anual.
+  > Eso no aprovecha el ajuste bajo demanda que plantea el caso.
+- [ ] Aplicar el mismo precio a cualquier ubicación.
+  > Localización, requisitos y servicios pueden cambiar costes; no hay una tarifa universal.
+
+Repasar: UT3 §3.1, coste del cloud computing.
+</Quiz>
+
+<Quiz id="dig-3a-06" title="Un pico de usuarios">
+Una aplicación recibe más usuarios y aumenta su capacidad de proceso durante ese periodo. ¿Qué ventaja se aplica directamente?
+
+- [ ] Desaparición de cualquier límite de gasto.
+  > Aumentar recursos puede costar más; el escalado debe tener límites y seguimiento.
+- [ ] Garantía de servicio sin ninguna incidencia.
+  > La escalabilidad no implica disponibilidad absoluta ni ausencia de fallos del proveedor.
+- [ ] Independencia total de las conexiones de red.
+  > Un servicio remoto sigue dependiendo de una conectividad adecuada para acceder a él.
+- [x] Escalado temporal de la infraestructura.
+  > Correcta: contratar o ajustar recursos permite responder al crecimiento de la demanda sin mantener siempre el mismo tamaño.
+
+Repasar: UT3 §3.2, escalado.
+</Quiz>
+
+<Quiz id="dig-3a-07" title="Administrar una máquina virtual">
+Un equipo quiere alquilar una máquina virtual y ocuparse del sistema operativo y de su aplicación. ¿Qué modelo encaja mejor?
+
+- [ ] SaaS, una aplicación completa ya administrada.
+  > SaaS proporciona la aplicación como servicio; no corresponde a gestionar su sistema operativo.
+- [x] IaaS con una máquina virtual administrable.
+  > Correcta: infraestructura como servicio ofrece cómputo, redes y almacenamiento; el cliente gestiona sistema operativo y capas superiores.
+- [ ] PaaS, delegando también todo el código propio.
+  > PaaS suele gestionar el entorno de ejecución, pero el cliente sigue desarrollando su aplicación; aquí se quiere administrar el sistema operativo.
+- [ ] Nube híbrida, por instalar un sistema operativo.
+  > Híbrida describe combinación de entornos público y privado, no quién administra una máquina virtual.
+
+Repasar: UT3 §5.1, IaaS y reparto de responsabilidades.
+</Quiz>
+
+<Quiz id="dig-3a-08" title="Concentrarse en la aplicación">
+Un equipo desea desplegar su código sin mantener el sistema operativo ni el entorno de ejecución del servidor. ¿Qué servicio se ajusta mejor?
+
+- [ ] IaaS administrando toda la máquina virtual.
+  > En IaaS, el cliente suele mantener sistema operativo y runtime; no cumple la delegación solicitada.
+- [ ] SaaS limitado a usar una aplicación terminada.
+  > El caso necesita desplegar código propio, no únicamente utilizar una herramienta de terceros.
+- [x] PaaS con entorno de ejecución gestionado.
+  > Correcta: la plataforma proporciona infraestructura y entorno para desarrollar y desplegar; el equipo mantiene su aplicación y sus datos.
+- [ ] Un disco externo sin plataforma de ejecución.
+  > Almacenar archivos no proporciona el entorno gestionado para ejecutar una aplicación.
+
+Repasar: UT3 §5.1, PaaS.
+</Quiz>
+
+<Quiz id="dig-3a-09" title="Usar una aplicación ya ofrecida">
+Una gestoría contrata una suite de ofimática en línea, sin desarrollar la aplicación ni mantener sus servidores. ¿Qué modelo describe el servicio?
+
+- [ ] IaaS con mantenimiento del sistema operativo.
+  > La gestoría no está alquilando una máquina para administrarla; consume una aplicación terminada.
+- [ ] PaaS para programar y desplegar código propio.
+  > Aquí no desarrolla una aplicación: utiliza funciones ofrecidas por el proveedor.
+- [ ] Fog computing para coordinar sensores locales.
+  > Fog describe dónde se acerca el procesamiento, no una aplicación ofimática contratada.
+- [x] SaaS para usar ofimática ya administrada.
+  > Correcta: software como servicio ofrece aplicaciones completas y el proveedor mantiene la infraestructura y el software del servicio.
+
+Repasar: UT3 §5.1, SaaS.
+</Quiz>
+
+<Quiz id="dig-3a-10" title="Datos en una aplicación SaaS">
+El proveedor mantiene el software de una aplicación SaaS. ¿Qué obligación sigue correspondiendo al cliente?
+
+- [x] Gestionar usuarios y permisos sobre su información.
+  > Correcta: delegar la operación técnica no elimina responsabilidades sobre accesos, datos, uso correcto y cumplimiento normativo.
+- [ ] Sustituir físicamente los servidores del proveedor.
+  > Esa tarea de infraestructura corresponde al proveedor dentro del servicio descrito.
+- [ ] Instalar el sistema operativo de cada servidor remoto.
+  > SaaS no exige que el cliente administre el sistema operativo que soporta la aplicación.
+- [ ] Corregir el código interno de la aplicación contratada.
+  > El mantenimiento del software ofrecido lo realiza el proveedor; el cliente configura su uso y gestiona sus datos y accesos.
+
+Repasar: UT3 §5, responsabilidades en SaaS.
+</Quiz>
+
+<Quiz id="dig-3a-11" title="Contenedor y servicio no son lo mismo">
+Una aplicación se empaqueta con sus dependencias para moverla entre pruebas y producción. ¿Qué concepto describe ese empaquetado?
+
+- [ ] SaaS, por tratarse de un programa informático.
+  > No todo programa es SaaS; SaaS describe consumir una aplicación como servicio, no cómo se empaqueta.
+- [ ] Nube privada, por utilizar dependencias propias.
+  > Privada describe un despliegue reservado a una organización, no el paquete de aplicación y dependencias.
+- [x] Un contenedor de aplicación y dependencias.
+  > Correcta: facilita ejecutar la aplicación de forma consistente en distintos entornos; IaaS, PaaS y SaaS son modelos de servicio, no tipos de contenedor.
+- [ ] Mist computing, por trabajar con pocos archivos.
+  > Mist acerca el cálculo al dispositivo de origen; no se define por el tamaño del paquete.
+
+Repasar: UT3 §5, contenedores y aclaraciones técnicas.
+</Quiz>
+
+<Quiz id="dig-3a-12" title="Pública no significa visible para cualquiera">
+Una empresa utiliza nube pública y limita sus datos a usuarios autorizados. ¿Existe contradicción?
+
+- [ ] Sí, pública obliga a publicar todos los archivos.
+  > El nombre describe la oferta de infraestructura del proveedor, no que el contenido carezca de control de acceso.
+- [x] No; el acceso depende de permisos y configuración.
+  > Correcta: una nube pública puede alojar datos privados; deben configurarse accesos y controles adecuados.
+- [ ] Sí, cada usuario debe administrar el centro de datos.
+  > Utilizar nube pública no obliga a operar el centro de datos del proveedor.
+- [ ] No, porque pública elimina cualquier riesgo de acceso.
+  > Que pueda protegerse no significa que sea inmune; siguen existiendo riesgos y responsabilidades.
+
+Repasar: UT3 §4.2 y §5, nube pública y acceso.
+</Quiz>
+
+<Quiz id="dig-3a-13" title="Cálculo: gasto medio">
+Una empresa ingresa 250.000 € al año. Para este ejercicio aplica el gasto informático medio de la diapositiva, el 3,28 % de los ingresos. ¿Qué gasto anual resulta?
+
+- [x] 8.200 €.
+  > Correcta: 250.000 × 3,28 / 100 = 8.200 €. Para aplicar un porcentaje se multiplica la base por su expresión decimal, 0,0328.
+- [ ] 820 €.
+  > Es diez veces menor: equivale al 0,328 % de los ingresos, no al 3,28 %.
+- [ ] 82.000 €.
+  > Es diez veces mayor: corresponde al 32,8 %, no al porcentaje del enunciado.
+- [ ] 7.550 €.
+  > Esa cantidad sería el 3,02 % de 250.000 €; hay que utilizar el 3,28 % indicado.
+
+Repasar: UT3 §3.1, dato del 3,28 % y cálculo sobre ingresos.
+</Quiz>
+
+<Quiz id="dig-3a-14" title="Cálculo: banca">
+Una entidad bancaria ingresa 500.000 € y se usa el porcentaje del material para banca, 7,16 %. ¿Qué importe representa ese gasto informático?
+
+- [ ] 3.580 €.
+  > Corresponde al 0,716 %, diez veces menos que el porcentaje solicitado.
+- [ ] 16.400 €.
+  > Es el 3,28 % de los ingresos, la media general, no el porcentaje de banca.
+- [x] 35.800 €.
+  > Correcta: 500.000 × 0,0716 = 35.800 €. Primero se divide el porcentaje entre 100.
+- [ ] 358.000 €.
+  > Corresponde al 71,6 %, diez veces más; se ha desplazado incorrectamente la coma decimal.
+
+Repasar: UT3 §3.1, dato del 7,16 % en banca.
+</Quiz>
+
+<Quiz id="dig-3a-15" title="Cálculo: construcción">
+Una constructora ingresa 800.000 €. Aplicando el 1,51 % que cita la diapositiva para su sector, ¿cuál sería su gasto informático?
+
+- [ ] 26.240 €.
+  > Es el 3,28 % de los ingresos; utiliza la media general en lugar del porcentaje de construcción.
+- [x] 12.080 €.
+  > Correcta: 800.000 × 1,51 / 100 = 12.080 €. El porcentaje se aplica a los ingresos, no a una factura de nube previa.
+- [ ] 1.208 €.
+  > Equivale al 0,151 %, diez veces menos que el porcentaje requerido.
+- [ ] 120.800 €.
+  > Equivale al 15,1 %, diez veces más que el dato de construcción.
+
+Repasar: UT3 §3.1, dato del 1,51 % en construcción.
+</Quiz>
+
+<QuizResults />

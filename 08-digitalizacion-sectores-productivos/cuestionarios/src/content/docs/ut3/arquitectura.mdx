@@ -1,0 +1,237 @@
+---
+title: "UT3 B · Arquitectura y decisiones"
+description: "15 preguntas sobre procesamiento cercano, despliegue, recuperación y tres cálculos."
+sidebar:
+  order: 2
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**15 preguntas · cuatro opciones · una correcta.** Incluye tres cálculos con los porcentajes del material. Distingue la cantidad de dinero, el porcentaje y los puntos porcentuales.
+
+<Quiz id="dig-3b-01" title="Esperar la respuesta">
+Un sistema tarda demasiado desde que envía un evento hasta que recibe la respuesta. ¿Qué magnitud describe esa demora?
+
+- [ ] Capacidad de almacenamiento del disco.
+  > Mide cuánto se puede guardar, no el tiempo que tarda una comunicación.
+- [x] Latencia de respuesta.
+  > Correcta: es el tiempo de demora entre una petición o evento y la respuesta; no equivale a la capacidad de transmisión.
+- [ ] Ancho de banda.
+  > El ancho de banda mide capacidad de transmitir datos; una conexión puede tener gran capacidad y aun así presentar demora.
+- [ ] Número de copias de seguridad guardadas.
+  > Las copias afectan a recuperación y protección, no definen el tiempo de respuesta.
+
+Repasar: UT3 §4 y §8, latencia y ancho de banda.
+</Quiz>
+
+<Quiz id="dig-3b-02" title="Decidir cerca de la línea">
+Para no enviar cada imagen a un centro remoto, un equipo junto a la línea analiza defectos localmente y solo remite resultados. ¿Qué enfoque predomina?
+
+- [ ] Procesamiento exclusivamente central en la nube.
+  > El caso desplaza parte del trabajo al lugar de captura, no lo mantiene todo en servidores remotos.
+- [ ] SaaS como nombre del lugar donde se calcula.
+  > SaaS describe un modelo de servicio, no la proximidad del cálculo a los sensores.
+- [ ] Nube pública como sinónimo de cálculo local.
+  > Pública describe un despliegue y no implica que el procesamiento se realice junto a la línea.
+- [x] Edge computing junto a la línea.
+  > Correcta: lleva parte del procesamiento cerca de la fuente de datos, lo que puede reducir latencia y tráfico hacia la nube.
+
+Repasar: UT3 §4.1, edge computing.
+</Quiz>
+
+<Quiz id="dig-3b-03" title="Una capa intermedia">
+Varias pasarelas de una planta agregan y procesan datos antes de enviarlos a la nube central. ¿Qué concepto describe mejor esa capa intermedia?
+
+- [x] Fog computing en nodos intermedios.
+  > Correcta: fog incorpora nodos de procesamiento intermedios entre dispositivos y nube, próximos a la organización.
+- [ ] SaaS para consumir una aplicación terminada.
+  > No se pregunta qué aplicación se contrata, sino cómo se distribuye el procesamiento.
+- [ ] Una copia de seguridad completamente desconectada.
+  > Agregar y procesar datos en pasarelas no es mantener una copia fuera de línea.
+- [ ] Publicación abierta de las medidas de la planta.
+  > La capa de procesamiento no implica que los datos se hagan públicos.
+
+Repasar: UT3 §4.1, fog computing.
+</Quiz>
+
+<Quiz id="dig-3b-04" title="En el propio dispositivo">
+Un sensor pequeño filtra sus lecturas en el propio dispositivo antes de transmitirlas. Según la proximidad explicada en el tema, ¿qué enfoque encaja mejor?
+
+- [ ] Nube central para realizar toda la operación.
+  > El enunciado sitúa el cálculo en el propio origen, no en servidores remotos.
+- [ ] IaaS para describir el lugar exacto del cálculo.
+  > IaaS indica qué infraestructura se contrata; no caracteriza esa proximidad al sensor.
+- [x] Mist computing en el dispositivo.
+  > Correcta: mist acerca el procesamiento al dispositivo de origen o a recursos muy próximos. En el esquema didáctico es la capa más cercana.
+- [ ] Fog como un centro remoto de almacenamiento.
+  > Fog es una capa intermedia y no se identifica simplemente con almacenamiento central remoto.
+
+Repasar: UT3 §4.1, mist computing.
+</Quiz>
+
+<Quiz id="dig-3b-05" title="Combinar entornos">
+Una organización conecta su nube privada con servicios de nube pública para repartir cargas. ¿Qué modelo de despliegue describe?
+
+- [ ] IaaS, por tener más de un servidor disponible.
+  > IaaS describe un modelo de servicio; disponer de varios servidores no define el despliegue combinado.
+- [x] Despliegue de nube híbrida.
+  > Correcta: combina entornos público y privado; no debe confundirse con IaaS, PaaS o SaaS.
+- [ ] Mist, por mantener parte de los datos privados.
+  > Mist describe proximidad del cálculo a dispositivos, no confidencialidad ni combinación de nubes.
+- [ ] SaaS, porque utiliza una conexión de Internet.
+  > Usar Internet no convierte cualquier arquitectura en una aplicación SaaS.
+
+Repasar: UT3 §4.2, nube híbrida.
+</Quiz>
+
+<Quiz id="dig-3b-06" title="Privada y alojada por terceros">
+Una nube está reservada a una sola organización, pero la aloja un proveedor externo. ¿Qué conclusión es correcta?
+
+- [ ] No puede ser privada si no está en su edificio.
+  > Una nube privada puede estar alojada o gestionada por terceros; no depende solo de la ubicación física.
+- [ ] Es pública y todos sus datos deben ser visibles.
+  > Ni la reserva a una organización ni el acceso a datos se deducen así de que exista un proveedor.
+- [ ] Ya es más segura sin revisar ningún control.
+  > La seguridad depende de arquitectura, operación y controles, no solo de la etiqueta privada.
+- [x] Puede ser privada aunque la aloje un tercero.
+  > Correcta: la característica relevante es el uso reservado; la presentación se aclara para no limitarlo a centros propios.
+
+Repasar: UT3 §4.2, aclaración sobre nube privada.
+</Quiz>
+
+<Quiz id="dig-3b-07" title="Dos clasificaciones independientes">
+Una empresa usa una plataforma de desarrollo PaaS en una nube pública. ¿Cómo deben leerse ambas etiquetas?
+
+- [x] Servicio contratado y modelo de despliegue.
+  > Correcta: PaaS indica qué capas se delegan; pública describe el despliegue. Son clasificaciones complementarias.
+- [ ] Dos nombres equivalentes para una misma tecnología.
+  > No son sinónimos: pueden combinarse y responden a preguntas diferentes.
+- [ ] Dos tipos de contenedores con el mismo contenido.
+  > Ninguna etiqueta define por sí sola el empaquetado de la aplicación.
+- [ ] Lugar del sensor y número de usuarios autorizados.
+  > No describen la proximidad exacta del procesamiento ni una cifra de usuarios.
+
+Repasar: UT3 §4.2, §5.1 y §6, despliegue y servicios.
+</Quiz>
+
+<Quiz id="dig-3b-08" title="Preparar un entorno de prueba">
+Un equipo crea y elimina entornos remotos para probar una aplicación antes de publicarla. ¿Qué ventaja de nube está aprovechando principalmente?
+
+- [ ] Garantizar que el programa nunca contenga fallos.
+  > Facilitar pruebas no elimina todos los errores; sigue siendo necesario diseñarlas y revisar resultados.
+- [ ] Evitar que los desarrolladores deban probar cambios.
+  > El caso aprovecha precisamente herramientas para realizar pruebas, no para prescindir de ellas.
+- [x] Agilizar el desarrollo y las pruebas.
+  > Correcta: herramientas y plataformas de nube pueden acelerar la preparación de entornos y el lanzamiento de aplicaciones.
+- [ ] Sustituir cualquier aplicación por sensores físicos.
+  > Los entornos de prueba no convierten el desarrollo de software en una tarea de sensorización.
+
+Repasar: UT3 §3.2, desarrollo de aplicaciones.
+</Quiz>
+
+<Quiz id="dig-3b-09" title="Analizar un volumen extraordinario">
+Un equipo necesita procesar muchos datos durante una investigación puntual. ¿Qué razón justificaría utilizar nube para ese trabajo?
+
+- [ ] Que toda capacidad de cómputo sea ilimitada y gratis.
+  > Los recursos tienen límites y precios; hay que estimar consumo y controlar el gasto.
+- [x] Acceder temporalmente a más capacidad de proceso.
+  > Correcta: la nube facilita recursos para analizar grandes volúmenes sin comprar toda la infraestructura para un uso puntual.
+- [ ] Que los resultados sean correctos sin validar datos.
+  > Más cómputo no corrige datos erróneos ni garantiza que el análisis esté bien planteado.
+- [ ] Que ya no haga falta autorización para usar datos.
+  > El lugar de procesamiento no elimina permisos, privacidad ni requisitos legales.
+
+Repasar: UT3 §3.2, análisis de big data.
+</Quiz>
+
+<Quiz id="dig-3b-10" title="Elegir la ubicación del servicio">
+Dos regiones de alojamiento tienen precios y obligaciones legales diferentes. ¿Qué criterio responde mejor al tema al comparar propuestas?
+
+- [ ] Elegir solo el nombre comercial más conocido.
+  > La popularidad no sustituye comprobar costes y adecuación a los requisitos de la organización.
+- [ ] Ignorar ubicación porque todos los países son iguales.
+  > El tema indica que las exigencias de seguridad y normativa pueden variar y afectar al coste.
+- [ ] Exigir siempre la región más lejana a los usuarios.
+  > La distancia no es un beneficio por sí misma y puede afectar la latencia.
+- [x] Valorar coste, normativa y necesidades de acceso.
+  > Correcta: una propuesta debe cumplir requisitos y costes considerando dónde se almacenan y procesan los datos.
+
+Repasar: UT3 §3.1, localización y coste.
+</Quiz>
+
+<Quiz id="dig-3b-11" title="Recuperar no es solo guardar">
+Una gestoría aloja copias en la nube. ¿Qué prueba aporta más evidencia de que podrá recuperarse de un fallo?
+
+- [x] Restaurar una copia y comprobar sus datos.
+  > Correcta: una copia es útil si se puede recuperar; probar restauración, retención y contenido reduce la incertidumbre del plan.
+- [ ] Ver que el servicio tiene una imagen de nube.
+  > El icono o la marca no acredita recuperación ni contenido de las copias.
+- [ ] Comprobar solo el número de cuentas de correo.
+  > Esa cifra no demuestra que los datos de la gestoría estén respaldados y sean restaurables.
+- [ ] Suponer que sincronizar siempre conserva borrados.
+  > La sincronización puede propagar eliminaciones; hay que verificar las funciones de recuperación.
+
+Repasar: UT3 §1.1 y §3.2, copias y recuperación tras fallos.
+</Quiz>
+
+<Quiz id="dig-3b-12" title="Proponer nube a una gestoría">
+Una gestoría pide una propuesta de migración. ¿Qué contenido cumple mejor el reto profesional del tema?
+
+- [ ] Solo una lista de marcas, sin necesidades ni costes.
+  > Una lista comercial no justifica qué servicio conviene ni analiza sus consecuencias.
+- [ ] Solo las ventajas, omitiendo cualquier dependencia.
+  > Deben valorarse también inconvenientes, requisitos y riesgos de cada alternativa.
+- [x] Servicio necesario, pros y contras y alternativas.
+  > Correcta: el reto pide determinar el servicio, analizar ventajas e inconvenientes y estudiar propuestas para defender la decisión.
+- [ ] Copiar la arquitectura de una empresa sin adaptarla.
+  > Las necesidades de la gestoría pueden ser distintas; la propuesta debe justificarse en su contexto.
+
+Repasar: UT3 §7, reto de la pequeña gestoría.
+</Quiz>
+
+<Quiz id="dig-3b-13" title="Cálculo: comparar dos sectores">
+Un banco y una constructora ingresan cada uno 1.000.000 €. Aplicando 7,16 % y 1,51 %, respectivamente, ¿cuánto más gastaría el banco en informática?
+
+- [ ] 8.670 €.
+  > No se suman los porcentajes ni se usa una base reducida. Hay que restar dos gastos calculados sobre un millón.
+- [x] 56.500 €.
+  > Correcta: 71.600 − 15.100 = 56.500 €. También: 1.000.000 × (7,16 − 1,51) / 100. La diferencia de tasas es 5,65 puntos porcentuales.
+- [ ] 5.650 €.
+  > Es diez veces menos: equivale al 0,565 % del millón, no a 5,65 puntos sobre la misma base.
+- [ ] 86.700 €.
+  > Esa cantidad suma ambos gastos, 71.600 + 15.100, en vez de calcular cuánto más gasta uno.
+
+Repasar: UT3 §3.1, comparación del 7,16 % y del 1,51 %.
+</Quiz>
+
+<Quiz id="dig-3b-14" title="Cálculo: recuperar los ingresos">
+Una empresa dedica 16.400 € a informática. En este ejercicio ese gasto representa exactamente el 3,28 % de sus ingresos. ¿Cuáles son sus ingresos?
+
+- [ ] 50.000 €.
+  > Con esos ingresos, 16.400 € supondrían el 32,8 %, no el 3,28 %.
+- [ ] 537,92 €.
+  > Es el resultado de multiplicar el gasto por 0,0328; para recuperar la base se debe dividir.
+- [ ] 5.000.000 €.
+  > Con esos ingresos, el gasto sería el 0,328 %, diez veces menos que el porcentaje indicado.
+- [x] 500.000 €.
+  > Correcta: ingresos = 16.400 / 0,0328 = 500.000 €. Comprobación: 500.000 × 0,0328 = 16.400 €.
+
+Repasar: UT3 §3.1, relación entre base, porcentaje e importe.
+</Quiz>
+
+<Quiz id="dig-3b-15" title="Cálculo: cambiar la tasa de referencia">
+Para unos ingresos de 400.000 €, se compara gastar el 3,28 % con gastar el 1,51 %. ¿Cuántos euros menos supone la segunda referencia?
+
+- [x] 7.080 €.
+  > Correcta: 13.120 − 6.040 = 7.080 €, o 400.000 × 0,0177. Las tasas difieren en 1,77 puntos porcentuales, no en un descuento relativo del 1,77 % sobre el gasto.
+- [ ] 1.770 €.
+  > Confunde los 1,77 puntos de diferencia con una cantidad fija: hay que aplicarlos a 400.000 €.
+- [ ] 232,22 €.
+  > Es aproximadamente el 1,77 % de 13.120 €, pero aquí se comparan dos porcentajes sobre los mismos ingresos.
+- [ ] 19.160 €.
+  > Suma 13.120 € y 6.040 €; la pregunta pide su diferencia, no el gasto conjunto.
+
+Repasar: UT3 §3.1, porcentajes sobre ingresos y puntos porcentuales.
+</Quiz>
+
+<QuizResults />
