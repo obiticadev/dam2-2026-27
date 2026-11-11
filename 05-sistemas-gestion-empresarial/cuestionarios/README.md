@@ -38,9 +38,9 @@ editoriales de UT1 sobre objetivos medibles y presupuestos se respetan.
 
 ## Desarrollo
 
-Se recomienda **Node 22.18 o superior** (la auditoría usa carga nativa de
-TypeScript sin opciones experimentales). Se fija `22.18.0` en `.node-version`
-para Cloudflare Pages.
+Se requiere **Node 22.22 o superior**, según la versión de Astro instalada.
+Se fija `22.22.0` en `.node-version` para Cloudflare Pages. La auditoría usa
+carga nativa de TypeScript sin opciones experimentales.
 
 ```sh
 npm ci
@@ -120,7 +120,8 @@ Configuración del proyecto **`cuestionarios-sge`**:
 | Framework | Astro |
 | Build command | `npm run build` |
 | Output directory | `dist` |
-| Node | `22.18.0` o superior; respetar `.node-version` |
+| Node | `22.22.0` o superior; respetar `.node-version` |
+| Variable de entorno | `NODE_VERSION=22.22.0` si se configura explícitamente en Cloudflare |
 | Root directory | Esta carpeta dentro del repositorio |
 | URL canónica | `https://cuestionarios-sge.pages.dev` |
 
@@ -138,3 +139,7 @@ npx wrangler pages deploy dist --project-name cuestionarios-sge
 
 Preparar el proyecto no lo publica automáticamente. El subdominio depende de
 que Cloudflare permita y tenga creado el nombre de proyecto indicado.
+
+Si Cloudflare ya tiene una variable `NODE_VERSION` con un valor anterior,
+actualizarla también: cambiar solo `.node-version` no sustituye una variable
+explícita del entorno de compilación.
