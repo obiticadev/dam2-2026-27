@@ -34,3 +34,13 @@ Capturas e informe automático disponibles localmente en `.qa/` e ignorados por 
 - Sin acceso a una rúbrica no presente en el material revisado ni confirmación docente del foco en Inglaterra.
 - La prueba visual no certifica legibilidad en el proyector real ni en móviles verticales. Se recomienda ensayo en el aula.
 - Las fuentes culturales se han leído; no se han seguido sus imágenes ni copiado artículos. Los ejemplos ilustrados son ficticios.
+
+## Revisión controlada — 2026-11-14
+
+- Sustituidas las pistas de ensayo por frases para el espectador, sin añadir contenidos al discurso memorizado. Se conservan los títulos narrativos, las ilustraciones SVG, la paleta, los once slides y el reparto de ponentes.
+- Las diapositivas 5 y 8 muestran tres frases literales del guion cada una; el énfasis tipográfico señala present continuous, present perfect y present perfect continuous. Las demás pantallas presentan mensajes y comparaciones completos, con títulos y etiquetas breves donde ayudan a orientarse.
+- `GUION.md` permanece idéntico byte a byte. SHA-256 antes y después: `d5d1afaa72ff65d792a84cf42df343dc6d0b9846ef76743b3798f3735cb9db2f`.
+- `npm run build` y `npm run check`: correctos. Once pantallas comprobadas a 1600 × 900, 1280 × 800 y 844 × 390, sin desbordamientos ni solapamientos detectados. También se verifican las seis frases contra el guion, la identificación de las escenas ficticias, la navegación, los enlaces y la exclusión del guion completo del build.
+- Revisión visual de la hoja de contacto actual de las once pantallas, escenas 5 y 8 y muestra móvil de la 5. Comprobado además el servidor de desarrollo en `http://localhost:3031` y capturas con movimiento habilitado de las pantallas 5, 6 y 8.
+- Impeccable aplicado como refinamiento del diseño existente, no como rediseño. Su detector devuelve solo un aviso orientativo sobre el rebote breve preexistente de los iconos; se conserva deliberadamente por el tono infantil y no se añaden animaciones. Se mantiene el modo de movimiento reducido.
+- `git diff --check`: correcto. Sin despliegue, commit, push ni cambios en la bóveda o RissyTech. No se ha hecho una nueva auditoría de dependencias ni un ensayo oral humano.

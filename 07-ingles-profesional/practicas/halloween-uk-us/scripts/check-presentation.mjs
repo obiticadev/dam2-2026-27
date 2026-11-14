@@ -15,6 +15,7 @@ const frameworkWarnings = new Set()
 const externalRequests = new Set()
 const failedResponses = []
 const results = []
+const script = await readFile('GUION.md', 'utf8')
 page.on('pageerror', error => errors.push(error.message))
 page.on('console', message => {
   if (message.type() !== 'error') return
@@ -41,7 +42,7 @@ async function geometry(slide) {
     const scale = bounds.width / 1100
     const prompt = root.querySelector('.prompt')?.getBoundingClientRect()
     const warnings = []
-    for (const el of root.querySelectorAll('h1,h2,p,.eyebrow,.tag,.large-word,.small-note,.mini-fact,.clue-stack strong,.clue-stack span,.tickets span,.shared,.ribbon,.source-list strong,.source-list span,.source-note,.ending,.sources-link,.prompt,svg.story-art')) {
+    for (const el of root.querySelectorAll('h1,h2,p,.tag,.small-note,.mini-fact,.story-lines strong,.tickets span,.shared,.ribbon,.source-list strong,.source-list span,.source-note,.ending,.sources-link,.prompt,svg.story-art')) {
       const r = el.getBoundingClientRect()
       const footer = root.parentElement.querySelector('.deck-footer')?.getBoundingClientRect()
       const bottomLimit = footer ? footer.top - 5 * scale : bounds.bottom - 42 * scale
@@ -66,6 +67,17 @@ try {
     assert(footerZ >= 1, `Footer could be hidden behind slide ${n}`)
     const text = await slide.innerText()
     assert(text.split(/\s+/).length < 115, `Slide ${n} contains too much text`)
+    assert(!/They brought…|people started…|has changed…|Usually…|LOOK NOW|BUSY SINCE THIS AFTERNOON/.test(text), `Rehearsal cues remain on slide ${n}`)
+    assert.equal(await slide.locator('.clue-stack').count(), 0, `Old keyword layout remains on slide ${n}`)
+    if ([5, 8].includes(n)) {
+      const sentences = await slide.locator('.story-lines p').allTextContents()
+      assert.equal(sentences.length, 3, `Slide ${n} needs three complete scene sentences`)
+      for (const sentence of sentences) {
+        assert(script.includes(sentence), `Slide ${n} sentence differs from the unchanged script: ${sentence}`)
+        assert.match(sentence, /[.!]$/, `Incomplete scene sentence on slide ${n}`)
+      }
+      assert.match(text, /imaginary/, `Fictional scene is not identified on slide ${n}`)
+    }
     await page.mouse.move(1590, 0)
     await page.screenshot({ path: `${output}/slide-${String(n).padStart(2, '0')}.png` })
     results.push({ slide: n, ...result })
@@ -89,8 +101,14 @@ try {
   await sources.getByRole('link', { name: /Back to the goodbye/ }).click()
   await page.locator('.slidev-page-10 .slidev-layout').waitFor({ state: 'visible' })
 
+  await page.setViewportSize({ width: 1280, height: 800 })
+  for (let n = 1; n <= 11; n++) {
+    const slide = await go(n)
+    assert.deepEqual((await geometry(slide)).warnings, [], `Laptop geometry on slide ${n}`)
+  }
+
   await page.setViewportSize({ width: 844, height: 390 })
-  for (const n of [1, 5, 8, 10, 11]) {
+  for (let n = 1; n <= 11; n++) {
     const slide = await go(n)
     const result = await geometry(slide)
     assert.deepEqual(result.warnings, [], `Mobile geometry on slide ${n}`)

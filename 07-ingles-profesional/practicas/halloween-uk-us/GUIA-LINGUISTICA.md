@@ -22,7 +22,7 @@ Además hay **past simple** para historia: *People celebrated…*, *immigrants b
 - **is wearing**: lo lleva puesto ahora; **wears**: hábito.
 - **has decorated three**: importa lo terminado; **has been decorating for two hours**: importa cuánto tiempo lleva. Puede haber acabado tres y seguir decorando otras cosas.
 - **has already collected**: *already* entre auxiliar y participio.
-- **for two hours** = durante dos horas; **since this afternoon** = desde esta tarde (las pistas de las escenas son compatibles).
+- **for two hours** = durante dos horas; **since this afternoon** = desde esta tarde. Las frases visibles de las escenas utilizan **for**, igual que el guion.
 - **absolutely hilarious**, no *very hilarious*. **Enormous**, **tiny** y **ancient** se usan sin encadenar intensificadores.
 - Las duraciones y los resultados concretos pertenecen a personajes inventados. No se atribuyen como experiencia personal de Rubén u Oliver ni como hechos históricos.
 

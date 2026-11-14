@@ -3,31 +3,30 @@
 :root { --ink: #382c40; --paper: #fff8eb; --purple: #6e4e83; --orange: #b85b27; --green: #426c59; }
 .slidev-layout { background: var(--paper); color: var(--ink); font-family: 'Manrope Variable', sans-serif; padding: 40px 54px 68px; position: relative; }
 .slidev-layout::before { content: ''; position: absolute; inset: 12px; border: 1px solid #382c4019; border-radius: 18px; pointer-events: none; }
-.slidev-layout h1 { font-size: 49px; font-weight: 850; line-height: 1.12; letter-spacing: -2px; margin: 18px 0 22px; color: inherit; }
+.slidev-layout h1 { font-size: 49px; font-weight: 850; line-height: 1.12; letter-spacing: -.035em; margin: 18px 0 30px; color: inherit; text-wrap: balance; }
 .slidev-layout h1 em { font-style: normal; color: var(--orange); }
 .slidev-layout h2 { font-size: 25px; line-height: 1.3; font-weight: 800; margin: 0 0 8px; color: inherit; }
 .slidev-layout p { margin: 0; line-height: 1.5; font-size: 21px; opacity: 1; }
-.eyebrow { font-size: 13px; letter-spacing: 2px; font-weight: 800; color: var(--purple); }
 .split { display: grid; grid-template-columns: 1.05fr 1fr; gap: 26px; align-items: center; }
 .split .story-art { width: 100%; height: 300px; }
 .cover { grid-template-columns: 1fr 1.05fr; margin-top: 12px; }
-.cover h1 { font-size: 66px; line-height: 1.03; margin-top: 15px; }
+.cover h1 { font-size: 66px; line-height: 1.03; margin-top: 15px; margin-bottom: 22px; }
 .cover .story-art { height: 360px; }
 .subtitle { font-size: 23px !important; font-weight: 600; }
 .tickets { display: flex; gap: 10px; margin-top: 23px; }
 .tickets span { font-size: 13px; border: 1px dashed #8064ab; padding: 10px 12px; border-radius: 7px; font-weight: 750; }
-.prompt { position: absolute; bottom: 55px; left: 54px; right: 54px; padding-top: 12px; border-top: 1px solid #382c4026; font-size: 16px; font-weight: 700; color: var(--green); }
+.prompt { position: absolute; bottom: 55px; left: 54px; right: 54px; padding-top: 12px; border-top: 1px solid #382c4026; font-size: 18px; line-height: 1.4; font-weight: 700; color: var(--green); text-wrap: pretty; }
 .handoff { float: right; color: var(--purple); }
 .route-row { display: grid; grid-template-columns: 1fr 40px 1fr; gap: 18px; align-items: center; }
-.route-card { background: #eee3f0; padding: 18px 22px; border-radius: 14px; display: grid; gap: 6px; font-size: 16px; }
-.large-word { font-size: 29px; font-weight: 800; }
+.route-card { background: #eee3f0; padding: 18px 22px; border-radius: 14px; }
+.route-card h2 { font-size: 29px; }
+.route-card p { font-size: 18px; }
 .route-arrow { font-size: 35px; text-align: center; color: var(--purple); }
 .roots-bottom { margin-top: 14px; display: grid; grid-template-columns: 343px 1fr; align-items: center; gap: 32px; }
 .roots-bottom .story-art { height: 240px; width: 343px; }
 .small-note { font-size: 15px; line-height: 1.6; margin-top: 12px; color: #66576b; }
 .night { background: #302a43; color: #fff3df; isolation: isolate; }
 .night::before { border-color: #fff3df22; }
-.night .eyebrow { color: #d9c0ed; }
 .night h1 em { color: #f6bd79; }
 .night .prompt { color: #d9c8e3; border-color: #fff3df30; }
 .three-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 35px; }
@@ -40,11 +39,12 @@
 .tag { display: block; font-size: 12px; font-weight: 850; letter-spacing: 1.5px; margin-bottom: 8px; color: var(--purple); }
 .mini-fact { font-size: 17px !important; line-height: 1.55; color: #66576b; }
 .picture { background: #eee9f3; }
-.clue-stack { display: grid; gap: 16px; }
-.clue-stack > div { border-left: 4px solid #9471a4; padding: 8px 0 8px 18px; }
-.clue-stack span { display: block; font-size: 11px; letter-spacing: 1px; font-weight: 800; color: var(--purple); margin-bottom: 6px; }
-.clue-stack strong { font-size: 23px; }
+.story-lines { display: grid; }
+.story-lines p { font-size: 25px; line-height: 1.4; padding: 16px 0; text-wrap: pretty; }
+.story-lines p + p { border-top: 1px solid #9471a44d; }
+.story-lines strong { color: var(--purple); font-weight: 850; }
 .crossing { position: relative; display: flex; justify-content: space-between; align-items: center; padding: 0 16px; }
+.crossing > div { max-width: 340px; }
 .night .tag { color: #e5bee9; }
 .ocean-arrow { font-size: 60px; color: #f6bd79; }
 .vegetables { display: grid; grid-template-columns: 390px 1fr; align-items: center; gap: 30px; }
@@ -63,21 +63,22 @@
 .ending strong { color: #f6bd79; }
 .sources-link { font-size: 14px; display: inline-block; margin-top: 16px; color: inherit; text-decoration: underline; text-underline-offset: 4px; }
 .source-list { display: grid; gap: 16px; margin-top: 32px; }
-.source-list > * { display: grid; gap: 5px; border-left: 3px solid #9471a4; border-bottom: 0; padding: 5px 18px; color: inherit; text-decoration: none; }
+.source-list > * { display: grid; gap: 5px; border-left: 1px solid #9471a4; border-bottom: 0; padding: 5px 18px; color: inherit; text-decoration: none; }
 .source-list strong { font-size: 21px; }.source-list span { font-size: 16px; }
 .source-list a:hover { background: #eee3f0; }.source-note { font-size: 16px !important; margin-top: 24px !important; color: #66576b; }
 a:focus-visible { outline: 3px solid #bf7337; outline-offset: 6px; }
+::selection { background: #f8e0c4; color: var(--ink); }
 .deck-footer { position: absolute; z-index: 2; bottom: 24px; left: 54px; right: 54px; display: flex; justify-content: space-between; font-family: 'Manrope Variable', sans-serif; font-size: 11px; letter-spacing: 1px; font-weight: 750; color: #6c5b74; pointer-events: none; }
 .deck-footer.on-night { color: #d9c8e3; }
 .slidev-layout .story-art { overflow: visible; }
 /* Entrada escalonada: se repite cada vez que la diapositiva aparece y termina. */
 @keyframes deck-rise { from { opacity: 0; transform: translateY(16px) } to { opacity: 1; transform: none } }
 @keyframes deck-pop { from { opacity: 0; transform: scale(.4) rotate(-12deg) } 70% { transform: scale(1.12) } to { opacity: 1; transform: none } }
-.tickets span, .route-card, .route-arrow, .three-steps article, .ribbon, .word-list > div, .clue-stack > div, .crossing > div, .compare-grid article, .shared, .ending, .source-list > * { animation: deck-rise .6s cubic-bezier(.22, 1, .36, 1) both; }
+.tickets span, .route-card, .route-arrow, .three-steps article, .ribbon, .word-list > div, .story-lines p, .crossing > div, .compare-grid article, .shared, .ending, .source-list > * { animation: deck-rise .6s cubic-bezier(.22, 1, .36, 1) both; }
 .step-icon { animation: deck-pop .7s cubic-bezier(.34, 1.56, .64, 1) both; }
-:is(.tickets, .route-row, .three-steps, .word-list, .clue-stack, .compare-grid, .source-list) > :nth-child(1) { animation-delay: .25s; }
-:is(.tickets, .route-row, .three-steps, .word-list, .clue-stack, .compare-grid, .source-list) > :nth-child(2) { animation-delay: .45s; }
-:is(.tickets, .route-row, .three-steps, .word-list, .clue-stack, .compare-grid, .source-list) > :nth-child(3) { animation-delay: .65s; }
+:is(.tickets, .route-row, .three-steps, .word-list, .story-lines, .compare-grid, .source-list) > :nth-child(1) { animation-delay: .25s; }
+:is(.tickets, .route-row, .three-steps, .word-list, .story-lines, .compare-grid, .source-list) > :nth-child(2) { animation-delay: .45s; }
+:is(.tickets, .route-row, .three-steps, .word-list, .story-lines, .compare-grid, .source-list) > :nth-child(3) { animation-delay: .65s; }
 .crossing > div:last-child { animation-delay: 1.6s; }
 .three-steps article:nth-child(1) .step-icon { animation-delay: .5s; } .three-steps article:nth-child(2) .step-icon { animation-delay: .7s; } .three-steps article:nth-child(3) .step-icon { animation-delay: .9s; }
 .compare-grid .step-icon { animation-delay: .7s; }

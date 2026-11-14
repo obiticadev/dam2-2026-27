@@ -7,7 +7,7 @@ Presentación **Slidev en inglés**, orientada a niños de unos 8–11 años. Di
 - **[GUION.md](./GUION.md)**: texto de ensayo separado, tiempos, reparto y pistas. No se incluye en el sitio público.
 - **[GUIA-LINGUISTICA.md](./GUIA-LINGUISTICA.md)**: traducciones, pronunciación, vocabulario de la bóveda y cuatro tiempos del presente por persona.
 - **[FUENTES.md](./FUENTES.md)**: fuentes culturales, cobertura y matices, incluida la diferencia Inglaterra/UK.
-- `slides.md`: únicamente apoyo visual y palabras clave, sin el discurso completo.
+- `slides.md`: apoyo visual y frases clave completas dirigidas al espectador, sin el discurso completo. Las escenas del fantasma y el superhéroe muestran literalmente tres frases del guion, con énfasis discreto en los tiempos verbales. La revisión visual no cambia el texto memorizado de `GUION.md`.
 - `components/StoryArt.vue`: ocho escenas SVG originales e ilustradas (cielo, decorado y personajes), sin recursos de imagen remotos.
 - `components/NightSky.vue`, `Voyage.vue` y `StepIcon.vue`: cielo de las diapositivas nocturnas, barco del cruce del Atlántico e iconos de tarjetas. Todo decorativo (`aria-hidden`).
 - `style.css` y `slide-bottom.vue`: identidad de cuento ilustrado, navegación y relevo visibles.
@@ -39,7 +39,7 @@ Con preview activo, en otra terminal:
 npm run check
 ```
 
-El test usa `http://127.0.0.1:4174`, recorre las once pantallas, comprueba límites del contenido, recursos, errores JS, enlaces de ida/vuelta al anexo, navegación de teclado y viewport móvil. Deja capturas e informe en `.qa/` (ignorado por Git). Usa Chromium del sistema en Linux, o `CHROMIUM_PATH`; en otros sistemas utiliza el Chromium instalado por Playwright. Para instalarlo si hace falta: `npx playwright install chromium`.
+El test usa `http://127.0.0.1:4174`, recorre las once pantallas en escritorio, portátil y móvil horizontal, y comprueba límites del contenido, recursos, errores JS, enlaces de ida/vuelta al anexo y navegación de teclado. También comprueba que las seis frases de las escenas coincidan literalmente con el guion y que no vuelvan las pistas de ensayo sustituidas. Deja capturas e informe en `.qa/` (ignorado por Git). Usa Chromium del sistema en Linux, o `CHROMIUM_PATH`; en otros sistemas utiliza el Chromium instalado por Playwright. Para instalarlo si hace falta: `npx playwright install chromium`.
 
 ## Cloudflare Pages (preparado, no publicado)
 
