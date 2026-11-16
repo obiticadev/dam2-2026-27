@@ -61,28 +61,29 @@
       "bloques_codigo_verificados": 0
     },
     {
-      "archivo": "UT03-mapeo-objeto-relacional/documentos/4A-mapeo-objeto-relacional.md",
+      "archivo": "UT03-mapeo-objeto-relacional/contenidos/4A-mapeo-objeto-relacional.md",
       "actividad": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730",
       "capitulos_unicos": 25,
       "bloques_codigo_verificados": 77
     },
     {
-      "archivo": "UT03-mapeo-objeto-relacional/documentos/4B-proyecto-hibernate-oracle-maven.md",
+      "archivo": "UT03-mapeo-objeto-relacional/contenidos/4B-proyecto-hibernate-oracle-maven.md",
       "actividad": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221731",
       "capitulos_unicos": 2,
       "bloques_codigo_verificados": 7
     },
     {
-      "archivo": "UT03-mapeo-objeto-relacional/documentos/4C-consultas-hql-y-criterios.md",
+      "archivo": "UT03-mapeo-objeto-relacional/contenidos/4C-consultas-hql-y-criterios.md",
       "actividad": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221732",
       "capitulos_unicos": 2,
       "bloques_codigo_verificados": 71
     },
     {
-      "archivo": "UT03-mapeo-objeto-relacional/documentos/ficheros-de-configuracion.md",
+      "archivo": "UT03-mapeo-objeto-relacional/contenidos/4B-proyecto-hibernate-oracle-maven.md",
       "actividad": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/folder/view.php?id=222163",
       "capitulos_unicos": 0,
-      "bloques_codigo_verificados": 0
+      "bloques_codigo_verificados": 0,
+      "integrado_en_ancla": "configuracion-del-aula"
     }
   ],
   "incidencias": [
@@ -108,18 +109,18 @@
   "ficheros": [
     {
       "ruta": "UT02-manejo-de-conectores/INDICE.md",
-      "bytes": 3091,
-      "sha256": "6e039b2e55b6208911711599f83eb049a55d949f24a0480d07205e21d7c14dca"
+      "bytes": 3339,
+      "sha256": "898a6cd4dc1c16fce19dce499ac28475ceb257fa429afdcbfcc628a8e3f7f0c9"
     },
     {
       "ruta": "UT02-manejo-de-conectores/contenidos/3A-manejo-de-conectores.md",
-      "bytes": 116745,
-      "sha256": "361385494dc4a068691c79032c9c08f10f429918f6adc32ea6aaa58c807fbd93"
+      "bytes": 117021,
+      "sha256": "4b248c1a6ea0807789f1c17d4e137a7ae16e6cc644e0d7c1cecf13b0779e99c8"
     },
     {
       "ruta": "UT02-manejo-de-conectores/contenidos/3B-bases-de-datos-embebidas-sqlite.md",
-      "bytes": 32621,
-      "sha256": "2a7c27e838d75c3376d7bfcd39c6d5a265cb63e2d80ab50b4fd244bb552d9295"
+      "bytes": 32862,
+      "sha256": "270c5f1d3bea2e1bdba97ec32f9f138cae34886c736aafc05ec5a0d4417727b3"
     },
     {
       "ruta": "UT02-manejo-de-conectores/documentacion/referencias-externas.md",
@@ -963,48 +964,44 @@
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/INDICE.md",
-      "bytes": 2052,
-      "sha256": "2a73a54c3e50362507fbd991681159f330498754e45ac2526bf9f4c97bc9598b"
+      "bytes": 3738,
+      "sha256": "d843a762dde8ca554ce119b3236f3cf1dbfec01747351aba99974cd03d6cf256"
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/HibernateUtils.java",
-      "bytes": 450,
-      "sha256": "1317b0aaa09498c50dc9021e5ed84733bb9741f6b82853b2afc1c531fde7b821"
-    },
-    {
-      "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/HibernateUtils.java.md",
-      "bytes": 972,
-      "sha256": "94b931dcd637e796e13902755f3bdb1a697c4036b0cacbf8cdecca63e5e87e86"
+      "bytes": 435,
+      "sha256": "16f1f171f7f02c30912cf07f2ba894405a5048db059bb5c897f31d3227633f7d",
+      "huella_previa_en_manifiesto": {
+        "bytes": 450,
+        "sha256": "1317b0aaa09498c50dc9021e5ed84733bb9741f6b82853b2afc1c531fde7b821"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/Main.java",
-      "bytes": 671,
-      "sha256": "3b336ac04e9481fcb93db884abb479e73160ae95badaf422fe57ca66d3655ef5"
-    },
-    {
-      "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/Main.java.md",
-      "bytes": 1156,
-      "sha256": "4f443645154f05608a72152efb45c8804ee753c402e76034fe6f0f2371ad0303"
+      "bytes": 640,
+      "sha256": "46387b2c79985c53eb0514007f763652e1f91b5007bc00eb4e857dd0209431f6",
+      "huella_previa_en_manifiesto": {
+        "bytes": 671,
+        "sha256": "3b336ac04e9481fcb93db884abb479e73160ae95badaf422fe57ca66d3655ef5"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/mysql/mysql/hibernate.cfg.xml",
-      "bytes": 888,
-      "sha256": "76e9513541c4dc7ce977e2367d4a94e0c9ad2456dfca5a673d492cf90f603a1e"
-    },
-    {
-      "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/mysql/mysql/hibernate.cfg.xml.md",
-      "bytes": 1413,
-      "sha256": "db343d24666b115e8d4b5b14eead44a86831a69737e3b4f931df5f369d7d85d5"
+      "bytes": 876,
+      "sha256": "5bdf104e81b2032fe4dbc300cd24bba56bb0fa7aac008c5d8513c04c27081927",
+      "huella_previa_en_manifiesto": {
+        "bytes": 888,
+        "sha256": "76e9513541c4dc7ce977e2367d4a94e0c9ad2456dfca5a673d492cf90f603a1e"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/mysql/mysql/pom.xml",
-      "bytes": 882,
-      "sha256": "a9841c7885e8fe36f5d8f3eae997a735e62bd4a787c7da8f14f45380718f5deb"
-    },
-    {
-      "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/mysql/mysql/pom.xml.md",
-      "bytes": 1373,
-      "sha256": "b6f68a081afbe8a4db99f4242696beba2b0af09b5db73f60e17eba5509f7e013"
+      "bytes": 855,
+      "sha256": "07e4eabd7f0823797374c7ce8352a8da11446a0270c8bee09e40336250875a42",
+      "huella_previa_en_manifiesto": {
+        "bytes": 882,
+        "sha256": "a9841c7885e8fe36f5d8f3eae997a735e62bd4a787c7da8f14f45380718f5deb"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/mysql.zip",
@@ -1012,29 +1009,22 @@
       "sha256": "c16629f362c916b5d0d7261c6bbcdbfad67634152c37a8c2176a5ab9754b4e25"
     },
     {
-      "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/mysql.zip.md",
-      "bytes": 600,
-      "sha256": "a69da042798d45bbd1a550f73ae0ea1b806af80c56e345124922f14a3ef05adc"
-    },
-    {
       "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/oracle/oracle/hibernate.cfg.xml",
-      "bytes": 903,
-      "sha256": "cec6df380c4a0c6f50cba9f7067fd52acbec2382eea6cb602f4304b50e15cef0"
-    },
-    {
-      "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/oracle/oracle/hibernate.cfg.xml.md",
-      "bytes": 1428,
-      "sha256": "53bc17d22636ae7e71388bccce723a785e277dab1e997576c73f02518ff3b732"
+      "bytes": 891,
+      "sha256": "cbfa2ea25a17df9698521762af436a321303e3e8eb5ab118d30521360dbd3ff1",
+      "huella_previa_en_manifiesto": {
+        "bytes": 903,
+        "sha256": "cec6df380c4a0c6f50cba9f7067fd52acbec2382eea6cb602f4304b50e15cef0"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/oracle/oracle/pom.xml",
-      "bytes": 965,
-      "sha256": "a66ff158030011aeb7e7df7f44f91a9e9823d2ef42973367d046c4f8942091d4"
-    },
-    {
-      "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/oracle/oracle/pom.xml.md",
-      "bytes": 1457,
-      "sha256": "47e390a2f2b380611f1ab0df5bd67acbfc0e3797fb1830476a6ca68b64225a7c"
+      "bytes": 939,
+      "sha256": "30bec1e71bae25c7dc8e97fbc4ff0a00214b711d1bf9c62c415010bbf51cddd4",
+      "huella_previa_en_manifiesto": {
+        "bytes": 965,
+        "sha256": "a66ff158030011aeb7e7df7f44f91a9e9823d2ef42973367d046c4f8942091d4"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/oracle.zip",
@@ -1042,29 +1032,22 @@
       "sha256": "382e78d41d970828110c4afb90d67ea641a32d08269e0534b14494e6abf06542"
     },
     {
-      "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/oracle.zip.md",
-      "bytes": 606,
-      "sha256": "29914cddd7e15f354ffc331fc4bd73f506c7576a83104ce10e10eacc8273d7d3"
-    },
-    {
       "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/sqlite/sqlite/hibernate.cfg.xml",
-      "bytes": 757,
-      "sha256": "d7fd9f72dae987d71c9ced6b2ad08920f57ac76be6681b77c9363d11fdfcaa38"
-    },
-    {
-      "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/sqlite/sqlite/hibernate.cfg.xml.md",
-      "bytes": 1282,
-      "sha256": "f642a2963bf756d8ef59e200d0c2d48307504676c30285972111aeaf8651cc72"
+      "bytes": 745,
+      "sha256": "4426a44399e85906ecba5a3853c0f1d64fb5401a6019e9150dffc32e7dc1744d",
+      "huella_previa_en_manifiesto": {
+        "bytes": 757,
+        "sha256": "d7fd9f72dae987d71c9ced6b2ad08920f57ac76be6681b77c9363d11fdfcaa38"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/sqlite/sqlite/pom.xml",
-      "bytes": 1101,
-      "sha256": "fd060dd744e865f7ee88106c177fe4383f3bceff23f4c1537a535a69c864c2a8"
-    },
-    {
-      "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/sqlite/sqlite/pom.xml.md",
-      "bytes": 1584,
-      "sha256": "8b141d69bac3038bf037ef951d17dd8193bc1f660362b0a188f541e6ced6e7c4"
+      "bytes": 1066,
+      "sha256": "db9ff84fff78d03292a9c1a2719b31d4639ecfd3627bdf499c9714fcc855155e",
+      "huella_previa_en_manifiesto": {
+        "bytes": 1101,
+        "sha256": "fd060dd744e865f7ee88106c177fe4383f3bceff23f4c1537a535a69c864c2a8"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/sqlite.zip",
@@ -1072,39 +1055,24 @@
       "sha256": "e34419a83ab2732770785982215da8b60e272f8270cec0a05e460cebe516c8f3"
     },
     {
-      "ruta": "UT03-mapeo-objeto-relacional/adjuntos/configuracion/sqlite.zip.md",
-      "bytes": 606,
-      "sha256": "396de37008aa391fd7b339af8eed656e86322e7109509294d3c350f00d733e29"
+      "ruta": "UT03-mapeo-objeto-relacional/contenidos/4A-mapeo-objeto-relacional.md",
+      "bytes": 132323,
+      "sha256": "e15b9a8a53ac7a49a7b86d95a307158e61c901f22e5b1838239269f54780e0e5"
     },
     {
-      "ruta": "UT03-mapeo-objeto-relacional/documentos/4A-mapeo-objeto-relacional.md",
-      "bytes": 119019,
-      "sha256": "5ef33e1ae7f33358f89a652e647fd3778cc56a0a0b21d3ce30528ef4ef35af3e"
+      "ruta": "UT03-mapeo-objeto-relacional/contenidos/4B-proyecto-hibernate-oracle-maven.md",
+      "bytes": 30549,
+      "sha256": "845399bbc5dcb3ca2589178e91fe7a8c666eb848bcd2e4013ca307b8955da02e"
     },
     {
-      "ruta": "UT03-mapeo-objeto-relacional/documentos/4B-proyecto-hibernate-oracle-maven.md",
-      "bytes": 12398,
-      "sha256": "f31ef147c5c8f6241a4a0c8e08210fd42186e558a67468caa997bbc55f9e3dde"
+      "ruta": "UT03-mapeo-objeto-relacional/contenidos/4C-consultas-hql-y-criterios.md",
+      "bytes": 44520,
+      "sha256": "5810c998ec6032c358470de2216c0bebea465217413deadec8a94a0161409bd5"
     },
     {
-      "ruta": "UT03-mapeo-objeto-relacional/documentos/4C-consultas-hql-y-criterios.md",
-      "bytes": 35296,
-      "sha256": "95bd1a9c225baaa515b8fa9e16791cb5e688f6a4ad99b7ff370ebf68278b6ca6"
-    },
-    {
-      "ruta": "UT03-mapeo-objeto-relacional/documentos/ficheros-de-configuracion-paquete.md",
-      "bytes": 1443,
-      "sha256": "a668f003b746b64b939492953e291c5f5355e87d86772bf1d18530e8a6803f95"
-    },
-    {
-      "ruta": "UT03-mapeo-objeto-relacional/documentos/ficheros-de-configuracion.md",
-      "bytes": 921,
-      "sha256": "c59e37e7a184b3a34691fc57fa106c1280892d34994381b5ff5a91cba6acf8bb"
-    },
-    {
-      "ruta": "UT03-mapeo-objeto-relacional/documentos/referencias-externas.md",
-      "bytes": 9597,
-      "sha256": "9396aeb1d349d02dac1b03e95763e193bfb54712462b5d2e43d23d3ce690aa05"
+      "ruta": "UT03-mapeo-objeto-relacional/documentacion/referencias-externas.md",
+      "bytes": 9694,
+      "sha256": "dd106e35c6ffd5f0938347291c119e08c0e4b7a74c0c8a58bafda1dd5fa2cce3"
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/img/0183f686643185d2.png",
@@ -1358,23 +1326,39 @@
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-8b2b7b3655.html",
-      "bytes": 7422,
-      "sha256": "a36e0e560f9c5d2710f4a88f44ecface2f14408c0f44d1a0248fdcb66f63438e"
+      "bytes": 7362,
+      "sha256": "3cee37b8276ddffb5716a45fd096392868512bd8343e165e0ff4415a0038f1ea",
+      "huella_previa_en_manifiesto": {
+        "bytes": 7422,
+        "sha256": "a36e0e560f9c5d2710f4a88f44ecface2f14408c0f44d1a0248fdcb66f63438e"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-8b2b7b3655.md",
-      "bytes": 4524,
-      "sha256": "15a5c5670b2477c26487043969a811e150b28d1621aec26778fc2459398e2528"
+      "bytes": 4465,
+      "sha256": "399932dd6adf82e03e3c78f7322557758dd7ec93a0cefb85df44021df9dadfdd",
+      "huella_previa_en_manifiesto": {
+        "bytes": 4524,
+        "sha256": "15a5c5670b2477c26487043969a811e150b28d1621aec26778fc2459398e2528"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-8c5de500e7.html",
-      "bytes": 7438,
-      "sha256": "9cafc63f558622a9908074fbd7c91ea25ea4aec6d30ca5ff695bebb8450cfac8"
+      "bytes": 7376,
+      "sha256": "bc4ec19725c9db2f5158111ca739291983525186b1036065940f5a4ae09f2af2",
+      "huella_previa_en_manifiesto": {
+        "bytes": 7438,
+        "sha256": "9cafc63f558622a9908074fbd7c91ea25ea4aec6d30ca5ff695bebb8450cfac8"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-8c5de500e7.md",
-      "bytes": 4584,
-      "sha256": "7d2943d3c48f3d87ce4de77e8e1df3f8e5a49194c6263f3c4a8ee0e44d86a4f4"
+      "bytes": 4523,
+      "sha256": "bf235f251a479cf64afe506874399a801df446df48128349e5fb783cf02acc71",
+      "huella_previa_en_manifiesto": {
+        "bytes": 4584,
+        "sha256": "7d2943d3c48f3d87ce4de77e8e1df3f8e5a49194c6263f3c4a8ee0e44d86a4f4"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-a905106765.html",
@@ -1418,23 +1402,39 @@
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-bdea67dfee.html",
-      "bytes": 7974,
-      "sha256": "f364bbec670d08d6a36a25c17cce7599925887995b6901658db5ab9301039ac8"
+      "bytes": 7898,
+      "sha256": "de81479cc119ae8013cbb82c7f533b97e4adbd44f2e961af890d418f1a472f72",
+      "huella_previa_en_manifiesto": {
+        "bytes": 7974,
+        "sha256": "f364bbec670d08d6a36a25c17cce7599925887995b6901658db5ab9301039ac8"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-bdea67dfee.md",
-      "bytes": 5137,
-      "sha256": "320020e7632f1f2205df01cc471598c2a3746da016860d7e357afaf12e18b6f9"
+      "bytes": 5062,
+      "sha256": "325342c7c4f577326b2c540e1ec02cf5d5fad4fa971ce25b28d68853141c6566",
+      "huella_previa_en_manifiesto": {
+        "bytes": 5137,
+        "sha256": "320020e7632f1f2205df01cc471598c2a3746da016860d7e357afaf12e18b6f9"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-c412ac09e6.html",
-      "bytes": 13467,
-      "sha256": "523138100966aa5656ea5476c1a586ab65db5f13334257e11eaca69f0962c275"
+      "bytes": 13405,
+      "sha256": "0295017919a36b1c2b44d99185d8efc83324ceb262e97b0eacb545c88735dd37",
+      "huella_previa_en_manifiesto": {
+        "bytes": 13467,
+        "sha256": "523138100966aa5656ea5476c1a586ab65db5f13334257e11eaca69f0962c275"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-c412ac09e6.md",
-      "bytes": 8717,
-      "sha256": "50de2f005276c01f4e0e185f5830682e9bd53c6e10407d650c3243b45a7dd757"
+      "bytes": 8655,
+      "sha256": "6d215823d48b1ec401d0182323871a618c12899e07eed4f3851b84dbfb19a557",
+      "huella_previa_en_manifiesto": {
+        "bytes": 8717,
+        "sha256": "50de2f005276c01f4e0e185f5830682e9bd53c6e10407d650c3243b45a7dd757"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-e699f51311.html",
@@ -1448,8 +1448,12 @@
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-e8bcb3365d.html",
-      "bytes": 5171,
-      "sha256": "d98b2eebc04efad2a78ace0b01e4005cd612a22b654852006573fa8aac207e5a"
+      "bytes": 5168,
+      "sha256": "53ff34fdc4a10ae8343bf06727a75237227e59296ecbdcfd51361efb9f682565",
+      "huella_previa_en_manifiesto": {
+        "bytes": 5171,
+        "sha256": "d98b2eebc04efad2a78ace0b01e4005cd612a22b654852006573fa8aac207e5a"
+      }
     },
     {
       "ruta": "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-e8bcb3365d.md",
@@ -1623,8 +1627,33 @@
     },
     {
       "ruta": "INFORME-EXTRACCION.md",
-      "bytes": 8372,
-      "sha256": "af70c6beb303aac657e1bc5f212f927f41e9ad454937bbc88c1d19bc98fc6d97"
+      "bytes": 11032,
+      "sha256": "18744e6a880c35cd8afc6c45c06cf8dbb82d1702b37d9f51b7ff19923f39bdcc"
+    },
+    {
+      "ruta": "UT03-mapeo-objeto-relacional/adjuntos/README.md",
+      "bytes": 753,
+      "sha256": "6ac9039434eac9603625c24d564ec65c76fce00adcb819a5adff81bea2279a67"
+    },
+    {
+      "ruta": "UT03-mapeo-objeto-relacional/documentacion/revision-codigo.md",
+      "bytes": 13716,
+      "sha256": "e474e4ecf1129ea0bc4e4b601dc7601d795c09f3d43a730a3df45589a84ed876"
+    },
+    {
+      "ruta": "UT03-mapeo-objeto-relacional/documentacion/verificacion.md",
+      "bytes": 21017,
+      "sha256": "15ae7ed9d76bd015be00224039c14a90b87291bba6a6537a3d29ec59e1be2fb6"
+    },
+    {
+      "ruta": "UT03-mapeo-objeto-relacional/img/README.md",
+      "bytes": 1942,
+      "sha256": "336be1ad000fb08c45fedb8192a1242728ccb6be7b822b2e9a0cc5050f5074b1"
+    },
+    {
+      "ruta": "README.md",
+      "bytes": 2207,
+      "sha256": "6af86072f8db00d87353a3cefd3589813a8f69ab898a5bc46dc94f595bff68b2"
     }
   ],
   "fecha_finalizacion_local": "2026-11-16T20:32:16.732025+01:00",
@@ -1640,5 +1669,120 @@
     "fuentes_imagenes_y_ut03": "Huellas previas y posteriores idénticas.",
     "documentos_previos_comprobados": 19,
     "bloques_codigo_previos_conservados": 88
+  },
+  "edicion_final": {
+    "fecha_local": "2026-11-16T23:01:22+01:00",
+    "entrada": "entrega-final/INDICE.md",
+    "manifiesto_propio": "entrega-final/documentacion/MANIFIESTO.json",
+    "criterio": "Edición editorial de UT02 y UT03, no transcripción literal. Código corregido y formateado, actividades agrupadas y PDF solo enlazado.",
+    "pruebas_java": 31,
+    "pruebas_java_fallidas": 0,
+    "originales_modificados": false,
+    "obsidian_modificado": false,
+    "nota": "Las métricas y huellas propias de entrega-final están en su manifiesto. En los índices anteriores solo se añaden avisos para dirigir a la edición final; las métricas de extracción previas siguen siendo históricas."
+  },
+  "reorganizacion_ut03": {
+    "fecha_local": "2026-11-16T22:03:08+01:00",
+    "criterio": "Tres libros completos; configuración integrada en 4B. Originales y soluciones editoriales diferenciados.",
+    "alcance_metricas_previas": "comprobaciones, reorganizacion_ut02 y bloques_codigo_verificados son métricas históricas de extracción/conservación, no de corrección técnica ni de la edición actual.",
+    "documentos_auxiliares_integrados": 13,
+    "capitulos_originales": 29,
+    "bloques_originales": {
+      "4A-mapeo-objeto-relacional.md": 70,
+      "4B-proyecto-hibernate-oracle-maven.md": 7,
+      "4C-consultas-hql-y-criterios.md": 67
+    },
+    "archivos_fuente_sin_cambios": 114,
+    "adjuntos_texto_integrados": 8,
+    "enlaces_locales_comprobados": 201,
+    "errores_enlaces": [],
+    "imagenes_decodificadas": 12,
+    "inserciones_imagen": 13,
+    "markdown_lectura": 9,
+    "pruebas": {
+      "total": 13,
+      "fallos": 0,
+      "errores": 0,
+      "omitidas": 0,
+      "resultado": "BUILD SUCCESS",
+      "java": "25.0.5",
+      "maven": "3.9.11",
+      "release_compilacion": 11,
+      "hibernate": "5.4.33.Final",
+      "h2": "1.4.200",
+      "sqlite_jdbc": "3.42.0.0",
+      "sqlite_dialect": "0.1.2",
+      "alcance": "Doce pruebas H2; un CRUD SQLite con esquema explícito, todas en memoria. Sin integración Oracle/MySQL ni validación de todos los mapeos en SQLite."
+    },
+    "archivos_revisados_probados": [
+      {
+        "ruta_proyecto": "pom.xml",
+        "sha256": "3366c9dc2a2f70ea7cd0e71eb4f83f1f3e5611b8e3ddcef73e9d7459d0b5a46e"
+      },
+      {
+        "ruta_proyecto": "src/main/java/consultas/Consultas.java",
+        "sha256": "9ea286daf6c7caf6b5c1b60568493ed900dcadc8af95023884d9f18891c00cb1"
+      },
+      {
+        "ruta_proyecto": "src/main/java/modelo/Mapeos.java",
+        "sha256": "6b31edaa272d0308ca65e433214ad8c3557ffa69d95c09cf697df88d8d0a9109"
+      },
+      {
+        "ruta_proyecto": "src/main/java/modelo/Usuario.java",
+        "sha256": "63651b96f69d7ea9d3c0625d71a255ce972911db132982cb814a55926c90fd12"
+      },
+      {
+        "ruta_proyecto": "src/main/java/programas/Main.java",
+        "sha256": "171a7ca706d92827618689a8a054f553fa779b2886e9b613781e2b17029caccb"
+      },
+      {
+        "ruta_proyecto": "src/main/java/utils/HibernateUtils.java",
+        "sha256": "5109c2f0c56e0ba5bedb606f52dbc294a5a5d7b849bf4e64056cc7638b4221ab"
+      },
+      {
+        "ruta_proyecto": "src/main/resources/hibernate.cfg.xml",
+        "sha256": "91cc8197a196929ee76a109fb34187d63b6768ea89ee1bd8e0bc00957e0d2890"
+      },
+      {
+        "ruta_proyecto": "src/test/java/revision/RevisionTest.java",
+        "sha256": "c44e5ff65d33c993653769221a5c715dd379592933e075f86f0a9dc6af343d8d"
+      }
+    ],
+    "fuentes_originales_alteradas": false,
+    "obsidian_modificado": false,
+    "temario_modificado": false,
+    "discrepancias_preexistentes_fuentes_ut03": {
+      "cantidad": 17,
+      "rutas": [
+        "UT03-mapeo-objeto-relacional/adjuntos/configuracion/HibernateUtils.java",
+        "UT03-mapeo-objeto-relacional/adjuntos/configuracion/Main.java",
+        "UT03-mapeo-objeto-relacional/adjuntos/configuracion/mysql/mysql/hibernate.cfg.xml",
+        "UT03-mapeo-objeto-relacional/adjuntos/configuracion/mysql/mysql/pom.xml",
+        "UT03-mapeo-objeto-relacional/adjuntos/configuracion/oracle/oracle/hibernate.cfg.xml",
+        "UT03-mapeo-objeto-relacional/adjuntos/configuracion/oracle/oracle/pom.xml",
+        "UT03-mapeo-objeto-relacional/adjuntos/configuracion/sqlite/sqlite/hibernate.cfg.xml",
+        "UT03-mapeo-objeto-relacional/adjuntos/configuracion/sqlite/sqlite/pom.xml",
+        "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-8b2b7b3655.html",
+        "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-8b2b7b3655.md",
+        "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-8c5de500e7.html",
+        "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-8c5de500e7.md",
+        "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-bdea67dfee.html",
+        "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-bdea67dfee.md",
+        "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-c412ac09e6.html",
+        "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-c412ac09e6.md",
+        "UT03-mapeo-objeto-relacional/originales/UT03-mapeo-objeto-relacional/221730-4A Mapeo Objeto Relacional ORM Libro/capitulo-e8bcb3365d.html"
+      ],
+      "tratamiento": "Huellas actuales actualizadas; valores previos preservados por archivo. Contenido idéntico a Git al inicio de esta revisión. Causa histórica no determinada."
+    },
+    "discrepancias_preexistentes_fuera_de_alcance": {
+      "cantidad": 25,
+      "unidad": "UT02",
+      "tratamiento": "Sin cambios en fuentes ni huellas históricas de UT02."
+    },
+    "limites_persistentes": [
+      "Dos diagramas HQL 404",
+      "Proyecto oficial 4B no adjuntado",
+      "Enlaces web no verificados globalmente"
+    ]
   }
 }

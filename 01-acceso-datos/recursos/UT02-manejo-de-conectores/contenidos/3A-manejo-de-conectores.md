@@ -1,5 +1,7 @@
 # 3A Manejo de conectores
 
+> **Esta es la transcripción de archivo, no la entrega final.** [Abrir 3A editado y revisado](../../entrega-final/UT02/contenidos/3A-manejo-de-conectores.md). La edición final corrige el formato y el código, y sustituye la transcripción del PDF por un enlace al archivo.
+
 [← UT02 · Índice de la unidad](../INDICE.md)
 
 > **Unidad:** UT02 · Manejo de conectores  

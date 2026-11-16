@@ -1,0 +1,943 @@
+{
+  "edicion": "Entrega final editorial UT02 y UT03",
+  "fecha_local": "2026-11-16T23:33:41.279540+01:00",
+  "fuentes": "Archivo de extracción conservado fuera de entrega-final; no se atribuyen al aula las soluciones editoriales.",
+  "entorno": {
+    "java": "25.0.5",
+    "release_compilacion": 11,
+    "maven": "3.9.11",
+    "hibernate": "5.4.33.Final",
+    "h2": "1.4.200",
+    "sqlite_jdbc": "3.42.0.0",
+    "junit": "4.13.2"
+  },
+  "render_y_enlaces": {
+    "markdown": 27,
+    "secciones_h2": 129,
+    "bloques_codigo": 45,
+    "enlaces_locales": 396,
+    "inserciones_imagen": 25,
+    "capturas": 68,
+    "hojas_contacto": 6,
+    "errores": [],
+    "desbordamientos_pagina": [],
+    "tablas_fuera_de_columna": [],
+    "navegacion_comprobada": [
+      {
+        "documento": "UT02/contenidos/3A-manejo-de-conectores.md",
+        "entradas": 22,
+        "subentradas": 11,
+        "salto_y_retorno": "correctos"
+      },
+      {
+        "documento": "UT02/contenidos/3B-sqlite.md",
+        "entradas": 12,
+        "subentradas": 4,
+        "salto_y_retorno": "correctos"
+      },
+      {
+        "documento": "UT02/documentacion/entorno-y-pruebas.md",
+        "entradas": 7,
+        "subentradas": 0,
+        "salto_y_retorno": "correctos"
+      },
+      {
+        "documento": "UT02/documentacion/referencias.md",
+        "entradas": 5,
+        "subentradas": 0,
+        "salto_y_retorno": "correctos"
+      },
+      {
+        "documento": "UT03/contenidos/4A-mapeo-objeto-relacional.md",
+        "entradas": 14,
+        "subentradas": 6,
+        "salto_y_retorno": "correctos"
+      },
+      {
+        "documento": "UT03/contenidos/4B-proyecto-hibernate.md",
+        "entradas": 15,
+        "subentradas": 8,
+        "salto_y_retorno": "correctos"
+      },
+      {
+        "documento": "UT03/contenidos/4C-consultas.md",
+        "entradas": 7,
+        "subentradas": 0,
+        "salto_y_retorno": "correctos"
+      },
+      {
+        "documento": "UT03/documentacion/referencias.md",
+        "entradas": 4,
+        "subentradas": 0,
+        "salto_y_retorno": "correctos"
+      },
+      {
+        "documento": "UT03/documentacion/verificacion.md",
+        "entradas": 5,
+        "subentradas": 0,
+        "salto_y_retorno": "correctos"
+      },
+      {
+        "documento": "documentacion/VALIDACION.md",
+        "entradas": 4,
+        "subentradas": 0,
+        "salto_y_retorno": "correctos"
+      },
+      {
+        "documento": "documentacion/criterios-y-cobertura.md",
+        "entradas": 5,
+        "subentradas": 0,
+        "salto_y_retorno": "correctos"
+      }
+    ]
+  },
+  "pruebas_java": [
+    {
+      "unidad": "UT02",
+      "comando": "mvn -B test",
+      "pruebas": 18,
+      "fallos": 0,
+      "errores": 0,
+      "omitidas": 0,
+      "casos": [
+        "poblacionInsuficienteTambienHaceRollback",
+        "ventasConMapYRollback",
+        "cursorActualizaInsertaYBorra",
+        "idiomasEnDosMotores",
+        "transferenciaCorrecta",
+        "prioridadFechaLimiteYRedondeo",
+        "idiomasSinDatos",
+        "entradaNoNumericaSeExplicaSinAbrirConexion",
+        "noConfirmaUnaTransaccionAjena",
+        "salariosDeLosCatorceEmpleados",
+        "dmlSobreFilaTemporal",
+        "metadatosYConteo",
+        "buscarOrdenYUmbral",
+        "alumnosYMetadatosDeColumnas",
+        "claveDuplicadaNoBorraLaFilaOriginal",
+        "abortoAntesDeCommitRestauraTodosLosSalarios",
+        "paisInexistenteDeshaceLaPrimeraActualizacion",
+        "parametrosConComillasEInyeccion"
+      ],
+      "archivos_probados": [
+        {
+          "ruta_proyecto": "src/main/java/jdbc/Conexion.java",
+          "documento": "UT02/contenidos/3A-manejo-de-conectores.md",
+          "sha256": "5faa5dc0655118f77fbfb02782a4b49c9eda77f50bd8e1f009b468e95fc8dad6"
+        },
+        {
+          "ruta_proyecto": "src/main/java/jdbc/EjemplosJdbc.java",
+          "documento": "UT02/contenidos/3A-manejo-de-conectores.md",
+          "sha256": "53dd3489418d45ebbb290d2c28c5478e5772c5be3151b91fefbfa22c94c03c0c"
+        },
+        {
+          "ruta_proyecto": "src/main/java/jdbc/IdiomasEspana.java",
+          "documento": "UT02/ejercicios/01-idiomas-espana.md",
+          "sha256": "b90d7a6dedd37d842d523276766f45af79c5c84d454e5cf320fb6618ff2beace"
+        },
+        {
+          "ruta_proyecto": "src/main/java/jdbc/ListarTablas.java",
+          "documento": "UT02/ejercicios/02-metadatos-tablas.md",
+          "sha256": "1569a06b445e164ce87c66dc2764de9288f91bf2b8603d3ad02938a188023213"
+        },
+        {
+          "ruta_proyecto": "src/main/java/jdbc/ModificarCiudad.java",
+          "documento": "UT02/ejercicios/03-insertar-actualizar-borrar.md",
+          "sha256": "764972a128d1a1e9c69d55de3d6b36694bc8445e7ea2e8512a4ea91e1afcde2b"
+        },
+        {
+          "ruta_proyecto": "src/main/java/jdbc/BuscadorCiudades.java",
+          "documento": "UT02/ejercicios/04-buscador-ciudades.md",
+          "sha256": "edc693a2d37cfbb0ccde43cfe14e581b5704888f8ba84e623dde7b5e42876a4b"
+        },
+        {
+          "ruta_proyecto": "src/main/java/jdbc/TransferirPoblacion.java",
+          "documento": "UT02/ejercicios/05-transacciones-paises.md",
+          "sha256": "505170bafde6cc1942e46d2c5f790b9b181d466b60f5033d74e0ffa30964e3df"
+        },
+        {
+          "ruta_proyecto": "src/main/java/jdbc/ActualizarSalarios.java",
+          "documento": "UT02/ejercicios/06-practica-salarios.md",
+          "sha256": "82e2e561ce75fd941de4bbe3e1c9429d8848637c88b9119b856af3da9772f6e2"
+        },
+        {
+          "ruta_proyecto": "src/main/java/jdbc/Procedimientos.java",
+          "documento": "UT02/ejercicios/07-procedimiento-clientes.md",
+          "sha256": "99555f0ce8f9ae4e8339d1be57b69b54292a6d5ade7d9c6f05ebdc646be45d15"
+        },
+        {
+          "ruta_proyecto": "pom.xml",
+          "documento": "UT02/documentacion/entorno-y-pruebas.md",
+          "sha256": "6a210aacb3b5393506fab380c28e1e2ae87cc46011672ee2cb8e0b841f6acd8d"
+        },
+        {
+          "ruta_proyecto": "src/main/java/jdbc/Transacciones.java",
+          "documento": "UT02/documentacion/entorno-y-pruebas.md",
+          "sha256": "3cd13ec435199cacc22d6d557d3401785be30bdc11a7014782a83da68143a129"
+        },
+        {
+          "ruta_proyecto": "src/test/resources/world-minimo.sql",
+          "documento": "UT02/documentacion/entorno-y-pruebas.md",
+          "sha256": "fe88401f2806f6fb8d8b13e49bbc22c00e03e6cb1b0fd9459a7220caffb57982"
+        },
+        {
+          "ruta_proyecto": "src/test/resources/emp.sql",
+          "documento": "UT02/documentacion/entorno-y-pruebas.md",
+          "sha256": "9e97102d634464cb5b259c68a94476d7f5cf20606cf41004dbf3c0fa7b312c2d"
+        },
+        {
+          "ruta_proyecto": "src/test/java/jdbc/JdbcTest.java",
+          "documento": "UT02/documentacion/entorno-y-pruebas.md",
+          "sha256": "320a9028951564a77911aa5af252490db0ee3d02254d935b2ebed8797d92bade"
+        }
+      ]
+    },
+    {
+      "unidad": "UT03",
+      "comando": "mvn -B test",
+      "pruebas": 13,
+      "fallos": 0,
+      "errores": 0,
+      "omitidas": 0,
+      "casos": [
+        "sqliteCrudConEsquemaExplicito",
+        "crudDocumentado",
+        "claveCompuestaYTelefono",
+        "dmlMasiva",
+        "consultasNombradasCriteriaYParametros",
+        "rollbackNoGuardaCambios",
+        "relacionesUnoAUnoYUnoAMuchos",
+        "limitesPaginacionYTablaVacia",
+        "cargaDiferidaYFetch",
+        "muchosAMuchosNoBorraModuloCompartido",
+        "proyeccionesPaginacionYAgregados",
+        "mergeRefreshYBloqueo",
+        "resultadoNoUnico"
+      ],
+      "archivos_probados": [
+        {
+          "ruta_proyecto": "pom.xml",
+          "documento": "UT03/contenidos/4B-proyecto-hibernate.md",
+          "sha256": "3366c9dc2a2f70ea7cd0e71eb4f83f1f3e5611b8e3ddcef73e9d7459d0b5a46e"
+        },
+        {
+          "ruta_proyecto": "src/main/resources/hibernate.cfg.xml",
+          "documento": "UT03/contenidos/4B-proyecto-hibernate.md",
+          "sha256": "91cc8197a196929ee76a109fb34187d63b6768ea89ee1bd8e0bc00957e0d2890"
+        },
+        {
+          "ruta_proyecto": "src/main/java/modelo/Usuario.java",
+          "documento": "UT03/contenidos/4B-proyecto-hibernate.md",
+          "sha256": "3ee51cb815366beab6b2a74f8edb7a36ba27832a62d3d8343fec341a5b8dd1b9"
+        },
+        {
+          "ruta_proyecto": "src/main/java/utils/HibernateUtils.java",
+          "documento": "UT03/contenidos/4B-proyecto-hibernate.md",
+          "sha256": "d552c0030928aadab5ab6de1b7650382436379f276bbef743360bf8168f80529"
+        },
+        {
+          "ruta_proyecto": "src/main/java/programas/Main.java",
+          "documento": "UT03/contenidos/4B-proyecto-hibernate.md",
+          "sha256": "65f2b377a79b7de388ca203dbdeb72f5dc290aa3c50afa7acba403a971adc45b"
+        },
+        {
+          "ruta_proyecto": "src/main/java/modelo/Mapeos.java",
+          "documento": "UT03/ejercicios/01-relaciones-claves.md",
+          "sha256": "4630c3d11f2b76fd88640ef7bb0b9f8ff0a7b70f44f947a6c596befa92024faa"
+        },
+        {
+          "ruta_proyecto": "src/main/java/consultas/Consultas.java",
+          "documento": "UT03/ejercicios/02-consultas.md",
+          "sha256": "c933533e1a5ebfadb3d3055544482170677d067fb163531de3f2c2f23ccc9030"
+        },
+        {
+          "ruta_proyecto": "src/test/java/revision/RevisionTest.java",
+          "documento": "UT03/documentacion/verificacion.md",
+          "sha256": "49f19829c81a0c9f7e26d8a90209b55105bb656413ebc2050659112a27f95934"
+        }
+      ]
+    }
+  ],
+  "pruebas_sql": {
+    "sqlite_version": "3.54.0",
+    "grupos_sql": {
+      "contactos_proveedores_savepoint_restricciones": "correcto",
+      "chinook_consultas_y_casos_limite": "correcto"
+    },
+    "fixture_chinook_sintetico": "\nCREATE TABLE artists (ArtistId INTEGER PRIMARY KEY,Name TEXT);\nCREATE TABLE genres (GenreId INTEGER PRIMARY KEY,Name TEXT);\nCREATE TABLE albums (AlbumId INTEGER PRIMARY KEY,Title TEXT,ArtistId INTEGER REFERENCES artists);\nCREATE TABLE tracks (TrackId INTEGER PRIMARY KEY,Name TEXT,AlbumId INTEGER REFERENCES albums,GenreId INTEGER REFERENCES genres);\nCREATE TABLE customers (CustomerId INTEGER PRIMARY KEY,FirstName TEXT,LastName TEXT);\nCREATE TABLE invoices (InvoiceId INTEGER PRIMARY KEY,CustomerId INTEGER REFERENCES customers,Total NUMERIC);\nINSERT INTO artists VALUES (1,'Artista');\nINSERT INTO genres VALUES (1,'Jazz'),(2,'Rock');\nINSERT INTO albums VALUES (101,'Jazz doble',1),(102,'Rock',1);\nINSERT INTO tracks VALUES (1,'Jazz A',101,1),(2,'Jazz B',101,1),(3,'Rock',102,2);\nINSERT INTO customers VALUES (1,'Ana','Lopez'),(2,'Luis','SinFacturas');\nINSERT INTO invoices VALUES (1,1,12.50),(2,1,7.50);\n"
+  },
+  "referencias_publicas": [
+    {
+      "url": "https://dev.mysql.com/doc/connector-j/8.0/en/connector-j-reference-jdbc-url-format.html",
+      "http": 403,
+      "estado": "acceso no confirmado"
+    },
+    {
+      "url": "https://dev.mysql.com/doc/refman/8.0/en/stored-routines.html",
+      "http": 403,
+      "estado": "acceso no confirmado"
+    },
+    {
+      "url": "https://dev.mysql.com/downloads/connector/j/",
+      "http": 403,
+      "estado": "acceso no confirmado"
+    },
+    {
+      "url": "https://docs.jboss.org/hibernate/orm/5.4/javadocs/",
+      "http": 200,
+      "destino": "https://docs.hibernate.org/orm/5.4/javadocs/",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.jboss.org/hibernate/orm/5.4/javadocs/org/hibernate/Session.html",
+      "http": 200,
+      "destino": "https://docs.hibernate.org/orm/5.4/javadocs/org/hibernate/Session.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.jboss.org/hibernate/orm/5.4/javadocs/org/hibernate/query/Query.html",
+      "http": 200,
+      "destino": "https://docs.hibernate.org/orm/5.4/javadocs/org/hibernate/query/Query.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.jboss.org/hibernate/orm/5.4/userguide/html_single/Hibernate_User_Guide.html",
+      "http": 200,
+      "destino": "https://docs.hibernate.org/orm/5.4/userguide/html_single/",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html",
+      "http": 200,
+      "destino": "https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html",
+      "http": 200,
+      "destino": "https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/List.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Set.html",
+      "http": 200,
+      "destino": "https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/util/Set.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/Connection.html",
+      "http": 200,
+      "destino": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/Connection.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/DatabaseMetaData.html",
+      "http": 200,
+      "destino": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/DatabaseMetaData.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/PreparedStatement.html",
+      "http": 200,
+      "destino": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/PreparedStatement.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/ResultSet.html",
+      "http": 200,
+      "destino": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/ResultSet.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/Types.html",
+      "http": 200,
+      "destino": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/Types.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/package-summary.html",
+      "http": 200,
+      "destino": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/java/sql/package-summary.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/javax/sql/DataSource.html",
+      "http": 200,
+      "destino": "https://docs.oracle.com/en/java/javase/11/docs/api/java.sql/javax/sql/DataSource.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://docs.oracle.com/javase/tutorial/jdbc/basics/retrieving.html",
+      "http": 200,
+      "destino": "https://docs.oracle.com/javase/tutorial/jdbc/basics/retrieving.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://es.wikipedia.org/wiki/Java_Native_Interface",
+      "http": 200,
+      "destino": "https://es.wikipedia.org/wiki/Java_Native_Interface",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://github.com/lerocha/chinook-database",
+      "http": 200,
+      "destino": "https://github.com/lerocha/chinook-database",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://hibernate.org/orm/documentation/",
+      "http": 200,
+      "destino": "https://hibernate.org/orm/documentation/",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://jakarta.ee/specifications/persistence/2.2/apidocs/javax/persistence/package-summary.html",
+      "http": 200,
+      "destino": "https://jakarta.ee/specifications/persistence/2.2/apidocs/javax/persistence/package-summary.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://maven.apache.org/guides/introduction/introduction-to-the-pom.html",
+      "http": 200,
+      "destino": "https://maven.apache.org/guides/introduction/introduction-to-the-pom.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://sqlitebrowser.org/dl/",
+      "http": 200,
+      "destino": "https://sqlitebrowser.org/dl/",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://vladmihalcea.com/a-beginners-guide-to-jpa-and-hibernate-cascade-types/",
+      "http": 200,
+      "destino": "https://vladmihalcea.com/a-beginners-guide-to-jpa-and-hibernate-cascade-types/",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://www.oracle.com/database/technologies/jdbc-ucp-downloads.html",
+      "http": 200,
+      "destino": "https://www.oracle.com/database/technologies/",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://www.sqlite.org/cli.html",
+      "http": 200,
+      "destino": "https://www.sqlite.org/cli.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://www.sqlite.org/datatype3.html",
+      "http": 200,
+      "destino": "https://www.sqlite.org/datatype3.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://www.sqlite.org/download.html",
+      "http": 200,
+      "destino": "https://www.sqlite.org/download.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://www.sqlite.org/foreignkeys.html",
+      "http": 200,
+      "destino": "https://www.sqlite.org/foreignkeys.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://www.sqlite.org/lang.html",
+      "http": 200,
+      "destino": "https://www.sqlite.org/lang.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://www.sqlite.org/lang_altertable.html",
+      "http": 200,
+      "destino": "https://www.sqlite.org/lang_altertable.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://www.sqlite.org/lang_transaction.html",
+      "http": 200,
+      "destino": "https://www.sqlite.org/lang_transaction.html",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://www.sqlitetutorial.net/sqlite-create-table/",
+      "http": 200,
+      "destino": "https://www.sqlitetutorial.net/sqlite-create-table/",
+      "estado": "accesible"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=BJY4966Z3KY",
+      "estado": "metadatos oEmbed comprobados",
+      "http": null
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=_F_-wNCahL0",
+      "estado": "metadatos oEmbed comprobados",
+      "http": null
+    },
+    {
+      "url": "https://youtu.be/TipyOAYGsdc",
+      "estado": "metadatos oEmbed comprobados",
+      "http": null
+    },
+    {
+      "url": "https://youtu.be/cFLsynl91B0",
+      "estado": "metadatos oEmbed comprobados",
+      "http": null
+    }
+  ],
+  "conservacion": {
+    "archivos_originales_contrastados_con_git": 221,
+    "cambios_en_originales": 0,
+    "recursos_copiados": [
+      {
+        "archivo": "UT02/img/chinook-esquema.png",
+        "fuentes": [
+          "UT02-manejo-de-conectores/img/4301ea98c353ea11.png"
+        ],
+        "sha256": "4301ea98c353ea118b72897d80f9042e74c335e1d91d6d6d1c48df4e524b0f3a"
+      },
+      {
+        "archivo": "UT02/img/driver-tipo-1.jpg",
+        "fuentes": [
+          "UT02-manejo-de-conectores/img/5cc2e988544d7119.jpg"
+        ],
+        "sha256": "5cc2e988544d711975d053b934565d0cde4ae6d606a0f041c458357fd6492ae2"
+      },
+      {
+        "archivo": "UT02/img/driver-tipo-2.jpg",
+        "fuentes": [
+          "UT02-manejo-de-conectores/img/4cd94194f087f943.jpg"
+        ],
+        "sha256": "4cd94194f087f943128c3e70efdedb390e93bdfc8d2f73abcca1b074171c1ef2"
+      },
+      {
+        "archivo": "UT02/img/driver-tipo-3.jpg",
+        "fuentes": [
+          "UT02-manejo-de-conectores/img/540767a273a6eed5.jpg"
+        ],
+        "sha256": "540767a273a6eed5ca2e1bb205de2605b4488188f3b2cf221ce0d4e65d95305c"
+      },
+      {
+        "archivo": "UT02/img/driver-tipo-4.jpg",
+        "fuentes": [
+          "UT02-manejo-de-conectores/img/12e4849fcb128267.jpg"
+        ],
+        "sha256": "12e4849fcb128267c4fce675da6d05b8c64c6e53f1d71df979f5fe2600097dc3"
+      },
+      {
+        "archivo": "UT02/img/jdbc-dos-capas.png",
+        "fuentes": [
+          "UT02-manejo-de-conectores/img/638deaca0b05c84d.png"
+        ],
+        "sha256": "638deaca0b05c84d234549d4975edabad8c2aeef3d8402635f7d512612777581"
+      },
+      {
+        "archivo": "UT02/img/jdbc-tres-capas.png",
+        "fuentes": [
+          "UT02-manejo-de-conectores/img/ba444c97b4276f7c.png"
+        ],
+        "sha256": "ba444c97b4276f7c2fa1f763eef2c11d93f28453c3d6f3760454171356d8fad2"
+      },
+      {
+        "archivo": "UT02/img/resultset-forward.png",
+        "fuentes": [
+          "UT02-manejo-de-conectores/img/ad8b2de8f0251a02.png"
+        ],
+        "sha256": "ad8b2de8f0251a0228a996657afcc2ec57fa64c995850db16a6788986d8644ca"
+      },
+      {
+        "archivo": "UT02/img/resultset-insensitive.png",
+        "fuentes": [
+          "UT02-manejo-de-conectores/img/4b36487675f27a9a.png"
+        ],
+        "sha256": "4b36487675f27a9a164d69c8231632a254eb9bae15e6b3af89fc2e9e300377e6"
+      },
+      {
+        "archivo": "UT02/img/resultset-sensitive.png",
+        "fuentes": [
+          "UT02-manejo-de-conectores/img/6d0d35c52cb9119f.png"
+        ],
+        "sha256": "6d0d35c52cb9119fedca83f05b86b3c55e7b59ea90db27e3f92831b5d405b1ee"
+      },
+      {
+        "archivo": "UT02/img/sqlite-contactos-grupos.png",
+        "fuentes": [
+          "UT02-manejo-de-conectores/img/ec3f209b9f260a3e.png"
+        ],
+        "sha256": "ec3f209b9f260a3eb93b7aa7b2cae238f7252a4690ba0542646699f739a49950"
+      },
+      {
+        "archivo": "UT02/img/sqlite-proveedores.png",
+        "fuentes": [
+          "UT02-manejo-de-conectores/img/e048110cd15c279a.png"
+        ],
+        "sha256": "e048110cd15c279afea7e937fe79ad76eaecc6369cc4c4772e7d2bb45c2fdf98"
+      },
+      {
+        "archivo": "UT02/pdf/tutorial-driver-jdbc-eclipse.pdf",
+        "fuentes": [
+          "UT02-manejo-de-conectores/originales/externos/incorporacion-driver-JDBC-eclipse_Gamaza_Otte.pdf"
+        ],
+        "sha256": "7d951056120aa76a26d6329b24048f95e9a41655a23283fcfebd9f4b08e90b2e"
+      },
+      {
+        "archivo": "UT03/img/company-employee-phone.png",
+        "fuentes": [
+          "UT03-mapeo-objeto-relacional/img/203e74c797d9649d.png"
+        ],
+        "sha256": "203e74c797d9649d585d5ea2c9831b84e4f95196bd095ab272d7286ee90e2ed7"
+      },
+      {
+        "archivo": "UT03/img/estados-persistencia.jpg",
+        "fuentes": [
+          "UT03-mapeo-objeto-relacional/img/6e24025acb23380f.jpg"
+        ],
+        "sha256": "6e24025acb23380fa9bf94fb120ca1bb89346e153e450152dbb2b8df9d0bdffd"
+      },
+      {
+        "archivo": "UT03/img/jpa-hibernate.png",
+        "fuentes": [
+          "UT03-mapeo-objeto-relacional/img/59f25a42d34c786a.png"
+        ],
+        "sha256": "59f25a42d34c786a4ebe1c2a826b9227ecd3aaad0d9bc9360ed425923cfa512e"
+      },
+      {
+        "archivo": "UT03/img/maven-paquetes.png",
+        "fuentes": [
+          "UT03-mapeo-objeto-relacional/img/0183f686643185d2.png"
+        ],
+        "sha256": "0183f686643185d2aeb76da4c8dfc1d2b1df28efc48eb83721e5e305ecf83598"
+      },
+      {
+        "archivo": "UT03/img/orm-mapeo.png",
+        "fuentes": [
+          "UT03-mapeo-objeto-relacional/img/587bcf172640d547.png"
+        ],
+        "sha256": "587bcf172640d5477f9e3fe4537e10001cae1982b2d54316cad49429fde80b10"
+      },
+      {
+        "archivo": "UT03/img/profesor-ciclo.png",
+        "fuentes": [
+          "UT03-mapeo-objeto-relacional/img/4b901535543b5935.png"
+        ],
+        "sha256": "4b901535543b59351ebf046da8eb1671a6595ea5698b1f26e5cb152ef15b5366"
+      },
+      {
+        "archivo": "UT03/img/profesor-correos.png",
+        "fuentes": [
+          "UT03-mapeo-objeto-relacional/img/6b1cafa1351db30d.png"
+        ],
+        "sha256": "6b1cafa1351db30de36eb1432b8cd6195d0b5eafd30b63936dafdec19f55346f"
+      },
+      {
+        "archivo": "UT03/img/profesor-direccion.jpg",
+        "fuentes": [
+          "UT03-mapeo-objeto-relacional/img/dbcd9fb36e8d562e.jpg"
+        ],
+        "sha256": "dbcd9fb36e8d562e6c1bb3c8004474e3b5a7e5daec2b2b4aad607956c83390d6"
+      },
+      {
+        "archivo": "UT03/img/profesor-modulos.jpg",
+        "fuentes": [
+          "UT03-mapeo-objeto-relacional/img/8c265bfb3cd46c05.jpg"
+        ],
+        "sha256": "8c265bfb3cd46c0526d5600a8d4e78fd0008957815c102e77ad8d46aab2aa9ce"
+      },
+      {
+        "archivo": "UT03/img/profesor.jpg",
+        "fuentes": [
+          "UT03-mapeo-objeto-relacional/img/d01b0bb0a6f2e8d7.jpg"
+        ],
+        "sha256": "d01b0bb0a6f2e8d780b71f046d5d77a4137e342b55e4bdff8a68b651b4089bb1"
+      },
+      {
+        "archivo": "UT03/img/tablas-objetos.png",
+        "fuentes": [
+          "UT03-mapeo-objeto-relacional/img/c95e89ce9d2bb62b.png"
+        ],
+        "sha256": "c95e89ce9d2bb62b3fbb8d2c23c8ca020dd731ad21e245af026e4cd164afade7"
+      },
+      {
+        "archivo": "UT03/img/usuario-atributos.png",
+        "fuentes": [
+          "UT03-mapeo-objeto-relacional/img/1579cd156139e5de.png"
+        ],
+        "sha256": "1579cd156139e5de552c5ed894cd66d4e2507ff951d046af37774479ac0d5000"
+      }
+    ]
+  },
+  "archivos": [
+    {
+      "ruta": "INDICE.md",
+      "bytes": 2684,
+      "sha256": "fdee8729dee8624965aff56fc25aae98d954242b681b5ac4a38daa1642ec6a45"
+    },
+    {
+      "ruta": "UT02/contenidos/3A-manejo-de-conectores.md",
+      "bytes": 27811,
+      "sha256": "6919044c17826e83af0217a28c4c570134b7431aa29a0f5df84d8b0710956d7d"
+    },
+    {
+      "ruta": "UT02/contenidos/3B-sqlite.md",
+      "bytes": 14166,
+      "sha256": "d248cd0e32530a6e5d0b04c7899485c94f39177504aa5c6cc6cdba634019011d"
+    },
+    {
+      "ruta": "UT02/documentacion/INDICE.md",
+      "bytes": 1302,
+      "sha256": "29a28105c5b6e7b6280b204bd59fd2110bb3f3029910bfd1d8c0423b89fcc2f0"
+    },
+    {
+      "ruta": "UT02/documentacion/entorno-y-pruebas.md",
+      "bytes": 26483,
+      "sha256": "7ac8cf87a04870ea5b809da17677511b7814ca39cc42698313af243200b52ff6"
+    },
+    {
+      "ruta": "UT02/documentacion/referencias.md",
+      "bytes": 6408,
+      "sha256": "69e3356d51a564520a3a6be848d61cbae94a71f6bb0517b0b71d8eb50dca9bf8"
+    },
+    {
+      "ruta": "UT02/ejercicios/01-idiomas-espana.md",
+      "bytes": 3071,
+      "sha256": "10aaf10dd4dc273a223e451afc50bbd0303356db5c5436ccab86e4d2741d05e3"
+    },
+    {
+      "ruta": "UT02/ejercicios/02-metadatos-tablas.md",
+      "bytes": 3047,
+      "sha256": "e5fcf361410b6c20a4f55908085ac0ec32985794be268c8cac20b858d9afe9d5"
+    },
+    {
+      "ruta": "UT02/ejercicios/03-insertar-actualizar-borrar.md",
+      "bytes": 3604,
+      "sha256": "7cf3e677a5fb4589e58dd547a8adac9b6a8edee06cfb0a7f194628535c089756"
+    },
+    {
+      "ruta": "UT02/ejercicios/04-buscador-ciudades.md",
+      "bytes": 4285,
+      "sha256": "9b1802e278c2a78853f420efee84e54588119c58deba949c3a7298bba594e930"
+    },
+    {
+      "ruta": "UT02/ejercicios/05-transacciones-paises.md",
+      "bytes": 3741,
+      "sha256": "41494880f6bdd8351c3ca43e19c2318414ee072a63170e85ca7c05dec0a8810b"
+    },
+    {
+      "ruta": "UT02/ejercicios/06-practica-salarios.md",
+      "bytes": 7910,
+      "sha256": "91202dab7e64cfd06b8e7fd1049722a415cb86937db324f78e932f9a58d81652"
+    },
+    {
+      "ruta": "UT02/ejercicios/07-procedimiento-clientes.md",
+      "bytes": 5045,
+      "sha256": "b7382da7d0b3ababbaba8899d8c0c38df0fb176457c7272824df522aa4e3e6b1"
+    },
+    {
+      "ruta": "UT02/ejercicios/08-chinook-sqlite.md",
+      "bytes": 3935,
+      "sha256": "5e75c3712eeb1a8b075c50ea3c23cbef1b9824f9e160f10f777dca52ff44c2bf"
+    },
+    {
+      "ruta": "UT02/ejercicios/INDICE.md",
+      "bytes": 2149,
+      "sha256": "7e988d0a6e988537d15f73874b6858ecdd02cbaa159238ca50b7c0befed36266"
+    },
+    {
+      "ruta": "UT02/img/chinook-esquema.png",
+      "bytes": 90680,
+      "sha256": "4301ea98c353ea118b72897d80f9042e74c335e1d91d6d6d1c48df4e524b0f3a"
+    },
+    {
+      "ruta": "UT02/img/driver-tipo-1.jpg",
+      "bytes": 32721,
+      "sha256": "5cc2e988544d711975d053b934565d0cde4ae6d606a0f041c458357fd6492ae2"
+    },
+    {
+      "ruta": "UT02/img/driver-tipo-2.jpg",
+      "bytes": 34236,
+      "sha256": "4cd94194f087f943128c3e70efdedb390e93bdfc8d2f73abcca1b074171c1ef2"
+    },
+    {
+      "ruta": "UT02/img/driver-tipo-3.jpg",
+      "bytes": 30900,
+      "sha256": "540767a273a6eed5ca2e1bb205de2605b4488188f3b2cf221ce0d4e65d95305c"
+    },
+    {
+      "ruta": "UT02/img/driver-tipo-4.jpg",
+      "bytes": 31707,
+      "sha256": "12e4849fcb128267c4fce675da6d05b8c64c6e53f1d71df979f5fe2600097dc3"
+    },
+    {
+      "ruta": "UT02/img/jdbc-dos-capas.png",
+      "bytes": 11920,
+      "sha256": "638deaca0b05c84d234549d4975edabad8c2aeef3d8402635f7d512612777581"
+    },
+    {
+      "ruta": "UT02/img/jdbc-tres-capas.png",
+      "bytes": 22822,
+      "sha256": "ba444c97b4276f7c2fa1f763eef2c11d93f28453c3d6f3760454171356d8fad2"
+    },
+    {
+      "ruta": "UT02/img/resultset-forward.png",
+      "bytes": 9255,
+      "sha256": "ad8b2de8f0251a0228a996657afcc2ec57fa64c995850db16a6788986d8644ca"
+    },
+    {
+      "ruta": "UT02/img/resultset-insensitive.png",
+      "bytes": 9554,
+      "sha256": "4b36487675f27a9a164d69c8231632a254eb9bae15e6b3af89fc2e9e300377e6"
+    },
+    {
+      "ruta": "UT02/img/resultset-sensitive.png",
+      "bytes": 11605,
+      "sha256": "6d0d35c52cb9119fedca83f05b86b3c55e7b59ea90db27e3f92831b5d405b1ee"
+    },
+    {
+      "ruta": "UT02/img/sqlite-contactos-grupos.png",
+      "bytes": 16002,
+      "sha256": "ec3f209b9f260a3eb93b7aa7b2cae238f7252a4690ba0542646699f739a49950"
+    },
+    {
+      "ruta": "UT02/img/sqlite-proveedores.png",
+      "bytes": 2501,
+      "sha256": "e048110cd15c279afea7e937fe79ad76eaecc6369cc4c4772e7d2bb45c2fdf98"
+    },
+    {
+      "ruta": "UT02/pdf/tutorial-driver-jdbc-eclipse.pdf",
+      "bytes": 1032048,
+      "sha256": "7d951056120aa76a26d6329b24048f95e9a41655a23283fcfebd9f4b08e90b2e"
+    },
+    {
+      "ruta": "UT03/contenidos/4A-mapeo-objeto-relacional.md",
+      "bytes": 15081,
+      "sha256": "45cbdd549cfffe11dfdfed683ecf5cf9787d9b4970694d10ae76b0a0dced4c43"
+    },
+    {
+      "ruta": "UT03/contenidos/4B-proyecto-hibernate.md",
+      "bytes": 13184,
+      "sha256": "77cfcb5595539dfcab6713e0e717c24d52828623b5ad6cdd8615a28b0548bfd1"
+    },
+    {
+      "ruta": "UT03/contenidos/4C-consultas.md",
+      "bytes": 7696,
+      "sha256": "ef9c38441e9df83e72d96849c47601a3b7a2e20412051c4e4cd85c4cacb8de4d"
+    },
+    {
+      "ruta": "UT03/documentacion/INDICE.md",
+      "bytes": 1119,
+      "sha256": "5e1221a8d2932a3f9b179f5732f903d49cdb3ac73b7f63e7d780bbb527964b60"
+    },
+    {
+      "ruta": "UT03/documentacion/referencias.md",
+      "bytes": 4521,
+      "sha256": "bb0e5d90f12caf4900fd1631fccc6480b2f3839d0756386759259d2ab064236a"
+    },
+    {
+      "ruta": "UT03/documentacion/verificacion.md",
+      "bytes": 19819,
+      "sha256": "6c1061b1a3ee4779a9280aacf84e9fa3d873727aefead7727a3524ef565005e0"
+    },
+    {
+      "ruta": "UT03/ejercicios/01-relaciones-claves.md",
+      "bytes": 10712,
+      "sha256": "d4af2f31e158eb3e433e8912987b53cc8a86d0fcc5864a79b51378514eb5df87"
+    },
+    {
+      "ruta": "UT03/ejercicios/02-consultas.md",
+      "bytes": 8216,
+      "sha256": "f58cca00a7efbf8e7cb3a157aa3786cb23ab9774901d853c17299432bcaaacc7"
+    },
+    {
+      "ruta": "UT03/ejercicios/INDICE.md",
+      "bytes": 1312,
+      "sha256": "6551318f870da08158b2f2f9548482fb0acdafcadc39766a96895792923cc985"
+    },
+    {
+      "ruta": "UT03/img/company-employee-phone.png",
+      "bytes": 20058,
+      "sha256": "203e74c797d9649d585d5ea2c9831b84e4f95196bd095ab272d7286ee90e2ed7"
+    },
+    {
+      "ruta": "UT03/img/estados-persistencia.jpg",
+      "bytes": 20053,
+      "sha256": "6e24025acb23380fa9bf94fb120ca1bb89346e153e450152dbb2b8df9d0bdffd"
+    },
+    {
+      "ruta": "UT03/img/jpa-hibernate.png",
+      "bytes": 30772,
+      "sha256": "59f25a42d34c786a4ebe1c2a826b9227ecd3aaad0d9bc9360ed425923cfa512e"
+    },
+    {
+      "ruta": "UT03/img/maven-paquetes.png",
+      "bytes": 9717,
+      "sha256": "0183f686643185d2aeb76da4c8dfc1d2b1df28efc48eb83721e5e305ecf83598"
+    },
+    {
+      "ruta": "UT03/img/orm-mapeo.png",
+      "bytes": 79409,
+      "sha256": "587bcf172640d5477f9e3fe4537e10001cae1982b2d54316cad49429fde80b10"
+    },
+    {
+      "ruta": "UT03/img/profesor-ciclo.png",
+      "bytes": 16781,
+      "sha256": "4b901535543b59351ebf046da8eb1671a6595ea5698b1f26e5cb152ef15b5366"
+    },
+    {
+      "ruta": "UT03/img/profesor-correos.png",
+      "bytes": 11985,
+      "sha256": "6b1cafa1351db30de36eb1432b8cd6195d0b5eafd30b63936dafdec19f55346f"
+    },
+    {
+      "ruta": "UT03/img/profesor-direccion.jpg",
+      "bytes": 31520,
+      "sha256": "dbcd9fb36e8d562e6c1bb3c8004474e3b5a7e5daec2b2b4aad607956c83390d6"
+    },
+    {
+      "ruta": "UT03/img/profesor-modulos.jpg",
+      "bytes": 10981,
+      "sha256": "8c265bfb3cd46c0526d5600a8d4e78fd0008957815c102e77ad8d46aab2aa9ce"
+    },
+    {
+      "ruta": "UT03/img/profesor.jpg",
+      "bytes": 5971,
+      "sha256": "d01b0bb0a6f2e8d780b71f046d5d77a4137e342b55e4bdff8a68b651b4089bb1"
+    },
+    {
+      "ruta": "UT03/img/tablas-objetos.png",
+      "bytes": 151832,
+      "sha256": "c95e89ce9d2bb62b3fbb8d2c23c8ca020dd731ad21e245af026e4cd164afade7"
+    },
+    {
+      "ruta": "UT03/img/usuario-atributos.png",
+      "bytes": 6864,
+      "sha256": "1579cd156139e5de552c5ed894cd66d4e2507ff951d046af37774479ac0d5000"
+    },
+    {
+      "ruta": "documentacion/INDICE.md",
+      "bytes": 1854,
+      "sha256": "08370e5f2b1bb52a75994d153121262925461d47e0c8f8ff73bfb10ab3513a0c"
+    },
+    {
+      "ruta": "documentacion/VALIDACION.md",
+      "bytes": 6292,
+      "sha256": "1687db8676ac4db2b29e044106b339db7c5fbe366dcd2ee7924c8db80e0f996f"
+    },
+    {
+      "ruta": "documentacion/criterios-y-cobertura.md",
+      "bytes": 7697,
+      "sha256": "45a020a722f1fc855b17c81151f75674b419c74f247d78dc28c1d5ad5b8703c3"
+    }
+  ],
+  "limites": [
+    "Sin certificación de integración de servidor MySQL u Oracle",
+    "Sin base Chinook completa recuperada",
+    "Dos diagramas externos HQL y el proyecto oficial 4B siguen ausentes",
+    "Dependencias históricas: no recomendadas para producción",
+    "No se ha modificado Obsidian ni publicado archivos"
+  ],
+  "nota_autorreferencia": "Este manifiesto no se incluye en su propia lista de huellas. Los conteos de pruebas y navegación corresponden a esta edición, no a la extracción anterior."
+}

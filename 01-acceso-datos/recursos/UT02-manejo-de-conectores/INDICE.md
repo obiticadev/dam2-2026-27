@@ -1,5 +1,7 @@
 # UT02 · Manejo de conectores
 
+> **Archivo de extracción, no entrega final.** Para estudiar utiliza la [entrega final de UT02](../entrega-final/UT02/contenidos/3A-manejo-de-conectores.md) y sus [ejercicios con soluciones agrupadas](../entrega-final/UT02/ejercicios/INDICE.md).
+
 Acceso a Datos · DAM 2
 
 > **Organización:** mismos recursos, agrupación y orden que en el aula virtual. Cada libro reúne su contenido y sus complementos; las fuentes originales se conservan aparte.

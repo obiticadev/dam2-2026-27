@@ -1,5 +1,7 @@
 # 3B Bases de datos embebidas. SQLite
 
+> **Esta es la transcripción de archivo, no la entrega final.** [Abrir 3B editado y revisado](../../entrega-final/UT02/contenidos/3B-sqlite.md) y [las consultas Chinook resueltas](../../entrega-final/UT02/ejercicios/08-chinook-sqlite.md).
+
 [← UT02 · Índice de la unidad](../INDICE.md)
 
 > **Unidad:** UT02 · Manejo de conectores  

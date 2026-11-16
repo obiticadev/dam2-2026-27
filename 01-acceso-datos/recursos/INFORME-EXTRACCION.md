@@ -42,12 +42,21 @@ El tutorial PDF, el laboratorio visual y los tres ejemplos SQL/Java se integran 
 
 Se han conservado las instrucciones y el código, normalizando únicamente los espacios de sangría de las transcripciones. Las fechas y las versiones del aula no se corrigen por conjetura. El SQL de la práctica incluye una advertencia editorial sobre su instrucción `DROP DATABASE`, sin ejecutar ni modificar el archivo original.
 
-**UT03 no se ha reorganizado** y conserva `documentos/` y `adjuntos/`. Ambas unidades mantienen:
+**UT03 se ha reorganizado y revisado técnicamente el 16 de noviembre de 2026**:
+
+- `contenidos/`: únicamente **4A**, **4B** y **4C**, con los 29 capítulos y sus imágenes. Se conservan los 144 bloques Markdown históricos y se distinguen de las soluciones editoriales completas.
+- Los ocho archivos de configuración/código del paquete se transcriben íntegramente en **4B**; se integran la descripción de la carpeta y las referencias de sus tres ZIP. Se retiran los trece Markdown auxiliares redundantes una vez integrado su contenido, sin eliminar los archivos originales ni los binarios.
+- `documentacion/`: referencias, [revisión técnica](UT03-mapeo-objeto-relacional/documentacion/revision-codigo.md) y [verificación reproducible](UT03-mapeo-objeto-relacional/documentacion/verificacion.md). Los errores se explican; no se corrigen silenciosamente en los originales.
+- Soluciones documentadas para CRUD, relaciones, claves compuestas, HQL y una ampliación editorial Criteria. Se compilan y prueban los bloques revisados extraídos de los apuntes, con doce pruebas H2 y una de CRUD SQLite en memoria con esquema explícito, sin acceso a servidores del usuario. No se afirma validación de integración Oracle/MySQL ni de todos los mapeos sobre SQLite.
+- Los apartados adicionales, prácticas y exámenes de UT03 estaban vacíos en la sección descargada. No se han inventado recursos oficiales ni una descarga para el proyecto ausente de 4B.
+- Las doce imágenes originales de UT03 se conservan byte a byte y se han decodificado y revisado mediante hoja de contacto; hay trece inserciones, sin rutas de imagen ausentes. Los dos diagramas HQL 404 continúan documentados como no disponibles.
+
+Ambas unidades mantienen:
 
 - `INDICE.md`: entrada de lectura.
 - `originales/`: instantáneas HTML inertes del contenido docente y adjuntos originales. Los HTML **no son la respuesta web íntegra ni una copia ejecutable**: se excluyen scripts, formularios de envío, navegación y estado personal de la entrega.
 - `img/`: imágenes rescatadas e ilustraciones de los documentos, además de la captura estática del recurso visual JDBC.
-- `adjuntos/` en UT03: ZIP descomprimido, con los paquetes MySQL, Oracle y SQLite. Cada archivo de código/configuración y cada ZIP anidado tiene un Markdown acompañante. Los binarios ZIP/JAR se conservan sin ejecutarlos.
+- `adjuntos/` en UT03: ZIP descomprimido, con los paquetes MySQL, Oracle y SQLite, sin alterar. Su lectura se integra en 4B en vez de dispersarse en un Markdown por archivo. Los binarios ZIP/JAR se conservan sin ejecutarlos.
 
 Los índices indican qué documento acompaña cada adjunto docente. Las imágenes auxiliares se integran en los documentos correspondientes, no se convierten en apuntes individuales.
 
@@ -62,6 +71,10 @@ Los índices indican qué documento acompaña cada adjunto docente. Las imágene
 - Preservación de las tablas sencillas. Las tablas que contenían bloques de código se presentan por celdas, en orden de lectura, para no aplastarlos en una sola línea; se avisa en el documento y se enlaza el HTML original.
 - Comprobación de las rutas y anclas locales de los documentos de lectura.
 - Huellas SHA-256 y tamaños de las fuentes y documentos en `MANIFIESTO-EXTRACCION.json`.
+
+La verificación de extracción anterior acredita conservación respecto al aula, **no corrección del código original**. La revisión técnica posterior de UT03 está documentada por separado: trece pruebas de integración de las soluciones revisadas, con comprobación de enlaces, anclas, imágenes, cobertura de bloques y conservación de originales. Véase la evidencia y los límites en [Verificación UT03](UT03-mapeo-objeto-relacional/documentacion/verificacion.md).
+
+**Incidencia del registro anterior:** la revisión detecta 17 huellas históricas que no coincidían con fuentes/adjuntos de UT03 ya antes de editar. Los 114 archivos de conservación de UT03 se contrastan con Git y no han cambiado durante esta tarea; se registran sus huellas actuales conservando los valores anteriores. Se detectan además 25 discrepancias en UT02, fuera de alcance, que se dejan documentadas sin modificar sus archivos ni sus huellas históricas. No se atribuye una causa ni se afirma validación global del manifiesto antiguo.
 
 <a id="incidencias"></a>
 ## Incidencias y límites
