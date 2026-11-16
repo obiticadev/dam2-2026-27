@@ -1,0 +1,63 @@
+<html><head><meta charset="utf-8"/></head><body><div class="box py-3 generalbox book_content" id="mod_book-chapter"><h3>5. Drivers MySQL</h3><div class="no-overflow"><p><strong><span class="">Cómo MySQL permite a los desarrolladores conectar sus aplicaciones a la base de datos</span></strong><span class="">, y en particular </span><strong><span class="">la conexión desde Java</span></strong></p>
+<div class="ds-virtual-list-items _6f2c522">
+<div class="ds-virtual-list-visible-items">
+<div class="_4f9bf79 d7dc56a8 _43c05b5" data-virtual-list-item-key="4">
+<div class="ds-message _63c77b1">
+<div class="ds-markdown ds-assistant-message-main-content">
+<h5><span class="">1. Controladores estándar para múltiples lenguajes</span></h5>
+<p class="ds-markdown-paragraph"><span class="">MySQL ofrece </span><strong><span class="">drivers (controladores)</span></strong><span class=""> basados en estándares para que puedas conectarte desde distintos entornos:</span></p>
+<div class="ds-scroll-area ds-scroll-area--show-on-focus-within ds-scroll-area--enabled _1210dd7 c03cafe9">
+<table>
+<thead>
+<tr>
+<th><span class="">Estándar</span></th>
+<th><span class="">Uso</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><span class="">JDBC</span></strong></td>
+<td><span class="">Aplicaciones Java</span></td>
+</tr>
+<tr>
+<td><strong><span class="">ODBC</span></strong></td>
+<td><span class="">Aplicaciones en C, C++, Python, Excel, etc.</span></td>
+</tr>
+<tr>
+<td><strong><span class="">.NET</span></strong></td>
+<td><span class="">Aplicaciones en C#, </span><a href="https://vb.net/" rel="noopener noreferrer" target="_blank"><span class="">VB.NET</span></a><span class="">,</span><span class=""> etc.</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="ds-markdown-paragraph"><span class="">La idea es que </span><strong><span class="">el desarrollador elija el lenguaje que prefiera</span></strong><span class=""> y MySQL le da el conector adecuado. Estos se descargan desde la página oficial de MySQL.</span></p>
+<p class="ds-markdown-paragraph"></p>
+<h5><span class="">2. Enfoque en JDBC: MySQL Connector/J</span></h5>
+<p class="ds-markdown-paragraph"><span class="">Aquí se centra en Java. MySQL ofrece </span><strong><span class="">Connector/J</span></strong><span class="">, que es el driver que permite a una aplicación Java hablar con MySQL --&gt;<a href="https://dev.mysql.com/downloads/connector/j/" rel="noopener" target="_blank">https://dev.mysql.com/downloads/connector/j/</a></span></p>
+<ul>
+<li>
+<p class="ds-markdown-paragraph"><strong><span class="">Implementa la API JDBC</span></strong><span class="">: es decir, cumple el estándar de Java para conectarse a bases de datos.</span></p>
+</li>
+<li>
+<p class="ds-markdown-paragraph"><strong><span class="">Añade extensiones propias</span></strong><span class="">: además del estándar, agrega funcionalidades extra de MySQL.</span></p>
+</li>
+<li>
+<p class="ds-markdown-paragraph"><strong><span class="">Soporta X DevAPI</span></strong><span class="">: una API moderna de MySQL para trabajar con documentos JSON y SQL (parte de MySQL 8+).</span></p>
+</li>
+</ul>
+<h6><span class="">Características clave de Connector/J:</span></h6>
+<ul>
+<li>
+<p class="ds-markdown-paragraph"><strong><span class="">Es un driver JDBC Tipo 4</span></strong><span class="">: esto significa que es </span><strong><span class="">100% Java puro</span></strong><span class="">, se comunica directamente con MySQL por red, </span><strong><span class="">sin necesidad de instalar bibliotecas cliente de MySQL</span></strong><span class=""> en la máquina.</span></p>
+</li>
+<li>
+<p class="ds-markdown-paragraph"><strong><span class="">Compatible con JDBC 3.0 y JDBC 4.2</span></strong><span class="">: hay versiones distintas según la especificación JDBC que necesites</span></p>
+</li>
+</ul>
+<h5><span class="">3. Frameworks de persistencia (para proyectos grandes)</span></h5>
+<p class="ds-markdown-paragraph"><span class="">Cuando el proyecto crece, escribir código JDBC "a mano" se vuelve tedioso y propenso a errores. Por eso se usan </span><strong><span class="">frameworks de persistencia</span></strong><span class="">, que </span><strong><span class="">reducen la cantidad de código JDBC</span></strong><span class=""> que tienes que escribir, depurar, asegurar y mantener.</span></p>
+</div>
+</div>
+</div>
+</div>
+</div></div></div></body></html>

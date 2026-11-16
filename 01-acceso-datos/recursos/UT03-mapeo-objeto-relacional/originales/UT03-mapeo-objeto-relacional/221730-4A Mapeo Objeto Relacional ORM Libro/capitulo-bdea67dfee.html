@@ -1,0 +1,150 @@
+<html><head><meta charset="utf-8"/></head><body><div class="box py-3 generalbox book_content" id="mod_book-chapter"><h3>8. Mapeo de relaciones</h3><h4>8.2. Relaciones uno a uno bidireccionales</h4><div class="no-overflow"><p>Esta lección es muy similar a la anterior , pero en éste caso la relación entre las clases <code>Profesor</code>y <code>Direccion</code> va a ser bidireccional.</p>
+<p></p>
+<div>
+<p>El código fuente de la clase <code>Profesor</code> queda de la siguiente forma:</p>
+<div>
+<pre> 1: import java.io.Serializable;
+ 2: import javax.persistence.*;
+ 3:
+ 4:
+ 5: @<a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Aentity+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">Entity</a>
+ 6: @Table(name="Profesor")
+ 7: public class Profesor implements <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Aserializable+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">Serializable</a>  {
+ 8:
+ 9:     @Id
+10:     @Column(name="Id")
+11:     private int id;
+12:
+13:     @Column(name="nombre")
+14:     private <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> nombre;
+15:
+16:     @Column(name="ape1")
+17:     private <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> ape1;
+18:
+19:     @Column(name="ape2")
+20:     private <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> ape2;
+21:
+22:     @OneToOne(cascade=CascadeType.ALL)
+23:     @PrimaryKeyJoinColumn
+24:     private Direccion direccion;
+25: }
+</pre>
+<p><a name="clase_profesor_anotada"></a>Clase Profesor anotada</p>
+<div class="_4f9bf79 _43c05b5" data-virtual-list-item-key="2">
+<div class="ds-message _63c77b1">
+<div class="ds-markdown ds-assistant-message-main-content">
+<p class="ds-markdown-paragraph"><span class="">la "columna que hace la relación entre tablas" es la </span><strong><span class="">columna </span><code>Id</code><span class=""> de la tabla </span><code>Profesor</code></strong><span class="">, que hace doble función: clave primaria de </span><code>Profesor</code><span class=""> y clave foránea hacia </span><code>Direccion</code><span class="">.</span></p>
+</div>
+</div>
+<div class="ds-flex _0a3d93b"> </div>
+</div>
+<div class="_9663006" data-virtual-list-item-key="-4">
+<div class="d29f3d7d ds-message _63c77b1">
+<div class="fbb737a4">
+<div class="ds-collapsible-text"> </div>
+</div>
+</div>
+</div>
+</div>
+<p>A la propiedad <code>direccion</code> (línea 24) se han añadido dos anotaciones para indicar la relación <em>uno a uno</em> y que esta relación se implementa mediante la clave primaria.</p>
+<ul>
+<li>
+<div><strong>@OneToOne(cascade=CascadeType.ALL)</strong>: Esta anotación indica la relación <em>uno a uno</em> de las 2 tablas. También indicamos el valor de <code>cascade</code> al igual que en el fichero de hibernate.</div>
+</li>
+<li>
+<div><strong>@PrimaryKeyJoinColumn</strong>: Indicamos que la relación entre las dos tablas se realiza mediante la clave primaria.</div>
+</li>
+</ul>
+<p></p>
+<p></p>
+<div>En caso de no incluir la anotación <code>@PrimaryKeyJoinColumn</code> se producirá un error indicando que falta la columna <code>direccion_Id</code> en la tabla <code>Profesor</code>.</div>
+<p></p>
+<p></p>
+<div>Notar que si utilizamos anotaciones es necesario usar <code>@PrimaryKeyJoinColumn</code> mientras que usando el fichero <code>.hbm.xml</code> no es necesario indicarlo.</div>
+<p></p>
+<p></p>
+<div>Más información sobre el atributo <code>cascade</code> en <a href="http://cursohibernate.es/doku.php?id=unidades:03_relaciones:06_cascade" title="unidades:03_relaciones:06_cascade">Cascade</a></div>
+<p></p>
+<p></p>
+<p>El código de <code>Direccion</code> es similar al anterior.</p>
+<div>
+<pre> 1: import java.io.Serializable;
+ 2: import javax.persistence.Column;
+ 3: import javax.persistence.Entity;
+ 4: import javax.persistence.Id;
+ 5: import javax.persistence.Table;
+ 6:
+ 7:
+ 8: @<a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Aentity+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">Entity</a>
+ 9: @Table(name="Direccion")
+10: public class Direccion implements <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Aserializable+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">Serializable</a>  {
+11:
+12:     @Id
+13:     @Column(name="Id")
+14:     private int id;
+15:
+16:     @Column(name="calle")
+17:     private <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> calle;
+18:
+19:     @Column(name="numero")
+20:     private int numero;
+21:
+22:     @Column(name="poblacion")
+23:     private <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> poblacion;
+24:
+25:     @Column(name="provincia")
+26:     private <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> provincia;
+27:
+28:     @OneToOne(cascade=CascadeType.ALL)
+29:     @PrimaryKeyJoinColumn
+30:     private Profesor profesor;
+31: }
+</pre>
+<p><a name="clase_direccion_anotada"></a>Clase Direccion anotada</p>
+</div>
+<p>Como en el caso anterior vemos cómo debemos incluir los tags <code>@OneToOne</code> y <code>@PrimaryKeyJoinColumn</code> (Líneas 22 y 23) para establecer la relación entre <code>Direccion</code> y <code>Profesor</code>.</p>
+</div>
+<h1><a id="codigo_java" name="codigo_java"></a>Código Java</h1>
+<div>
+<p>Ahora que ya tenemos preparadas las clase Java para que puedan persistirse veamos el código necesario para persistirlas.</p>
+<div>
+<pre> 1: Direccion direccion1=new Direccion(3, "Calle de la sarten", 23, "Manises", "Valencia");
+ 2: Profesor profesor1=new Profesor(3, "Sergio", "Mateo", "Ramis");
+ 3: profesor1.setDireccion(direccion1);
+ 4: direccion1.setProfesor(profesor1);
+ 5:
+ 6: Direccion direccion2=new Direccion(4, "Calle Luis lamarca", 45, "Torrente", "Valencia");
+ 7: Profesor profesor2=new Profesor(4, "Paco", "Moreno", "Díaz");
+ 8: profesor2.setDireccion(direccion2);
+ 9: direccion2.setProfesor(profesor2);
+10:
+11:
+12: Session session=sessionFactory.openSession();
+13: session.beginTransaction();
+14:
+15: session.save(profesor1);
+16: session.save(direccion2);
+17:
+18: session.getTransaction().commit();
+19: session.close();
+</pre>
+<p><a name="persistiendo_la_clase_profesor"></a>Persistiendo la clase Profesor</p>
+</div>
+<p>El ejemplo incluye dos casos:</p>
+<ul>
+<li>
+<div>Crear un objeto <code>direccion1</code> y otro <code>profesor1</code> (líneas 1 y 2), crear las relaciones (líneas 3 y 4) y finalmente en la línea 16 guardar el objeto <code>profesor1</code>.</div>
+</li>
+<li>
+<div>Crear un objeto <code>direccion2</code> y otro <code>profesor2</code> (líneas 6 y 7), crear las relaciones (líneas 8 y 9) y finalmente en la línea 17 guardar el objeto <code>direccion2</code>.</div>
+</li>
+</ul>
+<p></p>
+<p></p>
+<div>En ambos casos el resultado aparente es el mismo , se guarda tanto el objeto <code>Direccion</code>como el objeto <code>Profesor</code> al ser la relación bidireccional aunque realmente los 2 casos <strong>no</strong> son iguales; veamos ahora el porqué.
+<p></p>
+<p>En el primer caso, si persistimos un objeto <code>Profesor</code> se inserta directamente dicho objeto en la base de datos por lo que <strong>no</strong> puede existir ya la fila pero sí que se permite que la <code>Direccion</code> ya exista, actualizándose en dicho caso. Pero en el segundo caso si persistimos el objeto <code>Direccion</code> lo que ocurre es lo contrario, no podrá existir la fila de la dirección pero sí podrá existir la fila del <code>Profesor</code>.</p>
+</div>
+</div>
+<p></p>
+<p></p></div></div></body></html>

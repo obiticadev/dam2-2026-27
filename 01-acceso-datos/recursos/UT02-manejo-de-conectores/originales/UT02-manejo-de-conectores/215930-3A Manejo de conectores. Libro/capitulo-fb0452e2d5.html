@@ -1,0 +1,51 @@
+<html><head><meta charset="utf-8"/></head><body><div class="box py-3 generalbox book_content" id="mod_book-chapter"><h3>2. Protocolos de acceso a bases de datos.</h3><div class="no-overflow"><p><span style="font-size: 0.9375rem;"><strong>Inicialmente cada SGBD tiene su propia conexión y su propio <acronym title="Application Programming Interface">API</acronym></strong></span></p>
+<p style="padding-left: 40px;"><span style="font-size: 0.9375rem;">Cada empresa desarrolladora de un SGBD implementaba soluciones propietarias específicas para su sistema, pero pronto se dieron cuenta de que colaborando conjuntamente podían sacar mayor rendimiento y avanzar mucho más rápidamente. </span></p>
+<p><strong><span class="">Primer estándar de conectividad</span></strong></p>
+<p style="padding-left: 40px;"><strong><span class="">ODBC</span></strong><span class=""> significa </span><strong><span class="">Open Database Connectivity</span></strong><span class=""> (Conectividad de Base de Datos Abierta). Es un </span><strong><span class="">estándar de interfaz</span></strong><span class=""> desarrollado por Microsoft que permite que las aplicaciones se conecten a diferentes sistemas de gestión de bases de datos (DBMS) de manera uniforme, sin importar el fabricante o el tipo de base de datos.</span></p>
+<p style="padding-left: 40px;">La llegada del <acronym title="Open DataBase Conectivity"><strong>ODBC </strong></acronym>representó un avance sin precedentes en el camino hacia la interoperabilidad entre bases de datos y lenguajes de programación. La mayoría de empresas desarrolladoras de <strong>sistemas gestores de bases de datos incorporaron los drivers </strong>de conectividad a las utilidades de sus sistemas y los lenguajes de programación más importantes desarrollaron bibliotecas específicas para soportar el <strong><acronym title="Application Programming Interface">API</acronym> <acronym title="Open DataBase Conectivity">ODBC</acronym></strong>.</p>
+<p><strong>Java no de adapta bien</strong></p>
+<p style="padding-left: 40px;">Aunque la industria aceptó <acronym title="Open DataBase Conectivity"><strong>ODBC</strong> </acronym>como medio principal para acceso a bases de datos en Windows, la verdad es que no se introduce bien en el mundo Java, debido a la complejidad que presenta <acronym title="Open DataBase Conectivity"><strong>ODBC</strong></acronym>, y que entre otras cosas ha impedido su transición fuera del entorno Windows.</p>
+<p>Sistema de conexión <acronym title="Open DataBase Conectivity"><strong>ODBC</strong> </acronym>configurado usando diferentes controladores (drivers) y un <acronym title="Application Programming Interface">API</acronym> estándar.</p>
+<p style="text-align: center;"><img alt="" class="img-fluid atto_image_button_text-bottom" height="262" role="presentation" src="assets/2bfb0d482692-odbc.gif" width="357"/></p>
+<p><acronym lang="en" title="Java Database Connectivity."><strong>JDBC</strong></acronym>  (<strong><span lang="en">Java Database Connectivity</span></strong>)</p>
+<p style="padding-left: 40px;">Se trata de un <acronym title="Application Programming Interface">API</acronym> bastante similar a <strong>ODBC </strong>en cuanto a funcionalidad,  <strong>implementado específicamente para usar con el lenguaje Java</strong>, adaptado a las especificidades de Java.</p>
+<p style="padding-left: 40px;">La <strong>funcionalidad se encuentra capsulada en clases</strong> (ya que Java es un lenguaje totalmente orientado a objetos) y además, <strong>no depende de ninguna plataforma específica</strong>, de acuerdo con la característica multiplataforma defendida por Java.</p>
+<p style="padding-left: 40px;">La idea en el desarrollo de <acronym lang="en" title="Java Database Connectivity.">JDBC<strong> </strong></acronym>era intentar ser tan <strong>sencillo </strong>como fuera posible, pero proporcionando a los desarrolladores la máxima <strong>flexibilidad</strong>.</p>
+<div id="id2">
+<div>
+<div id="ta2_73">
+<p>Java, mediante<strong> <acronym lang="en" title="Java Database Connectivity.">JDBC</acronym></strong>, permite<strong> simplificar el acceso a bases de datos relacionales</strong>, proporcionando un lenguaje mediante el cual las aplicaciones pueden comunicarse con motores de bases de datos. </p>
+<p><strong>Objetivos </strong>- Sun desarrolló este <acronym lang="en" title="Application programming interface.">API</acronym> (java.sql.*)para el acceso a bases de datos, con tres <strong>objetivos </strong>principales en mente:</p>
+<ul>
+<li><strong>Ser un API con soporte de <acronym lang="en" title="Structured query language.">SQL</acronym>:</strong> poder construir sentencias SQL e insertarlas dentro de llamadas al API de Java.</li>
+<li>Aprovechar la <strong>experiencia de los API's</strong> de bases de datos existentes.</li>
+<li>Ser lo más <strong>sencillo </strong>posible.</li>
+</ul>
+<p>Los <strong>fabricantes </strong>de Los Sistemas Gestores de Bases de Datos <strong>proporcionan la implementación de esa interfaz</strong> (Drivers).</p>
+<p>JDBC es similar en estructura a ODBC. Una aplicación JDBC está compuesta de varias capas, como se muestra en la figura</p>
+</div>
+</div>
+</div>
+<div id="id3" style="text-align: center;"><img alt="" class="img-fluid" height="235" role="presentation" src="assets/a696aa5797a2-img_jdbc2.gif" width="397"/></div>
+<ul>
+<li>Capa de Aplicación:</li>
+</ul>
+<p style="padding-left: 40px;">La<strong> capa superior</strong> en este modelo es la aplicación Java. Las aplicaciones Java son portátiles: puede ejecutar una aplicación Java sin modificaciones en cualquier sistema que tenga instalado una maquina virtual java  (<!--pc-->Java runtime environment). </p>
+<ul>
+<li>API de JDBC</li>
+</ul>
+<p style="padding-left: 40px;">Una aplicación Java que utiliza <strong>JDBC puede comunicarse con muchas bases de datos con pocas modificaciones,</strong> si es que las hay. Al igual que ODBC, <strong>JDBC proporciona una manera consistente de conectarse a una base de datos</strong>, ejecutar comandos y recuperar los resultados. </p>
+<p style="padding-left: 40px;">Al igual que ODBC, <strong>JDBC no impone un lenguaje de comando común:</strong> puede usar la sintaxis específica de Oracle cuando está conectado a un servidor Oracle y la sintaxis específica de MySQL cuando está conectado a un servidor MySQL. </p>
+<ul>
+<li>Driver</li>
+</ul>
+<p style="padding-left: 40px;"><strong>La Api  JDBC tiene la interfaz DriverManager,  responsable de localizar un controlador JDBC que necesita la aplicación</strong>. Cuando una aplicación <strong>cliente solicita una conexión de base de datos</strong>, la solicitud se expresa en forma de una<strong> URL (Uniform Resource Locator)</strong>. Una URL de JDBC es similar a las URL que utiliza con un navegador web.  Para conectarnos a la base de datos Oracle,  por ejemplo: jdbc:oracle:thin:ejemplo/ejemplo@localhost:1521:XE</p>
+<p style="padding-left: 40px;">A medida que cada controlador se carga en una Máquina Virtual de Java (VM), se registra con el <strong>DriverManager JDBC</strong> .<strong> Cuando una aplicación solicita una conexión, el DriverManager pregunta a cada Controlador si puede conectarse a la base de datos especificada en la URL dada.</strong> Tan pronto como encuentra un controlador adecuado, la búsqueda se detiene y el controlador intenta establecer una conexión con la base de datos. Si el intento de conexión falla, el <strong>Controlador </strong>lanzará una <strong>SQLException </strong>a la aplicación. Si la conexión se completa con éxito, el controlador crea un objeto de conexión y lo devuelve a la aplicación.</p>
+<p></p>
+<div class="ParasabermasfpdIdevice" id="id8">
+<div class="iDevice emphasis_parasabermasfpd">
+<div class="iDevice_inner">
+<div class="block" id="ta8_47" style="display: block;"></div>
+</div>
+</div>
+</div></div></div></body></html>

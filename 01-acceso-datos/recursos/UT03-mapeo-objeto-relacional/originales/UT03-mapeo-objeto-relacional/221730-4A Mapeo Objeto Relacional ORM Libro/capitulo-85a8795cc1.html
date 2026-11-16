@@ -1,0 +1,95 @@
+<html><head><meta charset="utf-8"/></head><body><div class="box py-3 generalbox book_content" id="mod_book-chapter"><h3>8. Mapeo de relaciones</h3><h4>8.10. El identificador consta de un único atributo</h4><div class="no-overflow"><p>Se utiliza @Id para anotar la propiedad de la clase que identifica a los objetos de la clase, que va a corresponder con la clave primaria de la tabla que mapea.<br/></p>
+<div>
+<p>En el siguiente diagrama UML muestra la clase <code>Profesor </code>y representación de la tabla<code> Profesor</code></p>
+<p><img alt="uml profe" class="img-responsive atto_image_button_text-bottom" height="157" src="assets/e0d27d8e7476-uml profe .JPG" width="145"/><br/></p><p>la tabla correspondiente:</p><p>Profesor (<u>id</u>, nombre, ape1, ape2)</p>
+</div>
+<div>
+<p></p>
+<p>El código fuente de la clase <code>Profesor</code> queda de la siguiente forma:</p>
+<div>
+<pre> 1: @<a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Aentity+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">Entity</a>
+ 2: @Table(name="Profesor")
+ 3: public class Profesor implements <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Aserializable+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">Serializable</a>  {
+ 4:
+ 5:     @Id
+ 6:     @Column(name="Id")
+ 7:     @GeneratedValue(strategy=GenerationType.IDENTITY)
+ 8:     private int id;
+ 9:
+10:     @Column(name="nombre")
+11:     private <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> nombre;
+12:
+13:     @Column(name="ape1")
+14:     private <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> ape1;
+15:
+16:     @Column(name="ape2")
+17:     private <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> ape2;
+18:
+19:     public Profesor(){
+20:     }
+21:
+22:     public Profesor(<a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> nombre, <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> ape1, <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> ape2) {
+23:         this.nombre = nombre;
+24:         this.ape1 = ape1;
+25:         this.ape2 = ape2;
+26:     }
+27: }
+</pre>
+<p><a name="clase_profesor_anotada">Clase Profesor anotada</a></p>
+</div>
+<p><b>Identificadores generados</b><br/></p>
+<p></p>
+<p>Podemos ver cómo se ha añadido la anotación <code>@GeneratedValue</code> para la generación de la clave primaria.</p>
+<ul>
+<li>
+<div><strong>@GeneratedValue</strong>: Esta anotación indica que Hibernate deberá generar el valor de la clave primaria.</div>
+<ul>
+<li>
+<div><strong>strategy</strong>: Este atributo nos indica el método en el que Hibernate debe generar la clave primaria.En nuestro ejemplo el valor es <code>GenerationType.IDENTITY</code>.Los valores más usados para este atributo son
+                        los siguientes:</div>
+</li>
+</ul>
+</li>
+</ul>
+<div>
+<table>
+<tbody>
+<tr>
+<th>Estrategia</th>
+<th>Descripción</th>
+</tr>
+<tr>
+<td><code>GenerationType.AUTO                        </code></td>
+<td>Hibernate usará alguno de los siguientes métodos dependiendo de la base de datos. De esta forma, si cambiamos de base de datos, se seguirá usando la mejor forma de generar la clave primaria.<br/>Es la opción por defecto si se omite la estrategia.<br/><br/></td>
+</tr>
+<tr>
+<td><code>GenerationType.IDENTITY</code></td>
+<td>Hibernate usará el valor de la columna de tipo autoincremento. Es decir que al insertar la fila la base de datos le asignará el valor. La columna de base de datos debe ser de tipo autonumérico<br/><br/></td>
+</tr>
+<tr>
+<td><code>GenerationType.SEQUENCE</code></td>
+<td>Se utiliza una secuencia como las que existen en Oracle o PostgreSQL . No es compatible con MySQL. La columna de base de datos debe ser de tipo numérico<br/><br/></td>
+</tr>
+<tr>
+<td><code><br/>GenerationType.TABLE                        </code></td>
+<td>Hibernate utiliza una tabla de base de datos para simular una secuencia, es una mala estrategia. Requiere peticiones JDBC adicionales</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p></p>
+<p></p>
+<div><br/></div><div>Al usar el método <code>GenerationType.SEQUENCE</code> es necesario indicar el nombre de la secuencia que va a usar Hibernate para obtener el valor. En ese caso el código fuente de la clase profesor habría que modificarlo de la siguiente
+        forma.
+        <p></p>
+<pre>5: @Id
+6: @Column(name="Id")
+7: @GeneratedValue(strategy=GenerationType.SEQUENCE,generator="secuencia_idProfesor")
+8: private int id;
+</pre>
+<p>Vemos que en la línea 7 se ha añadido el atributo <code>generator</code> para indicar el nombre de la secuencia a usar. En el ejemplo el nombre de la secuencia a usar es <code>secuencia_idProfesor</code>.</p>
+</div>
+<p></p>
+<p></p>
+</div><br/><br/>
+<p></p></div></div></body></html>

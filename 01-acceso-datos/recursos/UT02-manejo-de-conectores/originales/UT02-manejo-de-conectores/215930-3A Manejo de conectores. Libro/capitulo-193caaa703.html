@@ -1,0 +1,53 @@
+<html><head><meta charset="utf-8"/></head><body><div class="box py-3 generalbox book_content" id="mod_book-chapter"><h3>11. Ejecución de procedimientos almacenados en la base de datos de MySQL.</h3><div class="no-overflow"><div id="outer">
+<div id="main">
+<div class="nodeDecoration">
+<h5><span class="">Realizar estos pasos como<strong> Ejercicio</strong></span></h5>
+<p><span class="" style="font-size: medium;">A continuación, vamos a realizar un procedimiento almacenado en </span><span class="" lang="en" style="font-size: medium;">MySQL</span><span class="" style="font-size: medium;">, que simplemente insertará datos en la tabla clientes. Desde el programa Java que realizamos, llamaremos para ejecutar a ese procedimiento almacenado. Por tanto, ¿cuál sería la secuencia que seguiríamos para realizar esto?</span></p>
+</div>
+<div class="FreeTextfpdIdevice" id="id46">
+<div class="iDevice emphasis0">
+<div class="block" id="ta46_73" style="display: block;">
+<ul class="lista_verificacion">
+<li><span class="" style="font-size: medium;">Si no tenemos creada la tabla de clientes, la creamos. Por simplicidad, en este ejemplo, trabajamos sobre la base de datos que viene por defecto en </span><span class="" lang="en" style="font-size: medium;">MySQL</span><span class="" style="font-size: medium;">, el esquema denominado: test. Para crear la tabla de clientes, el script correspondiente es: </span>
+<div class="enlace_centrado"><span class="" style="font-size: medium;"> </span><a class="documento" href="https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/pluginfile.php/290986/mod_book/chapter/36207/AD03_CONT_R28_CrearTabla.txt" title="Descargar código para crear tabla en MySQL. [.txt - 1 KB]"><span class="" style="font-size: medium;">Crear tabla en </span><span class="" lang="en" style="font-size: medium;">MySQL</span><span class="" style="font-size: medium;">.</span></a><span class="" style="font-size: medium;"> </span><span class="tamano" style="font-size: medium;"> (1 KB) </span><span class="" style="font-size: medium;"> </span></div>
+</li>
+<li><span class="" style="font-size: medium;">Creamos el procedimiento almacenado en la base de datos. Sería tan fácil como lo que ves en el siguiente enlace: </span>
+<div class="enlace_centrado"><span class="" style="font-size: medium;"> </span><a class="documento" href="https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/pluginfile.php/290986/mod_book/chapter/36207/AD03_CONT_R28_01_RutinainsertarCliente.txt" title="Descargar rutina insertar cliente. [txt - 1 KB]"><span class="" style="font-size: medium;">DDL rutina insertar cliente.</span></a><span class="" style="font-size: medium;"> </span><span class="tamano" style="font-size: medium;"> (1 KB) </span><span class="" style="font-size: medium;"> </span></div>
+</li>
+<li><span class="" style="font-size: medium;">Crear la clase Java para desde aquí, llamar al procedimiento almacenado: </span>
+<div class="enlace_centrado"><a href="https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/pluginfile.php/290986/mod_book/chapter/36207/inserConProcAlma.java"><span class="" style="font-size: medium;">https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/pluginfile.php/290986/mod_book/chapter/36207/inserConProcAlma.java</span></a></div>
+</li>
+</ul>
+<p><span class="" style="font-size: medium;"> Si hemos definido la tabla correctamente, con su clave primaria, y ejecutamos el programa, intentando insertar una fila igual que otra insertada, o sea, con la misma clave primaria, obtendremos un mensaje al capturar la excepción de este tipo: </span></p>
+<div class="codigo elemento_centrado" style="width: 77.5em;">
+<div class="texto_izquierda">
+<pre><code><span class="" style="font-size: medium;">SQL Exception: </span></code>
+</pre>
+<pre><code><span class="" style="font-size: medium;">com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException: </span></code>
+</pre>
+<pre><code><span class="" style="font-size: medium;">Duplicate entry '765' for key 'PRIMARY'</span></code>
+</pre>
+</div>
+</div>
+<p><span class="" style="font-size: medium;">   </span></p>
+</div>
+</div>
+</div>
+<div class="RecomendacionfpdIdevice" id="id47">
+<div class="iDevice emphasis_recomendacionfpd"><span class="iDeviceTitle"><strong><span class="" style="font-size: medium;">Recomendación</span></strong></span>
+<div class="iDevice_inner">
+<div class="block" id="ta47_50" style="display: block;">
+<p><span class="" style="font-size: medium;">Enlace a la </span><a href="http://www.mysqltutorial.org/getting-started-with-mysql-stored-procedures.aspx"><span class="" style="font-size: medium;">documentación de MySQL </span></a><span class="" style="font-size: medium;">donde se explica como se crean los procedimientos y las funciones </span><br/><span class="" style="font-size: medium;">y cómo se ejecutan desde línea de comando.</span><span class="" style="font-size: medium;"> </span><span class="iDeviceTitle" style="font-size: 0.9375rem;"><strong><span class="" style="font-size: medium;">Para saber más</span></strong></span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="ParasabermasfpdIdevice" id="id48">
+<div class="iDevice emphasis_parasabermasfpd">
+<div class="iDevice_inner">
+<div class="block" id="ta48_47" style="display: block;"></div>
+</div>
+</div>
+</div>
+</div>
+</div></div></div></body></html>

@@ -1,0 +1,99 @@
+<html><head><meta charset="utf-8"/></head><body><div class="box py-3 generalbox book_content" id="mod_book-chapter"><h3>12. Transacciones</h3><div class="no-overflow"><p>La propiedad Autocommit que se crea en la conexión esta definida por defecto a TRUE.</p>
+<p> El control de la <strong>transacción </strong>es realizado por el objeto de la <strong>conexión</strong>. Cuando se crea una conexión, por <strong>defecto esta en el modo activado</strong>. Esto significa que cada operación DML (<code><strong><span class="">INSERT, UPDATE, DELETE </span></strong></code>) <strong>es tratada como transacción</strong> por sí misma que se valida <strong>automáticamente </strong>en cuanto se ejecute.</p>
+<p>A veces <strong>necesitamos agrupar varias sentencias SQL en una única transacción</strong>, para ello: </p>
+<ol>
+<li>modificamos el autocommit antes de ejecutar las consultas que deban estar en la misma transacccion:  <code><strong><span class="" style="color: #333333;">conexion.setAutoCommit(false)
+</span></strong></code> </li>
+<li>ejecutamos las sentencias </li>
+<li> finalizaremos de forma manual la transacción. <code><strong><span class="" style="color: #333333;">conexion.Commit.<br/></span></strong></code></li>
+</ol>
+<p><strong>Ejemplo: <br/></strong></p>
+<p>El siguiente programa actualiza la tabla <i>COFFEES </i>con los datos de las ventas que se envían al programa como un objeto de tipo <strong>HashMap </strong>(colección que almacena datos asociando una clave a un valor ), <strong>las actualizaciones se tratan como una única transacción </strong>de forma que si se ha podido completar todas las actualizaciones, se validan y en caso de que falle alguna, el gestor de errores deshace los cambios (  <code><strong><span class="">con.rollback()</span></strong></code>).</p>
+<p>Ejemplo de <span class="">un </span><code>HashMap&lt;String, Integer&gt;</code><span class="">. </span></p>
+<div class="ds-scroll-area ds-scroll-area--show-on-focus-within ds-scroll-area--enabled _1210dd7 c03cafe9">
+<table>
+<thead>
+<tr>
+<th><span class="">clave (String)</span></th>
+<th><span class="">valor (Integer)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="">"Colombian"</span></td>
+<td><span class="">50</span></td>
+</tr>
+<tr>
+<td><span class="">"French_Roast"</span></td>
+<td><span class="">30</span></td>
+</tr>
+<tr>
+<td><span class="">"Espresso"</span></td>
+<td><span class="">100</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="editor-indent" style="margin-left: 30px;">
+<p><span style="font-size: 0.9375rem;"> ____________________</span></p>
+<pre>public void updateCoffeeSales(HashMap&lt;String, Integer&gt; salesForWeek)
+    throws SQLException {
+
+    PreparedStatement updateSales = null;
+    PreparedStatement updateTotal = null;
+
+    String updateString =
+        "update " +  "COFFEES " +
+        "set SALES = ? where COF_NAME = ?";
+
+    String updateStatement =
+        "update " +  "COFFEES " +
+        "set TOTAL = TOTAL + ? " +
+        "where COF_NAME = ?";
+
+    try {
+        con.setAutoCommit(false);
+        updateSales = con.prepareStatement(updateString);
+        updateTotal = con.prepareStatement(updateStatement);
+
+        for (Map.Entry&lt;String, Integer&gt; e : salesForWeek.entrySet()) {
+            updateSales.setInt(1, e.getValue().intValue());
+            updateSales.setString(2, e.getKey());
+            updateSales.executeUpdate();
+            updateTotal.setInt(1, e.getValue().intValue());
+            updateTotal.setString(2, e.getKey());
+            updateTotal.executeUpdate();
+        }</pre>
+<pre>        con.commit();<br/>
+    } catch (SQLException e ) {
+        JDBCTutorialUtilities.printSQLException(e);
+        if (con != null) {
+            try {
+                System.err.print("Transaction is being rolled back");
+                con.rollback();
+            } catch(SQLException excep) {
+                JDBCTutorialUtilities.printSQLException(excep);
+            }
+        }</pre>
+<pre>    } finally {
+        if (updateSales != null) {
+            updateSales.close();
+        }
+        if (updateTotal != null) {
+            updateTotal.close();
+        }
+        con.setAutoCommit(true);
+    }
+}<br/><br/>________</pre>
+<div class="md-code-block md-code-block-light">
+<pre>for ( Map.Entry&lt;String, Integer&gt;  e  :  salesForWeek.entrySet() ) {
+      └────── tipo de cada elemento ──┘  └ variable ┘  └──── colección a recorrer ────┘</pre>
+</div>
+<p class="ds-markdown-paragraph"><span class="">Esto se llama </span><strong><span class="">for-each</span></strong><span class=""> (o "for mejorado"). Se lee así:</span></p>
+<blockquote>
+<p class="ds-markdown-paragraph"><em><span class="">"Para cada elemento </span><code>e</code><span class=""> de tipo </span><code>Map.Entry&lt;String,Integer&gt;</code><span class=""> dentro de </span><code>salesForWeek.entrySet()</code><span class="">, ejecuta el cuerpo."</span></em></p>
+</blockquote>
+<p>Pista: <a href="https://www.mkyong.com/java/java-how-to-get-keys-and-values-from-map/">Recuperar datos de un Map </a></p>
+<p><strong>Haz el <a class="autolink" href="https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/page/view.php?id=218716" title="Ejercicio 5 - Transacciones JDBC">Ejercicio 5 - Transacciones JDBC</a></strong></p>
+</div>
+<div class="editor-indent" style="margin-left: 30px;"> </div></div></div></body></html>

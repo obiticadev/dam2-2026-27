@@ -1,0 +1,138 @@
+<html><head><meta charset="utf-8"/></head><body><div class="box py-3 generalbox book_content" id="mod_book-chapter"><h3>8. Mapeo de relaciones</h3><h4>8.6. Cascade</h4><div class="no-overflow"><p></p>
+<div data-attributes='{"type":"fancybar","key":"CK7DE53W","segment":"placement:vladmihalceacom","options":{"target":"body","script_id":"_bsa_srv-CK7DE53W_0","platforms":["desktop","mobile"]},"ads":{"active":"1","ad_via_link":"https://www.buysellads.com/?utm_source=vladmihalcea-com-fancy-bar&amp;utm_medium=ad_via_link&amp;utm_campaign=in_unit&amp;utm_term=fancybar","backgroundColor":"#ffffff","backgroundHoverColor":"#ffffff","bannerid":"85515","callToAction":"Start Logging - Free","company":"solarwinds papertrail","creativeid":"181456","ctaBackgroundColor":"#4E92E1","ctaBackgroundHoverColor":"#3B81D1","ctaTextColor":"#ffffff","ctaTextColorHover":"#ffffff","description":"2 Servers or 2000. Tail and search logs in real time. Archive and analyze years of logs.","evenodd":"0","external_id":"6615","height":"0","i":"0","image":"https://cdn4.buysellads.net/uu/1/21673/1540419256-Papertrail80x80.png","logo":"https://cdn4.buysellads.net/uu/1/21673/1540419266-Papertrail250x100.png","longimp":"TTBQTQLATTTTTT4ZZYIMYTTTTTTQ3M36ZETTTTTTVTV4KUTTTTTTT","longlink":"T6BQTQLATTTTTT4ZZYIMYTTTTTTQ3M36ZETTTTTTVTV4KUTTTTTTTBDW5JYFC5JGHRYC4ADH5QBF6YZQ2JEUTA35K2UNBZ7X5MBCBUSI2RBU6YSHFMJFPOZIKMNCYYZ65KIFPRD2ZRNNP7DQ5MNIBYSEKKIFPRD2ZRJNOSIWKMUFVGZ3KEYE","rendering":"fancybar","statimp":"//srv.buysellads.com/ads/imp/x/GTND42QWCYYDCKQJCWS4YKQMCESDT53IF6YIPZ3JCWBDP5QJCABIE23KC6BIV2Q7F6ADVK3EHJWNBADLKM7UCBZG2Y","statlink":"//srv.buysellads.com/ads/click/x/GTND42QWCYYDCKQJCWS4YKQMCESDT53IF6YIPZ3JCWBDP5QJCABIE23KC6BIV2Q7F6ADVK3EHJNCLSIZ","textColor":"#0B4B8D","textColorHover":"#0B4B8D","timestamp":"1545999138","title":"papertrail","width":"0","zoneid":"32884","zonekey":"CK7DE53W"}}' id="_fbn_">
+<p><span style=""><strong>Introducción.</strong></span></p>
+<p><span style=""></span></p><p><span><span class="" style=""><span><strong>Hibernate</strong></span><span><strong> </strong>traduce las modificaciones de los objetos a s</span><span>entencias</span> DML de base de datos.  </span></span></p><p><span class="" style="font-size: calc(0.90375rem + 0.045vw);">La anotación </span><span class="" style="font-size: calc(0.90375rem + 0.045vw);"><strong>cascade</strong></span><span class="" style="font-size: calc(0.90375rem + 0.045vw);"><strong> </strong>se utiliza en JPA (Java Persistence API) para especificar operaciones en cascada que deben propagarse desde la entidad propietaria hacia las entidades asociadas. La anotación </span><span class="" style="font-size: calc(0.90375rem + 0.045vw);">cascade</span><span class="" style="font-size: calc(0.90375rem + 0.045vw);"> se aplica generalmente a las relaciones entre entidades (como relaciones </span><span class="" style="font-size: calc(0.90375rem + 0.045vw);">@OneToOne</span><span class="" style="font-size: calc(0.90375rem + 0.045vw);">, </span><span class="" style="font-size: calc(0.90375rem + 0.045vw);">@OneToMany</span><span class="" style="font-size: calc(0.90375rem + 0.045vw);">, </span><span class="" style="font-size: calc(0.90375rem + 0.045vw);">@ManyToOne</span><span class="" style="font-size: calc(0.90375rem + 0.045vw);">, </span><span class="" style="font-size: calc(0.90375rem + 0.045vw);">@ManyToMany</span><span class="" style="font-size: calc(0.90375rem + 0.045vw);">). La anotación </span><span class="" style="font-size: calc(0.90375rem + 0.045vw);">cascade</span><span class="" style="font-size: calc(0.90375rem + 0.045vw);"> se puede usar en combinación con otras anotaciones, y su propósito es controlar cómo se gestionan las operaciones de persistencia, actualización y eliminación en las entidades asociadas.</span></p><p><span class="" style="font-size: calc(0.90375rem + 0.045vw);"></span></p><p><span>Aquí hay algunas de las anotaciones comunes que se utilizan con el parámetro cascade:<br/></span></p><p><span></span></p><pre><span class="" style="color: rgb(239, 69, 64);">@OneToOne(cascade = CascadeType.ALL)</span></pre><pre><span><span class="" style="color: rgb(239, 69, 64);">@OneToMany(cascade = CascadeType.ALL)</span><br/></span></pre><pre><span class="" style="color: rgb(239, 69, 64);">@OneToMany(cascade = CascadeType.ALL)</span></pre><pre><span class="" style="color: rgb(239, 69, 64);">@ManyToMany(cascade = CascadeType.ALL)</span></pre><pre><span class="" style="color: rgb(239, 69, 64);">@ManyToOne(cascade = CascadeType.ALL)</span></pre><br/><p></p><p><span style="font-size: 0.9375rem;">Veamos ahora cada uno de los posibles valores del atributo </span><code>cascade </code><span style="font-size: 0.9375rem;">para Hibernate</span></p><p></p><p></p></div><div id="wrap"><div id="post-4056"><div>
+<p></p>
+<div>
+<table black”="" solid="" style="”border:1px">
+<caption></caption>
+<tbody>
+<tr>
+<th scope="col">Valor         </th>
+<th scope="col">Descripción</th>
+</tr>
+<tr>
+<td><code>none</code></td>
+<td>No se realiza ninguna acción en los objetos relacionados al hacerlo sobre el principal</td>
+</tr>
+<tr>
+<td><code>save-update</code></td>
+<td>Si se inserta o actualiza el objeto principal también se realizará la inserción o actualización en los objetos relacionados.</td>
+</tr>
+<tr>
+<td><code>delete</code></td>
+<td>Si se borra el objeto principal también se realizará el borrado en los objetos relacionados.</td>
+</tr>
+<tr>
+<td><code>evict</code></td>
+<td>Si se llama al método <a href="http://docs.jboss.org/hibernate/core/4.1/javadocs/org/hibernate/Session.html#evict(java.lang.Object)" target="_blank"><code>Session.evict(Object objeto)</code></a> para el objeto principal
+                                también se llamará para los objetos relacionados.</td>
+</tr>
+<tr>
+<td><code>lock</code></td>
+<td>Si se llama al método <a href="http://docs.jboss.org/hibernate/core/4.1/javadocs/org/hibernate/Session.LockRequest.html#lock(java.lang.Object)" target="_blank"><code>LockRequest.lock(Object objeto)</code></a> <sup><a href="http://cursohibernate.es/doku.php?id=unidades:03_relaciones:06_cascade#fn__10" id="fnt__10" name="fnt__10">10)</a></sup> para
+                                el objeto principal también se llamará para los objetos relacionados.</td>
+</tr>
+<tr>
+<td><code>merge</code></td>
+<td>Si se llama al método <a href="http://docs.jboss.org/hibernate/core/4.1/javadocs/org/hibernate/Session.html#merge(java.lang.Object)" target="_blank"><code>Session.merge(Object objeto)</code></a> con el objeto principal
+                                también se llamará para los objetos relacionados.</td>
+</tr>
+<tr>
+<td><code>refresh</code></td>
+<td>Si se llama al método <a href="http://docs.jboss.org/hibernate/core/4.1/javadocs/org/hibernate/Session.html#refresh(java.lang.Object)" target="_blank"><code>Session.refresh(Object objeto)</code></a> para el objeto
+                                principal también se llamará para los objetos relacionados.</td>
+</tr>
+<tr>
+<td><code>replicate</code></td>
+<td>Si se llama al método <a href="http://docs.jboss.org/hibernate/core/4.1/javadocs/org/hibernate/Session.html#replicate(java.lang.Object,%20org.hibernate.ReplicationMode)" target="_blank"><code>Session.replicate(Object objeto,ReplicationMode replicationMode)</code></a> para
+                                el objeto principal también se llamará para los objetos relacionados.</td>
+</tr>
+<tr>
+<td><code>all</code></td>
+<td>Si se realiza cualquiera de las <strong>anteriores</strong> acciones sobre el objeto principal también se realizará sobre los objetos relacionados.</td>
+</tr>
+<tr>
+<td><code>delete-orphan</code></td>
+<td>Este atributo sólo se usa si el objeto relacionado es una colección. Indica que si en la colección del objeto principal eliminamos un elemento , al persistir el objeto principal deberemos borrar de la base de datos el elemento
+                                de la colección que habíamos eliminado.</td>
+</tr>
+<tr>
+<td><code>all-delete-orphan</code></td>
+<td>Es la unión de los atributos <code>all</code> y <code>delete-orphan</code> <sup><a href="http://cursohibernate.es/doku.php?id=unidades:03_relaciones:06_cascade#fn__11" id="fnt__11" name="fnt__11">11)</a></sup></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>De todos los valores los realmente importantes, ya que incluyen la funcionalidad de trabajar con los objetos relacionados, son los 4 siguientes:</p>
+<ul>
+<li>
+<div><code>none</code></div>
+</li>
+<li>
+<div><code>save-update</code></div>
+</li>
+<li>
+<div><code>delete</code></div>
+</li>
+<li>
+<div><code>delete-orphan</code></div>
+</li>
+</ul>
+<p>Los siguientes 5 valores generalmente querremos incluirlos ya que <em>no son peligrosos si los inclumos</em> aunque al hacerlo se podrían lanzar más <acronym title="Structured Query Language">SQL</acronym> contra la base
+                de datos:</p>
+<ul>
+<li>
+<div><code>evict</code></div>
+</li>
+<li>
+<div><code>lock</code></div>
+</li>
+<li>
+<div><code>merge</code></div>
+</li>
+<li>
+<div><code>refresh</code></div>
+</li>
+<li>
+<div><code>replicate</code></div>
+</li>
+</ul>
+<p>Los siguientes 2 valores son agrupaciones de los 9 anteriores:</p>
+<ul>
+<li>
+<div><code>all</code></div>
+</li>
+<li>
+<div><code>all-delete-orphan</code></div>
+</li>
+</ul>
+<p>Así que lo <em>normal</em> es que el atributo <code>cascade</code> tome alguno de los siguientes valores:</p>
+<ul>
+<li>
+<div><code>none</code></div>
+</li>
+<li>
+<div><code>all</code></div>
+</li>
+<li>
+<div><code>all-delete-orphan</code></div>
+</li>
+<li>
+<div><code>save-update,evict,lock,merge,refresh,replicate</code></div>
+</li>
+</ul>
+<p>Las opciones para esta propiedad en Hibernate amplian las de las especificaciones de JPA. <span>Solo Hibernate admite para la propiedad </span><em>CascadeType</em><span>r las opciones </span><i> REPLICATE  </i><span>y </span><i>SAVE_UPDATE</i><span>. Si bien la replicación es útil para algunos escenarios muy específicos (cuando el estado exacto de la entidad se debe reflejar entre dos Fuentes de datos distintas), el combo de persistencia y combinación siempre es una mejor alternativa que la operación nativa saveOrUpdate.</span></p><p></p><pre><span style='color: rgb(73, 80, 87); font-size: calc(0.90375rem + 0.045vw); font-family: "Open Sans", sans-serif;'>Para saber mas de las comparación entre hibernate y JPA en este punto sigue </span><a href="https://vladmihalcea.com/a-beginners-guide-to-jpa-and-hibernate-cascade-types/" style='background-color: rgb(255, 255, 255); font-size: calc(0.90375rem + 0.045vw); font-family: "Open Sans", sans-serif;'>el enlace</a><span style='color: rgb(73, 80, 87); font-size: calc(0.90375rem + 0.045vw); font-family: "Open Sans", sans-serif;'>.</span><br/></pre>
+<p><br/></p>
+<p></p>
+<p><strong>Ejemplos:</strong></p>
+<p><span><strong>https://www.mkyong.com/hibernate/hibernate-cascade-example-save-update-delete-and-delete-orphan/</strong><br/></span></p>
+<p><span><span><strong>http://www.mkyong.com/hibernate/different-between-cascade-and-inverse/</strong><br/></span></span>
+</p>
+<p><span><span><strong><br/></strong></span></span>
+</p><br/>
+<p></p>
+</div>
+</div>
+</div><br/>
+<p></p></div></div></body></html>

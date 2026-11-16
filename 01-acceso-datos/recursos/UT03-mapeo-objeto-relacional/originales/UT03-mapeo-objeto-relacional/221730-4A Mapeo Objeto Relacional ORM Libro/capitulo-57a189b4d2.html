@@ -1,0 +1,91 @@
+<html><head><meta charset="utf-8"/></head><body><div class="box py-3 generalbox book_content" id="mod_book-chapter"><h3>7. Configurando</h3><div class="no-overflow"><p></p>
+<div>
+<div id="toc__inside">
+<p><span style="font-size: 0.9375rem;">Como con cualquier otro framework es necesario configurarlo para su correcto funcionamiento.</span></p>
+<p><span style="font-size: 0.9375rem;">La instalación del plugin para Hibernate la puedes encontrar en esta unidad en un fichero aparte</span></p>
+<p><span style="font-size: 0.9375rem;"> Sin embargo, aún quedan aspectos que debemos configurar como:</span></p>
+</div>
+</div>
+<div>
+<ul>
+<li>
+<div>Datos de conexión a la base de datos</div>
+</li>
+<li>
+<div>Ubicación de las clases a persistir.</div>
+</li>
+<li>
+<div><span style="font-size: 0.9375rem;">Nivel de Log</span></div>
+</li>
+</ul>
+</div>
+<p></p>
+<div>
+<p>La forma de configurar hibernate es usando el fichero <acronym title="Extensible Markup Language">XML</acronym> de configuración llamado <strong>hibernate.cfg.xml.</strong> Este fichero deberemos guardarlo en el paquete raíz de nuestras clases Java, es decir fuera de cualquier paquete.Si estamos usando NetBeans deberá ser en la carpeta src de nuestro proyecto.</p>
+<p>La información que contiene es la siguiente:</p>
+<ul>
+<li>
+<div>Propiedades de configuración.</div>
+</li>
+<li>
+<div>Las clases que se quieren mapear.</div>
+</li>
+</ul>
+<p>El fichero tiene la siguiente estructura:</p>
+<div>
+<pre> 1: &lt;?xml version="1.0" encoding="UTF-8"?&gt;
+ 2: &lt;!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd"&gt;
+ 3: &lt;hibernate-configuration&gt;
+ 4:   &lt;session-factory&gt;
+ 5:     &lt;property name="connection.driver_class"&gt;<i>nombre_driver</i>&lt;/property&gt;
+ 6:     &lt;property name="connection.url"&gt;<i>url_base_datos</i>&lt;/property&gt;
+ 7:     &lt;property name="connection.username"&gt;<i>usuario</i>&lt;/property&gt;
+ 8:     &lt;property name="connection.password"&gt;<i>contraseña</i>&lt;/property&gt;
+ 9:     &lt;property name="dialect"&gt;<i>dialecto</i>&lt;/property&gt;
+10:     
+11:
+12:     &lt;mapping resource=<i>"fichero_mapeo.hbm.xml"</i>/&gt;
+13:     &lt;mapping class=<i>"clase_anotada"</i>/&gt;
+14:
+15:   &lt;/session-factory&gt;
+16: &lt;/hibernate-configuration&gt;</pre>
+</div>
+</div>
+<p>El tag <span style="color: rgb(33, 37, 41); font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; font-size: 13.125px;"> &lt;session-factory&gt; </span> contiene la configuración de hibernate, no debe tener ninguna propiedad.<br/>El resto de las etiquetas son: <span style="color: rgb(33, 37, 41); font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; font-size: 13.125px;">&lt;/property&gt;, </span>para especificar las propiedades JDBC de Hibernate y <span style="color: rgb(33, 37, 41); font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; font-size: 13.125px;">&lt;mapping&gt;, </span>con el atributo class si utilizamos clases anotadas o  resource si el mapeo se realiza con ficheros de mapeo hbm.xml<br/><br/></p>
+<p><a id="d0e1793"></a></p>
+<p style="display: inline !important;"><br/>Propiedades JDBC de Hibernate</p>
+<div>
+<table border="1" summary="Propiedades JDBC de Hibernate">
+<thead>
+<tr>
+<th>Nombre de propiedad</th>
+<th>Propósito</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>hibernate.connection.driver_class</td>
+<td><em>clase del driver jdbc</em></td>
+</tr>
+<tr>
+<td>hibernate.connection.url</td>
+<td><em>URL de jdbc</em></td>
+</tr>
+<tr>
+<td>hibernate.connection.username</td>
+<td><em>usuario de base de datos</em></td>
+</tr>
+<tr>
+<td>hibernate.connection.password</td>
+<td><em>contraseña del usuario de base de datos</em></td>
+</tr>
+<tr>
+<td>hibernate.connection.pool_size</td>
+<td><em>número máximo de conexiones manejadas por pooling</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><a id="d0e1793"></a><a id="d0e1793"></a></p>
+<p></p>
+<p></p></div></div></body></html>

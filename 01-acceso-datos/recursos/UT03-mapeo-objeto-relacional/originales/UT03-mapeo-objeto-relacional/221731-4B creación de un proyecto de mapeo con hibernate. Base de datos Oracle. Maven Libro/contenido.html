@@ -1,0 +1,144 @@
+<html><head><meta charset="utf-8"/></head><body><div class="box py-3 generalbox book_content" id="mod_book-chapter"><h3>1. nuevo proyecto Maven</h3><div class="no-overflow"><p dir="ltr" style="text-align: left;"></p>
+<div class="level1">
+<p><strong>Paso 1: Crear un Proyecto Maven en Eclipse</strong></p>
+<p>Abre Eclipse y ve a File (Archivo) -&gt; New (Nuevo) -&gt; Project (Proyecto).</p>
+<p>Selecciona Maven -&gt; Maven Project y haz clic en Next.</p>
+<p>Marca la opción Create a simple project (Crear un proyecto simple) y haz clic en Next.</p>
+<p>Ingresa el Group Id (ID del Grupo) y el Artifact Id (ID del Artefacto) para tu proyecto Maven. Luego, haz clic en Finish.</p>
+<p><strong>Paso 2: Agregar Dependencias de Hibernate en el archivo pom.xml</strong></p>
+<p>En el archivo pom.xml del proyecto Maven, agrega las dependencias de Hibernate. Asegúrate de incluir las dependencias necesarias para Hibernate Core, así como cualquier las del driver de la base de datos que se vaya a utilizar En el ejemplo que se os proporciona:</p>
+<p><code><span style="font-size: 9pt;">&lt;dependency&gt;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;"> &lt;groupId&gt;com.oracle.database.jdbc&lt;/groupId&gt;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;"> &lt;artifactId&gt;ojdbc10&lt;/artifactId&gt;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;"> &lt;version&gt;19.12.0.0&lt;/version&gt;</span></code></p>
+<p><code><span style="font-size: 9pt;">&lt;/dependency&gt;</span></code></p>
+<p><code><span style="font-size: 9pt;">&lt;dependency&gt;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;"> &lt;groupId&gt;org.hibernate&lt;/groupId&gt;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;"> &lt;artifactId&gt;hibernate-testing&lt;/artifactId&gt;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;"> &lt;version&gt;5.4.33.Final&lt;/version&gt;</span></code></p>
+<p><code><span style="font-size: 9pt;">&lt;/dependency&gt;</span></code></p>
+<p> </p>
+<p><strong>Paso 3: Configurar Archivo de Configuración de Hibernate</strong></p>
+<p>Crea el archivo hibernate.cfg.xml donde configurarás la conexión a la base de datos. Puedes colocarlo en la carpeta src/main/resources del proyecto Maven.</p>
+<p> </p>
+<p>Define las propiedades de conexión a la base de datos en este archivo. En el ejemplo que se os proporciona:</p>
+<p> </p>
+<p><span style="font-size: 9pt;"> </span><code><span style="font-size: 9pt;">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span></code></p>
+<p><code><span style="font-size: 9pt;">&lt;!DOCTYPE hibernate-configuration PUBLIC</span></code></p>
+<p><code><span style="font-size: 9pt;">"-//Hibernate/Hibernate Configuration DTD 3.0//EN"</span></code></p>
+<p><code><span style="font-size: 9pt;">"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd"&gt;</span></code></p>
+<p><code><span style="font-size: 9pt;">&lt;hibernate-configuration&gt;</span></code></p>
+<p><code><span style="font-size: 9pt;"> &lt;session-factory&gt;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;"> &lt;property name="hibernate.connection.driver_class"&gt;oracle.jdbc.driver.OracleDriver&lt;/property&gt;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;"> &lt;property name="hibernate.connection.password"&gt;tiger&lt;/property&gt;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;"> &lt;property name="hibernate.connection.url"&gt;jdbc:oracle:thin:@localhost:1521/xe&lt;/property&gt;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;"> &lt;property name="hibernate.connection.username"&gt;scott&lt;/property&gt;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;"> &lt;property name="hibernate.dialect"&gt;org.hibernate.dialect.Oracle10gDialect&lt;/property&gt;</span></code></p>
+<p><code><span style="font-size: 9pt;"> &lt;/session-factory&gt;</span></code></p>
+<p><code><span style="font-size: 9pt;">&lt;/hibernate-configuration&gt;</span></code></p>
+<p> </p>
+<p> <strong>Paso 4: Crear Entidades </strong></p>
+<p>Crea las clases de entidad utilizando anotaciones de Hibernate En el ejemplo que se os proporciona:</p>
+<p><code><span style="font-size: 9pt;">@Entity</span></code></p>
+<p><code><span style="font-size: 9pt;">@Table</span></code></p>
+<p><code><span style="font-size: 9pt;">public class Usuario implements Serializable {</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">@Id</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">@Column</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">private int seq;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">@Column</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">private String userNombre;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">@Column</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">private String password;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">@Column</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">private Date creacionFecha;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">@Column</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">private String creacionUsuario;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">@Column</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">private Date modificaFecha;</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">@Column</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">private String modificaUsuario;</span></code></p>
+<p style="padding-left: 40px;"> </p>
+<p><strong>Paso 5: Crea paquetes para organizar proyecto</strong></p>
+<p><img alt="" longdesc="" name="image1.png" src="assets/9301aa5822d6-image1.png"/></p>
+<p>La estructura de ficheros la determina Maven.</p>
+<p>En modelo situamos las clases entidad</p>
+<p>En programas tendremos los programas.</p>
+<p>En utils la clase que genera objetos de la clase SessionFactory </p>
+<p><strong>Paso 6: Crear la session</strong></p>
+<p>En el paquete utils creamos la utilidad para gestionar la sesión de Hibernate mediante un patrón Singleton, lo que asegura que se utiliza una única instancia de SessionFactory en toda la aplicación. </p>
+<p>La clase de utilidad llamada HibernateUtils se diseña para gestionar la conexión con Hibernate mediante el patrón Singleton. Este patrón garantiza que se utilice una única instancia de SessionFactory en toda la aplicación, optimizando el uso de recursos, ya que SessionFactory es un objeto pesado cuya creación puede ser costosa. La instancia de SessionFactory se inicializa de forma segura en un bloque estático, leyendo la configuración desde el archivo hibernate.cfg.xml. El método estático getSessionFactory permite acceder a esta instancia de manera centralizada, facilitando su reutilización en cualquier parte de la aplicación, asegurando además que se maneje de forma eficiente </p>
+<table border="1" style="border-collapse: collapse; width: 100.018%;"><colgroup><col style="width: 99.8667%;"/></colgroup>
+<tbody>
+<tr>
+<td>
+<p><strong>Clase HibernateUtils (utiliza un patron Singleton)</strong><br/>Esta clase sirve como una herramienta para inicializar y proporcionar acceso a una instancia única de SessionFactory, que es un componente central de Hibernate para manejar las conexiones con la base de datos.</p>
+<p> </p>
+<p style="padding-left: 40px;"><code>public class HibernateUtils {</code></p>
+<p style="padding-left: 80px;"><code>private static SessionFactory sessionFactory;</code></p>
+<p style="padding-left: 80px;"><code>static {</code></p>
+<p style="padding-left: 120px;"><code>sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();</code></p>
+<p style="padding-left: 80px;"><code>}</code></p>
+<p style="padding-left: 80px;"><code> </code><code>public static SessionFactory getSessionFactory() {</code></p>
+<p style="padding-left: 120px;"><code>return sessionFactory;</code></p>
+<p style="padding-left: 80px;"><code>}</code></p>
+<p style="padding-left: 40px;"><code>}</code></p>
+<p><strong> private static SessionFactory sessionFactory;</strong><br/>Declara una variable estática y privada sessionFactory de tipo SessionFactory. Pertenece a la clase y no a una instancia, lo que permite que todas las partes de la aplicación accedan al mismo objeto SessionFactory.(static). Y restringe el acceso directo para garantizar el control sobre cómo se crea y utiliza la instancia.(private)</p>
+<p><br/> Este bloque estático se ejecuta una vez cuando la clase HibernateUtils se carga en memoria:<br/>static {<br/>    sessionFactory = new Configuration().configure("hibernate.cfg.xml").buildSessionFactory();<br/>}</p>
+<p><br/><strong>new Configuration(): </strong>Crea una nueva instancia de Configuration, que es responsable de cargar la configuración de Hibernate.<br/>.configure("hibernate.cfg.xml"): Busca y carga el archivo de configuración hibernate.cfg.xml desde el directorio raíz del proyecto o src/main/resources (en caso de usar Maven). Este archivo contiene información como la URL de la base de datos, el dialecto de Hibernate, el usuario y la contraseña, etc.<br/><strong>.buildSessionFactory():</strong> Construye el objeto SessionFactory basado en la configuración cargada.<br/> <br/><strong>Método getSessionFactory: </strong>Proporciona acceso público a la instancia de SessionFactory.<br/><br/>public static SessionFactory getSessionFactory() {<br/>    return sessionFactory;<br/>}</p>
+<p>Es un método static, lo que significa que puedes llamarlo directamente usando la clase, sin necesidad de crear una instancia de HibernateUtils. Retorna la instancia única de SessionFactory.<br/> <br/><strong>¿Qué es un SessionFactory?</strong><br/>Es un objeto que se crea una vez y se reutiliza durante toda la aplicación.<br/>Encargado de proveer conexiones con la base de datos (a través de Session) y gestionar la configuración de Hibernate.<br/><br/> Funcionamiento Completo<br/>Cuando la clase HibernateUtils se carga en memoria, el bloque estático inicializa la variable sessionFactory leyendo la configuración desde el archivo hibernate.cfg.xml.<br/>Cada vez que necesitas interactuar con la base de datos, llamas al método HibernateUtils.getSessionFactory() para obtener la instancia de SessionFactory.<br/>Usas esa instancia para abrir una nueva Session, que se utiliza para ejecutar operaciones de CRUD (crear, leer, actualizar, eliminar) en la base de datos.<br/> <br/>La ventaja de usar el patrón Singleton es que solo hay una instancia de SessionFactory en toda la aplicación.<br/>Se evita crear múltiples instancias costosas de SessionFactory. </p>
+<p>Centraliza la configuración de Hibernate en un único lugar (hibernate.cfg.xml y esta clase).<br/>Cualquier parte de la aplicación puede acceder al SessionFactory mediante el método estático getSessionFactory.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p></p>
+<p> </p>
+<p><strong>Paso 7: En el paquete "programas" creamos la clase que tiene un método main:</strong></p>
+<p>En conveniente al finalizar este punto, ejecutar el programa para ver que la parte de la conexión se ha realizado correctamente</p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">public class Main {</span></code></p>
+<p style="padding-left: 40px;"><code><span style="font-size: 9pt;">public static void main(String[] args) {</span></code></p>
+<p style="padding-left: 80px;"><code style="text-align: initial;"><span style="font-size: 9pt;">SessionFactory sesion = HibernateUtils.getSessionFactory();</span></code></p>
+<p style="padding-left: 80px;"><code><span style="font-size: 9pt;">Session session = sesion.openSession(); // TODO Auto-generated constructor stub</span></code></p>
+<p style="padding-left: 80px;"><code>try {</code></p>
+<p style="padding-left: 120px;"><code><span style="font-size: 9pt;">//aquí pondremos el programa, transacciones, instanciar objetos, guardar, recuperar, etc.</span><span style="font-size: 9pt;">.</span></code></p>
+<p style="padding-left: 80px;"><code>} catch (Exception e) { </code></p>
+<p style="padding-left: 160px;"><code> e.printStackTrace();</code></p>
+<p style="padding-left: 160px;"><code>// acciones para restaurar el estado bd( rollback)</code></p>
+<p style="padding-left: 80px;"><span style="font-size: 9pt; color: rgb(232, 62, 140); font-family: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace; text-align: initial;">}finally {</span></p>
+<p style="padding-left: 120px;"><code><span style="font-size: 9pt;">session.close();</span></code></p>
+<p style="padding-left: 120px;"><code><span style="font-size: 9pt;">}</span></code></p>
+<p style="padding-left: 80px;"><code><span style="font-size: 9pt;">}</span></code></p>
+<p><code><span style="font-size: 9pt;">}</span></code></p>
+<p> </p>
+<p><strong>Paso 8: Completamos el fichero hibernate.cfg.xml:</strong></p>
+<p><strong>incluimos las clases entidad. </strong>En el ejemplo que se os proporciona:</p>
+<p style="padding-left: 40px;"> <span style="font-size: 9pt;">&lt;mapping class="modelo.Usuario"&gt;&lt;/mapping&gt;</span></p>
+<p><strong>Especificamos la forma en que deseamos interactuar con la base de datos:</strong></p>
+<p style="padding-left: 40px;"><span style="font-size: 9pt;"> </span><span style="font-size: 9pt;"> </span><span style="font-size: 9pt;">&lt;property name="hibernate.hbm2ddl.auto"&gt;create&lt;/property&gt;</span></p>
+<p><strong>Especificamos otras propiedades:</strong></p>
+<p style="padding-left: 40px;"><span style="font-size: 9pt;"> &lt;property name="show_sql"&gt;true&lt;/property&gt;</span> </p>
+<p><strong>Paso 9: Completamos el el programa.</strong> En el ejemplo que se os proporciona:</p>
+<p>Instanciamos un objeto de la clase Entidad y lo hacemos persistente:</p>
+<p style="padding-left: 40px;"><code>import java.util.Date;</code></p>
+<p style="padding-left: 40px;"><code>import org.hibernate.Session;</code><br/><code>import org.hibernate.HibernateException;</code><br/><code>import org.hibernate.SessionFactory;</code></p>
+<p style="padding-left: 40px;"><code>import maven.MySQL.Usuario;</code><br/><code>import utils.HibernateUtils;</code></p>
+<p style="padding-left: 40px;"><code>public class Main {</code><br/><code> public static void main(String[] args) {</code></p>
+<p style="padding-left: 80px;"><br/><code> SessionFactory sesion = HibernateUtils.getSessionFactory();</code><br/><code> Session session = sesion.openSession(); // TODO Auto-generated constructor stub</code><br/><code> Usuario p = new Usuario();</code><br/><code> p.setSeq(1);</code><br/><code> p.setCreacionUsuario("Manolo");</code><br/><code> p.setCreacionFecha(new Date());</code><br/><code> p.setPassword("Manolo");</code><br/><code> try {</code></p>
+<p style="padding-left: 120px;"><code> session.beginTransaction();</code></p>
+<p style="padding-left: 120px;"><code> session.save(p);</code><br/><code> session.getTransaction().commit();</code><br/><code> </code></p>
+<p style="padding-left: 80px;"><code>}catch (HibernateException e) {</code></p>
+<p style="padding-left: 120px;"><code> if(session.getTransaction()!=null) { session.getTransaction().rollback();  }</code><br/><code> </code><br/><code> }finally { </code></p>
+<p style="padding-left: 160px;"><code>session.close();</code></p>
+<p style="padding-left: 120px;"><code> }</code><br/><code> </code></p>
+<p style="padding-left: 80px;"><code>}</code></p>
+<p style="padding-left: 80px;"><br/><code>}</code></p>
+<p></p>
+<p></p>
+<p style="padding-left: 40px;">Ejecuta tu aplicación desde Eclipse y prueba el código de Hibernate que has escrito para asegurarte de que interactúe correctamente con la base de datos.</p>
+<p><strong>Paso 10: Comprobamos que se ha creado una tabla con las mismas columnas que atributos anotados tiene la clase entidad y que se haya insertado la línea correspondiente al objeto que se ha hecho persistente</strong>:</p>
+<p> </p>
+<p> </p>
+<p> </p>
+</div>
+<p></p>
+<p></p></div></div></body></html>

@@ -1,0 +1,90 @@
+<html><head><meta charset="utf-8"/></head><body><section aria-label="Contenido" id="region-main">
+<span class="notifications" id="user-notifications"></span>
+<span id="maincontent"></span>
+<h2>Ejercicio 5 - Transacciones JDBC</h2>
+<div class="activity-header" data-for="page-activity-header">
+<span class="sr-only">Requisitos de finalización</span>
+<div class="activity-information" data-activityname="Ejercicio 5 - Transacciones JDBC" data-region="activity-information">
+</div>
+</div>
+<div role="main"><div class="box py-3 generalbox center clearfix"><div class="no-overflow"><p class="ds-markdown-paragraph"><strong><span class="">Contexto:</span></strong><span class=""> La base de datos </span><code>world</code><span class=""> de MySQL contiene, entre otras, la tabla </span><code>country</code><span class=""> con información de todos los países: código ISO, nombre, continente, población, Expectativa de vida (</span><code>LifeExpectancy</code><span class="">), PIB (</span><code>GNP</code><span class="">), etc. </span></p>
+<p class="ds-markdown-paragraph"><strong><span class="">Tarea a realizar:</span></strong></p>
+<p class="ds-markdown-paragraph"><span class="">Se desea implementar un método Java que actualice </span><strong><span class="">de forma transaccional</span></strong><span class=""> la información de </span><strong><span class="">dos países</span></strong><span class=""> en la tabla </span><code>country</code><span class="">. La operación consiste en:</span></p>
+<ol start="1">
+<li>
+<p class="ds-markdown-paragraph"><span class="">Incrementar la población (</span><code>Population</code><span class="">) del país con código </span><code>'ESP'</code><span class=""> (España) en </span><strong><span class="">1.000.000</span></strong><span class=""> de habitantes.</span></p>
+</li>
+<li>
+<p class="ds-markdown-paragraph"><strong><span class="">Restar</span></strong><span class=""> esa misma cantidad de población al país con código </span><code>'FRA'</code><span class=""> (Francia).</span></p>
+</li>
+<li>
+<p class="ds-markdown-paragraph"><span class="">La operación debe ser </span><strong><span class="">atómica</span></strong><span class="">: o se aplican ambos cambios, o no se aplica ninguno. Si el segundo </span><code>UPDATE</code><span class=""> falla (por ejemplo, porque el código de país no existe), se debe deshacer el primero.</span></p>
+</li>
+<li><span class="">Provoca el <strong>error </strong>y comprueba que no actualiza los dos registros</span></li>
+</ol></div></div><div class="modified">Última modificación: miércoles, 21 de octubre de 2026, 17:40</div></div>
+<nav aria-label="Navegación de actividad" class="mt-5 mb-1 activity-navigation container-fluid">
+<div class="row">
+<div class="col-md-4"> <div class="float-start">
+<a aria-label="Actividad anterior: Ejercicio 4 - Buscador de Ciudades - PreparedStatement" class="btn btn-link" href="https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/page/view.php?id=218671&amp;forceview=1" id="prev-activity-link">◄ Ejercicio 4 - Buscador de Ciudades - PreparedStatement</a>
+</div>
+</div>
+<div class="col-md-4"> <div class="mdl-align">
+<div class="urlselect">
+<label class="sr-only" for="jump-to-activity">
+                Saltar a actividad
+            </label>
+<select class="custom-select urlselect" disabled="disabled" id="jump-to-activity">
+<option selected="" value="">Saltar a actividad</option>
+<option value="/mod/forum/view.php?id=93112&amp;forceview=1">Avisos</option>
+<option value="/mod/forum/view.php?id=93113&amp;forceview=1">Novedades</option>
+<option value="/mod/forum/view.php?id=93114&amp;forceview=1">foro de dudas</option>
+<option value="/mod/resource/view.php?id=218589&amp;forceview=1">Organización del proyecto Intermodular</option>
+<option value="/mod/page/view.php?id=218346&amp;forceview=1">Programación para Proyectos</option>
+<option value="/mod/assign/view.php?id=219409&amp;forceview=1">Título y sinopsis del Proyecto Intermodular</option>
+<option value="/mod/resource/view.php?id=210769&amp;forceview=1">Horario Curso</option>
+<option value="/mod/resource/view.php?id=210778&amp;forceview=1">Procedimiento de reclamaciones</option>
+<option value="/mod/assign/view.php?id=216211&amp;forceview=1">Curriculums para FFE</option>
+<option value="/mod/book/view.php?id=209047&amp;forceview=1">2A Manejo de ficheros</option>
+<option value="/mod/book/view.php?id=209048&amp;forceview=1">2B Librerías de  tratamiento de XML en Java.</option>
+<option value="/mod/book/view.php?id=222037&amp;forceview=1">2B Librerías de  tratamiento de XML en Java. Alternativa</option>
+<option value="/mod/resource/view.php?id=210768&amp;forceview=1">Clases - Flujos de datos</option>
+<option value="/mod/resource/view.php?id=211198&amp;forceview=1">Ejemplo de código Serialización</option>
+<option value="/mod/resource/view.php?id=211317&amp;forceview=1">Ejemplo de manejo de Nodos en DOM</option>
+<option value="/mod/resource/view.php?id=212778&amp;forceview=1">Fichero cd_catalog.xml para ejemplo 2.1. Ejemplo de DOM</option>
+<option value="/mod/resource/view.php?id=210767&amp;forceview=1">Presentación del curso</option>
+<option value="/mod/assign/view.php?id=214231&amp;forceview=1">Ejercicio1 - Clase File</option>
+<option value="/mod/resource/view.php?id=214232&amp;forceview=1">Solución - Ejercicio1 - Clase File</option>
+<option value="/mod/assign/view.php?id=214237&amp;forceview=1">Ejercicio2 - Visualizar fichero</option>
+<option value="/mod/resource/view.php?id=214251&amp;forceview=1">Solución - Ejercicio2 - Visualizar fichero</option>
+<option value="/mod/assign/view.php?id=214261&amp;forceview=1">Ejercicio3- Fichero de acceso aelatorio</option>
+<option value="/mod/page/view.php?id=214268&amp;forceview=1">Solución - Ejercicio3 - Fichero de acceso aelatorio</option>
+<option value="/mod/assign/view.php?id=215848&amp;forceview=1">Práctica Evaluable - UT01</option>
+<option value="/mod/resource/view.php?id=215849&amp;forceview=1">Solución - Práctica Evaluable - UT01</option>
+<option value="/mod/assign/view.php?id=220374&amp;forceview=1">Entrega Examen Ejercicio 04/11/2026</option>
+<option value="/mod/book/view.php?id=215930&amp;forceview=1">3A Manejo de conectores.</option>
+<option value="/mod/book/view.php?id=215931&amp;forceview=1">3B  BASES DE DATOS EMBEBIDAS. SQLite</option>
+<option value="/mod/page/view.php?id=218463&amp;forceview=1">Ejercicio 1 - Recorrer una selección múltiple (No evaluable)</option>
+<option value="/mod/page/view.php?id=218465&amp;forceview=1">Solución Ejercicio 1 - Recorrer una selección múltiple</option>
+<option value="/mod/page/view.php?id=218444&amp;forceview=1">Ejercicio 2 - Tablas de una base de datos (No evaluable)</option>
+<option value="/mod/page/view.php?id=218446&amp;forceview=1">Solución Ejercicio 2 - Tablas de una Base de datos</option>
+<option value="/mod/page/view.php?id=218620&amp;forceview=1">Ejercicio 3 - Sentencias DML</option>
+<option value="/mod/page/view.php?id=218671&amp;forceview=1">Ejercicio 4 - Buscador de Ciudades - PreparedStatement</option>
+<option value="/mod/assign/view.php?id=219702&amp;forceview=1">Práctica Evaluable - UT02</option>
+<option value="/mod/book/view.php?id=221730&amp;forceview=1">4A Mapeo Objeto Relacional ORM</option>
+<option value="/mod/book/view.php?id=221731&amp;forceview=1">4B creación de un proyecto de mapeo con hibernate. Base de datos Oracle. Maven</option>
+<option value="/mod/book/view.php?id=221732&amp;forceview=1">4C Lenguaje de consultas de Hibernate (HQL)</option>
+<option value="/mod/folder/view.php?id=222163&amp;forceview=1">Ficheros de configuración</option>
+<option value="/mod/assign/view.php?id=220982&amp;forceview=1">Entrega de Anteproyecto</option>
+</select>
+<noscript>
+</noscript>
+</div>
+</div>
+</div>
+<div class="col-md-4"> <div class="float-end">
+<a aria-label="Siguiente actividad: Práctica Evaluable - UT02" class="btn btn-link" href="https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/assign/view.php?id=219702&amp;forceview=1" id="next-activity-link">Práctica Evaluable - UT02 ►</a>
+</div>
+</div>
+</div>
+</nav>
+</section></body></html>

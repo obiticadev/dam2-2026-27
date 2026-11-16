@@ -1,0 +1,71 @@
+<html><head><meta charset="utf-8"/></head><body><div class="box py-3 generalbox book_content" id="mod_book-chapter"><h3>3. Conexión a bases de datos con API JDBC</h3><h4>3.2. Conectores o Drivers.</h4><div class="no-overflow"><div id="outer">
+<div id="main">
+<div class="nodeDecoration"> </div>
+<div class="FreeTextfpdIdevice" id="id12">
+<div class="iDevice emphasis0">
+<div class="block" id="ta12_73" style="display: block;">
+<p><strong>Un conector o <span lang="en">driver</span> es un conjunto de clases encargadas de implementar los interfaces del API y acceder a la base de datos.</strong></p>
+<p>Para poder conectarse a una base de datos y lanzar consultas, una aplicación necesita tener un <span lang="en">driver</span> adecuado. </p>
+<p>El conector lo proporciona el fabricante de la base de datos o bien un tercero. </p>
+<p>Cuando se construye una aplicación de base de datos, <strong>JDBC oculta lo específico de cada base de datos</strong>, de modo que el programador se ocupe sólo de su aplicación.  <span style="font-size: 0.9375rem;">El código de nuestra aplicación no depende del </span><span lang="en" style="font-size: 0.9375rem;">driver</span><span style="font-size: 0.9375rem;">, puesto que trabajamos mediante los paquetes<strong> java.sql</strong> y<strong> javax.sql.</strong></span></p>
+<p>JDBC ofrece las clases e interfaces para:</p>
+<ul class="lista_verificacion">
+<li>Establecer una conexión a una base de datos.</li>
+<li>Ejecutar una consulta.</li>
+<li>Procesar los resultados.</li>
+</ul>
+<p><strong>La clase usada es DriverManager</strong></p>
+<p class="ds-markdown-paragraph" style="padding-left: 40px;"><span class="">Es la </span><strong><span class="">clase usada</span></strong><span class=""> de JDBC para gestionar los drivers de bases de datos y establecer conexiones. Esta en desuso, y se usa más la interfaz <strong>DataSource</strong></span></p>
+<p class="ds-markdown-paragraph" style="padding-left: 40px;"><strong><span class="">Responsabilidades principales:</span></strong></p>
+<ul>
+<li style="list-style-type: none;">
+<ul>
+<li>
+<p class="ds-markdown-paragraph"><span class="">Registrar y administrar los drivers JDBC disponibles.</span></p>
+</li>
+<li>
+<p class="ds-markdown-paragraph"><span class="">Proporcionar el método </span><code>getConnection()</code><span class=""> para obtener una conexión a la base de datos.</span></p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Las interfaces más usadas son:</strong></p>
+<ol>
+<li><strong>Connection: </strong><span class="">Representa una </span><strong><span class="">sesión de conexión</span></strong><span class=""><strong> </strong>con una base de datos específica. Es el punto de partida para ejecutar sentencias SQL.</span></li>
+<li><strong>Statement: </strong><span class="">Se utiliza para </span><strong><span class="">ejecutar sentencias SQL estáticas</span></strong><span class=""><strong> </strong>(sin parámetros) y obtener sus resultados.</span></li>
+<li><span class=""><strong>ResultSet: </strong>Representa el <span class="">conjunto de<strong> resultados</strong></span><span class=""><strong> devuelto por una consulta </strong>(</span><span class="" style="font-size: 1rem; text-align: initial;">normalmente un </span><code style="text-align: initial;">SELECT</code><span class="" style="font-size: 1rem; text-align: initial;">). Mantiene un cursor que apunta a la fila actual.</span></span></li>
+<li><strong>DataSource: </strong><span class="">Alternativa moderna a </span><code>DriverManager</code><span class="">. Representa una </span><strong><span class="">fuente de datos</span></strong><span class=""> y suele implementarse mediante </span><strong><span class="">pooling de conexiones</span></strong><span class=""> (como HikariCP, Apache DBCP, etc.).</span></li>
+</ol>
+<p><strong>Ejemplo:</strong></p>
+<p>programa que lista números de empleado, nombre y oficio:</p>
+<p><code>import java.sql.Connection;</code><br/><code><span style="font-size: 0.9375rem;">import java.sql.DriverManager;<br/></span><span style="font-size: 0.9375rem;">import java.sql.ResultSet;<br/></span><span style="font-size: 0.9375rem;">import java.sql.SQLException;<br/></span><span style="font-size: 0.9375rem;">import java.sql.Statement;<br/><span style="font-size: 0.9375rem;">public class ConsultaSencilla {<br/></span></span><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">public static void main(String[] args) {<br/></span><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">Connection conexion;<br/></span><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">try {<br/></span><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">String urljdbc = "jdbc:oracle:thin:@localhost:1521:XE";<br/>        //la base de datos esta en local y el servicio Oracle es XE <br/>        //se utiliza   thin driver <br/></span><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">conexion = DriverManager.getConnection(urljdbc, "ejemplo", ejemplo"); <br/></span><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">Statement smt = conexion.createStatement();<br/></span><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">ResultSet rset = smt.executeQuery("select  empno, ename , job from emp order by 1");<br/></span><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">while (rset.next())<br/></span><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">System.out.println("empleado numero " + rset.getString(1) + " nombre " + rset.getString(2) + " oficio " </span><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">+ rset.getString(3));<br/><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">conexion.close();<br/></span></span><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">} catch (SQLException e) {<br/></span><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">e.printStackTrace();<br/></span><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">}<br/><span style="font-size: 0.9375rem; white-space: pre;"> </span><span style="font-size: 0.9375rem;">}<br/></span></span><span style="font-size: 0.9375rem;">}</span></code></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div class="FreeTextfpdIdevice">
+<div class="iDevice emphasis0">
+<div class="block" style="display: block;">
+<p></p>
+<p></p>
+<p>La API de JDBC provee acceso a datos desde Java. Usando esta API podemos acceder a variadas fuentes de datos: bases de datos relacionales, hojas de cálculo (spreadsheets) y archivos planos.</p>
+<p><span style="font-size: 0.9375rem;">Aquí encontraras un tutorial  bastante completo de JDBC con bases de datos Oracle:</span></p>
+</div>
+</div>
+</div>
+<div class="ParasabermasfpdIdevice" id="id13">
+<div class="iDevice emphasis_parasabermasfpd">
+<div class="iDevice_inner">
+<div class="block" id="ta13_47" style="display: block;">
+<p class="enlace_centrado"><a href="https://www.oracle.com/technetwork/database/application-development/jdbc/overview/quickstart-4308895.html">I</a><a href="https://www.oracle.com/technetwork/database/application-development/jdbc/overview/quickstart-4308895.html">ntroduccion a JDBC Oracle</a></p>
+<p class="enlace_centrado"><br/><br/>Hay cinco tipos de drivers JDBC: Tipo 1, Tipo 2, Tipo 3 , Tipo 4 y Tipo 5, que veremos a continuación.<br/><br/><br/></p>
+<p class="enlace_centrado"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div></div></div></body></html>

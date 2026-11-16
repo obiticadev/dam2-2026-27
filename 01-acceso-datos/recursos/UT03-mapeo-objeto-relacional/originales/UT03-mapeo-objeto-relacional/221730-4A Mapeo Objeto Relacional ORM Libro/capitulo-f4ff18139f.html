@@ -1,0 +1,74 @@
+<html><head><meta charset="utf-8"/></head><body><div class="box py-3 generalbox book_content" id="mod_book-chapter"><h3>8. Mapeo de relaciones</h3><h4>8.4. Relaciones uno a muchos (ordenada)</h4><div class="no-overflow"><p>La relación uno a muchos consiste simplemente en que un objeto <em>padre</em> tenga una lista ordenada de objetos <em>hijo</em> de forma que al persistirse el objeto principal también se persista la lista de objetos <em>hijo</em>. Esta relación también suele llamarse <em>maestro-detalle</em> o <em>padre-hijo</em>.<br/></p><p>El diagrama UML y el esquema relacional no difieren del de las relaciones uno a muchas desordenada.</p><p></p><div><p>El código fuente de la clase <code>Profesor</code> queda de la siguiente forma:</p><div><pre> 1: @<a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Aentity+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">Entity</a>
+ 2: @Table(name="Profesor")
+ 3: public class Profesor implements <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Aserializable+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">Serializable</a>  {
+ 4:
+ 5:     @Id
+ 6:     @Column(name="Id")
+ 7:     private int id;
+ 8:
+ 9:     @Column(name="nombre")
+10:     private <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> nombre;
+11:
+12:     @Column(name="ape1")
+13:     private <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> ape1;
+14:
+15:     @Column(name="ape2")
+16:     private <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> ape2;
+17:
+18:     @OneToMany(cascade= CascadeType.ALL, mappedBy="profesor")
+19:     
+20:     @IndexColumn(name="idx")
+21:     private List&lt;CorreoElectronico&gt; correosElectronicos;
+22:
+23:
+24:     public Profesor(){
+25:     }
+26:
+27:     public Profesor(int id, <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> nombre, <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> ape1, <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> ape2) {
+28:         this.id = id;
+29:         this.nombre = nombre;
+30:         this.ape1 = ape1;
+31:         this.ape2 = ape2;
+32:     }
+33: }
+</pre><p><a name="clase_profesor_anotada">Clase profesor anotada</a></p></div><p>A la propiedad <code>correosElectronicos</code> se ha añadido una anotación para indicar la relación <em>uno a muchos</em>.</p><ul><li><div><strong>OneToMany</strong>:Como su nombre indica le dice a Hibernate que esta propiedad contendrá la lista de <em>hijos</em>.</div><ul><li><div><strong>cascade</strong>: Este atributo tiene el mismo significado que el del fichero de mapeo de Hibernate. Mas información en <a href="https://docs.jboss.org/hibernate/orm/5.2/userguide/html_single/Hibernate_User_Guide.html#basic">Cascade</a>.</div></li></ul></li><li><div><strong>JoinColumn</strong>: Indicaremos el nombre de la columna que en la tabla <em>hija</em> contiene la clave ajena a la tabla <em>padre</em>. En nuestro ejemplo es la columna de la base de datos <code>IdProfesor</code> que se encuentra en la tabla <code>CorreoElectronico</code> la cual enlaza con la tabla <code>Profesor</code>.</div></li><li><div><strong>IndexColumn</strong>: Indicaremos el nombre de la columna que en la tabla <em>hija</em> contiene el orden dentro de la lista de <em>hijos</em>. En nuestro ejemplo es la columna de la base de datos <code>idx</code> que se encuentra en la tabla <code>CorreoElectronico</code>.</div></li></ul><p>El código de la clase CorreoElectronico es el siguiente:</p><div><pre> 1: @<a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Aentity+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">Entity</a>
+ 2: @Table(name="CorreoElectronico")
+ 3: public class CorreoElectronico implements <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Aserializable+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">Serializable</a> {
+ 4:
+ 5:     @Id
+ 6:     @Column(name="IdCorreo")
+ 7:     private int idCorreo;
+ 8:
+ 9:     @Column(name="DireccionCorreo")
+10:     private <a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> direccionCorreo;
+11:
+12:     @ManyToOne
+13:     @JoinColumn(name="IdProfesor")
+14:     private Profesor profesor;
+15:
+16:     public CorreoElectronico() {
+17:
+18:     }
+19:
+20:     public CorreoElectronico(int idCorreo,<a href="http://www.google.com/search?hl=en&amp;q=allinurl%3Astring+java.sun.com&amp;btnI=I%27m%20Feeling%20Lucky">String</a> direccionCorreo,Profesor profesor) {
+21:         this.idCorreo=idCorreo;
+22:         this.direccionCorreo=direccionCorreo;
+23:         this.profesor=profesor;
+24:     }
+25: }
+</pre><p><a name="clase_correoelectronico_anotada">Clase CorreoElectronico anotada</a></p></div><p>A la propiedad <code>profesor</code> se han añadido dos anotaciones para indicar la relación:</p><ul><li><div><strong>ManyToOne</strong>:Al ser el otro lado de la relación indicamos que desde este lado es una relación <em>mucho a uno</em>.</div></li><li><div><strong>JoinColumn</strong>: Indicaremos el nombre de la columna que en la tabla <em>hija</em> contiene la clave ajena a la tabla <em>padre</em>. En nuestro ejemplo es la columna de la base de datos <code>IdProfesor</code> que se encuentra en la tabla <code>CorreoElectronico</code> la cual enlaza con la tabla <code>Profesor</code>.</div></li></ul></div><p><a id="codigo_java" name="codigo_java">Código Java</a></p><div><p>Ahora que ya tenemos preparadas las clase Java para que puedan persistirse veamos el código necesario para persistirlas.</p><div><pre> 1: Profesor profesor=new Profesor(9, "Rosa", "Díaz", "Del Toro");
+ 2: List&lt;CorreoElectronico&gt; correosElectronicos=new ArrayList&lt;&gt;();
+ 3: correosElectronicos.add(new CorreoElectronico(3, "rosa@yahoo.com",profesor));
+ 4: correosElectronicos.add(new CorreoElectronico(2, "rosa@hotmail.com",profesor));
+ 5: correosElectronicos.add(new CorreoElectronico(1, "rosa@gmail.com",profesor));
+ 6:
+ 7: profesor.setCorreosElectronicos(correosElectronicos);
+ 8:
+ 9: Session session=sessionFactory.openSession();
+10: session.beginTransaction();
+11:
+12: session.save(profesor);
+13:
+14: session.getTransaction().commit();
+15: session.close();
+</pre><p><a name="persistiendo_la_clase_profesor">Persistiendo la clase Profesor</a></p></div><p>La explicación del código es la siguiente:</p><ul><li><div>En la línea 1 se crea el objeto <code>Profesor</code></div></li><li><div>En la segunda línea se crea el objeto <a href="http://docs.oracle.com/javase/7/docs/api/java/util/ArrayList.html" target="_blank"><code>ArrayList</code></a> que implementa el interfaz <a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html" target="_blank"><code>List</code></a> el cual contendrá la lista de hijos.</div></li><li><div>Desde las líneas 3 a la 5 se crean los objetos <code>CorreoElectronico</code> y se añaden al <a href="http://docs.oracle.com/javase/7/docs/api/java/util/List.html" target="_blank"><code>List</code></a>.</div></li><li><div>En la línea 7 se establece la relación entre la lista de hijos (<code>CorreoElectronico</code>) y el padre (<code>Profesor</code>).</div></li><li><div>En la línea 12 se guarda el objeto <code>Profesor</code> y automáticamente se guardan también sus hijos.</div></li></ul></div><br/><p></p></div></div></body></html>

@@ -1,0 +1,172 @@
+<html><head><meta charset="utf-8"/></head><body><div class="box py-3 generalbox book_content" id="mod_book-chapter"><h3>6. Configurar  conectores de la base de datos en proyecto java</h3><div class="no-overflow"><div id="outer">
+<div id="main">
+<div class="nodeDecoration">
+<h1 class="nodeTitle"> </h1>
+</div>
+<div class="FreeTextfpdIdevice" id="id22">
+<div class="iDevice emphasis0">
+<div class="block" id="ta22_73" style="display: block;">
+<p></p>
+<p><span class="" style="font-size: large;"><strong>MySQL</strong></span></p>
+<p></p>
+<p>Vamos a utilizar el IDE Eclipse para conectar java a las bases de datos, necesitamos instalar el conector de la base de datos. <br/><span style="font-size: 0.9375rem;">Puedes seguir este </span><a href="https://rodin.uca.es/xmlui/bitstream/handle/10498/18602/incorporacion-driver-JDBC-eclipse_Gamaza_Otte.pdf?sequence=1&amp;isAllowed=y" style="background-color: #ffffff; font-size: 0.9375rem;">tutorial</a><span style="font-size: 0.9375rem;">, que explica la descarga del driver y la configuración necesaria para utilizarlo en un proyecto Elipse. </span><span style="font-size: 0.9375rem;">O bien, puedes seguir el video  presentación <br/></span><span style="font-size: 0.9375rem;">Como verás, tan sólo consiste en descargar un archivo, descomprimirlo y desde Eclipse añadir el fichero <strong>.jar </strong></span><span style="font-size: 0.9375rem;">que constituye el </span><span lang="en" style="font-size: 0.9375rem;">driver</span><span style="font-size: 0.9375rem;"> que necesitamos. Es importante que compruebes el driver mas adecuado para trabajar con tu Servidor MySQL.</span></p>
+<p><div class="mediaplugin mediaplugin_videojs d-block"><div style="max-width:400px;"><video class="video-js" controls="true" data-setup-lazy='{"techOrder": ["youtube"], "sources": {"type": "video/youtube", "src":"https://youtu.be/cFLsynl91B0"}, "language": "es", "fluid": true, "playbackRates": [0.5, 0.75, 1, 1.25, 1.5, 1.75, 2], "userActions": {"hotkeys": true}}' id="id_videojs_6afb57e9c8e26_1" preload="auto" title="cFLsynl91B0"><a class="mediafallbacklink" href="https://youtu.be/cFLsynl91B0">cFLsynl91B0</a></video></div></div></p>
+<p></p>
+<p><strong style="font-size: 0.9375rem;">nota: </strong><span style="font-size: 0.9375rem;"> En sistemas antiguos, para que </span><span class="" style="font-size: 0.9375rem; color: #ef4540;"><code>DriverManager</code> </span><span style="font-size: 0.9375rem;">tuviera "registrados" los drivers, era necesario cargar la clase en la máquina virtual. Para eso es el </span><code>Class.forName()</code><span style="font-size: 0.9375rem;">, simplemente carga la clase con el nombre indicado.</span></p>
+<p>A partir de JDK 6, los drivers JDBC 4 ya se registran automáticamente y no es necesario el <code>Class.forName()</code>, sólo que estén en el classpath de la JVM. </p>
+<p><strong>ejemplo:</strong></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="editor-indent" style="margin-left: 30px;">
+<div class="editor-indent" style="margin-left: 30px;">
+<div>
+<div>
+<div class="FreeTextfpdIdevice">
+<div class="iDevice emphasis0">
+<div class="block" style="display: block;">
+<pre>import java.sql.Connection;<br/><span style="font-size: 0.9375rem;">import java.sql.DriverManager;<br/></span><span style="font-size: 0.9375rem;">import java.sql.SQLException;<br/></span><span style="font-size: 0.9375rem;">public class PrimeraConexion {<br/></span>	<span style="font-size: 0.9375rem;">public static void main(String[] args) {<br/></span>		<span style="font-size: 0.9375rem;">try {<br/></span>			<span style="font-size: 0.9375rem;">// Establecemos la conexion con la BD<br/></span>			<span style="font-size: 0.9375rem;">Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/ejemplo", "root", "system");<br/></span>			<span style="font-size: 0.9375rem;">System.out.println("conecta");<br/></span>			<span style="font-size: 0.9375rem;">conexion.close(); // Cerrar conexión<br/></span>		<span style="font-size: 0.9375rem;">} catch (SQLException cn) {<br/></span>			<span style="font-size: 0.9375rem;">cn.printStackTrace();<br/></span>		<span style="font-size: 0.9375rem;">}<br/></span>	<span style="font-size: 0.9375rem;">}<br/></span><span style="font-size: 0.9375rem;">}</span></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="FreeTextfpdIdevice">
+<div class="iDevice emphasis0">
+<div class="block" style="display: block;">
+<p></p>
+<p><strong><span class="" style="font-size: x-large;">Oracle</span></strong></p>
+<p></p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>
+<p>Para Oracle la configuración del driver se hace de la misma forma que en MySQL:</p>
+<ul>
+<ul>
+<li>Utilizaremos  el driver ojdbc11.jar que podemos descargar en la <a href="https://www.oracle.com/technetwork/database/application-development/jdbc/downloads/jdbc-ucp-183-5013470.html">pagina Oracle</a>.  Desde Eclipse añadimos esta librería: configuramos <strong> Build Path.</strong></li>
+<li>La cadena de conexión recomendada es la que utiliza  el ServiceName. O en la propia instalación de Oracle 21C:  C:\app\alumno\product\21c\dbhomeXE\jdbc\lib</li>
+</ul>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div>
+<div>
+<div>
+<div><span class="">El archivo </span><strong><code>tnsnames.ora</code></strong><span class=""> es un archivo de configuración de </span><strong><span class="">Oracle Net Services</span></strong><span class=""> que actúa como una "agenda de contactos" para las conexiones a bases de datos Oracle. Su función principal es mapear </span><strong><span class="">nombres de servicio de red</span></strong><span class=""> (alias fáciles de recordar) a los </span><strong><span class="">descriptores de conexión</span></strong><span class=""> (la información técnica real de red, como IP, puerto y nombre del servicio.</span></div>
+<div><span class="">Su ruta suele estar en: </span> C:\app\alumno\product\21c\homes\OraDB21Home1\network\admin</div>
+</div>
+</div>
+</div>
+</div>
+<div class="editor-indent" style="margin-left: 30px;">
+<div>
+<div class="FreeTextfpdIdevice">
+<div class="iDevice emphasis0">
+<div class="block" style="display: block;"><span style="font-size: 0.9375rem;"><br/>TNSNames.ora tiene una entrada correspondiente al servicio XE correspondiente a la base de Datos que se va a usar:</span></div>
+</div>
+</div>
+</div>
+</div>
+<div class="editor-indent" style="margin-left: 30px;">
+<div class="editor-indent" style="margin-left: 30px;">
+<div class="editor-indent" style="margin-left: 30px;">
+<div>
+<div class="FreeTextfpdIdevice">
+<div class="iDevice emphasis0">
+<div class="block" style="display: block;">
+<p>XE =<br/><span style="font-size: 0.9375rem;">         (DESCRIPTION =<br/></span><span style="font-size: 0.9375rem;">                (ADDRESS = (PROTOCOL = TCP)(HOST = PC)(PORT = 1521))<br/></span><span style="font-size: 0.9375rem;">                (CONNECT_DATA =<br/></span><span style="font-size: 0.9375rem;">                         (SERVER = DEDICATED) <br/></span><span style="font-size: 0.9375rem;">                         (SERVICE_NAME = XE)<br/></span><span style="font-size: 0.9375rem;">                )<br/></span><span style="font-size: 0.9375rem;">           )</span></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="FreeTextfpdIdevice">
+<div class="iDevice emphasis0">
+<div class="block" style="display: block;">
+<ul>
+<ul>
+<li>La URL seria para esta base de datos:</li>
+</ul>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="editor-indent" style="margin-left: 30px;">
+<div class="editor-indent" style="margin-left: 30px;">
+<div>
+<div class="FreeTextfpdIdevice">
+<div class="iDevice emphasis0">
+<div class="block" style="display: block;">
+<pre dir="ltr">String urljdbc = "jdbc:oracle:thin:@//localhost:1521/XE";</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="FreeTextfpdIdevice">
+<div class="iDevice emphasis0">
+<div class="block" style="display: block;">
+<p>El ejemplo para Oracle:</p>
+</div>
+</div>
+</div>
+</div>
+<div class="editor-indent" style="margin-left: 30px;">
+<div class="editor-indent" style="margin-left: 30px;">
+<div>
+<div class="FreeTextfpdIdevice">
+<div class="iDevice emphasis0">
+<div class="block" style="display: block;">
+<pre>import java.sql.Connection;<br/>import java.sql.DriverManager;<br/>import java.sql.SQLException;<br/>public class PrimeraConexion {<br/>public static void main(String[] args) {<br/>try {<br/>// Establecemos la conexion con la BD<br/>String urljdbc = "jdbc:oracle:thin:@//localhost:1521/XE";<br/><span style="font-size: 0.9375rem;">conexion = DriverManager.getConnection(urljdbc, "ejemplo", "ejemplo");<br/></span><span style="font-size: 0.9375rem;">System.out.println("conecta");<br/></span><span style="font-size: 0.9375rem;">conexion.close(); // Cerrar conexión<br/></span><span style="font-size: 0.9375rem;">} catch (SQLException cn) {<br/></span>cn.printStackTrace();<br/>}<br/>}<br/>}</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="editor-indent" style="margin-left: 30px;">
+<div class="editor-indent" style="margin-left: 30px;">
+<div>
+<div class="FreeTextfpdIdevice">
+<div class="iDevice emphasis0">
+<div class="block" style="display: block;"> </div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<div class="FreeTextfpdIdevice">
+<div class="iDevice emphasis0">
+<div class="block" style="display: block;"> </div>
+</div>
+</div>
+</div>
+<div>
+<div class="FreeTextfpdIdevice">
+<div class="iDevice emphasis0">
+<div class="block" style="display: block;">
+<div class="elemento_centrado"> </div>
+</div>
+</div>
+</div>
+</div></div></div></body></html>

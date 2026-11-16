@@ -1,0 +1,61 @@
+<html><head><meta charset="utf-8"/></head><body><div class="box py-3 generalbox book_content" id="mod_book-chapter"><h3>3. Conexión a bases de datos con API JDBC</h3><h4>3.4. Conectores tipo 1 y tipo 2.</h4><div class="no-overflow"><div id="outer">
+<div id="main">
+<div class="nodeDecoration">
+<h4> </h4>
+<h4>TIPO1: puente JDBC-ODBC</h4>
+<h1 class="nodeTitle"><a href="https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/pluginfile.php/290986/mod_book/chapter/36202/AD03_CONT_R09_drivertipo1.JPG" style="background-color: #ffffff; font-size: 0.9375rem;" title="Ampliar imagen."><img alt="Esquema donde se ven en la parte superior la aplicación java con un puente JDBC-ODBC, más abajo el driver ODBC y más abajo la base de datos." class="imagen_ampliable img-fluid" height="468" src="assets/7b30f7807aeb-AD03_CONT_R09_drivertipo1_miniatura.jpg" style="display: block; margin-left: auto; margin-right: auto;" title="Driver tipo 1." width="309"/></a></h1>
+</div>
+<div class="FreeTextfpdIdevice" id="id14">
+<div class="iDevice emphasis0">
+<div class="block" id="ta14_73" style="display: block;">
+<p><strong>Los conectores tipo 1 se denominan también JDBC-ODBC Bridge (puente JDBC-ODBC). </strong></p>
+<p>Proporcionan un puente entre el API JDBC y el API ODBC. El <span lang="en">driver</span> JDBC-ODBC <span lang="en">Bridge</span> <strong>traduce las llamadas JDBC a llamadas ODBC </strong>y las envía a la fuente de datos ODBC.</p>
+<p>Como <strong>ventajas </strong>destacar:</p>
+<ul class="lista_verificacion">
+<li style="font-weight: bold;"><strong>No se necesita un <span lang="en">driver</span> específico de cada base de datos de tipo ODBC.</strong></li>
+<li><strong>Está soportado por muchos fabricantes</strong>, por lo que tenemos acceso a muchas Bases de Datos.</li>
+</ul>
+<p>Como <strong>desventajas </strong>señalar:</p>
+<ul class="lista_verificacion">
+<li>Hay <strong>plataformas que no lo tienen implementado</strong>.</li>
+<li>El <strong>rendimiento no es óptimo </strong>ya que la llamada JDBC se realiza a través del puente hasta el conector ODBC y de ahí al interface de conectividad de la base de datos. El resultado recorre el camino inverso.</li>
+<li>Se tiene que <strong>registrar manualmente en el gestor de ODBC</strong> teniendo que configurar el <acronym lang="en" title="Data Source Names.">DSN</acronym> (<span lang="en">Data Source Names</span>, Nombres de fuentes de datos).</li>
+</ul>
+<p>El puente se implementa como el paquete <span style="font-size: 0.9375rem;">sun.jdbc.odbc y contiene una biblioteca nativa utilizada para acceder a ODBC.</span></p>
+<p><strong><span style="font-size: 0.9375rem;">Eliminado desde Java 8</span></strong></p>
+<p></p>
+<h4>TIPO2: controlador parcial de Java</h4>
+<div class="elemento_derecha">
+<div class="elemento_centrado"><a href="https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/pluginfile.php/290986/mod_book/chapter/36202/AD03_CONT_R10_drivertipo2.JPG" title="Ampliar imagen."><img alt="Esquema donde se ven en la parte superior la aplicación java con un driver tipo2, más abajo la librería de la base de datos nativa y más abajo la base de datos." class="imagen_ampliable img-fluid" height="453" src="assets/32d8d0c3fb08-AD03_CONT_R10_drivertipo2_miniatura.jpg" style="display: block; margin-left: auto; margin-right: auto;" title="Driver tipo 2." width="299"/></a></div>
+</div>
+<p><strong>Los conectores tipo 2 se conocen también como: API nativa</strong></p>
+<p><strong>Convierten las llamadas JDBC a llamadas específicas de la base de datos para bases de datos como SQL Server, Informix, Oracle, o Sybase.</strong></p>
+<p>El conector tipo 2 se comunica directamente con el servidor de bases de datos, por lo que es <strong>necesario que haya código en la máquina cliente</strong>. Esto tiene el <strong>inconveniente </strong>que la librería de la bases de datos del vendedor necesita cargarse en cada máquina cliente. Por esta razón los <span lang="en">drivers</span> tipo 2 <strong>no pueden usarse para Internet.</strong></p>
+<p><strong>No es muy común.</strong></p>
+<p>Los <span lang="en">drivers</span> Tipo  2 utilizan código nativo vía <acronym lang="en" title="Java Native Interface.">JNI</acronym>, por lo que son más eficientes.</p>
+</div>
+</div>
+</div>
+<div class="ParasabermasfpdIdevice" id="id16">
+<div class="iDevice emphasis_parasabermasfpd"><img alt="Icono de iDevice" class="iDevice_icon img-fluid" src="assets/fa53df9cd6dd-icon_parasabermasfpd.gif"/> <span class="iDeviceTitle"><strong>Para saber más</strong></span>
+<div class="iDevice_inner">
+<div class="block" id="ta16_47" style="display: block;">
+<p>En este enlace puede ver información sobre <a href="http://es.wikipedia.org/wiki/Java_Native_Interface" style="background-color: #ffffff; font-size: 0.9375rem;" title="Acceder a la definición de JNI.">JNI</a></p>
+<div class="enlace_centrado"> </div>
+</div>
+</div>
+</div>
+</div>
+<div class="VerdaderofalsofpdIdevice" id="id17">
+<div class="iDevice emphasis_autoevaluacionfpd">
+<div class="iDevice_inner">
+<div class="question">
+<div class="feedback" id="s0b0b17" style="display: none;"><strong>Correcto. </strong> La afirmación es correcta, porque hay que cargar librerías de la base de datos en la máquina cliente.</div>
+<div class="feedback" id="s1b0b17" style="display: none;"><strong>Incorrecto. </strong> La afirmación es correcta, porque hay que cargar librerías de la base de datos en la máquina cliente.</div>
+<noscript>&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;div class="feedback"&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;strong&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;Verdadero.&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;/strong&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt; La afirmación es correcta, porque hay que cargar librerías de la base de datos en la máquina cliente. 
+&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;lt;/div&amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;amp;gt;</noscript></div>
+</div>
+</div>
+</div>
+</div>
+</div></div></div></body></html>

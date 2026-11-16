@@ -1,0 +1,63 @@
+[
+  {
+    "titulo": "4A Mapeo Objeto Relacional ORM Libro",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730",
+    "capitulos_indice": [
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36547",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36541",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36557",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36555",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36544",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36564",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36556",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36563",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36640",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36545",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36552",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36553",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36542",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36549",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36550",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36551",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36540",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36554",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36548",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36543",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36536",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36539",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36537",
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221730&chapterid=36538"
+    ],
+    "capitulos_no_recuperados": [],
+    "formularios_docentes_preservados": 0,
+    "adjunto_proyecto_4B": null
+  },
+  {
+    "titulo": "4B creación de un proyecto de mapeo con hibernate. Base de datos Oracle. Maven Libro",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221731",
+    "capitulos_indice": [
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221731&chapterid=36560"
+    ],
+    "capitulos_no_recuperados": [],
+    "formularios_docentes_preservados": 0,
+    "adjunto_proyecto_4B": false
+  },
+  {
+    "titulo": "4C Lenguaje de consultas de Hibernate (HQL) Libro",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221732",
+    "capitulos_indice": [
+      "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/book/view.php?id=221732&chapterid=36561"
+    ],
+    "capitulos_no_recuperados": [],
+    "formularios_docentes_preservados": 0,
+    "adjunto_proyecto_4B": null
+  },
+  {
+    "titulo": "Ficheros de configuración Carpeta",
+    "url": "https://aulavirtual3.educa.madrid.org/ies.alonsodeavellan.alcala/mod/folder/view.php?id=222163",
+    "capitulos_indice": [],
+    "capitulos_no_recuperados": [],
+    "formularios_docentes_preservados": 0,
+    "adjunto_proyecto_4B": null
+  }
+]
