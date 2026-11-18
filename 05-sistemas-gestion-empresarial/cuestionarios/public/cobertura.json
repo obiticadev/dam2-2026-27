@@ -1,5 +1,5 @@
 {
-  "uniqueQuestions": 230,
+  "uniqueQuestions": 320,
   "tests": [
     {
       "route": "/ut1/empresa/",
@@ -42,16 +42,36 @@
       "count": 20
     },
     {
-      "route": "/examen/facil/",
+      "route": "/examen/facil-1/",
       "count": 15
     },
     {
-      "route": "/examen/media/",
+      "route": "/examen/facil-2/",
+      "count": 15
+    },
+    {
+      "route": "/examen/media-1/",
       "count": 20
     },
     {
-      "route": "/examen/dificil/",
+      "route": "/examen/media-2/",
+      "count": 20
+    },
+    {
+      "route": "/examen/dificil-1/",
       "count": 15
+    },
+    {
+      "route": "/examen/dificil-2/",
+      "count": 15
+    },
+    {
+      "route": "/examen/mixto-1/",
+      "count": 20
+    },
+    {
+      "route": "/examen/mixto-2/",
+      "count": 20
     }
   ],
   "concepts": {
@@ -143,7 +163,7 @@
         "section": "2.2"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-02",
         "unit": null,
         "section": "3.1.15"
@@ -163,6 +183,12 @@
         "id": "sge-v1-ut1-empresa-08",
         "unit": 1,
         "section": "2.2"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-01",
+        "unit": null,
+        "section": "3.1.15"
       }
     ],
     "comercial": [
@@ -195,10 +221,28 @@
         "section": "3.1.2"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-01",
+        "unit": null,
+        "section": "3.1.15"
+      },
+      {
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-06",
         "unit": null,
         "section": "3.1.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-04",
+        "unit": null,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-14",
+        "unit": null,
+        "section": "2.2"
       }
     ],
     "contabilidad": [
@@ -207,6 +251,12 @@
         "id": "sge-v1-ut1-empresa-10",
         "unit": 1,
         "section": "2.2"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-14",
+        "unit": null,
+        "section": "2.2"
       }
     ],
     "gerencia": [
@@ -214,6 +264,12 @@
         "slug": "ut1/empresa",
         "id": "sge-v1-ut1-empresa-11",
         "unit": 1,
+        "section": "2.2"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-14",
+        "unit": null,
         "section": "2.2"
       }
     ],
@@ -269,6 +325,18 @@
         "id": "sge-v1-ut1-empresa-19",
         "unit": 1,
         "section": "2.3"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-20",
+        "unit": null,
+        "section": "2.3"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-20",
+        "unit": null,
+        "section": "2.3"
       }
     ],
     "unidad de negocio": [
@@ -276,6 +344,12 @@
         "slug": "ut1/empresa",
         "id": "sge-v1-ut1-empresa-17",
         "unit": 1,
+        "section": "2.3"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-20",
+        "unit": null,
         "section": "2.3"
       }
     ],
@@ -315,6 +389,12 @@
         "id": "sge-v1-ut1-empresa-19",
         "unit": 1,
         "section": "2.3"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-06",
+        "unit": null,
+        "section": "2.3"
       }
     ],
     "planificación estratégica": [
@@ -330,6 +410,18 @@
         "slug": "ut1/decisiones",
         "id": "sge-v1-ut1-decisiones-01",
         "unit": 1,
+        "section": "2.3.1"
+      },
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-15",
+        "unit": null,
+        "section": "2.3.1"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-14",
+        "unit": null,
         "section": "2.3.1"
       }
     ],
@@ -399,10 +491,16 @@
         "section": "3.5"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-18",
         "unit": null,
         "section": "2.3.2"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-14",
+        "unit": null,
+        "section": "2.4"
       }
     ],
     "beneficios tangibles": [
@@ -429,7 +527,7 @@
         "section": "2.3.2"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-15",
         "unit": null,
         "section": "2.3.2"
@@ -493,6 +591,18 @@
         "id": "sge-v1-ut1-decisiones-14",
         "unit": 1,
         "section": "2.4"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-19",
+        "unit": null,
+        "section": "2.4"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-14",
+        "unit": null,
+        "section": "2.4"
       }
     ],
     "acción": [
@@ -549,6 +659,12 @@
         "id": "sge-v1-ut1-decisiones-17",
         "unit": 1,
         "section": "3.1"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-20",
+        "unit": null,
+        "section": "3.1"
       }
     ],
     "nivel operativo": [
@@ -559,8 +675,14 @@
         "section": "3.1"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-19",
+        "unit": null,
+        "section": "3.1"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-20",
         "unit": null,
         "section": "3.1"
       }
@@ -573,7 +695,7 @@
         "section": "3.1"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-12",
         "unit": null,
         "section": "3.1"
@@ -587,7 +709,7 @@
         "section": "3.1"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-12",
         "unit": null,
         "section": "3.1"
@@ -601,7 +723,7 @@
         "section": "2.1"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-17",
         "unit": null,
         "section": "2.1"
@@ -639,7 +761,7 @@
         "section": "2.2"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-14",
         "unit": null,
         "section": "2.2.1"
@@ -661,7 +783,7 @@
         "section": "2.2.2"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-15",
         "unit": null,
         "section": "2.2.2"
@@ -693,14 +815,20 @@
         "section": "3.4.6"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-11",
         "unit": null,
         "section": "2.2.3"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-16",
+        "unit": null,
+        "section": "2.2.3"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-18",
         "unit": null,
         "section": "2.2.3"
       }
@@ -721,7 +849,7 @@
         "section": "3"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-13",
         "unit": null,
         "section": "3"
@@ -741,16 +869,22 @@
         "section": "3.3"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-12",
         "unit": null,
         "section": "3.3"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-13",
         "unit": null,
         "section": "3"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-11",
+        "unit": null,
+        "section": "3.3.1"
       }
     ],
     "ERP": [
@@ -785,46 +919,100 @@
         "section": "3.5.2.5"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-05",
         "unit": null,
         "section": "3.1.3"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-06",
         "unit": null,
         "section": "3.1.2"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-07",
         "unit": null,
         "section": "3.1.9"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-12",
         "unit": null,
         "section": "3.4"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-07",
+        "unit": null,
+        "section": "3.1.5"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-08",
+        "unit": null,
+        "section": "3.1.10"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-17",
+        "unit": null,
+        "section": "3.4"
+      },
+      {
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-02",
         "unit": null,
         "section": "3.2.3"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-03",
         "unit": null,
         "section": "3.1.3"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-15",
         "unit": null,
         "section": "3.1.13"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-04",
+        "unit": null,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-09",
+        "unit": null,
+        "section": "3.2.3"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-17",
+        "unit": null,
+        "section": "3.1.6"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-09",
+        "unit": null,
+        "section": "3.1.12"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-11",
+        "unit": null,
+        "section": "3.3.1"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-15",
+        "unit": null,
+        "section": "3.1"
       }
     ],
     "EPM": [
@@ -867,14 +1055,20 @@
         "section": "3.1.6"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-04",
         "unit": null,
         "section": "3.1.6"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-05",
+        "unit": null,
+        "section": "3.1.6"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-17",
         "unit": null,
         "section": "3.1.6"
       }
@@ -887,7 +1081,7 @@
         "section": "3.1.6"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-04",
         "unit": null,
         "section": "3.1.6"
@@ -901,8 +1095,14 @@
         "section": "3.1.6"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-04",
+        "unit": null,
+        "section": "3.1.6"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-17",
         "unit": null,
         "section": "3.1.6"
       }
@@ -915,7 +1115,7 @@
         "section": "3.1.13"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-15",
         "unit": null,
         "section": "3.1.13"
@@ -929,32 +1129,62 @@
         "section": "3.1.15"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-01",
         "unit": null,
         "section": "3.1.15"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-02",
         "unit": null,
         "section": "3.1.15"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-03",
         "unit": null,
         "section": "3.1.15"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-04",
         "unit": null,
         "section": "3.1.15"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-01",
+        "unit": null,
+        "section": "3.1.15"
+      },
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-02",
+        "unit": null,
+        "section": "3.1.15"
+      },
+      {
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-08",
+        "unit": null,
+        "section": "3.1.15"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-01",
+        "unit": null,
+        "section": "3.1.15"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-10",
+        "unit": null,
+        "section": "3.1.15"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-01",
         "unit": null,
         "section": "3.1.15"
       }
@@ -967,8 +1197,20 @@
         "section": "3.1.16"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-03",
+        "unit": null,
+        "section": "3.1.16"
+      },
+      {
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-09",
+        "unit": null,
+        "section": "3.1.16"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-17",
         "unit": null,
         "section": "3.1.16"
       }
@@ -978,6 +1220,12 @@
         "slug": "ut2/procesos-erp",
         "id": "sge-v1-ut2-procesos-erp-17",
         "unit": 2,
+        "section": "3.1.16"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-17",
+        "unit": null,
         "section": "3.1.16"
       }
     ],
@@ -1005,7 +1253,7 @@
         "section": "3.1.16"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-14",
         "unit": null,
         "section": "3.1.16"
@@ -1031,6 +1279,12 @@
         "id": "sge-v1-ut2-procesos-erp-19",
         "unit": 2,
         "section": "3.1.17"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-02",
+        "unit": null,
+        "section": "3.1.17"
       }
     ],
     "ROI": [
@@ -1038,6 +1292,12 @@
         "slug": "ut2/procesos-erp",
         "id": "sge-v1-ut2-procesos-erp-20",
         "unit": 2,
+        "section": "3.1.19"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-06",
+        "unit": null,
         "section": "3.1.19"
       }
     ],
@@ -1055,6 +1315,12 @@
         "id": "sge-v1-ut2-nube-tecnologia-01",
         "unit": 2,
         "section": "3.1.4"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-02",
+        "unit": null,
+        "section": "3.1.4"
       }
     ],
     "CPD": [
@@ -1063,6 +1329,12 @@
         "id": "sge-v1-ut2-nube-tecnologia-01",
         "unit": 2,
         "section": "3.1.4"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-10",
+        "unit": null,
+        "section": "3.1.7"
       }
     ],
     "nube privada": [
@@ -1073,7 +1345,7 @@
         "section": "3.1.4"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-20",
         "unit": null,
         "section": "3.1.4"
@@ -1087,7 +1359,7 @@
         "section": "3.1.4"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-20",
         "unit": null,
         "section": "3.1.4"
@@ -1101,7 +1373,7 @@
         "section": "3.1.4"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-20",
         "unit": null,
         "section": "3.1.4"
@@ -1115,7 +1387,7 @@
         "section": "3.1.4"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-13",
         "unit": null,
         "section": "3.1.4"
@@ -1129,7 +1401,7 @@
         "section": "3.1.4"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-13",
         "unit": null,
         "section": "3.1.4"
@@ -1149,22 +1421,28 @@
         "section": "3.1.4"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-13",
         "unit": null,
         "section": "3.1.8"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-10",
         "unit": null,
         "section": "3.1.8"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-13",
         "unit": null,
         "section": "3.1.4"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-16",
+        "unit": null,
+        "section": "3.1.8"
       }
     ],
     "responsabilidad compartida": [
@@ -1205,6 +1483,18 @@
         "id": "sge-v1-ut2-nube-tecnologia-08",
         "unit": 2,
         "section": "3.1.2"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-12",
+        "unit": null,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-06",
+        "unit": null,
+        "section": "3.1.2"
       }
     ],
     "ML": [
@@ -1212,6 +1502,12 @@
         "slug": "ut2/nube-tecnologia",
         "id": "sge-v1-ut2-nube-tecnologia-08",
         "unit": 2,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-06",
+        "unit": null,
         "section": "3.1.2"
       }
     ],
@@ -1221,6 +1517,18 @@
         "id": "sge-v1-ut2-nube-tecnologia-09",
         "unit": 2,
         "section": "3.1.2"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-12",
+        "unit": null,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-06",
+        "unit": null,
+        "section": "3.1.2"
       }
     ],
     "IIoT": [
@@ -1228,6 +1536,12 @@
         "slug": "ut2/nube-tecnologia",
         "id": "sge-v1-ut2-nube-tecnologia-10",
         "unit": 2,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-06",
+        "unit": null,
         "section": "3.1.2"
       }
     ],
@@ -1245,6 +1559,12 @@
         "id": "sge-v1-ut2-nube-tecnologia-11",
         "unit": 2,
         "section": "3.1.2"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-11",
+        "unit": null,
+        "section": "3.1.2"
       }
     ],
     "asistente digital": [
@@ -1261,6 +1581,18 @@
         "id": "sge-v1-ut2-nube-tecnologia-13",
         "unit": 2,
         "section": "3.1.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-05",
+        "unit": null,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-15",
+        "unit": null,
+        "section": "3.1"
       }
     ],
     "CAD": [
@@ -1274,6 +1606,12 @@
         "slug": "ut2/nube-tecnologia",
         "id": "sge-v1-ut2-nube-tecnologia-14",
         "unit": 2,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-05",
+        "unit": null,
         "section": "3.1.2"
       }
     ],
@@ -1289,6 +1627,12 @@
         "id": "sge-v1-ut2-nube-tecnologia-15",
         "unit": 2,
         "section": "3.1.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-05",
+        "unit": null,
+        "section": "3.1.2"
       }
     ],
     "CNC": [
@@ -1303,6 +1647,12 @@
         "id": "sge-v1-ut2-nube-tecnologia-15",
         "unit": 2,
         "section": "3.1.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-05",
+        "unit": null,
+        "section": "3.1.2"
       }
     ],
     "CAPEX": [
@@ -1311,6 +1661,18 @@
         "id": "sge-v1-ut2-nube-tecnologia-16",
         "unit": 2,
         "section": "3.1.14"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-09",
+        "unit": null,
+        "section": "3.1.14"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-07",
+        "unit": null,
+        "section": "3.1.14"
       }
     ],
     "OPEX": [
@@ -1318,6 +1680,18 @@
         "slug": "ut2/nube-tecnologia",
         "id": "sge-v1-ut2-nube-tecnologia-16",
         "unit": 2,
+        "section": "3.1.14"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-09",
+        "unit": null,
+        "section": "3.1.14"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-07",
+        "unit": null,
         "section": "3.1.14"
       }
     ],
@@ -1334,6 +1708,12 @@
         "slug": "ut2/nube-tecnologia",
         "id": "sge-v1-ut2-nube-tecnologia-17",
         "unit": 2,
+        "section": "3.1.20"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-10",
+        "unit": null,
         "section": "3.1.20"
       }
     ],
@@ -1435,16 +1815,40 @@
         "section": "3.2.3"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-08",
+        "unit": null,
+        "section": "3.2"
+      },
+      {
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-14",
         "unit": null,
         "section": "3.2"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-02",
         "unit": null,
         "section": "3.2.3"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-09",
+        "unit": null,
+        "section": "3.2.3"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-12",
+        "unit": null,
+        "section": "3.2.1"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-15",
+        "unit": null,
+        "section": "3.1"
       }
     ],
     "cadena de suministro": [
@@ -1452,6 +1856,18 @@
         "slug": "ut2/cadena-comercio",
         "id": "sge-v1-ut2-cadena-comercio-02",
         "unit": 2,
+        "section": "3.2.1"
+      },
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-09",
+        "unit": null,
+        "section": "3.2.1"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-15",
+        "unit": null,
         "section": "3.2.1"
       }
     ],
@@ -1484,6 +1900,12 @@
         "slug": "ut2/cadena-comercio",
         "id": "sge-v1-ut2-cadena-comercio-04",
         "unit": 2,
+        "section": "3.2.1"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-12",
+        "unit": null,
         "section": "3.2.1"
       }
     ],
@@ -1519,10 +1941,22 @@
         "section": "3.3"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-12",
         "unit": null,
         "section": "3.3"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-15",
+        "unit": null,
+        "section": "3.3.5"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-13",
+        "unit": null,
+        "section": "3.3.4"
       }
     ],
     "B2B": [
@@ -1539,10 +1973,16 @@
         "section": "3.3"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-12",
         "unit": null,
         "section": "3.3"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-15",
+        "unit": null,
+        "section": "3.3.5"
       }
     ],
     "frontend": [
@@ -1550,6 +1990,12 @@
         "slug": "ut2/cadena-comercio",
         "id": "sge-v1-ut2-cadena-comercio-11",
         "unit": 2,
+        "section": "3.3.2"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-13",
+        "unit": null,
         "section": "3.3.2"
       }
     ],
@@ -1565,6 +2011,12 @@
         "id": "sge-v1-ut2-clientes-crm-05",
         "unit": 2,
         "section": "3.5"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-13",
+        "unit": null,
+        "section": "3.3.2"
       }
     ],
     "SSOT": [
@@ -1572,6 +2024,18 @@
         "slug": "ut2/cadena-comercio",
         "id": "sge-v1-ut2-cadena-comercio-11",
         "unit": 2,
+        "section": "3.3.2"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-13",
+        "unit": null,
+        "section": "3.3.2"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-04",
+        "unit": null,
         "section": "3.3.2"
       }
     ],
@@ -1597,6 +2061,18 @@
         "id": "sge-v1-ut2-cadena-comercio-13",
         "unit": 2,
         "section": "3.3.3"
+      },
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-10",
+        "unit": null,
+        "section": "3.3.3"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-14",
+        "unit": null,
+        "section": "3.3.3"
       }
     ],
     "cross-selling": [
@@ -1604,6 +2080,18 @@
         "slug": "ut2/cadena-comercio",
         "id": "sge-v1-ut2-cadena-comercio-14",
         "unit": 2,
+        "section": "3.3.3"
+      },
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-11",
+        "unit": null,
+        "section": "3.3.4"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-04",
+        "unit": null,
         "section": "3.3.3"
       }
     ],
@@ -1613,6 +2101,18 @@
         "id": "sge-v1-ut2-cadena-comercio-14",
         "unit": 2,
         "section": "3.3.3"
+      },
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-11",
+        "unit": null,
+        "section": "3.3.4"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-04",
+        "unit": null,
+        "section": "3.3.3"
       }
     ],
     "overselling": [
@@ -1620,6 +2120,12 @@
         "slug": "ut2/cadena-comercio",
         "id": "sge-v1-ut2-cadena-comercio-15",
         "unit": 2,
+        "section": "3.3.4"
+      },
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-11",
+        "unit": null,
         "section": "3.3.4"
       }
     ],
@@ -1636,6 +2142,12 @@
         "slug": "ut2/cadena-comercio",
         "id": "sge-v1-ut2-cadena-comercio-16",
         "unit": 2,
+        "section": "3.3.4"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-13",
+        "unit": null,
         "section": "3.3.4"
       }
     ],
@@ -1717,22 +2229,40 @@
         "section": "3.4"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-10",
         "unit": null,
         "section": "3.4"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-12",
         "unit": null,
         "section": "3.4"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-17",
+        "unit": null,
+        "section": "3.4"
+      },
+      {
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-08",
         "unit": null,
         "section": "3.4"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-07",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-15",
+        "unit": null,
+        "section": "3.1"
       }
     ],
     "OLTP": [
@@ -1743,8 +2273,20 @@
         "section": "3.4"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-13",
+        "unit": null,
+        "section": "3.4"
+      },
+      {
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-12",
+        "unit": null,
+        "section": "3.4"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-18",
         "unit": null,
         "section": "3.4"
       }
@@ -1763,10 +2305,34 @@
         "section": "3.4.3"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-13",
+        "unit": null,
+        "section": "3.4"
+      },
+      {
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-12",
         "unit": null,
         "section": "3.4"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-10",
+        "unit": null,
+        "section": "3.4.3"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-18",
+        "unit": null,
+        "section": "3.4"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-19",
+        "unit": null,
+        "section": "3.4.3"
       }
     ],
     "beneficios BI": [
@@ -1813,14 +2379,26 @@
         "section": "3.4.2"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-12",
+        "unit": null,
+        "section": "3.4.2"
+      },
+      {
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-08",
         "unit": null,
         "section": "3.4"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-09",
+        "unit": null,
+        "section": "3.4.2"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-18",
         "unit": null,
         "section": "3.4.2"
       }
@@ -1833,7 +2411,13 @@
         "section": "3.4.2"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-12",
+        "unit": null,
+        "section": "3.4.2"
+      },
+      {
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-09",
         "unit": null,
         "section": "3.4.2"
@@ -1861,6 +2445,12 @@
         "id": "sge-v1-ut2-bi-datos-09",
         "unit": 2,
         "section": "3.4.2"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-18",
+        "unit": null,
+        "section": "3.4.2"
       }
     ],
     "histórico": [
@@ -1876,6 +2466,12 @@
         "slug": "ut2/bi-datos",
         "id": "sge-v1-ut2-bi-datos-10",
         "unit": 2,
+        "section": "3.4.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-09",
+        "unit": null,
         "section": "3.4.2"
       }
     ],
@@ -1908,6 +2504,18 @@
         "slug": "ut2/bi-datos",
         "id": "sge-v1-ut2-bi-datos-14",
         "unit": 2,
+        "section": "3.4.2"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-16",
+        "unit": null,
+        "section": "3.4.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-08",
+        "unit": null,
         "section": "3.4.2"
       }
     ],
@@ -1948,6 +2556,12 @@
         "slug": "ut2/bi-datos",
         "id": "sge-v1-ut2-bi-datos-17",
         "unit": 2,
+        "section": "3.4.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-11",
+        "unit": null,
         "section": "3.4.2"
       }
     ],
@@ -2005,6 +2619,12 @@
         "id": "sge-v1-ut2-analitica-decisiones-01",
         "unit": 2,
         "section": "3.4.3"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-12",
+        "unit": null,
+        "section": "3.4.3"
       }
     ],
     "cubo": [
@@ -2021,6 +2641,12 @@
         "id": "sge-v1-ut2-analitica-decisiones-03",
         "unit": 2,
         "section": "3.4.3"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-19",
+        "unit": null,
+        "section": "3.4.3"
       }
     ],
     "slice": [
@@ -2028,6 +2654,12 @@
         "slug": "ut2/analitica-decisiones",
         "id": "sge-v1-ut2-analitica-decisiones-04",
         "unit": 2,
+        "section": "3.4.3"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-10",
+        "unit": null,
         "section": "3.4.3"
       }
     ],
@@ -2045,6 +2677,12 @@
         "id": "sge-v1-ut2-analitica-decisiones-05",
         "unit": 2,
         "section": "3.4.3"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-10",
+        "unit": null,
+        "section": "3.4.3"
       }
     ],
     "drill-down": [
@@ -2052,6 +2690,12 @@
         "slug": "ut2/analitica-decisiones",
         "id": "sge-v1-ut2-analitica-decisiones-05",
         "unit": 2,
+        "section": "3.4.3"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-10",
+        "unit": null,
         "section": "3.4.3"
       }
     ],
@@ -2099,6 +2743,24 @@
         "id": "sge-v1-ut2-analitica-decisiones-19",
         "unit": 2,
         "section": "3.4.6"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-12",
+        "unit": null,
+        "section": "3.4.6"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-07",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-05",
+        "unit": null,
+        "section": "3.4.3"
       }
     ],
     "DM": [
@@ -2106,6 +2768,12 @@
         "slug": "ut2/analitica-decisiones",
         "id": "sge-v1-ut2-analitica-decisiones-09",
         "unit": 2,
+        "section": "3.4.4"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-05",
+        "unit": null,
         "section": "3.4.4"
       }
     ],
@@ -2145,6 +2813,12 @@
         "id": "sge-v1-ut2-analitica-decisiones-11",
         "unit": 2,
         "section": "3.4.4"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-19",
+        "unit": null,
+        "section": "3.4.4"
       }
     ],
     "clasificación": [
@@ -2153,6 +2827,12 @@
         "id": "sge-v1-ut2-analitica-decisiones-11",
         "unit": 2,
         "section": "3.4.4"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-19",
+        "unit": null,
+        "section": "3.4.4"
       }
     ],
     "clustering": [
@@ -2160,6 +2840,12 @@
         "slug": "ut2/analitica-decisiones",
         "id": "sge-v1-ut2-analitica-decisiones-12",
         "unit": 2,
+        "section": "3.4.4"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-19",
+        "unit": null,
         "section": "3.4.4"
       }
     ],
@@ -2231,6 +2917,24 @@
         "id": "sge-v1-ut2-analitica-decisiones-19",
         "unit": 2,
         "section": "3.4.6"
+      },
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-14",
+        "unit": null,
+        "section": "3.4.5"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-12",
+        "unit": null,
+        "section": "3.4.6"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-13",
+        "unit": null,
+        "section": "3.4.5"
       }
     ],
     "BSC": [
@@ -2238,6 +2942,18 @@
         "slug": "ut2/analitica-decisiones",
         "id": "sge-v1-ut2-analitica-decisiones-17",
         "unit": 2,
+        "section": "3.4.5"
+      },
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-14",
+        "unit": null,
+        "section": "3.4.5"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-13",
+        "unit": null,
         "section": "3.4.5"
       }
     ],
@@ -2297,32 +3013,86 @@
         "section": "3.5.2.3"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-08",
         "unit": null,
         "section": "3.5"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-09",
         "unit": null,
         "section": "3.5"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-05",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-06",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-01",
         "unit": null,
         "section": "3.5"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-02",
         "unit": null,
         "section": "3.5"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-01",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-02",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-05",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-01",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-01",
+        "unit": null,
+        "section": "3.5.1"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-03",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-07",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-07",
         "unit": null,
         "section": "3.5"
       }
@@ -2335,13 +3105,13 @@
         "section": "3.5"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-09",
         "unit": null,
         "section": "3.5"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-02",
         "unit": null,
         "section": "3.5"
@@ -2361,6 +3131,12 @@
         "id": "sge-v1-ut2-clientes-crm-05",
         "unit": 2,
         "section": "3.5"
+      },
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-05",
+        "unit": null,
+        "section": "3.5"
       }
     ],
     "omnicanalidad": [
@@ -2368,6 +3144,12 @@
         "slug": "ut2/clientes-crm",
         "id": "sge-v1-ut2-clientes-crm-06",
         "unit": 2,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-06",
+        "unit": null,
         "section": "3.5"
       }
     ],
@@ -2379,8 +3161,14 @@
         "section": "3.5"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-03",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-03",
         "unit": null,
         "section": "3.5"
       }
@@ -2393,8 +3181,14 @@
         "section": "3.5"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-03",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-03",
         "unit": null,
         "section": "3.5"
       }
@@ -2404,6 +3198,18 @@
         "slug": "ut2/clientes-crm",
         "id": "sge-v1-ut2-clientes-crm-09",
         "unit": 2,
+        "section": "3.5.1"
+      },
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-07",
+        "unit": null,
+        "section": "3.5.1"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-08",
+        "unit": null,
         "section": "3.5.1"
       }
     ],
@@ -2445,14 +3251,32 @@
         "section": "3.5.2"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-05",
         "unit": null,
         "section": "3.5.2"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-03",
+        "unit": null,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-07",
+        "unit": null,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-02",
+        "unit": null,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-15",
         "unit": null,
         "section": "3.5.2"
       }
@@ -2471,14 +3295,38 @@
         "section": "3.5.2"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-06",
         "unit": null,
         "section": "3.5.2"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-03",
+        "unit": null,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-04",
+        "unit": null,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-07",
+        "unit": null,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-02",
+        "unit": null,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-15",
         "unit": null,
         "section": "3.5.2"
       }
@@ -2497,14 +3345,32 @@
         "section": "3.5.2"
       },
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-07",
         "unit": null,
         "section": "3.5.2"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-07",
+        "unit": null,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-02",
+        "unit": null,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-15",
+        "unit": null,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-03",
         "unit": null,
         "section": "3.5.2"
       }
@@ -2517,7 +3383,7 @@
         "section": "3.5.2.1"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-10",
         "unit": null,
         "section": "3.5.2.1"
@@ -2552,6 +3418,12 @@
         "slug": "ut2/clientes-crm",
         "id": "sge-v1-ut2-clientes-crm-17",
         "unit": 2,
+        "section": "3.5.2.2"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-16",
+        "unit": null,
         "section": "3.5.2.2"
       }
     ],
@@ -2601,6 +3473,12 @@
         "id": "sge-v1-ut2-clientes-crm-20",
         "unit": 2,
         "section": "3.5.1"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-07",
+        "unit": null,
+        "section": "3.5"
       }
     ],
     "SGBD": [
@@ -2925,7 +3803,7 @@
     ],
     "compras": [
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-01",
         "unit": null,
         "section": "3.1.15"
@@ -2933,7 +3811,7 @@
     ],
     "gestión documental": [
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-03",
         "unit": null,
         "section": "3.1.15"
@@ -2941,7 +3819,7 @@
     ],
     "ventas": [
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-04",
         "unit": null,
         "section": "3.1.15"
@@ -2949,45 +3827,91 @@
     ],
     "visión 360°": [
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-08",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-02",
         "unit": null,
         "section": "3.5"
       }
     ],
     "ERP en la nube": [
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-13",
         "unit": null,
         "section": "3.1.8"
       },
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-10",
+        "unit": null,
+        "section": "3.1.8"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-16",
         "unit": null,
         "section": "3.1.8"
       }
     ],
     "módulos verticales": [
       {
-        "slug": "examen/facil",
+        "slug": "examen/facil-1",
         "id": "sge-v1-examen-facil-14",
+        "unit": null,
+        "section": "3.1.16"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-17",
+        "unit": null,
+        "section": "3.1.16"
+      }
+    ],
+    "proyectos": [
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-02",
+        "unit": null,
+        "section": "3.1.15"
+      }
+    ],
+    "módulos horizontales": [
+      {
+        "slug": "examen/facil-2",
+        "id": "sge-v1-examen-facil-2-04",
+        "unit": null,
+        "section": "3.1.16"
+      },
+      {
+        "slug": "examen/media-1",
+        "id": "sge-v1-examen-media-09",
         "unit": null,
         "section": "3.1.16"
       }
     ],
     "estrategia CRM": [
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-04",
+        "unit": null,
+        "section": "3.5.1"
+      },
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-01",
         "unit": null,
         "section": "3.5.1"
       }
     ],
     "software CRM": [
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-04",
         "unit": null,
         "section": "3.5.1"
@@ -2995,13 +3919,13 @@
     ],
     "base de datos centralizada": [
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-05",
         "unit": null,
         "section": "3.1.3"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-03",
         "unit": null,
         "section": "3.1.3"
@@ -3009,51 +3933,125 @@
     ],
     "desventajas": [
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-07",
         "unit": null,
         "section": "3.1.9"
       }
     ],
-    "módulos horizontales": [
-      {
-        "slug": "examen/media",
-        "id": "sge-v1-examen-media-09",
-        "unit": null,
-        "section": "3.1.16"
-      }
-    ],
     "ERP de código abierto": [
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-11",
         "unit": null,
         "section": "3.1.17"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-06",
         "unit": null,
         "section": "3.1.21"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-02",
+        "unit": null,
+        "section": "3.1.17"
       }
     ],
     "niveles de decisión": [
       {
-        "slug": "examen/media",
+        "slug": "examen/media-1",
         "id": "sge-v1-examen-media-19",
         "unit": null,
         "section": "3.1"
       },
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-12",
         "unit": null,
         "section": "3.1"
       }
     ],
+    "áreas": [
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-05",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-03",
+        "unit": null,
+        "section": "3.5"
+      }
+    ],
+    "elección de un ERP": [
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-06",
+        "unit": null,
+        "section": "3.1.19"
+      }
+    ],
+    "valor empresarial": [
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-07",
+        "unit": null,
+        "section": "3.1.5"
+      }
+    ],
+    "modernización": [
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-08",
+        "unit": null,
+        "section": "3.1.10"
+      }
+    ],
+    "pymes": [
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-09",
+        "unit": null,
+        "section": "3.1.14"
+      }
+    ],
+    "ERP local": [
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-10",
+        "unit": null,
+        "section": "3.1.7"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-02",
+        "unit": null,
+        "section": "3.1.4"
+      }
+    ],
+    "ERP híbrido": [
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-11",
+        "unit": null,
+        "section": "3.1.9"
+      }
+    ],
+    "asistentes digitales": [
+      {
+        "slug": "examen/media-2",
+        "id": "sge-v1-examen-media-2-12",
+        "unit": null,
+        "section": "3.1.2"
+      }
+    ],
     "punto de pedido": [
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-05",
         "unit": null,
         "section": "3.1.6"
@@ -3061,7 +4059,7 @@
     ],
     "CRM en la nube": [
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-10",
         "unit": null,
         "section": "3.5.2.1"
@@ -3069,16 +4067,120 @@
     ],
     "CRM de código abierto": [
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-11",
+        "unit": null,
+        "section": "3.5.2.2"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-08",
+        "unit": null,
+        "section": "3.5.2.2"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-16",
         "unit": null,
         "section": "3.5.2.2"
       }
     ],
     "CRM propietario": [
       {
-        "slug": "examen/dificil",
+        "slug": "examen/dificil-1",
         "id": "sge-v1-examen-dificil-11",
+        "unit": null,
+        "section": "3.5.2.2"
+      },
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-08",
+        "unit": null,
+        "section": "3.5.2.2"
+      }
+    ],
+    "dimensiones": [
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-11",
+        "unit": null,
+        "section": "3.4.2"
+      }
+    ],
+    "esquema en estrella": [
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-11",
+        "unit": null,
+        "section": "3.4.2"
+      }
+    ],
+    "precios": [
+      {
+        "slug": "examen/dificil-2",
+        "id": "sge-v1-examen-dificil-2-15",
+        "unit": null,
+        "section": "3.3.5"
+      }
+    ],
+    "inventario": [
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-01",
+        "unit": null,
+        "section": "3.1.15"
+      }
+    ],
+    "minería de datos": [
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-05",
+        "unit": null,
+        "section": "3.4.4"
+      },
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-13",
+        "unit": null,
+        "section": "3.4.4"
+      }
+    ],
+    "devoluciones": [
+      {
+        "slug": "examen/mixto-1",
+        "id": "sge-v1-examen-mixto-1-13",
+        "unit": null,
+        "section": "3.3.4"
+      }
+    ],
+    "recursos": [
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-06",
+        "unit": null,
+        "section": "2.1"
+      }
+    ],
+    "desafíos": [
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-09",
+        "unit": null,
+        "section": "3.1.12"
+      }
+    ],
+    "sistemas operativos": [
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-10",
+        "unit": null,
+        "section": "3.1.20"
+      }
+    ],
+    "OroCRM": [
+      {
+        "slug": "examen/mixto-2",
+        "id": "sge-v1-examen-mixto-2-16",
         "unit": null,
         "section": "3.5.2.2"
       }

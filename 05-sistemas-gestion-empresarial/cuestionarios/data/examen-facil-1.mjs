@@ -2,7 +2,7 @@ import { qx } from './modelo.mjs';
 // Nivel fácil: enunciado directo «X sirve para:» y una opción claramente
 // correcta frente a distractores de otro módulo o con «solo/exclusivamente».
 export default {
-  slug: 'examen/facil', unit: null, level: 'Fácil', title: 'A · Estilo examen: fáciles',
+  slug: 'examen/facil-1', idBase: 'examen-facil', unit: null, level: 'Fácil', title: 'Fácil · Test 1',
   description: '15 preguntas directas sobre módulos de ERP, tipos de CRM y conceptos básicos.',
   questions: [
     qx(2, '3.1.15', 'ERP modular,compras', 'El módulo de compras en un ERP sirve para:', 1,

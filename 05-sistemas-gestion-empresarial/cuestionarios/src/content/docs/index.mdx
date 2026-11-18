@@ -5,7 +5,7 @@ description: Test explicados de UT1 y UT2 para aprender conceptos, siglas y usos
 
 import { LinkCard, CardGrid, Aside } from '@astrojs/starlight/components';
 
-**180 preguntas originales, organizadas en nueve bloques de 20**, y un repaso mixto con 20 preguntas seleccionadas del banco. Cuatro opciones, una correcta y una explicación para **cada opción**: también aprenderás al equivocarte.
+**320 preguntas originales** en dos tipos de práctica que no conviene mezclar: **por temas** (nueve bloques de 20 y un repaso mixto) y **estilo examen** (dos test por nivel y dos mixtos, con el patrón del cuestionario de Moodle). Siempre cuatro opciones y una explicación para **cada opción**: también aprenderás al equivocarte.
 
 ## Cómo aprender con estos test
 
@@ -20,14 +20,18 @@ Las preguntas y respuestas se barajan. Se guardan respuestas, marcas y tiempo en
 Las soluciones se redactan de forma concisa y su posición cambia. Una explicación larga aparece después de corregir, no hace que su opción sea la correcta. El objetivo es aprender la diferencia entre conceptos, no descubrir una pista de redacción.
 </Aside>
 
-## UT1 · La empresa
+## Práctica por temas
+
+Bloques de 20 preguntas con una sola respuesta correcta y nivel introductorio, organizados por unidad.
+
+### UT1 · La empresa
 
 <CardGrid>
   <LinkCard title="1 · Empresa y departamentos" href="/ut1/empresa/" description="Sistemas, recursos, áreas funcionales, misión y visión" />
   <LinkCard title="2 · Objetivos y decisiones" href="/ut1/decisiones/" description="DAFO, estrategia, táctica y niveles de decisión" />
 </CardGrid>
 
-## UT2 · Sistemas de gestión empresarial
+### UT2 · Sistemas de gestión empresarial
 
 <CardGrid>
   <LinkCard title="3 · Procesos, KPI y ERP" href="/ut2/procesos-erp/" description="Procesos, integración, MRP, módulos y selección" />
@@ -39,21 +43,45 @@ Las soluciones se redactan de forma concisa y su posición cambia. Una explicaci
   <LinkCard title="9 · Siglas e indicadores" href="/ut2/siglas-integracion/" description="SGBD, ORM, API, formatos, conectores, OEE y NPS" />
 </CardGrid>
 
-## Comprueba lo aprendido
+### Repaso de la práctica por temas
 
 <CardGrid>
   <LinkCard title="Repaso mixto · UT1 y UT2" href="/repaso-mixto/" description="20 preguntas del banco · cinco de UT1 y quince de UT2" />
   <LinkCard title="Mapa de conceptos y siglas" href="/mapa-conceptos/" description="Busca un término y salta a las preguntas que lo trabajan" />
 </CardGrid>
 
-## Estilo examen · 50 preguntas graduadas
+## Estilo examen · patrón del cuestionario de Moodle
 
-Preguntas nuevas con el patrón del cuestionario de clase: «Indica la afirmación verdadera… (si encontrases varias ciertas, elige la más completa)», «Indica la afirmación falsa…», la opción «Todas las otras respuestas son ciertas/falsas» y alguna de respuesta múltiple. Mayor peso de **ERP y CRM**, sin descuidar BI, SCM, e-business, KPI, nube y UT1.
+<Aside type="caution" title="No es la misma práctica que los bloques por temas">
+Estos test reproducen el **formato del examen**: «Indica la afirmación verdadera… (si encontrases varias ciertas, elige la más completa)», «Indica la afirmación falsa…», la opción «Todas las otras respuestas son ciertas/falsas» y preguntas de **respuesta múltiple**. En el examen real cada fallo resta 0,25. Más peso de **ERP y CRM**, sin descuidar BI, SCM, e-business, KPI, nube y UT1.
+</Aside>
+
+### Nivel fácil
 
 <CardGrid>
-  <LinkCard title="A · Fáciles" href="/examen/facil/" description="15 preguntas directas: módulos del ERP, tipos de CRM y conceptos básicos" />
-  <LinkCard title="B · Medias" href="/examen/media/" description="20 preguntas de afirmación verdadera o falsa y «Todas las otras…»" />
-  <LinkCard title="C · Difíciles" href="/examen/dificil/" description="15 preguntas con matices de redacción, historia del ERP y respuesta múltiple" />
+  <LinkCard title="Fácil · Test 1" href="/examen/facil-1/" description="15 preguntas · módulos del ERP, tipos de CRM y conceptos básicos" />
+  <LinkCard title="Fácil · Test 2" href="/examen/facil-2/" description="15 preguntas · módulos, front office, SCM, PIM, DW, OLAP y CMI" />
+</CardGrid>
+
+### Nivel medio
+
+<CardGrid>
+  <LinkCard title="Media · Test 1" href="/examen/media-1/" description="20 preguntas · CRM, ERP, nube, código abierto, SCM, silos y KPI" />
+  <LinkCard title="Media · Test 2" href="/examen/media-2/" description="20 preguntas · funciones CRM, elección del ERP, e-commerce, data marts y UT1" />
+</CardGrid>
+
+### Nivel difícil
+
+<CardGrid>
+  <LinkCard title="Difícil · Test 1" href="/examen/dificil-1/" description="15 preguntas · historia del ERP, IaaS/PaaS/SaaS, DW y respuesta múltiple" />
+  <LinkCard title="Difícil · Test 2" href="/examen/dificil-2/" description="15 preguntas · CIM, IA/ML, OLAP, hechos y dimensiones, CMI y precios" />
+</CardGrid>
+
+### Mixtos · todos los niveles
+
+<CardGrid>
+  <LinkCard title="Mixto · Test 1" href="/examen/mixto-1/" description="20 preguntas nuevas · 6 fáciles, 8 medias y 6 difíciles" />
+  <LinkCard title="Mixto · Test 2" href="/examen/mixto-2/" description="20 preguntas nuevas · 6 fáciles, 8 medias y 6 difíciles" />
 </CardGrid>
 
 ## Fuentes y alcance

@@ -6,7 +6,7 @@ const TODAS_C = 'Todas las otras respuestas son ciertas.';
 const TODAS_F = 'Todas las otras respuestas son falsas.';
 
 export default {
-  slug: 'examen/media', unit: null, level: 'Media', title: 'B · Estilo examen: medias',
+  slug: 'examen/media-1', idBase: 'examen-media', unit: null, level: 'Media', title: 'Media · Test 1',
   description: '20 preguntas de afirmación verdadera o falsa sobre ERP, CRM, BI, SCM, KPI y estrategia.',
   questions: [
     qx(2, '3.5', 'CRM', 'Indica la afirmación verdadera sobre qué combina un CRM...' + MAS, 1,

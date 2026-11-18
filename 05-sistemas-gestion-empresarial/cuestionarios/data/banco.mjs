@@ -7,16 +7,21 @@ import datos from './ut2-datos.mjs';
 import analitica from './ut2-analitica.mjs';
 import crm from './ut2-crm.mjs';
 import vocabulario from './ut2-vocabulario.mjs';
-import examenFacil from './examen-facil.mjs';
-import examenMedia from './examen-media.mjs';
-import examenDificil from './examen-dificil.mjs';
-
+import facil1 from './examen-facil-1.mjs';
+import facil2 from './examen-facil-2.mjs';
+import media1 from './examen-media-1.mjs';
+import media2 from './examen-media-2.mjs';
+import dificil1 from './examen-dificil-1.mjs';
+import dificil2 from './examen-dificil-2.mjs';
+import mixto1 from './examen-mixto-1.mjs';
+import mixto2 from './examen-mixto-2.mjs';
 export const groups = [empresa, decisiones, erp, tecnologia, comercio, datos, analitica, crm, vocabulario];
-// Bloques de estilo examen (Moodle): 50 preguntas nuevas graduadas por dificultad.
-export const examGroups = [examenFacil, examenMedia, examenDificil];
+// Estilo examen (patrón Moodle): dos test por nivel y dos mixtos, 140 preguntas.
+// `idBase` conserva los IDs del primer pack aunque su URL pasara a «-1».
+export const examGroups = [facil1, facil2, media1, media2, dificil1, dificil2, mixto1, mixto2];
 for (const group of [...groups, ...examGroups]) {
   for (const [index, question] of group.questions.entries()) {
-    question.id = `sge-v1-${group.slug.replace('/', '-')}-${String(index + 1).padStart(2, '0')}`;
+    question.id = `sge-v1-${group.idBase ?? group.slug.replace('/', '-')}-${String(index + 1).padStart(2, '0')}`;
   }
 }
 

@@ -26,9 +26,14 @@ export function orderedOptions(question, index) {
 
 function examIntro(test) {
   const multiple = test.questions.filter(question => question.multiple).length;
-  return `**Nivel ${test.level.toLowerCase()} · ${test.questions.length} preguntas · estilo del cuestionario de clase.** ` +
+  const mixed = test.level === 'Mixto';
+  const head = mixed ? 'Test mixto' : `Nivel ${test.level.toLowerCase()}`;
+  const counts = mixed ? ` (${['Fácil', 'Media', 'Difícil'].map(level =>
+    `${test.questions.filter(question => question.level === level).length} ${level === 'Media' ? 'medias' : level === 'Fácil' ? 'fáciles' : 'difíciles'}`).join(', ')})` : '';
+  return `**${head} · ${test.questions.length} preguntas${counts} · estilo del cuestionario de clase.** ` +
     'Enunciados como «Indica la afirmación verdadera… (si encontrases varias ciertas, elige la más completa)» o «Indica la afirmación falsa…», ' +
     'con la opción «Todas las otras respuestas son ciertas/falsas». Lee las cuatro opciones antes de responder.\n\n' +
+    (mixed ? 'Las preguntas se barajan; el nivel de cada una aparece al corregirla. ' : '') +
     (multiple ? `Incluye ${multiple} preguntas de **respuesta múltiple** (seleccione una o más de una). ` : '') +
     'En el examen real cada fallo resta 0,25 puntos; aquí no hay penalización, pero entrénate a no responder al azar.\n\n';
 }
@@ -53,7 +58,7 @@ for (const [testIndex, test] of allTests.entries()) {
     const options = orderedOptions(question, index).map(option =>
       `- [${option.correct ? 'x' : ' '}] ${option.text}\n  > ${option.correct ? 'Correcta. ' : ''}${option.explanation}`).join('\n');
     // Ningún título da la respuesta; el número visible lo gestiona el plugin.
-    return `<Quiz id="${question.id}">\n${question.prompt}\n\n${options}\n\n---\n\n**Para situarlo:** UT${unit} §${question.section} · ${title}. [Temario de consulta opcional](/temario/${sources[unit]}).\n</Quiz>`;
+    return `<Quiz id="${question.id}">\n${question.prompt}\n\n${options}\n\n---\n\n**Para situarlo:** ${question.level ? `Nivel ${question.level.toLowerCase()} · ` : ''}UT${unit} §${question.section} · ${title}. [Temario de consulta opcional](/temario/${sources[unit]}).\n</Quiz>`;
   }).join('\n\n');
   write(`${test.slug}.mdx`, header + intro + questions + '\n\n<QuizResults />\n');
 }

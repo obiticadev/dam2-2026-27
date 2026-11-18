@@ -5,7 +5,8 @@ Acceso a Datos. URL prevista: **https://cuestionarios-sge.pages.dev**.
 
 ## Aprender resolviendo
 
-- **180 preguntas originales**: nueve bloques de veinte.
+- **180 preguntas originales por temas**: nueve bloques de veinte.
+- **140 preguntas de estilo examen**: dos test por nivel y dos mixtos (ver abajo).
 - **Repaso mixto**: veinte preguntas seleccionadas del banco, cinco de UT1 y
   quince de UT2. No son veinte preguntas originales adicionales ni una
   ponderación oficial de examen.
@@ -38,19 +39,22 @@ editoriales de UT1 sobre objetivos medibles y presupuestos se respetan.
 
 ## Estilo examen
 
-Tres bloques adicionales (`data/examen-*.mjs`) con **50 preguntas nuevas**
-que imitan el patrón del cuestionario de Moodle de clase, sin copiar sus
+Sección separada de la práctica por temas, con **140 preguntas nuevas** que
+imitan el patrón del cuestionario de Moodle de clase sin copiar sus
 enunciados. Más peso en ERP y CRM (≈ 60 %), sin descuidar BI, SCM,
 e-business, KPI, nube y UT1.
 
-| Bloque | Preguntas | Patrón |
+| Test | Preguntas | Patrón |
 |---|---|---|
-| A · Fáciles | 15 | «El módulo X en un ERP sirve para:», distractores de otro módulo o con «solo/exclusivamente» |
-| B · Medias | 20 | «Indica la afirmación verdadera/falsa… (elige la más completa)» y «Todas las otras respuestas son ciertas/falsas» |
-| C · Difíciles | 15 | Afirmaciones largas casi idénticas, siglas intercambiadas (MRP/MRP II), definiciones de otro sistema, frases para completar y 2 de respuesta múltiple |
+| Fácil · Test 1 y 2 | 15 + 15 | «El módulo X en un ERP sirve para:», distractores de otro módulo o con «solo/exclusivamente» |
+| Media · Test 1 y 2 | 20 + 20 | «Indica la afirmación verdadera/falsa… (elige la más completa)» y «Todas las otras respuestas son ciertas/falsas» |
+| Difícil · Test 1 y 2 | 15 + 15 | Afirmaciones largas casi idénticas, siglas o papeles intercambiados, definiciones de otro sistema, frases para completar y respuesta múltiple |
+| Mixto · Test 1 y 2 | 20 + 20 | Preguntas inéditas: 6 fáciles, 8 medias y 6 difíciles; el nivel se muestra al corregir |
 
-Usan `qx()` de `modelo.mjs`, que indica la unidad de cada pregunta y cuántas
-opciones iniciales son correctas. Los IDs son `sge-v1-examen-…`.
+Datos en `data/examen-<nivel>-<n>.mjs`. Usan `qx()` (unidad y número de
+opciones correctas), `nivel()` para los mixtos y las fórmulas `MAS`,
+`TODAS_C` y `TODAS_F` de `modelo.mjs`. El primer pack conserva los IDs
+`sge-v1-examen-facil-…` mediante `idBase` aunque su URL sea `/examen/facil-1/`.
 
 ## Desarrollo
 

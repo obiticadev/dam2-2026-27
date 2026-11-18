@@ -9,10 +9,14 @@ const read = path => readFileSync(new URL(path, root), 'utf8');
 const unique = groups.flatMap(group => group.questions);
 assert.equal(unique.length, 180);
 assert.equal(new Set(unique.map(question => question.prompt)).size, 180, 'Enunciados originales únicos');
-assert.equal(allTests.length, 13);
+assert.equal(allTests.length, 18);
 const exam = examGroups.flatMap(group => group.questions);
-assert.deepEqual(examGroups.map(group => group.questions.length), [15, 20, 15], 'Estilo examen: 15/20/15');
-assert.equal(new Set([...unique, ...exam].map(question => question.prompt)).size, 230, 'Enunciados de examen únicos');
+assert.deepEqual(examGroups.map(group => group.questions.length), [15, 15, 20, 20, 15, 15, 20, 20], 'Estilo examen: tamaños');
+for (const group of examGroups.filter(group => group.level === 'Mixto')) {
+  const levels = group.questions.map(question => question.level);
+  assert.deepEqual(['Fácil', 'Media', 'Difícil'].map(level => levels.filter(l => l === level).length), [6, 8, 6], `${group.slug}: reparto de niveles`);
+}
+assert.equal(new Set([...unique, ...exam].map(question => question.prompt)).size, 320, 'Enunciados de examen únicos');
 assert.equal(mixed.questions.filter(question => question.unit === 1).length, 5);
 assert.equal(mixed.questions.filter(question => question.unit === 2).length, 15);
 
@@ -80,8 +84,8 @@ for (const test of allTests) {
   if (test.unit) longest += groupLongest;
   console.log(`${test.slug}: ${count} preguntas, ${count * 4} explicaciones, posiciones ${distribution.join('/')}; correcta más larga: ${groupLongest}/${count}.`);
 }
-assert.equal(rendered, 250);
-assert.equal(ids.size, 250);
+assert.equal(rendered, 340);
+assert.equal(ids.size, 340);
 assert.ok(longest <= unique.length * 0.35, `Correcta más larga: ${longest}/180`);
 
 function htmlFiles(url) {
@@ -112,5 +116,5 @@ for (const file of htmlFiles(new URL('dist/', root))) {
 const home = read('dist/index.html');
 for (const test of allTests) assert.ok(home.includes(`href="/${test.slug}/"`), `Falta acceso a ${test.slug}`);
 assert.match(home, /https:\/\/cuestionarios-sge\.pages\.dev/);
-console.log(`OK: 180 preguntas únicas + 50 de estilo examen; 250 publicadas con repaso; 1000 opciones explicadas; ${required.length} siglas clave; ${checkedLinks} enlaces locales.`);
+console.log(`OK: 180 preguntas únicas + 140 de estilo examen; 340 publicadas con repaso; 1360 opciones explicadas; ${required.length} siglas clave; ${checkedLinks} enlaces locales.`);
 console.log(`Correcta estrictamente más larga en el banco original: ${longest}/180 (${(100 * longest / 180).toFixed(1)} %).`);

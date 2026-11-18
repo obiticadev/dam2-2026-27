@@ -19,3 +19,11 @@ export function qx(unit, section, terms, prompt, correctas, ...pairs) {
   question.options.forEach((option, index) => { option.correct = index < correctas; });
   return Object.assign(question, { unit, multiple: correctas > 1 });
 }
+
+// En los test mixtos cada pregunta indica su nivel; se muestra tras corregir.
+export const nivel = (level, question) => Object.assign(question, { level });
+
+// Fórmulas recurrentes del cuestionario de referencia.
+export const MAS = ' (si encontrases varias ciertas, elige la más completa).';
+export const TODAS_C = 'Todas las otras respuestas son ciertas.';
+export const TODAS_F = 'Todas las otras respuestas son falsas.';

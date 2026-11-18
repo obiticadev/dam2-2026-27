@@ -6,7 +6,7 @@ const MAS = ' (si encontrases varias ciertas, elige la más completa).';
 const TODAS_C = 'Todas las otras respuestas son ciertas.';
 
 export default {
-  slug: 'examen/dificil', unit: null, level: 'Difícil', title: 'C · Estilo examen: difíciles',
+  slug: 'examen/dificil-1', idBase: 'examen-dificil', unit: null, level: 'Difícil', title: 'Difícil · Test 1',
   description: '15 preguntas con matices de redacción, historia del ERP, nube y respuesta múltiple.',
   questions: [
     qx(2, '3.5', 'CRM', 'Indica la afirmación verdadera sobre la definición de CRM...' + MAS, 1,
