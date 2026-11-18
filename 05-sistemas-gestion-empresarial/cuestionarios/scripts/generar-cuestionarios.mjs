@@ -1,5 +1,5 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { groups, allTests } from '../data/banco.mjs';
+import { groups, examGroups, allTests } from '../data/banco.mjs';
 
 const root = new URL('../', import.meta.url);
 const docs = new URL('src/content/docs/', root);
@@ -17,9 +17,20 @@ const sectionMaps = Object.fromEntries(Object.entries(sources).map(([unit, filen
 // Fija un reparto 5/5/5/5 en el MDX. No es un patrón visible: el plugin vuelve
 // a barajar las opciones y las preguntas de cada intento en el navegador.
 export function orderedOptions(question, index) {
+  // Respuesta múltiple: se rota el orden; el navegador vuelve a barajarlo.
+  if (question.multiple) return question.options.map((_, i, all) => all[(i + index) % all.length]);
   const options = question.options.filter(option => !option.correct);
   options.splice(index % 4, 0, question.options.find(option => option.correct));
   return options;
+}
+
+function examIntro(test) {
+  const multiple = test.questions.filter(question => question.multiple).length;
+  return `**Nivel ${test.level.toLowerCase()} · ${test.questions.length} preguntas · estilo del cuestionario de clase.** ` +
+    'Enunciados como «Indica la afirmación verdadera… (si encontrases varias ciertas, elige la más completa)» o «Indica la afirmación falsa…», ' +
+    'con la opción «Todas las otras respuestas son ciertas/falsas». Lee las cuatro opciones antes de responder.\n\n' +
+    (multiple ? `Incluye ${multiple} preguntas de **respuesta múltiple** (seleccione una o más de una). ` : '') +
+    'En el examen real cada fallo resta 0,25 puntos; aquí no hay penalización, pero entrénate a no responder al azar.\n\n';
 }
 
 function write(relative, content) {
@@ -30,9 +41,12 @@ function write(relative, content) {
 
 for (const [testIndex, test] of allTests.entries()) {
   const header = `---\ntitle: ${JSON.stringify(test.title)}\ndescription: ${JSON.stringify(test.description)}\nsidebar:\n  order: ${testIndex + 1}\n---\n\nimport { Quiz, QuizResults } from 'starlight-quiz/components';\n\n`;
-  const intro = '**20 preguntas · cuatro opciones · una correcta · nivel inicial.** Piensa tu respuesta y pulsa **Corregir**. Después lee las cuatro explicaciones: incluyen significados, usos y diferencias entre conceptos. No necesitas consultar teoría para aprovechar la corrección.\n\n' +
+  const exam = examGroups.includes(test);
+  const intro = exam ? examIntro(test) : '**20 preguntas · cuatro opciones · una correcta · nivel inicial.** Piensa tu respuesta y pulsa **Corregir**. Después lee las cuatro explicaciones: incluyen significados, usos y diferencias entre conceptos. No necesitas consultar teoría para aprovechar la corrección.\n\n' +
     (test.unit ? 'Las preguntas y opciones se barajan. Marca tus dudas y vuelve a intentarlo más tarde.\n\n' : '**Selección de repaso:** cinco preguntas de UT1 y quince de UT2, tomadas de los bloques anteriores. El progreso de este repaso se guarda por separado. No es una ponderación oficial de examen.\n\n');
-  const questions = test.questions.map((question, index) => {
+  let singles = 0;
+  const questions = test.questions.map(question => {
+    const index = question.multiple ? 0 : singles++;
     const unit = question.unit ?? test.unit;
     const title = sectionMaps[unit]?.get(question.section);
     if (!title) throw new Error(`Referencia inexistente: UT${unit} §${question.section}`);
@@ -45,7 +59,7 @@ for (const [testIndex, test] of allTests.entries()) {
 }
 
 const terms = new Map();
-for (const group of groups) {
+for (const group of [...groups, ...examGroups]) {
   for (const question of group.questions) {
     for (const term of question.terms) {
       if (!terms.has(term)) terms.set(term, []);
@@ -59,8 +73,8 @@ const rows = [...terms.entries()].sort(([a], [b]) => a.localeCompare(b, 'es')).m
 });
 write('mapa-conceptos.mdx', `---\ntitle: Mapa de conceptos y siglas\ndescription: Localiza en qué preguntas se aprende cada término.\n---\n\nEste índice lleva directamente a las preguntas que trabajan cada concepto, en su enunciado o en las explicaciones de sus opciones. **No es un listado de respuestas**: resuelve y lee la corrección para aprender su significado y su uso.\n\nSe incluyen los conceptos centrales de ambas unidades y aclaraciones de siglas técnicas citadas en ellas. Los nombres comerciales se usan como ejemplos, no como materia para memorizar rankings.\n\n| Concepto o sigla | Dónde practicarlo |\n|---|---|\n${rows.join('\n')}\n`);
 writeFileSync(new URL('public/cobertura.json', root), JSON.stringify({
-  uniqueQuestions: groups.reduce((sum, group) => sum + group.questions.length, 0),
+  uniqueQuestions: [...groups, ...examGroups].reduce((sum, group) => sum + group.questions.length, 0),
   tests: allTests.map(test => ({ route: `/${test.slug}/`, count: test.questions.length })),
   concepts: Object.fromEntries(terms),
 }, null, 2) + '\n');
-console.log(`Generados ${allTests.length} test, 180 preguntas originales y ${terms.size} términos indexados.`);
+console.log(`Generados ${allTests.length} test, ${[...groups, ...examGroups].reduce((n, g) => n + g.questions.length, 0)} preguntas originales y ${terms.size} términos indexados.`);

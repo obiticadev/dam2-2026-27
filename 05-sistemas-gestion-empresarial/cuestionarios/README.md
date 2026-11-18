@@ -36,6 +36,22 @@ editoriales de UT1 sobre objetivos medibles y presupuestos se respetan.
 | 8 | UT2 | CRM, perfiles, omnicanalidad y componentes |
 | 9 | UT2 | Integración, formatos, conectores e indicadores |
 
+## Estilo examen
+
+Tres bloques adicionales (`data/examen-*.mjs`) con **50 preguntas nuevas**
+que imitan el patrón del cuestionario de Moodle de clase, sin copiar sus
+enunciados. Más peso en ERP y CRM (≈ 60 %), sin descuidar BI, SCM,
+e-business, KPI, nube y UT1.
+
+| Bloque | Preguntas | Patrón |
+|---|---|---|
+| A · Fáciles | 15 | «El módulo X en un ERP sirve para:», distractores de otro módulo o con «solo/exclusivamente» |
+| B · Medias | 20 | «Indica la afirmación verdadera/falsa… (elige la más completa)» y «Todas las otras respuestas son ciertas/falsas» |
+| C · Difíciles | 15 | Afirmaciones largas casi idénticas, siglas intercambiadas (MRP/MRP II), definiciones de otro sistema, frases para completar y 2 de respuesta múltiple |
+
+Usan `qx()` de `modelo.mjs`, que indica la unidad de cada pregunta y cuántas
+opciones iniciales son correctas. Los IDs son `sge-v1-examen-…`.
+
 ## Desarrollo
 
 Se requiere **Node 22.22 o superior**, según la versión de Astro instalada.

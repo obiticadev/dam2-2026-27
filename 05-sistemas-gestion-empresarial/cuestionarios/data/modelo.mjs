@@ -11,3 +11,11 @@ export function q(section, terms, prompt, ...pairs) {
     }),
   };
 }
+
+// Variante para los bloques de estilo examen: mezcla UT1 y UT2 y admite
+// preguntas de respuesta múltiple. Las `correctas` primeras opciones son válidas.
+export function qx(unit, section, terms, prompt, correctas, ...pairs) {
+  const question = q(section, terms, prompt, ...pairs);
+  question.options.forEach((option, index) => { option.correct = index < correctas; });
+  return Object.assign(question, { unit, multiple: correctas > 1 });
+}

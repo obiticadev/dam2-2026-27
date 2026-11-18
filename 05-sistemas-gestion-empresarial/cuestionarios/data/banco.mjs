@@ -7,9 +7,14 @@ import datos from './ut2-datos.mjs';
 import analitica from './ut2-analitica.mjs';
 import crm from './ut2-crm.mjs';
 import vocabulario from './ut2-vocabulario.mjs';
+import examenFacil from './examen-facil.mjs';
+import examenMedia from './examen-media.mjs';
+import examenDificil from './examen-dificil.mjs';
 
 export const groups = [empresa, decisiones, erp, tecnologia, comercio, datos, analitica, crm, vocabulario];
-for (const group of groups) {
+// Bloques de estilo examen (Moodle): 50 preguntas nuevas graduadas por dificultad.
+export const examGroups = [examenFacil, examenMedia, examenDificil];
+for (const group of [...groups, ...examGroups]) {
   for (const [index, question] of group.questions.entries()) {
     question.id = `sge-v1-${group.slug.replace('/', '-')}-${String(index + 1).padStart(2, '0')}`;
   }
@@ -28,4 +33,4 @@ export const mixed = {
     id: `sge-v1-mixto-${String(index + 1).padStart(2, '0')}`,
   })),
 };
-export const allTests = [...groups, mixed];
+export const allTests = [...groups, mixed, ...examGroups];

@@ -26,6 +26,10 @@ export default defineConfig({
 					items: [{ autogenerate: { directory: 'ut2' } }],
 				},
 				{
+					label: 'Estilo examen',
+					items: [{ autogenerate: { directory: 'examen' } }],
+				},
+				{
 					label: 'Repaso',
 					items: [
 						{ label: 'Mixto · UT1 y UT2', slug: 'repaso-mixto' },

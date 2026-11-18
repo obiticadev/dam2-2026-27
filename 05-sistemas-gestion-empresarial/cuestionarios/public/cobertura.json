@@ -1,5 +1,5 @@
 {
-  "uniqueQuestions": 180,
+  "uniqueQuestions": 230,
   "tests": [
     {
       "route": "/ut1/empresa/",
@@ -40,6 +40,18 @@
     {
       "route": "/repaso-mixto/",
       "count": 20
+    },
+    {
+      "route": "/examen/facil/",
+      "count": 15
+    },
+    {
+      "route": "/examen/media/",
+      "count": 20
+    },
+    {
+      "route": "/examen/dificil/",
+      "count": 15
     }
   ],
   "concepts": {
@@ -129,6 +141,12 @@
         "id": "sge-v1-ut1-empresa-07",
         "unit": 1,
         "section": "2.2"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-02",
+        "unit": null,
+        "section": "3.1.15"
       }
     ],
     "logística": [
@@ -174,6 +192,12 @@
         "slug": "ut2/procesos-erp",
         "id": "sge-v1-ut2-procesos-erp-10",
         "unit": 2,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-06",
+        "unit": null,
         "section": "3.1.2"
       }
     ],
@@ -373,6 +397,12 @@
         "id": "sge-v1-ut2-clientes-crm-02",
         "unit": 2,
         "section": "3.5"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-18",
+        "unit": null,
+        "section": "2.3.2"
       }
     ],
     "beneficios tangibles": [
@@ -396,6 +426,12 @@
         "slug": "ut1/decisiones",
         "id": "sge-v1-ut1-decisiones-07",
         "unit": 1,
+        "section": "2.3.2"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-15",
+        "unit": null,
         "section": "2.3.2"
       }
     ],
@@ -521,6 +557,12 @@
         "id": "sge-v1-ut1-decisiones-18",
         "unit": 1,
         "section": "3.1"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-19",
+        "unit": null,
+        "section": "3.1"
       }
     ],
     "nivel táctico": [
@@ -528,6 +570,12 @@
         "slug": "ut1/decisiones",
         "id": "sge-v1-ut1-decisiones-19",
         "unit": 1,
+        "section": "3.1"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-12",
+        "unit": null,
         "section": "3.1"
       }
     ],
@@ -537,6 +585,12 @@
         "id": "sge-v1-ut1-decisiones-20",
         "unit": 1,
         "section": "3.1"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-12",
+        "unit": null,
+        "section": "3.1"
       }
     ],
     "proceso empresarial": [
@@ -544,6 +598,12 @@
         "slug": "ut2/procesos-erp",
         "id": "sge-v1-ut2-procesos-erp-01",
         "unit": 2,
+        "section": "2.1"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-17",
+        "unit": null,
         "section": "2.1"
       }
     ],
@@ -577,6 +637,12 @@
         "id": "sge-v1-ut2-procesos-erp-03",
         "unit": 2,
         "section": "2.2"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-14",
+        "unit": null,
+        "section": "2.2.1"
       }
     ],
     "optimización global": [
@@ -592,6 +658,12 @@
         "slug": "ut2/procesos-erp",
         "id": "sge-v1-ut2-procesos-erp-05",
         "unit": 2,
+        "section": "2.2.2"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-15",
+        "unit": null,
         "section": "2.2.2"
       }
     ],
@@ -619,6 +691,18 @@
         "id": "sge-v1-ut2-siglas-integracion-20",
         "unit": 2,
         "section": "3.4.6"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-11",
+        "unit": null,
+        "section": "2.2.3"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-16",
+        "unit": null,
+        "section": "2.2.3"
       }
     ],
     "meta": [
@@ -635,6 +719,12 @@
         "id": "sge-v1-ut2-procesos-erp-08",
         "unit": 2,
         "section": "3"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-13",
+        "unit": null,
+        "section": "3"
       }
     ],
     "e-commerce": [
@@ -649,6 +739,18 @@
         "id": "sge-v1-ut2-cadena-comercio-08",
         "unit": 2,
         "section": "3.3"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-12",
+        "unit": null,
+        "section": "3.3"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-13",
+        "unit": null,
+        "section": "3"
       }
     ],
     "ERP": [
@@ -681,6 +783,48 @@
         "id": "sge-v1-ut2-clientes-crm-19",
         "unit": 2,
         "section": "3.5.2.5"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-05",
+        "unit": null,
+        "section": "3.1.3"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-06",
+        "unit": null,
+        "section": "3.1.2"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-07",
+        "unit": null,
+        "section": "3.1.9"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-12",
+        "unit": null,
+        "section": "3.4"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-02",
+        "unit": null,
+        "section": "3.2.3"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-03",
+        "unit": null,
+        "section": "3.1.3"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-15",
+        "unit": null,
+        "section": "3.1.13"
       }
     ],
     "EPM": [
@@ -721,6 +865,18 @@
         "id": "sge-v1-ut2-procesos-erp-13",
         "unit": 2,
         "section": "3.1.6"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-04",
+        "unit": null,
+        "section": "3.1.6"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-05",
+        "unit": null,
+        "section": "3.1.6"
       }
     ],
     "MRP": [
@@ -728,6 +884,12 @@
         "slug": "ut2/procesos-erp",
         "id": "sge-v1-ut2-procesos-erp-14",
         "unit": 2,
+        "section": "3.1.6"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-04",
+        "unit": null,
         "section": "3.1.6"
       }
     ],
@@ -737,6 +899,12 @@
         "id": "sge-v1-ut2-procesos-erp-14",
         "unit": 2,
         "section": "3.1.6"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-04",
+        "unit": null,
+        "section": "3.1.6"
       }
     ],
     "flujo de trabajo": [
@@ -744,6 +912,12 @@
         "slug": "ut2/procesos-erp",
         "id": "sge-v1-ut2-procesos-erp-15",
         "unit": 2,
+        "section": "3.1.13"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-15",
+        "unit": null,
         "section": "3.1.13"
       }
     ],
@@ -753,6 +927,36 @@
         "id": "sge-v1-ut2-procesos-erp-16",
         "unit": 2,
         "section": "3.1.15"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-01",
+        "unit": null,
+        "section": "3.1.15"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-02",
+        "unit": null,
+        "section": "3.1.15"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-03",
+        "unit": null,
+        "section": "3.1.15"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-04",
+        "unit": null,
+        "section": "3.1.15"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-08",
+        "unit": null,
+        "section": "3.1.15"
       }
     ],
     "módulos básicos": [
@@ -760,6 +964,12 @@
         "slug": "ut2/procesos-erp",
         "id": "sge-v1-ut2-procesos-erp-17",
         "unit": 2,
+        "section": "3.1.16"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-09",
+        "unit": null,
         "section": "3.1.16"
       }
     ],
@@ -792,6 +1002,12 @@
         "slug": "ut2/procesos-erp",
         "id": "sge-v1-ut2-procesos-erp-18",
         "unit": 2,
+        "section": "3.1.16"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-14",
+        "unit": null,
         "section": "3.1.16"
       }
     ],
@@ -855,6 +1071,12 @@
         "id": "sge-v1-ut2-nube-tecnologia-02",
         "unit": 2,
         "section": "3.1.4"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-20",
+        "unit": null,
+        "section": "3.1.4"
       }
     ],
     "nube pública": [
@@ -862,6 +1084,12 @@
         "slug": "ut2/nube-tecnologia",
         "id": "sge-v1-ut2-nube-tecnologia-02",
         "unit": 2,
+        "section": "3.1.4"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-20",
+        "unit": null,
         "section": "3.1.4"
       }
     ],
@@ -871,6 +1099,12 @@
         "id": "sge-v1-ut2-nube-tecnologia-02",
         "unit": 2,
         "section": "3.1.4"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-20",
+        "unit": null,
+        "section": "3.1.4"
       }
     ],
     "IaaS": [
@@ -879,6 +1113,12 @@
         "id": "sge-v1-ut2-nube-tecnologia-03",
         "unit": 2,
         "section": "3.1.4"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-13",
+        "unit": null,
+        "section": "3.1.4"
       }
     ],
     "PaaS": [
@@ -886,6 +1126,12 @@
         "slug": "ut2/nube-tecnologia",
         "id": "sge-v1-ut2-nube-tecnologia-04",
         "unit": 2,
+        "section": "3.1.4"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-13",
+        "unit": null,
         "section": "3.1.4"
       }
     ],
@@ -900,6 +1146,24 @@
         "slug": "ut2/nube-tecnologia",
         "id": "sge-v1-ut2-nube-tecnologia-06",
         "unit": 2,
+        "section": "3.1.4"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-13",
+        "unit": null,
+        "section": "3.1.8"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-10",
+        "unit": null,
+        "section": "3.1.8"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-13",
+        "unit": null,
         "section": "3.1.4"
       }
     ],
@@ -1169,6 +1433,18 @@
         "id": "sge-v1-ut2-cadena-comercio-05",
         "unit": 2,
         "section": "3.2.3"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-14",
+        "unit": null,
+        "section": "3.2"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-02",
+        "unit": null,
+        "section": "3.2.3"
       }
     ],
     "cadena de suministro": [
@@ -1241,6 +1517,12 @@
         "id": "sge-v1-ut2-cadena-comercio-09",
         "unit": 2,
         "section": "3.3"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-12",
+        "unit": null,
+        "section": "3.3"
       }
     ],
     "B2B": [
@@ -1254,6 +1536,12 @@
         "slug": "ut2/cadena-comercio",
         "id": "sge-v1-ut2-cadena-comercio-10",
         "unit": 2,
+        "section": "3.3"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-12",
+        "unit": null,
         "section": "3.3"
       }
     ],
@@ -1427,6 +1715,24 @@
         "id": "sge-v1-ut2-bi-datos-02",
         "unit": 2,
         "section": "3.4"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-10",
+        "unit": null,
+        "section": "3.4"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-12",
+        "unit": null,
+        "section": "3.4"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-08",
+        "unit": null,
+        "section": "3.4"
       }
     ],
     "OLTP": [
@@ -1434,6 +1740,12 @@
         "slug": "ut2/bi-datos",
         "id": "sge-v1-ut2-bi-datos-03",
         "unit": 2,
+        "section": "3.4"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-12",
+        "unit": null,
         "section": "3.4"
       }
     ],
@@ -1449,6 +1761,12 @@
         "id": "sge-v1-ut2-analitica-decisiones-02",
         "unit": 2,
         "section": "3.4.3"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-12",
+        "unit": null,
+        "section": "3.4"
       }
     ],
     "beneficios BI": [
@@ -1493,6 +1811,18 @@
         "id": "sge-v1-ut2-bi-datos-09",
         "unit": 2,
         "section": "3.4.2"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-08",
+        "unit": null,
+        "section": "3.4"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-09",
+        "unit": null,
+        "section": "3.4.2"
       }
     ],
     "data warehouse": [
@@ -1500,6 +1830,12 @@
         "slug": "ut2/bi-datos",
         "id": "sge-v1-ut2-bi-datos-07",
         "unit": 2,
+        "section": "3.4.2"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-09",
+        "unit": null,
         "section": "3.4.2"
       }
     ],
@@ -1959,6 +2295,36 @@
         "id": "sge-v1-ut2-siglas-integracion-19",
         "unit": 2,
         "section": "3.5.2.3"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-08",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-09",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-01",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-02",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-01",
+        "unit": null,
+        "section": "3.5"
       }
     ],
     "lead": [
@@ -1966,6 +2332,18 @@
         "slug": "ut2/clientes-crm",
         "id": "sge-v1-ut2-clientes-crm-03",
         "unit": 2,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-09",
+        "unit": null,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-02",
+        "unit": null,
         "section": "3.5"
       }
     ],
@@ -1999,6 +2377,12 @@
         "id": "sge-v1-ut2-clientes-crm-07",
         "unit": 2,
         "section": "3.5"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-03",
+        "unit": null,
+        "section": "3.5"
       }
     ],
     "BPR": [
@@ -2006,6 +2390,12 @@
         "slug": "ut2/clientes-crm",
         "id": "sge-v1-ut2-clientes-crm-08",
         "unit": 2,
+        "section": "3.5"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-03",
+        "unit": null,
         "section": "3.5"
       }
     ],
@@ -2053,6 +2443,18 @@
         "id": "sge-v1-ut2-clientes-crm-14",
         "unit": 2,
         "section": "3.5.2"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-05",
+        "unit": null,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-07",
+        "unit": null,
+        "section": "3.5.2"
       }
     ],
     "CRM analítico": [
@@ -2066,6 +2468,18 @@
         "slug": "ut2/clientes-crm",
         "id": "sge-v1-ut2-clientes-crm-14",
         "unit": 2,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-06",
+        "unit": null,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-07",
+        "unit": null,
         "section": "3.5.2"
       }
     ],
@@ -2081,6 +2495,18 @@
         "id": "sge-v1-ut2-clientes-crm-14",
         "unit": 2,
         "section": "3.5.2"
+      },
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-07",
+        "unit": null,
+        "section": "3.5.2"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-07",
+        "unit": null,
+        "section": "3.5.2"
       }
     ],
     "CRM local": [
@@ -2088,6 +2514,12 @@
         "slug": "ut2/clientes-crm",
         "id": "sge-v1-ut2-clientes-crm-15",
         "unit": 2,
+        "section": "3.5.2.1"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-10",
+        "unit": null,
         "section": "3.5.2.1"
       }
     ],
@@ -2489,6 +2921,166 @@
         "id": "sge-v1-ut2-siglas-integracion-20",
         "unit": 2,
         "section": "3.4.6"
+      }
+    ],
+    "compras": [
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-01",
+        "unit": null,
+        "section": "3.1.15"
+      }
+    ],
+    "gestión documental": [
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-03",
+        "unit": null,
+        "section": "3.1.15"
+      }
+    ],
+    "ventas": [
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-04",
+        "unit": null,
+        "section": "3.1.15"
+      }
+    ],
+    "visión 360°": [
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-08",
+        "unit": null,
+        "section": "3.5"
+      }
+    ],
+    "ERP en la nube": [
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-13",
+        "unit": null,
+        "section": "3.1.8"
+      },
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-10",
+        "unit": null,
+        "section": "3.1.8"
+      }
+    ],
+    "módulos verticales": [
+      {
+        "slug": "examen/facil",
+        "id": "sge-v1-examen-facil-14",
+        "unit": null,
+        "section": "3.1.16"
+      }
+    ],
+    "estrategia CRM": [
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-04",
+        "unit": null,
+        "section": "3.5.1"
+      }
+    ],
+    "software CRM": [
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-04",
+        "unit": null,
+        "section": "3.5.1"
+      }
+    ],
+    "base de datos centralizada": [
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-05",
+        "unit": null,
+        "section": "3.1.3"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-03",
+        "unit": null,
+        "section": "3.1.3"
+      }
+    ],
+    "desventajas": [
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-07",
+        "unit": null,
+        "section": "3.1.9"
+      }
+    ],
+    "módulos horizontales": [
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-09",
+        "unit": null,
+        "section": "3.1.16"
+      }
+    ],
+    "ERP de código abierto": [
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-11",
+        "unit": null,
+        "section": "3.1.17"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-06",
+        "unit": null,
+        "section": "3.1.21"
+      }
+    ],
+    "niveles de decisión": [
+      {
+        "slug": "examen/media",
+        "id": "sge-v1-examen-media-19",
+        "unit": null,
+        "section": "3.1"
+      },
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-12",
+        "unit": null,
+        "section": "3.1"
+      }
+    ],
+    "punto de pedido": [
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-05",
+        "unit": null,
+        "section": "3.1.6"
+      }
+    ],
+    "CRM en la nube": [
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-10",
+        "unit": null,
+        "section": "3.5.2.1"
+      }
+    ],
+    "CRM de código abierto": [
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-11",
+        "unit": null,
+        "section": "3.5.2.2"
+      }
+    ],
+    "CRM propietario": [
+      {
+        "slug": "examen/dificil",
+        "id": "sge-v1-examen-dificil-11",
+        "unit": null,
+        "section": "3.5.2.2"
       }
     ]
   }
