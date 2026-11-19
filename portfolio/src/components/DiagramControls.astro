@@ -1,0 +1,92 @@
+---
+interface Props {
+  id: string;
+  label: string;
+  summary: string;
+}
+const { id, label, summary } = Astro.props;
+---
+
+<div class="diagram-controls">
+  <p role="status" data-status>{summary}</p>
+  <div data-controls hidden>
+    <button type="button" class="diagram-play" data-play aria-controls={id} aria-label={`Reproducir ${label}`}>
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m5 3 8 5-8 5z"/></svg>
+      <span>Reproducir</span>
+    </button>
+    <button type="button" data-pause aria-controls={id} aria-label={`Pausar ${label}`} disabled>
+      <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3v10m4-10v10"/></svg>
+      <span>Pausar</span>
+    </button>
+  </div>
+</div>
+
+<script>
+  for (const diagram of document.querySelectorAll<HTMLElement>('[data-diagram]')) {
+    const steps = [...diagram.querySelectorAll<HTMLElement>('[data-step]')];
+    const links = [...diagram.querySelectorAll<HTMLElement>('[data-link]')];
+    const status = diagram.querySelector<HTMLElement>('[data-status]')!;
+    const controls = diagram.querySelector<HTMLElement>('[data-controls]')!;
+    const play = diagram.querySelector<HTMLButtonElement>('[data-play]')!;
+    const pause = diagram.querySelector<HTMLButtonElement>('[data-pause]')!;
+    const label = diagram.dataset.diagram;
+    const duration = 1900;
+    let elapsed = 0, previous = 0, frame = 0, active = -1;
+    let running = false;
+
+    function setLabel(button: HTMLButtonElement, verb: string) {
+      button.querySelector('span')!.textContent = verb;
+      button.setAttribute('aria-label', `${verb} ${label}`);
+    }
+
+    function render() {
+      const step = Math.min(Math.floor(elapsed / duration), steps.length - 1);
+      if (step !== active) {
+        active = step;
+        steps.forEach((node, i) => node.toggleAttribute('data-current', i === active));
+        status.textContent = `${step + 1}/${steps.length} · ${steps[step].dataset.step}`;
+      }
+      const progress = (elapsed - step * duration - 1100) / 660;
+      links.forEach(link => {
+        const moving = Number(link.dataset.link) === step && progress >= 0 && progress <= 1;
+        if (moving) link.style.setProperty('--progress', `${progress * 100}%`);
+        link.toggleAttribute('data-moving', moving);
+      });
+    }
+
+    function tick(now: number) {
+      elapsed += now - previous;
+      previous = now;
+      render();
+      if (elapsed < steps.length * duration) frame = requestAnimationFrame(tick);
+      else {
+        running = false;
+        pause.disabled = true;
+      }
+    }
+
+    function resume() {
+      running = true;
+      previous = performance.now();
+      pause.disabled = false;
+      setLabel(pause, 'Pausar');
+      frame = requestAnimationFrame(tick);
+    }
+
+    play.addEventListener('click', () => {
+      cancelAnimationFrame(frame);
+      elapsed = 0;
+      diagram.classList.add('has-step');
+      setLabel(play, 'Repetir');
+      render();
+      resume();
+    });
+    pause.addEventListener('click', () => {
+      if (!running) return resume();
+      running = false;
+      cancelAnimationFrame(frame);
+      setLabel(pause, 'Continuar');
+    });
+    controls.hidden = false;
+  }
+</script>

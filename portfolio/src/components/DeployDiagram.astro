@@ -1,0 +1,38 @@
+---
+import DiagramControls from './DiagramControls.astro';
+---
+
+<section class="deploy" data-diagram="el despliegue" aria-labelledby="deploy-title">
+  <header>
+    <h3 id="deploy-title">Así se despliega en ISF</h3>
+    <DiagramControls id="deploy-steps" label="el despliegue" summary="Del repositorio al servicio en marcha" />
+  </header>
+  <div class="deploy-flow" id="deploy-steps">
+    <div class="deploy-source">
+      <div class="deploy-node" data-step="El código y la definición de Compose están en GitHub.">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7v10m0-2c0-5 12-2 12-8"/><circle cx="6" cy="5" r="2"/><circle cx="6" cy="19" r="2"/><circle cx="18" cy="5" r="2"/></svg>
+        <div><strong>GitHub</strong><small>Código y compose.yaml</small></div>
+      </div>
+      <span class="trace" data-link="0" aria-hidden="true"><small>Código</small></span>
+    </div>
+    <div class="deploy-host">
+      <p class="host-label"><strong>Proxmox</strong> <span>Infraestructura de la oficina</span></p>
+      <div class="host-flow">
+        <div class="deploy-node" data-step="Dokploy obtiene el código y ejecuta Docker Compose.">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m7 9 3 3-3 3m6 0h4"/></svg>
+          <div><strong>Dokploy</strong><small>Orquesta Compose</small></div>
+        </div>
+        <span class="trace" data-link="1" aria-hidden="true"><small>Ejecuta</small></span>
+        <div class="deploy-compose" data-step="Compose construye las imágenes y arranca PostgreSQL.">
+          <p class="compose-label"><strong>Docker Compose</strong><span>Orden de arranque</span></p>
+          <ol class="boot-flow">
+            <li class="deploy-node editor" data-step="PostgreSQL debe estar listo antes de que se ejecuten las migraciones."><strong>PostgreSQL</strong><small>Listo</small><span class="trace" data-link="3" aria-hidden="true"></span></li>
+            <li class="deploy-node catalog" data-step="Prisma aplica las migraciones. Si terminan bien, arranca la app."><strong>Migraciones</strong><small>Prisma termina bien</small><span class="trace" data-link="4" aria-hidden="true"></span></li>
+            <li class="deploy-node" data-step="La aplicación Next.js ya puede consultar PostgreSQL."><strong>Aplicación</strong><small>Next.js arranca</small></li>
+          </ol>
+          <p class="compose-note">La app consulta PostgreSQL por la red interna. Las copias diarias guardan la base de datos, los PDF emitidos y los logos.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

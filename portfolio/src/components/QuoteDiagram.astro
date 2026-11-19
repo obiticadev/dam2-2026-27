@@ -1,0 +1,68 @@
+---
+import DiagramControls from './DiagramControls.astro';
+const steps = [
+  { key: 'catalog', title: 'Catálogo', detail: 'Conceptos', status: 'El catálogo aporta los conceptos.' },
+  { key: 'editor', title: 'Editor', detail: 'Partidas y totales', status: 'El editor calcula partidas y totales.' },
+  { key: 'issue', title: 'Emisión', detail: 'Número e instantánea', status: 'La emisión valida, numera y congela el presupuesto.' },
+  { key: 'pdf', title: 'PDF final', detail: 'Plantilla y Chromium', status: 'Chromium genera el PDF desde la instantánea.' },
+];
+---
+
+<figure class="quote-figure" data-diagram="el presupuesto" aria-label="Flujo de un presupuesto">
+  <div class="quote-board">
+    <svg class="board-grid" width="100%" height="100%" aria-hidden="true">
+      <defs><pattern id="iso-grid" width="48" height="28" patternUnits="userSpaceOnUse">
+        <path d="M-24 14 0 0l48 28 24-14M-24 14 0 28 48 0l24 14" fill="none"/>
+      </pattern></defs>
+      <rect width="100%" height="100%" fill="url(#iso-grid)"/>
+    </svg>
+    <ol class="quote-steps" id="quote-steps">
+      {steps.map((step, i) => (
+        <li class:list={['quote-step', step.key]} data-step={step.status}>
+          <svg class="quote-art" viewBox="0 0 150 150" aria-hidden="true">
+            <path class="plinth-side" d="m12 113 63 37 63-37v-9l-63 36-63-36z"/>
+            <path class="plinth" d="m12 104 63-36 63 36-63 36z"/>
+            {step.key === 'catalog' && <g transform="matrix(1 -.48 0 1 39 50)">
+              <path d="M-5 49v-61h56v61Z" fill="#c3a363"/>
+              <path d="M0 55v-61h59v61Z" fill="#edd096"/>
+              <path d="M5 61V0h17l5 6h40v55Z" fill="#f8e2aa"/>
+              <path d="M12 18h48v35H12z" fill="#fff8e7"/>
+              <path d="M12 28h48v13H12z" fill="#f3daa0" stroke="none"/>
+              <path d="M19 23h17m12 0h5m-34 12h23m6 0h5m-34 12h14m15 0h5" fill="none" stroke="#735d36"/>
+            </g>}
+            {step.key === 'editor' && <g transform="translate(28 97)">
+              <path d="m0 0 84-40 28 17-84 40z" fill="#aec8e3"/>
+              <path d="m26 0 50-24m-38 26 15-7" fill="none" stroke="#516b83"/>
+              <g transform="matrix(1 -.48 0 1 0 -66)">
+                <rect width="84" height="66" rx="4" fill="#f9f8f1"/>
+                <path d="M4 0h76a4 4 0 0 1 4 4v10H0V4a4 4 0 0 1 4-4Z" fill="#bfd5ed"/>
+                <path d="M7 7h1m5 0h1m5 0h1M10 24h23m29 0h12M10 34h64m-64 11h64" fill="none" stroke="#677f99"/>
+                <rect x="49" y="50" width="25" height="9" rx="2" fill="#c8dcb1"/>
+              </g>
+            </g>}
+            {step.key === 'issue' && <g transform="matrix(1 -.48 0 1 40 49)">
+              <path d="M-5 8v48h65V8z" fill="#aabd94"/>
+              <rect width="65" height="56" rx="4" fill="#f4f8e9"/>
+              <path d="M8 13h49v17H8z" fill="#dce9ca"/>
+              <path d="M14 22h4m5 0h11m-20 17h23m-23 8h30" fill="none" stroke="#53674a"/>
+              <path d="M48 24v-5a4 4 0 0 1 8 0v5m-10 0h12v10H46z" fill="#c3d5af"/>
+            </g>}
+            {step.key === 'pdf' && <g transform="matrix(1 -.48 0 1 43 37)">
+              <path d="M6-5h42l14 15v63H6Z" fill="#c6aed1"/>
+              <path d="M0 0h43l14 15v65H0Z" fill="#f9f2fa"/>
+              <path d="M43 0v15h14" fill="#e6d1ed"/>
+              <path d="M9 22h20m-20 7h36m-36 18h36m-36 8h36m-36 8h20" fill="none" stroke="#795e83"/>
+              <circle cx="53" cy="70" r="13" fill="#e5d5ec" stroke="#795e83"/>
+              <path d="m47 70 4 4 7-8" fill="none" stroke="#62486c"/>
+            </g>}
+          </svg>
+          <strong class="step-label">{step.title}</strong>
+          <span class="step-detail">{step.detail}</span>
+          {i < steps.length - 1 && <span class="trace quote-trace" data-link={i} aria-hidden="true"></span>}
+        </li>
+      ))}
+    </ol>
+    <DiagramControls id="quote-steps" label="el presupuesto" summary="De los conceptos al PDF corporativo" />
+  </div>
+  <figcaption>Flujo de un presupuesto</figcaption>
+</figure>

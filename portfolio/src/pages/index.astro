@@ -1,0 +1,116 @@
+---
+import QuoteDiagram from '../components/QuoteDiagram.astro';
+import DeployDiagram from '../components/DeployDiagram.astro';
+import '../styles/site.css';
+
+const project = 'https://github.com/obiticadev/presupuestos-isf';
+const github = 'https://github.com/obiticadev';
+const phases = [
+  ['Catálogo', 'Conceptos organizados por categoría y unidad, con importación y exportación en Excel.'],
+  ['Editor', 'Clientes, ubicaciones y condiciones de pago junto a las partidas, los precios y los impuestos del presupuesto.'],
+  ['Emisión', 'La aplicación comprueba el borrador, asigna un número y conserva una instantánea. Los cambios posteriores se tramitan como revisiones.'],
+  ['PDF', 'Chromium genera el documento corporativo a partir de la instantánea. Los borradores se pueden previsualizar con marca de agua.'],
+];
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Portfolio de Oliver Bitica, desarrollador de software junior. Proyectos de software y automatización industrial." />
+    <title>Oliver Bitica · Desarrollo de software</title>
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        const system = matchMedia('(prefers-color-scheme: dark)');
+        const key = 'oliver-portfolio-theme';
+        let choice;
+        try { choice = localStorage.getItem(key); } catch {}
+        function apply() {
+          const dark = choice === 'dark' || (choice !== 'light' && system.matches);
+          root.dataset.theme = dark ? 'dark' : 'light';
+          document.querySelector('#theme-toggle')?.setAttribute('aria-pressed', String(dark));
+        }
+        apply();
+        system.addEventListener('change', apply);
+        document.addEventListener('DOMContentLoaded', () => {
+          const toggle = document.querySelector('#theme-toggle');
+          apply();
+          toggle.hidden = false;
+          toggle.addEventListener('click', () => {
+            choice = root.dataset.theme === 'dark' ? 'light' : 'dark';
+            try { localStorage.setItem(key, choice); } catch {}
+            apply();
+          });
+        });
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#principal">Saltar al contenido</a>
+    <header class="site-header wrap">
+      <a class="brand" href="#inicio">
+        <span class="mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 8-4 4 4 4m8-8 4 4-4 4m-2-10-4 12"/></svg></span>
+        Oliver Bitica
+      </a>
+      <nav aria-label="Navegación principal">
+        <a href="#proyectos">Proyectos</a><a href="#sobre-mi">Sobre mí</a><a href="#contacto">Contacto</a>
+      </nav>
+      <button type="button" id="theme-toggle" aria-label="Modo noche" aria-pressed="false" hidden>
+        <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 15.3A8 8 0 0 1 8.7 4 8 8 0 1 0 20 15.3Z"/></svg>
+        <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19m0-14-1.5 1.5m-11 11L5 19"/></svg>
+      </button>
+    </header>
+    <main id="principal" class="wrap">
+      <section class="intro" id="inicio" aria-labelledby="name">
+        <h1 id="name">Oliver Bitica</h1>
+        <p class="role"><mark>Desarrollador de software junior</mark></p>
+        <p class="intro-copy">Estudio 2.º de DAM y trabajo en automatización y software industrial en ISF.<br class="desktop-break" /> Me interesa el desarrollo backend y trabajo con Java, SQL y Git.</p>
+        <div class="actions">
+          <a class="primary-link" href="#proyectos">Ver proyectos <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v15m-5-5 5 5 5-5"/></svg></a>
+          <a href="#sobre-mi">Ver perfil</a>
+        </div>
+      </section>
+      <section id="proyectos" class="projects">
+        <h2>Proyectos</h2>
+        <article aria-labelledby="project-name">
+          <div class="featured">
+            <div class="featured-copy">
+              <h3 id="project-name">Presupuestos ISF</h3>
+              <p class="project-line"><mark>Del catálogo al PDF corporativo.</mark></p>
+              <p>Una aplicación interna para gestionar clientes, editar y revisar presupuestos y emitir su PDF. Me encargué del desarrollo y el despliegue.</p>
+              <div class="project-links">
+                <a class="case-link" href="#presupuestos-isf">Leer caso de estudio <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15m-5-5 5 5-5 5"/></svg></a>
+                <a href={project}>Código en GitHub <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 19 19 9m-9 0h9v9"/></svg></a>
+              </div>
+            </div>
+            <QuoteDiagram />
+          </div>
+          <DeployDiagram />
+          <section id="presupuestos-isf" class="case-study">
+            <h3>Cómo funciona Presupuestos ISF</h3>
+            <p>ISF usa la aplicación en su red interna. El repositorio es público, pero el entorno de trabajo no es una demo.</p>
+            <dl class="case-phases">
+              {phases.map(([title, copy]) => <div><dt>{title}</dt><dd>{copy}</dd></div>)}
+            </dl>
+          </section>
+        </article>
+      </section>
+      <section id="sobre-mi" class="profile">
+        <h2>Sobre mí</h2>
+        <p>Compagino el ciclo de Desarrollo de Aplicaciones Multiplataforma con mi trabajo en ISF. Allí participo en la puesta en marcha de sistemas automatizados con TIA Portal y en la monitorización de producción con Grafana.</p>
+        <dl class="profile-facts">
+          <div><dt>Desarrollo</dt><dd>Java, Spring Boot, SQL y Git</dd></div>
+          <div><dt>Sistemas</dt><dd>Linux, Docker y AWS</dd></div>
+          <div><dt>Automatización</dt><dd>TIA Portal, Grafana y SQL Server</dd></div>
+        </dl>
+      </section>
+      <section id="contacto" class="contact">
+        <h2>Contacto</h2>
+        <p>Puedes encontrar mi perfil y mis proyectos públicos en <a href={github}>GitHub</a>.</p>
+      </section>
+    </main>
+    <footer class="wrap site-footer"><span>Oliver Bitica</span><a href="#inicio">Volver arriba</a></footer>
+  </body>
+</html>
