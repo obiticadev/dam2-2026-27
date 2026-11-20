@@ -9,7 +9,11 @@ con cuatro opciones y una sola correcta por pregunta. Las soluciones corresponde
 a las respuestas rojas de las imágenes, sin añadir preguntas ni explicaciones
 inventadas. Se conservan las referencias a páginas y diapositivas.
 
-| Cuestionario | Imagen | Preguntas | Soluciones en el orden original |
+Las 18 preguntas se presentan **en un único cuestionario en la página principal**,
+sin dividirlas por imágenes o temas, con un solo resultado y cronómetro.
+Las antiguas cuatro URL redirigen al cuestionario único mediante `public/_redirects`.
+
+| Procedencia (no son cuestionarios separados) | Imagen | Preguntas | Soluciones en el orden original |
 | --- | --- | --- | --- |
 | Integración de la tecnología | 1 | 4 | c, b, b, d |
 | Dispositivos y pizarras digitales | 2 | 5 | b, d, d, b, c |
@@ -34,7 +38,7 @@ npm run preview
 
 El build genera `dist/`. La comprobación contrasta los enunciados y las
 72 opciones del MDX con el HTML compilado, además de verificar las claves
-de respuesta transcritas y los enlaces de la portada.
+de respuesta transcritas, la página única y sus redirecciones.
 
 Se mantienen la navegación pregunta a pregunta, el barajado, las marcas para
 revisar, los resultados, el cronómetro y el guardado local del progreso.

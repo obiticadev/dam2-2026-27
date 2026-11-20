@@ -1,19 +1,194 @@
 ---
-title: Cuestionarios de tecnología educativa
-description: 18 preguntas de autoevaluación transcritas de las cuatro imágenes facilitadas.
+title: Cuestionario de tecnología educativa
+description: Un único cuestionario con las 18 preguntas de las cuatro imágenes facilitadas.
 ---
 
-import { LinkCard, CardGrid } from '@astrojs/starlight/components';
+import { Quiz, QuizResults } from 'starlight-quiz/components';
 
-**18 preguntas · cuatro opciones · una respuesta correcta.** Los cuatro cuestionarios corresponden a las cuatro imágenes facilitadas. Las soluciones son las opciones marcadas en rojo en las imágenes; se conservan las referencias a páginas y diapositivas.
+**18 preguntas · cuatro opciones · una respuesta correcta por pregunta.** Todas las preguntas forman un único cuestionario, con un solo resultado y cronómetro. Se conservan las soluciones y las referencias de las imágenes originales.
 
-<CardGrid>
-	<LinkCard title="Integración de la tecnología" href="/integracion-tecnologia/" description="Imagen 1 · 4 preguntas · SAMR y taxonomía de Bloom" />
-	<LinkCard title="Dispositivos y pizarras digitales" href="/dispositivos-digitales/" description="Imagen 2 · 5 preguntas · Dispositivos móviles y pizarras digitales" />
-	<LinkCard title="IA en la educación" href="/ia-educacion/" description="Imagen 3 · 4 preguntas · Perfiles, buen uso y aplicaciones" />
-	<LinkCard title="Recursos, redes y licencias" href="/recursos-redes-licencias/" description="Imagen 4 · 5 preguntas · Redes sociales, copyright y licencias" />
-</CardGrid>
-
-Las preguntas y las opciones se barajan en cada intento. Puedes navegar entre preguntas, marcarlas para revisar y consultar los resultados. Las respuestas, las marcas y el cronómetro se guardan en tu navegador. **Reiniciar intento** borra el progreso de ese cuestionario y vuelve a barajar.
+Las preguntas y las opciones se barajan en cada intento. Puedes navegar entre preguntas, marcarlas para revisar y consultar los resultados. Las respuestas, las marcas y el cronómetro se guardan en tu navegador. **Reiniciar intento** borra el progreso del cuestionario y vuelve a barajar.
 
 Las expresiones «Todas son correctas» y «Todos los anteriores» se refieren al resto de las opciones, independientemente del orden en que aparezcan.
+
+<Quiz id="tec-integracion-01" title="Tecnología como herramienta de aprendizaje">
+¿Cuál de las siguientes opciones NO representa un uso adecuado de la tecnología como herramienta de aprendizaje? (página 3)
+
+- [ ] Favorecer la innovación educativa
+- [ ] Introducir nuevos contenidos
+- [x] Reproducir contenidos y realizar actividades mecánicas
+- [ ] Detectar dificultades de aprendizaje
+
+</Quiz>
+
+<Quiz id="tec-integracion-02" title="Antes de integrar la tecnología">
+¿Cuál es el primer paso recomendado antes de integrar la tecnología en el aula? (página 4)
+
+- [ ] Elegir directamente la herramienta digital más novedosa
+- [x] Analizar la situación para detectar problemas o necesidades (como mejorar o motivar)
+- [ ] Diseñar actividades mecánicas de repaso
+- [ ] Redefinir los objetivos curriculares del centro
+
+</Quiz>
+
+<Quiz id="tec-integracion-03" title="Modelo SAMR">
+¿En qué consiste el modelo SAMR? (página 6)
+
+- [ ] Redefinir, modificar, aumentar y solventar
+- [x] Redefinir, modificar, aumentar y sustituir
+- [ ] Reunir, modificar, alimentar y sustituir
+- [ ] Redefinir, mitigar, aumentar y sustituir
+
+</Quiz>
+
+<Quiz id="tec-integracion-04" title="Taxonomía de Bloom">
+Según la Taxonomía de Bloom, ¿cuál es el nivel más alto de pensamiento? (página 7)
+
+- [ ] Recordar
+- [ ] Comprender
+- [ ] Aplicar
+- [x] Crear
+
+</Quiz>
+
+<Quiz id="tec-dispositivos-01" title="Concepto de dispositivo móvil">
+Según el concepto de dispositivo móvil (marca la correcta): (Diapositiva 9)
+
+- [ ] Solo engloba teléfonos inteligentes y tabletas
+- [x] Habitualmente se entiende como un dispositivo con capacidad de conectarse a Internet
+- [ ] Nunca incluye cámaras digitales ni videocámaras
+- [ ] Ninguna es correcta
+
+</Quiz>
+
+<Quiz id="tec-dispositivos-02" title="Dispositivos móviles en el aula">
+De los siguientes dispositivos digitales que se pueden usar en el aula, ¿cuáles se consideran dispositivos móviles?: (Diapositiva 10)
+
+- [ ] Teléfonos inteligentes o smartphones
+- [ ] Tabletas, relojes inteligentes y reproductores digitales.
+- [ ] Ordenadores portátiles, cámaras digitales y gafas de realidad virtual.
+- [x] Todos los anteriores.
+
+</Quiz>
+
+<Quiz id="tec-dispositivos-03" title="Ventajas del uso de dispositivos">
+¿Cuál de las siguientes opciones recoge correctamente una ventaja en el uso de dispositivos? (Diapositiva 11)
+
+- [ ] Eliminan completamente las distracciones del alumnado y los problemas técnicos.
+- [ ] Garantizan que todos los recursos digitales sean adecuados para cualquier estudiante.
+- [ ] Reducen la motivación del alumnado al sustituir los métodos tradicionales de enseñanza.
+- [x] Permiten ampliar las competencias digitales, mejorar la comunicación e incorporar metodologías activas en el aula.
+
+</Quiz>
+
+<Quiz id="tec-dispositivos-04" title="Aplicación pedagógica de la pizarra digital">
+¿Cuál de las siguientes afirmaciones describe correctamente la aplicación pedagógica de la pizarra digital en el aula según el texto?: (Diapositiva 13)
+
+- [ ] Está diseñada exclusivamente para la educación universitaria debido a su complejidad técnica.
+- [x] Es apta para todos los niveles educativos y fomenta la interacción entre docente y alumnos para debatir la materia.
+- [ ] Limita las lecciones únicamente a presentaciones estáticas preparadas antes de iniciar la clase.
+- [ ] Reemplaza la participación de los estudiantes al automatizar la explicación completa del profesor.
+
+</Quiz>
+
+<Quiz id="tec-dispositivos-05" title="Ventajas de las pizarras digitales">
+¿Cuál de las siguientes opciones es una ventaja del uso de las pizarras digitales? (Diapositiva 14)
+
+- [ ] Tienen un coste de compra y mantenimiento económico accesible para todos los centros.
+- [ ] Permite a los docentes no tener que hacer un seguimiento continuo de los alumnos.
+- [x] Permite al profesor y a los alumnos apoyar las explicaciones con contenido relacionado que se encuentre en Internet, fomentando así el debate y el intercambio de ideas sobre el tema que se esté tratando en clase
+- [ ] La infraestructura del centro no influye a la hora de instalarlas, ya que en 2026 ya no existe brecha digital.
+
+</Quiz>
+
+<Quiz id="tec-ia-01" title="Perfil del alumnado">
+¿Qué uso es característico en el perfil del alumnado?: (página 47)
+
+- [ ] Evaluación y creación de recursos
+- [x] Creador y consumidor
+- [ ] Gestión y automatización de procesos
+- [ ] Ninguna es correcta
+
+</Quiz>
+
+<Quiz id="tec-ia-02" title="Buen uso de la IA">
+Según el Decálogo para el buen uso de la IA, marca la correcta: (página 48)
+
+- [ ] Todas son correctas
+- [x] Supervisión humana
+- [ ] Mayoría de edad
+- [ ] Ser estudiante
+
+</Quiz>
+
+<Quiz id="tec-ia-03" title="Aplicaciones de la IA en educación">
+Indica cuál de las siguientes es una de las aplicaciones del uso de la IA en la educación: (página 49)
+
+- [ ] Desarrollar el índice de una asignatura
+- [x] Todas son correctas
+- [ ] Crear cuestionarios
+- [ ] Crear rúbricas de evaluación
+
+</Quiz>
+
+<Quiz id="tec-ia-04" title="Perfiles de uso de la IA">
+Cuáles son los perfiles de uso de la IA en el ámbito educativo: (página 47)
+
+- [ ] Perfil alumnado
+- [ ] Perfil del centro
+- [ ] Perfil profesorado
+- [x] Todas son correctas
+
+</Quiz>
+
+<Quiz id="tec-recursos-01" title="Recursos de los dispositivos digitales">
+Una de las ventajas del uso de dispositivos digitales en el aula es: (transp. 34)
+
+- [ ] Chatear por redes sociales en el aula para seguir socializando.
+- [ ] Realizar fotos en el aula y subirlas a redes sociales.
+- [ ] Distracciones en el aula.
+- [x] Gran cantidad de recursos informáticos.
+
+</Quiz>
+
+<Quiz id="tec-recursos-02" title="Vídeos y contenidos en otros idiomas">
+¿Qué red social se utiliza para presentar trabajos mediante vídeos (grabación y edición), buscar información para proyectos y escuchar contenidos en otros idiomas? (transp. 35)
+
+- [ ] Pinterest
+- [x] Youtube
+- [ ] Instagram
+- [ ] Linkedin
+
+</Quiz>
+
+<Quiz id="tec-recursos-03" title="Utilidad educativa de LinkedIn">
+¿Qué utilidad educativa se propone para LinkedIn? (transp. 35)
+
+- [ ] Crear álbumes de fotografías y contar historias visuales.
+- [ ] Crear vídeos y realizar clases en directo.
+- [ ] Crear tableros colaborativos y buscar imágenes para presentar trabajos
+- [x] Analizar ofertas de trabajo, elaborar currículums y conocer los perfiles más demandados.
+
+</Quiz>
+
+<Quiz id="tec-recursos-04" title="Copyright">
+¿Qué es el copyright?: (transp. 38)
+
+- [x] Es un tipo de propiedad intelectual que confiere a su dueño el derecho exclusivo de copiar, distribuir, adaptar, exhibir, y producir obras creativas, generalmente por un tiempo limitado
+- [ ] Son modelos de contratos que sirven para otorgar públicamente el derecho de utilizar una publicación protegida por derechos de autor.
+- [ ] Es una rama de la inteligencia artificial que se centra en la creación de contenido original y creativo.
+- [ ] Es, exclusivamente, un método antiplagio usado en publicaciones científicas.
+
+</Quiz>
+
+<Quiz id="tec-recursos-05" title="Licencias más abiertas">
+¿Cuál es el nivel considerado como “más abierto” cuando hablamos de licencias?: (transp. 39)
+
+- [ ] Acceder, distribuir.
+- [x] Acceder, distribuir, modificar, vender.
+- [ ] Uso con restricciones.
+- [ ] Acceder, distribuir, vender.
+
+</Quiz>
+
+<QuizResults />

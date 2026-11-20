@@ -12,11 +12,7 @@ export default defineConfig({
 				root: { label: 'Español', lang: 'es' },
 			},
 			sidebar: [
-				{ label: 'Inicio', slug: 'index' },
-				{ label: 'Integración de la tecnología', slug: 'integracion-tecnologia' },
-				{ label: 'Dispositivos y pizarras digitales', slug: 'dispositivos-digitales' },
-				{ label: 'IA en la educación', slug: 'ia-educacion' },
-				{ label: 'Recursos, redes y licencias', slug: 'recursos-redes-licencias' },
+				{ label: 'Cuestionario completo · 18 preguntas', slug: 'index' },
 			],
 			plugins: [
 				starlightQuiz({
