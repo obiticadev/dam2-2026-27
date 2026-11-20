@@ -1,0 +1,63 @@
+/**
+ * Shared constants for the starlight-quiz runtime.
+ *
+ * These are intentionally framework-agnostic — nothing in `lib/` may import
+ * `@astrojs/starlight` or `astro`, so the `./components` entry stays usable in
+ * a plain Astro project.
+ */
+
+/** Custom element tag for an individual quiz. */
+export const QUIZ_ELEMENT = 'sl-quiz';
+
+/** Custom element tag for the aggregate results panel. */
+export const QUIZ_RESULTS_ELEMENT = 'sl-quiz-results';
+
+/** Custom element tag for the intro panel (info text + page reset button). */
+export const QUIZ_INTRO_ELEMENT = 'sl-quiz-intro';
+
+/** Custom element tag for the question navigator (grid, timer and pager). */
+export const QUIZ_NAV_ELEMENT = 'sl-quiz-nav';
+
+/** Custom element tag for the compact progress widget (e.g. in the sidebar). */
+export const QUIZ_PROGRESS_ELEMENT = 'sl-quiz-progress';
+
+/**
+ * Custom element tag for the compact counter badge (e.g. `3 / 9`) shown on the
+ * mobile table-of-contents bar, where it stays visible while scrolling.
+ */
+export const QUIZ_PROGRESS_BADGE_ELEMENT = 'sl-quiz-progress-badge';
+
+/** Prefix for the per-page localStorage key. The page pathname is appended. */
+export const STORAGE_KEY_PREFIX = 'starlight-quiz:';
+
+/**
+ * Maximum serialised size (characters) we are willing to read from or write to
+ * localStorage for a single page. Guards against runaway growth and quota
+ * errors. Mirrors the behaviour of the original mkdocs-quiz runtime.
+ */
+export const STORAGE_MAX_CHARS = 50_000;
+
+/** Window event dispatched whenever aggregate progress changes. */
+export const PROGRESS_EVENT = 'starlight-quiz:progress';
+
+/** Window event dispatched when the user resets every quiz on the page. */
+export const RESET_ALL_EVENT = 'starlight-quiz:reset-all';
+
+/**
+ * Window event dispatched whenever any single quiz is answered or reset. Unlike
+ * `PROGRESS_EVENT` it fires even when the aggregate counts stay the same, so
+ * per-question widgets (the navigator grid) can repaint one cell.
+ */
+export const CHANGE_EVENT = 'starlight-quiz:change';
+
+/** Prefix for the per-page localStorage key holding flagged question ids. */
+export const FLAGS_KEY_PREFIX = 'starlight-quiz-flags:';
+
+/** Prefix for the per-page localStorage key holding the shuffled question order. */
+export const ORDER_KEY_PREFIX = 'starlight-quiz-order:';
+
+/** Prefix for the per-page localStorage key holding the attempt stopwatch. */
+export const TIMER_KEY_PREFIX = 'starlight-quiz-timer:';
+
+/** Minimum score (percent) required for confetti to fire on completion. */
+export const CONFETTI_MIN_SCORE = 10;

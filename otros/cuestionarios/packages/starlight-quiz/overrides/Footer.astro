@@ -1,0 +1,14 @@
+---
+import Default from '@astrojs/starlight/components/Footer.astro';
+import QuizProgress from '../components/QuizProgress.astro';
+import { isQuizPage } from '../libs/page';
+---
+
+{
+  /* On narrow screens the right-sidebar progress widget is hidden, so render a
+    full-width version in the page flow just above the footer/pagination. The
+    `lg:sl-hidden` utility hides it once the sidebar widget takes over. Quiz
+    pages skip it: the mobile navigator bar already shows the score. */
+}
+{!isQuizPage(Astro.locals) && <QuizProgress class="sl-quiz-progress--mobile lg:sl-hidden" showHeading={false} />}
+<Default><slot /></Default>

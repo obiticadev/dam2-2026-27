@@ -1,0 +1,25 @@
+---
+import Default from '@astrojs/starlight/components/TableOfContents.astro';
+import QuizNav from '../components/QuizNav.astro';
+import QuizProgress from '../components/QuizProgress.astro';
+import { getProgressPosition } from '../lib/config';
+import { isQuizPage } from '../libs/page';
+
+const position = getProgressPosition(Astro.locals);
+---
+
+{
+  /* Quiz pages are paginated: the question navigator replaces the table of
+    contents, which would only list the page title. */
+  isQuizPage(Astro.locals) ? (
+    <QuizNav variant="sidebar" />
+  ) : (
+    <>
+      {position === 'top' && <QuizProgress class="sl-quiz-progress--toc" />}
+      <Default>
+        <slot />
+      </Default>
+      {position === 'bottom' && <QuizProgress class="sl-quiz-progress--toc" />}
+    </>
+  )
+}

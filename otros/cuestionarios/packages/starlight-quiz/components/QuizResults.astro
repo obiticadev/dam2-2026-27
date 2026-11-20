@@ -1,0 +1,90 @@
+---
+import { getQuizDefaults } from '../lib/config';
+import { createStringResolver } from '../lib/i18n';
+
+interface Props {
+  /** Extra class names for the results wrapper. */
+  class?: string;
+  /**
+   * Fire confetti on a first-time, in-session completion (score ≥ 10%).
+   * On by default — pass `confetti={false}` to disable (or set the
+   * `quizDefaults.confetti` plugin option site-wide).
+   */
+  confetti?: boolean;
+  /** Override the panel title. */
+  titleLabel?: string;
+  /** Override the progress label. */
+  progressLabel?: string;
+  /** Override the word used after "{answered} / {total}". */
+  answeredLabel?: string;
+  /** Override the word used after "{correct} / {total}". */
+  correctLabel?: string;
+  /** Override the reset-all button label. */
+  resetLabel?: string;
+}
+
+const { class: className, titleLabel, progressLabel, answeredLabel, correctLabel, resetLabel } = Astro.props;
+
+const confetti = Astro.props.confetti ?? getQuizDefaults(Astro.locals).confetti;
+
+const resolve = createStringResolver(Astro.locals);
+
+const title = resolve('starlightQuiz.results.title', titleLabel);
+const progressHeading = resolve('starlightQuiz.progressHeading', progressLabel);
+const questionsAnswered = resolve('starlightQuiz.results.questionsAnswered', answeredLabel);
+const correct = resolve('starlightQuiz.results.correct', correctLabel);
+const resetAll = resolve('starlightQuiz.results.resetAll', resetLabel);
+const time = resolve('starlightQuiz.results.time');
+const confirmReset = resolve('starlightQuiz.results.confirmReset');
+
+const messages = {
+  excellent: resolve('starlightQuiz.results.excellent'),
+  good: resolve('starlightQuiz.results.good'),
+  average: resolve('starlightQuiz.results.average'),
+  poor: resolve('starlightQuiz.results.poor'),
+  fail: resolve('starlightQuiz.results.fail'),
+};
+---
+
+<sl-quiz-results
+  class:list={['sl-quiz-results', className]}
+  data-confetti={String(confetti)}
+  data-confirm-label={confirmReset}
+  data-msg-excellent={messages.excellent}
+  data-msg-good={messages.good}
+  data-msg-average={messages.average}
+  data-msg-poor={messages.poor}
+  data-msg-fail={messages.fail}
+>
+  <div class="sl-quiz-results-progress">
+    <p class="sl-quiz-results-heading">{progressHeading}</p>
+    <p class="sl-quiz-results-stats">
+      <span class="sl-quiz-results-answered">0</span> / <span class="sl-quiz-results-total">0</span>
+      {' '}{questionsAnswered}{' '}(<span class="sl-quiz-results-percentage">0%</span>)
+    </p>
+    <p class="sl-quiz-results-correct-stats">
+      <span class="sl-quiz-results-correct">0</span>{' '}{correct}
+    </p>
+  </div>
+
+  <div class="sl-quiz-results-complete" hidden>
+    <p class="sl-quiz-results-title">{title}</p>
+    <p class="sl-quiz-results-score"><span class="sl-quiz-results-score-value">0</span>%</p>
+    <p class="sl-quiz-results-message" role="status" aria-live="polite"></p>
+    <p class="sl-quiz-results-detail">
+      <span class="sl-quiz-results-correct">0</span> / <span class="sl-quiz-results-total">0</span>
+      {' '}{correct}
+    </p>
+    {/* Filled in by the question navigator's stopwatch on paginated pages. */}
+    <p class="sl-quiz-results-time" hidden>
+      {time}: <span class="sl-quiz-results-time-value"></span>
+    </p>
+    <button type="button" class="sl-quiz-results-reset">{resetAll}</button>
+  </div>
+</sl-quiz-results>
+
+<script>
+  import { defineQuizResultsElement } from '../lib/results-element';
+
+  defineQuizResultsElement();
+</script>

@@ -1,0 +1,22 @@
+---
+import Default from '@astrojs/starlight/components/MobileTableOfContents.astro';
+import QuizNav from '../components/QuizNav.astro';
+import QuizProgressBadge from '../components/QuizProgressBadge.astro';
+import { isQuizPage } from '../libs/page';
+---
+
+{
+  /* On quiz pages the fixed mobile bar becomes the question navigator. Elsewhere
+    a compact counter rides along on the ToC bar; the sidebar widget is
+    desktop-only. */
+  isQuizPage(Astro.locals) ? (
+    <QuizNav variant="mobile" />
+  ) : (
+    <>
+      <Default>
+        <slot />
+      </Default>
+      <QuizProgressBadge />
+    </>
+  )
+}
