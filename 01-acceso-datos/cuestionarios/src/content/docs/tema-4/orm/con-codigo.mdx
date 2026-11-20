@@ -1,0 +1,458 @@
+---
+title: "4A–4B · Con código · Normal"
+description: "20 preguntas de lectura y diagnóstico de entidades, configuración, sesiones y relaciones con Hibernate."
+sidebar:
+  order: 2
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Hibernate 5.4.33 con `javax.persistence` y el modelo del temario: `Usuario(seq, userNombre)`, `Profesor` con sus `correos` (`@OneToMany(mappedBy = "profesor", cascade = ALL, orphanRemoval = true)` y `@OrderColumn`) y `Correo` con `@ManyToOne(optional = false)` y `@JoinColumn(nullable = false)`. Se omiten imports. `s` es una `Session` abierta dentro de una transacción, salvo que el fragmento muestre otra cosa. Cada pregunta parte de su propio estado.
+
+<Quiz id="t4oc-01" title="Una entidad sin identificador">
+¿Qué ocurre al construir la `SessionFactory` con esta entidad registrada?
+
+```java
+@Entity
+public class Nota {
+    public String texto;
+}
+```
+
+- [ ] Hibernate crea una columna `id` automáticamente.
+  > No inventa el identificador.
+- [ ] Funciona, pero no se puede borrar.
+  > Ni siquiera llega a arrancar.
+- [x] Falla: `No identifier specified for entity`.
+  > Correcta: toda entidad necesita `@Id`.
+- [ ] Funciona y usa `texto` como clave.
+  > No elige un campo como clave por su cuenta.
+
+Repasar: 4A §2.
+</Quiz>
+
+<Quiz id="t4oc-02" title="El valor de mappedBy">
+En `Correo` la asociación es `public Profesor profesor;` y la tabla es `correos`. ¿Qué escribir en `Profesor`?
+
+```java
+@OneToMany(mappedBy = /* ? */)
+public List<Correo> correos = new ArrayList<>();
+```
+
+- [ ] `"correos"`, el nombre de la tabla.
+  > `mappedBy` usa nombres Java, no tablas.
+- [ ] `"profesor_id"`, la columna de la FK.
+  > Es la columna SQL, no el atributo.
+- [ ] `"Profesor"`, el nombre de la entidad.
+  > Hay que indicar el atributo del hijo.
+- [x] `"profesor"`, el atributo Java del hijo.
+  > Correcta: con un nombre que no existe, Hibernate falla al arrancar con `AnnotationException`.
+
+Repasar: 4A §4, uno a muchos y muchos a uno.
+</Quiz>
+
+<Quiz id="t4oc-03" title="Una entidad sin registrar">
+`hibernate.cfg.xml` no tiene ningún `mapping`. ¿Qué ocurre?
+
+```java
+s.persist(new Usuario(1, "Manolo"));
+```
+
+- [x] Falla: `Unknown entity`.
+  > Correcta: hay que registrar la clase con `mapping class` o `addAnnotatedClass`.
+- [ ] Se guarda en una tabla llamada `Usuario`.
+  > Hibernate solo conoce las entidades registradas.
+- [ ] Se guarda en memoria hasta el `commit`.
+  > No se puede gestionar una entidad desconocida.
+- [ ] Hibernate busca la clase por el nombre del paquete.
+  > No escanea paquetes en esta configuración.
+
+Repasar: 4A §8, errores frecuentes, y 4B §3.
+</Quiz>
+
+<Quiz id="t4oc-04" title="Leer lo que se acaba de guardar">
+¿Qué imprime?
+
+```java
+Usuario u = new Usuario(1, "Manolo");
+s.persist(u);
+System.out.println(u == s.get(Usuario.class, 1));
+```
+
+- [ ] `false`: `get` siempre crea un objeto nuevo desde la base.
+  > Primero mira en el contexto de persistencia de la sesión.
+- [x] `true`: el contexto devuelve la misma instancia gestionada.
+  > Correcta: por eso el CRUD del temario hace `flush()` y `clear()` antes de releer.
+- [ ] Lanza excepción porque aún no hay `commit`.
+  > Dentro de la misma sesión la entidad ya está gestionada.
+- [ ] `null`
+  > Una comparación con `==` devuelve un booleano.
+
+Repasar: 4B §5.
+</Quiz>
+
+<Quiz id="t4oc-05" title="Buscar un usuario que no existe">
+No hay ningún usuario con `seq` 99. ¿Qué es cierto?
+
+```java
+Usuario a = s.get(Usuario.class, 99);
+Usuario b = s.load(Usuario.class, 99);
+```
+
+- [ ] Las dos lanzan excepción.
+  > `get` devuelve `null`.
+- [ ] Las dos devuelven `null`.
+  > `load` puede devolver un proxy.
+- [ ] `a` es un proxy y `b` es `null`.
+  > Es justo al revés.
+- [x] `a` es `null` y `b` es un proxy que fallará al inicializarse.
+  > Correcta: `load` retrasa la detección y lanza `ObjectNotFoundException` al usarlo.
+
+Repasar: 4A §7.
+</Quiz>
+
+<Quiz id="t4oc-06" title="Cambiar sin llamar a update">
+¿Qué nombre queda en la base?
+
+```java
+Transaction tx = s.beginTransaction();
+Usuario u = s.get(Usuario.class, 1);   // "Manolo"
+u.setUserNombre("Manuel");
+tx.commit();
+```
+
+- [ ] `Manolo`: falta llamar a `update(u)`.
+  > No hace falta: la entidad está gestionada.
+- [ ] `Manolo`: los setters no se sincronizan.
+  > El contexto detecta el cambio al hacer flush.
+- [x] `Manuel`
+  > Correcta: el commit hace flush y envía los cambios de las entidades gestionadas.
+- [ ] Lanza excepción por modificar una entidad cargada.
+  > Modificar entidades gestionadas es lo normal.
+
+Repasar: 4A §7 y 4B §5.
+</Quiz>
+
+<Quiz id="t4oc-07" title="Separar antes de cambiar">
+¿Qué nombre queda en la base?
+
+```java
+Transaction tx = s.beginTransaction();
+Usuario u = s.get(Usuario.class, 1);   // "Manolo"
+s.evict(u);
+u.setUserNombre("Manuel");
+tx.commit();
+```
+
+- [ ] `Manuel`: el commit lo guarda.
+  > La entidad ya no está gestionada.
+- [x] `Manolo`
+  > Correcta: `evict` separa la entidad del contexto sin borrar la fila; sus cambios no se envían.
+- [ ] Ninguno: `evict` borra la fila.
+  > `evict` solo separa.
+- [ ] Lanza excepción por modificar una entidad separada.
+  > Se puede modificar; simplemente no se sincroniza.
+
+Repasar: 4A §7.
+</Quiz>
+
+<Quiz id="t4oc-08" title="Recargar desde la base">
+En la base el usuario se llama `Manolo`. ¿Qué imprime?
+
+```java
+Usuario u = s.get(Usuario.class, 1);
+u.setUserNombre("Local");
+s.refresh(u);
+System.out.println(u.getUserNombre());
+```
+
+- [ ] `Local`
+  > `refresh` descarta los cambios locales.
+- [ ] `null`
+  > `refresh` vuelve a leer la fila, que tiene nombre.
+- [ ] Lanza excepción por cambios pendientes.
+  > `refresh` los sobrescribe sin error.
+- [x] `Manolo`
+  > Correcta: vuelve a leer la fila y descarta lo modificado en memoria.
+
+Repasar: 4A §7.
+</Quiz>
+
+<Quiz id="t4oc-09" title="Lo que devuelve merge">
+`det` es un `Usuario` separado con nombre `Antes`. ¿Qué nombre queda en la base?
+
+```java
+Transaction tx = s.beginTransaction();
+Usuario gestionado = (Usuario) s.merge(det);
+det.setUserNombre("Despues");
+tx.commit();
+```
+
+- [x] `Antes`
+  > Correcta: `merge` copia el estado a otra instancia gestionada; `det` sigue separado.
+- [ ] `Despues`: `merge` vuelve a gestionar `det`.
+  > Devuelve una instancia gestionada que no tiene por qué ser `det`.
+- [ ] Lanza excepción porque `det` está separado.
+  > `merge` sirve justo para entidades separadas.
+- [ ] Ninguno: `merge` borra la fila.
+  > `merge` copia estado, no borra.
+
+Repasar: 4A §7.
+</Quiz>
+
+<Quiz id="t4oc-10" title="Flush no es commit">
+¿Qué nombre queda en la base?
+
+```java
+Transaction tx = s.beginTransaction();
+s.get(Usuario.class, 1).setUserNombre("Flush");   // era "Manolo"
+s.flush();
+tx.rollback();
+```
+
+- [ ] `Flush`: `flush()` ya lo escribió.
+  > Envía el SQL dentro de la transacción, que después se deshace.
+- [x] `Manolo`
+  > Correcta: `flush` sincroniza con la base, pero no equivale a confirmar.
+- [ ] `null`
+  > El `rollback` restaura el valor anterior.
+- [ ] Lanza excepción: no se puede hacer rollback tras flush.
+  > Se puede.
+
+Repasar: 4A §7.
+</Quiz>
+
+<Quiz id="t4oc-11" title="Correos fuera de la sesión">
+`correos` es una colección LAZY. ¿Qué ocurre en la última línea?
+
+```java
+Profesor p;
+try (Session s2 = factory.openSession()) {
+    p = s2.get(Profesor.class, 1);
+}
+System.out.println(p.correos.size());
+```
+
+- [ ] Imprime 0 porque la colección no se cargó.
+  > No devuelve 0: intenta inicializarla.
+- [ ] Imprime el número real de correos.
+  > La sesión está cerrada y no puede cargarlos.
+- [x] Lanza `LazyInitializationException`.
+  > Correcta: hay que cargar lo necesario dentro de la sesión, por ejemplo con `join fetch`.
+- [ ] Lanza `NullPointerException` porque `correos` es `null`.
+  > La colección es un proxy sin inicializar.
+
+Repasar: 4A §8, errores frecuentes.
+</Quiz>
+
+<Quiz id="t4oc-12" title="Un aviso con profesor nuevo">
+`Aviso.profesor` es `@ManyToOne(optional = false)` **sin cascada**. ¿Qué ocurre al hacer flush?
+
+```java
+Aviso av = new Aviso();
+av.texto = "Reunión";
+av.profesor = new Profesor("Nuevo");
+s.persist(av);
+s.flush();
+```
+
+- [ ] Guarda el aviso y el profesor.
+  > Sin cascada, persistir el aviso no persiste al profesor.
+- [ ] Guarda el aviso con `profesor_id` NULL.
+  > La FK es obligatoria.
+- [ ] Guarda el aviso y deja el profesor para el siguiente flush.
+  > No se guarda una referencia a una entidad sin persistir.
+- [x] Falla: referencia a una entidad transitoria sin guardar.
+  > Correcta: `TransientPropertyValueException`. Hay que persistir antes al profesor.
+
+Repasar: 4A §5 y §7.
+</Quiz>
+
+<Quiz id="t4oc-13" title="Añadir solo por un lado">
+¿Qué ocurre al hacer flush?
+
+```java
+Profesor p = s.get(Profesor.class, 1);
+Correo c = new Correo();
+c.direccion = "c@ej.invalid";
+p.correos.add(c);
+s.flush();
+```
+
+- [ ] Guarda el correo enlazado al profesor 1.
+  > El propietario es `Correo.profesor`, que sigue a `null`.
+- [x] Falla: `Correo.profesor` es obligatorio y está a `null`.
+  > Correcta: por eso existe `addCorreo`, que mantiene los dos lados.
+- [ ] No hace nada, porque `correos` es el lado inverso.
+  > Con `cascade = ALL` intenta guardar el correo, y falla.
+- [ ] Guarda el correo sin profesor.
+  > `nullable = false` lo impide.
+
+Repasar: 4A §4, mantener ambos lados.
+</Quiz>
+
+<Quiz id="t4oc-14" title="Quitar un correo de la lista">
+El profesor 1 tiene 2 correos. ¿Cuántos correos quedan en la tabla tras el commit?
+
+```java
+Transaction tx = s.beginTransaction();
+s.get(Profesor.class, 1).correos.remove(1);
+tx.commit();
+```
+
+- [ ] 2: quitar de la lista no toca la base.
+  > Con `orphanRemoval = true` el correo huérfano se borra.
+- [ ] 0: se borran todos los correos del profesor.
+  > Solo se ha quitado uno.
+- [x] 1
+  > Correcta: `orphanRemoval` elimina el hijo que deja de pertenecer a la relación.
+- [ ] Lanza excepción: no se puede quitar de una colección gestionada.
+  > Se puede.
+
+Repasar: 4A §5.
+</Quiz>
+
+<Quiz id="t4oc-15" title="Un enum sin anotar">
+`estado` es un `Estado { PENDIENTE, PAGADO }` sin `@Enumerated`. ¿Qué se guarda en la columna para `PAGADO`?
+
+```java
+Usuario u = new Usuario(2, "Eva");
+u.estado = Estado.PAGADO;
+s.persist(u);
+```
+
+- [ ] `'PAGADO'`
+  > Sería con `EnumType.STRING`.
+- [ ] `2`
+  > Las posiciones empiezan en 0.
+- [x] `1`
+  > Correcta: por defecto se guarda el ordinal; añadir un estado en medio cambiaría su significado.
+- [ ] `NULL`, porque falta la anotación.
+  > Se guarda igualmente, por posición.
+
+Repasar: 4A §2.
+</Quiz>
+
+<Quiz id="t4oc-16" title="Un campo transitorio">
+`nota` está anotado con `@Transient`. ¿Qué imprime la segunda sesión?
+
+```java
+// Sesión 1
+Usuario u = new Usuario(2, "Eva");
+u.nota = "hola";
+s.persist(u);
+// commit y cierre. Sesión 2:
+System.out.println(s2.get(Usuario.class, 2).nota);
+```
+
+- [ ] `hola`
+  > `@Transient` excluye el campo de la persistencia.
+- [ ] Lanza excepción: el campo no existe en la tabla.
+  > No lo lee de la tabla; simplemente no lo rellena.
+- [ ] Una cadena vacía.
+  > Queda con el valor por defecto de su tipo.
+- [x] `null`
+  > Correcta: el campo no se guardó y vuelve con su valor por defecto.
+
+Repasar: 4A §2.
+</Quiz>
+
+<Quiz id="t4oc-17" title="Una clave compuesta sin equals">
+¿Qué falta en esta clave para que Hibernate la use correctamente?
+
+```java
+@Embeddable
+public class EmployeeId implements Serializable {
+    @Column(name = "company_id") public Long companyId;
+    @Column(name = "employee_number") public Long employeeNumber;
+    public EmployeeId() {}
+}
+```
+
+- [ ] Una anotación `@Id` en cada campo.
+  > Con `@EmbeddedId` la clave es la clase completa.
+- [x] `equals` y `hashCode` por valor de sus dos campos.
+  > Correcta: dos claves con los mismos valores deben ser iguales y dar el mismo hash.
+- [ ] Un constructor con parámetros en lugar del vacío.
+  > El vacío es obligatorio; el de parámetros es opcional.
+- [ ] Quitar `Serializable`.
+  > La clave compuesta debe ser `Serializable`.
+
+Repasar: 4A §6, identificador compuesto.
+</Quiz>
+
+<Quiz id="t4oc-18" title="Una colección de claves">
+¿Qué error tiene `Company`?
+
+```java
+@Entity
+public class Company {
+    @Id public Long id;
+    @OneToMany(mappedBy = "company")
+    public Set<EmployeeId> employees = new HashSet<>();
+}
+```
+
+- [ ] Falta `cascade = ALL`.
+  > La cascada es opcional; el error es el tipo de la colección.
+- [ ] `Set` no se puede usar en un `@OneToMany`.
+  > Sí se puede.
+- [ ] `mappedBy` debe ser `"companyId"`.
+  > Aunque cambie el nombre, la colección sigue siendo de claves.
+- [x] La colección debe contener `Employee`, no `EmployeeId`.
+  > Correcta: una clave embebida no es una entidad a la que pueda apuntar un `@OneToMany`.
+
+Repasar: 4A §6, identificador compuesto.
+</Quiz>
+
+<Quiz id="t4oc-19" title="La política de esquema">
+Esta configuración apunta a la base MySQL real de la empresa. ¿Qué pasa con los datos al arrancar?
+
+```xml
+<session-factory>
+  <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/empresa</property>
+  <property name="hibernate.hbm2ddl.auto">create</property>
+  <mapping class="modelo.Usuario"/>
+</session-factory>
+```
+
+- [x] Se pueden perder: `create` vuelve a crear las tablas mapeadas.
+  > Correcta: con datos reales se usa un esquema preparado y `validate` o `none`.
+- [ ] Se conservan: `create` solo crea las tablas que faltan.
+  > `create` puede destruir tablas existentes.
+- [ ] Se conservan hasta cerrar la fábrica, y entonces se borran.
+  > Eso describe `create-drop`, que también es destructivo.
+- [ ] No arranca porque `create` solo vale para H2.
+  > Vale para cualquier motor, por eso es peligroso.
+
+Repasar: 4A §3 y 4B §6.
+</Quiz>
+
+<Quiz id="t4oc-20" title="El patrón de la unidad de trabajo">
+¿Qué completa correctamente el `catch`, según el CRUD del temario?
+
+```java
+try (Session s = HibernateUtils.getSessionFactory().openSession()) {
+    Transaction tx = s.beginTransaction();
+    try {
+        s.persist(new Usuario(1, "Manolo"));
+        tx.commit();
+    } catch (RuntimeException ex) {
+        // ?
+    }
+}
+```
+
+- [ ] `HibernateUtils.shutdown();` para liberar la conexión.
+  > Cerraría la fábrica de toda la aplicación.
+- [ ] `tx.commit();` para guardar lo que haya funcionado.
+  > Confirmaría una unidad de trabajo fallida.
+- [x] `if (tx.isActive()) tx.rollback();` y volver a lanzar `ex`.
+  > Correcta: se deshace, se propaga el error original y la sesión se cierra con try-with-resources.
+- [ ] Nada: el `try` de la sesión ya hace rollback y lo notifica.
+  > Ocultaría el error sin informar.
+
+Repasar: 4B §4 y §5.
+</Quiz>
+
+<QuizResults />

@@ -1,0 +1,423 @@
+---
+title: "Tema 3 · Mixto · Normal"
+description: "20 preguntas originales: 10 de JDBC (3A) y 10 de SQLite (3B), con y sin código."
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas originales · 10 de 3A y 10 de 3B · cuatro opciones · una correcta.** Mezcla situaciones, afirmaciones I/II/III y fragmentos de código. El reparto 10/10 es de práctica, no una ponderación oficial.
+
+Java 17 o posterior. Se omiten imports y el tratamiento de excepciones salvo que formen parte de la pregunta. En Java, `conexion` es una `Connection` abierta a MySQL con la base `emp`/`dept` original. En SQLite, las FK no están activadas salvo que el fragmento lo indique. Cada pregunta es independiente.
+
+<Quiz id="t3mn-01" title="Un pool de conexiones">
+Una aplicación web atiende cientos de peticiones por minuto y abrir una conexión nueva en cada una es lento. El equipo quiere configurar las conexiones en un único sitio y reutilizarlas. ¿Qué recomienda el temario?
+
+- [ ] Seguir con `DriverManager`, porque `DataSource` está obsoleto.
+  > Es al revés: ninguno está obsoleto, y `DataSource` es el adecuado para pools.
+- [x] `DataSource`, adecuado para configuración centralizada o un pool.
+  > Correcta: `DriverManager` sigue siendo válido, pero no está pensado para reutilizar conexiones.
+- [ ] `Class.forName` en cada petición para acelerar la conexión.
+  > Cargar la clase no reutiliza conexiones.
+- [ ] Un driver tipo 1 para no abrir conexiones de red.
+  > El puente ODBC es histórico y no resuelve la reutilización.
+
+Repasar: 3A §3, dependencias y registro.
+</Quiz>
+
+<Quiz id="t3mn-02" title="Saber con qué motor se trabaja">
+Una herramienta de informes debe mostrar en su cabecera el nombre del gestor de base de datos al que está conectada. ¿Qué llamada lo obtiene?
+
+- [ ] `rs.getMetaData().getColumnTypeName(1)`
+  > Da el tipo de una columna de un resultado.
+- [ ] `conexion.getCatalog()`
+  > Devuelve el catálogo actual, como el nombre de la base en MySQL, no el producto.
+- [x] `conexion.getMetaData().getDatabaseProductName()`
+  > Correcta: `DatabaseMetaData` describe el motor y el driver.
+- [ ] `DriverManager.getDriver()`
+  > No existe sin argumentos y no da el nombre del gestor.
+
+Repasar: 3A §6.
+</Quiz>
+
+<Quiz id="t3mn-03" title="Commit dentro del bucle">
+Se suben los sueldos de 5 empleados. La tercera actualización lanza `SQLException`. ¿Cuántas subidas quedan guardadas?
+
+```java
+conexion.setAutoCommit(false);
+try (PreparedStatement ps = conexion.prepareStatement(
+        "UPDATE emp SET sal = sal + 100 WHERE empno = ?")) {
+    for (int numero : numeros) {
+        ps.setInt(1, numero);
+        ps.executeUpdate();
+        conexion.commit();
+    }
+} catch (SQLException e) {
+    conexion.rollback();
+}
+```
+
+- [ ] 0, porque el `catch` hace `rollback()`.
+  > `rollback()` solo deshace lo que no se ha confirmado.
+- [ ] 5, porque la excepción no afecta a las anteriores.
+  > La tercera falla y las dos últimas no se ejecutan.
+- [ ] 3, porque la tercera se guarda antes de fallar.
+  > La tercera falla antes de su `commit()`.
+- [x] 2, las confirmadas antes del fallo.
+  > Correcta: cada vuelta confirma la suya; para «todo o nada» el `commit()` va después del bucle.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3mn-04" title="Afirmaciones sobre las propiedades ACID">
+Lee las afirmaciones:
+
+**I.** La consistencia exige que se respeten las restricciones y reglas al completar la transacción.
+
+**II.** El aislamiento garantiza que ningún nivel permita anomalías entre transacciones.
+
+**III.** La durabilidad hace que lo confirmado persista según las garantías del motor y su configuración.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > II es falsa: no todos los niveles evitan cualquier anomalía.
+- [ ] Solo II y III.
+  > II es falsa e I es cierta.
+- [x] Solo I y III.
+  > Correcta: el aislamiento regula cómo interactúan las transacciones, con niveles distintos.
+- [ ] Solo III.
+  > I también es cierta.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3mn-05" title="Guardar un empleado sin jefe">
+El nuevo empleado no tiene jefe (`mgr`). ¿Qué línea completa correctamente el parámetro 4?
+
+```java
+PreparedStatement ps = conexion.prepareStatement(
+        "INSERT INTO emp (empno, ename, job, mgr, deptno) VALUES (?, ?, ?, ?, ?)");
+ps.setInt(1, 8001);
+ps.setString(2, "NURIA");
+ps.setString(3, "CLERK");
+// parámetro 4
+ps.setInt(5, 10);
+```
+
+- [ ] `ps.setInt(4, 0);`
+  > Guardaría el jefe 0, que no es lo mismo que no tener jefe.
+- [ ] `ps.setString(4, "NULL");`
+  > Guardaría el texto `NULL`, no un nulo SQL.
+- [x] `ps.setNull(4, Types.INTEGER);`
+  > Correcta: `setNull` con el tipo SQL de la columna.
+- [ ] No asignarlo: JDBC pone NULL en los `?` vacíos.
+  > Cada `?` necesita un valor; MySQL lanza error si falta.
+
+Repasar: 3A §5.
+</Quiz>
+
+<Quiz id="t3mn-06" title="Columnas por posición con SELECT *">
+`emp` tiene las columnas `empno, ename, job, mgr, hiredate, sal, comm, deptno`. ¿Qué imprime?
+
+```java
+ResultSet rs = conexion.createStatement()
+        .executeQuery("SELECT * FROM emp WHERE empno = 7839");
+rs.next();
+System.out.println(rs.getString(2));
+```
+
+- [ ] `7839`
+  > Es la columna 1.
+- [x] `KING`
+  > Correcta: la columna 2 es `ename`; las posiciones empiezan en 1.
+- [ ] `PRESIDENT`
+  > Es la columna 3.
+- [ ] Lanza excepción: con `SELECT *` hay que leer por nombre.
+  > Se puede leer por posición, aunque depende del orden de las columnas.
+
+Repasar: 3A §5, recorrer los resultados.
+</Quiz>
+
+<Quiz id="t3mn-07" title="Llamar a una función">
+La función MySQL `salario_anual(p_empno INT)` devuelve un DECIMAL. ¿Qué posición tiene el valor devuelto?
+
+```java
+CallableStatement cs = conexion.prepareCall("{? = call salario_anual(?)}");
+cs.registerOutParameter(1, Types.DECIMAL);
+cs.setInt(2, 7839);
+cs.execute();
+```
+
+- [ ] La 2, porque el IN va primero.
+  > El primer `?` es el retorno, el que va antes de `= call`.
+- [ ] Ninguna: el resultado lo devuelve `execute()`.
+  > `execute()` devuelve un booleano sobre el primer resultado.
+- [ ] La 0, reservada al retorno.
+  > Las posiciones empiezan en 1.
+- [x] La 1, que se lee con `cs.getBigDecimal(1)`.
+  > Correcta: en `{? = call f(?)}` la posición 1 recibe el retorno.
+
+Repasar: 3A §8.
+</Quiz>
+
+<Quiz id="t3mn-08" title="Una sentencia fija sin datos de usuario">
+Un programa de instalación crea siempre la misma tabla, sin datos del usuario. ¿Qué es cierto?
+
+- [x] Basta un `Statement` con `executeUpdate`, que devolverá normalmente 0.
+  > Correcta: no hay valores que enlazar.
+- [ ] Hay que usar `PreparedStatement` con un `?` para el nombre de la tabla.
+  > Los marcadores no sirven para nombres de tablas.
+- [ ] Hay que usar `executeQuery`, porque CREATE devuelve la tabla creada.
+  > CREATE no devuelve filas.
+- [ ] En MySQL se puede deshacer con `rollback()` si algo falla después.
+  > El DDL en MySQL puede hacer un commit implícito.
+
+Repasar: 3A §5 y §7.
+</Quiz>
+
+<Quiz id="t3mn-09" title="Afirmaciones sobre los cursores">
+Lee las afirmaciones:
+
+**I.** `TYPE_FORWARD_ONLY` es el tipo habitual por defecto.
+
+**II.** `TYPE_SCROLL_SENSITIVE` garantiza ver los cambios externos con cualquier driver.
+
+**III.** Un resultado actualizable suele requerir una consulta de una sola tabla con su clave primaria.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > II es falsa: la sensibilidad depende del soporte del driver.
+- [x] Solo I y III.
+  > Correcta: además conviene comprobar `getConcurrency()`, porque el driver puede degradar la petición.
+- [ ] Solo II.
+  > II es la única falsa.
+- [ ] Solo I.
+  > III también es cierta.
+
+Repasar: 3A §10.
+</Quiz>
+
+<Quiz id="t3mn-10" title="Ventas de varios cafés">
+`ventas` es un `Map<String, Integer>` con el nombre del café y lo vendido. ¿Por qué el código lanza la excepción del `if`?
+
+```java
+for (Map.Entry<String, Integer> v : ventas.entrySet()) {
+    semana.setInt(1, v.getValue());
+    semana.setString(2, v.getKey());
+    if (semana.executeUpdate() != 1) {
+        throw new SQLException("No se encontró el café " + v.getKey());
+    }
+}
+```
+
+- [ ] Para detener el bucle cuando el café no existe y no ocurra nada.
+  > También sirve para que la transacción haga `rollback` de las ventas ya actualizadas.
+- [ ] Porque `executeUpdate` siempre devuelve 1.
+  > Devuelve 0 si el nombre no existe.
+- [x] Porque un UPDATE sin coincidencias no falla solo, y así el `rollback` deshace todas las ventas.
+  > Correcta: así se comprueba que cada café existe y la transacción confirma todo o nada.
+- [ ] Porque `setString` falla con nombres de café inexistentes.
+  > `setString` solo asigna el valor; no consulta la tabla.
+
+Repasar: 3A §7 y §9.
+</Quiz>
+
+<Quiz id="t3mn-11" title="Caché de un catálogo">
+Una app móvil descarga el catálogo de productos y quiere consultarlo con SQL sin red hasta la siguiente sincronización. ¿Qué encaja?
+
+- [ ] Abrir una conexión a MySQL cada vez que se consulta.
+  > Necesita red, justo lo que falta.
+- [ ] Un XML enorme leído con DOM en cada búsqueda.
+  > No ofrece consultas SQL ni transacciones.
+- [ ] Un servidor Oracle instalado en el móvil.
+  > Es desproporcionado para una caché local.
+- [x] Una base SQLite local en la app.
+  > Correcta: cachés y trabajo sin conexión son un uso habitual de los motores embebidos.
+
+Repasar: 3B §1.
+</Quiz>
+
+<Quiz id="t3mn-12" title="Resultados legibles en la consola">
+Las consultas en sqlite3 salen como `Ana|Lopez`, sin cabecera. ¿Qué órdenes muestran los nombres de columna y alinean la salida?
+
+```bash
+sqlite> SELECT first_name, last_name FROM contacts;
+Ana|Lopez
+```
+
+- [ ] `.schema` y `.tables`
+  > Muestran la definición y la lista de tablas, no cambian el formato.
+- [x] `.headers on` y `.mode column`
+  > Correcta: cabecera con nombres de columna y salida alineada por columnas.
+- [ ] `.echo on` y `.timer on`
+  > Repiten las instrucciones y muestran el tiempo.
+- [ ] `SET HEADERS ON;`
+  > No es SQL de SQLite ni una orden de la consola.
+
+Repasar: 3B §3.
+</Quiz>
+
+<Quiz id="t3mn-13" title="Afirmaciones sobre las tablas WITHOUT ROWID">
+Lee las afirmaciones:
+
+**I.** Utilizan la PK declarada como estructura de almacenamiento.
+
+**II.** Se pueden combinar con el comportamiento especial de AUTOINCREMENT.
+
+**III.** Tienen requisitos distintos a los de una tabla ordinaria.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > II es falsa: no se combinan con AUTOINCREMENT.
+- [ ] Solo II.
+  > II es la única falsa.
+- [x] Solo I y III.
+  > Correcta: no tienen `rowid` y no admiten el comportamiento de AUTOINCREMENT.
+- [ ] Ninguna.
+  > I y III son ciertas.
+
+Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
+</Quiz>
+
+<Quiz id="t3mn-14" title="Borrar un grupo con proveedores">
+¿Qué ocurre con el DELETE?
+
+```sql
+PRAGMA foreign_keys = ON;
+CREATE TABLE supplier_groups (group_id INTEGER PRIMARY KEY, group_name TEXT NOT NULL);
+CREATE TABLE suppliers (
+    supplier_id INTEGER PRIMARY KEY,
+    group_id INTEGER NOT NULL
+        REFERENCES supplier_groups (group_id) ON DELETE RESTRICT
+);
+INSERT INTO supplier_groups VALUES (1, 'Mayoristas');
+INSERT INTO suppliers VALUES (10, 1);
+DELETE FROM supplier_groups WHERE group_id = 1;
+```
+
+- [ ] Borra el grupo y su proveedor.
+  > Eso haría CASCADE.
+- [x] Falla: RESTRICT rechaza borrar un grupo con proveedores.
+  > Correcta: primero habría que reasignar o borrar el proveedor.
+- [ ] Borra el grupo y deja `group_id` a NULL.
+  > Eso haría SET NULL, y la columna es NOT NULL.
+- [ ] Borra el grupo sin comprobar nada.
+  > Las FK están activadas en esta conexión.
+
+Repasar: 3B §6, acciones referenciales.
+</Quiz>
+
+<Quiz id="t3mn-15" title="Triggers y vistas">
+Lee las afirmaciones sobre SQLite:
+
+**I.** Sus triggers son por fila.
+
+**II.** Las vistas se modifican directamente con UPDATE, igual que una tabla.
+
+**III.** Un trigger INSTEAD OF puede implementar ciertas operaciones sobre una vista.
+
+¿Cuáles son correctas?
+
+- [x] Solo I y III.
+  > Correcta: las vistas no se modifican directamente.
+- [ ] Todas: I, II y III.
+  > II es falsa.
+- [ ] Solo II y III.
+  > II es falsa e I es cierta.
+- [ ] Solo I.
+  > III también es cierta.
+
+Repasar: 3B §2.
+</Quiz>
+
+<Quiz id="t3mn-16" title="Explorar una base sin programar">
+Un administrativo quiere revisar las tablas de un archivo `.db` y lanzar alguna consulta, pero no sabe usar la consola. ¿Qué herramienta del temario le sirve?
+
+- [ ] MySQL Workbench, porque SQLite es compatible con MySQL.
+  > Son motores distintos; Workbench no abre archivos SQLite.
+- [ ] Un driver JDBC tipo 4.
+  > Es una pieza para programar en Java, no una herramienta gráfica.
+- [x] DB Browser for SQLite.
+  > Correcta: interfaz gráfica para examinar tablas y ejecutar SQL.
+- [ ] `.import` desde la consola.
+  > Sigue siendo la consola y sirve para importar CSV.
+
+Repasar: 3B §3.
+</Quiz>
+
+<Quiz id="t3mn-17" title="Tabla estricta">
+¿Qué ocurre con el INSERT?
+
+```sql
+CREATE TABLE medidas (id INTEGER PRIMARY KEY, valor INTEGER) STRICT;
+INSERT INTO medidas (valor) VALUES ('abc');
+```
+
+- [ ] Se guarda `'abc'` como texto.
+  > Eso pasaría en una tabla ordinaria; STRICT añade comprobaciones de tipo.
+- [ ] Se guarda 0.
+  > SQLite no convierte `'abc'` en 0.
+- [ ] Se guarda NULL.
+  > No sustituye el valor por NULL.
+- [x] Falla: en una tabla STRICT el valor no es compatible con INTEGER.
+  > Correcta: STRICT rechaza lo que no puede guardarse como el tipo declarado.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3mn-18" title="Una base de pruebas en Java">
+¿Qué ocurre con los datos al terminar el `try`?
+
+```java
+try (Connection c = DriverManager.getConnection("jdbc:sqlite::memory:");
+     Statement st = c.createStatement()) {
+    st.executeUpdate("CREATE TABLE t (n INTEGER)");
+    st.executeUpdate("INSERT INTO t VALUES (1)");
+}
+```
+
+- [x] Desaparecen: la base en memoria vive mientras dura la conexión.
+  > Correcta: es útil para pruebas que empiezan siempre de cero.
+- [ ] Se guardan en un archivo llamado `memory`.
+  > `:memory:` no crea ningún archivo.
+- [ ] Se guardan porque el autocommit está activado.
+  > Se confirman, pero la base desaparece al cerrar la conexión.
+- [ ] Falla: SQLite necesita una ruta de archivo.
+  > `jdbc:sqlite::memory:` es una URL válida.
+
+Repasar: 3B §8, acceso desde Java.
+</Quiz>
+
+<Quiz id="t3mn-19" title="Eliminar una columna">
+Quieres eliminar una columna de una tabla en SQLite. Según el temario, ¿qué es cierto?
+
+- [ ] SQLite nunca permite eliminar columnas.
+  > Es una afirmación del material histórico que el temario corrige.
+- [ ] Funciona igual que en cualquier otro motor, sin restricciones.
+  > Tiene restricciones y ALTER TABLE es más limitado.
+- [ ] Solo se puede con DB Browser, no con SQL.
+  > Es una sentencia SQL.
+- [x] `DROP COLUMN` existe desde la versión 3.35.0, con restricciones.
+  > Correcta: conviene comprobar la versión instalada y la documentación oficial.
+
+Repasar: 3B §2.
+</Quiz>
+
+<Quiz id="t3mn-20" title="Bloqueo al escribir">
+Dos programas abren la misma base SQLite. Uno ya está dentro de una transacción de escritura y el otro ejecuta `BEGIN IMMEDIATE`. ¿Qué puede ocurrir?
+
+- [ ] Los dos escriben a la vez gracias a IMMEDIATE.
+  > SQLite serializa las escrituras.
+- [x] El segundo puede fallar porque ya hay otro escritor.
+  > Correcta: IMMEDIATE intenta adquirir la escritura al empezar y puede fallar con otro escritor activo.
+- [ ] El primero se deshace automáticamente.
+  > IMMEDIATE no cancela otras transacciones.
+- [ ] Se convierte en una transacción de solo lectura.
+  > IMMEDIATE no cambia el tipo de la transacción a solo lectura.
+
+Repasar: 3B §7.
+</Quiz>
+
+<QuizResults />

@@ -1,0 +1,460 @@
+---
+title: "Tema 3 · Mixto · Más difícil"
+description: "20 preguntas originales de diagnóstico y razonamiento: 10 de JDBC y 10 de SQLite."
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas originales · 10 de 3A y 10 de 3B · cuatro opciones · una correcta.** Mayor dificultad: errores que no lanzan excepción, estados que hay que seguir paso a paso y matices de NULL, agrupación y restricciones. El reparto 10/10 es de práctica, no una ponderación oficial.
+
+Java 17 o posterior. Se omiten imports y el tratamiento de excepciones salvo que formen parte de la pregunta. En Java, `conexion` es una `Connection` abierta a MySQL con la base `emp`/`dept` original. En SQLite, las FK no están activadas salvo que el fragmento lo indique. Cada pregunta es independiente.
+
+<Quiz id="t3md-01" title="Una transferencia que no falla">
+El empleado 1234 no existe. ¿Cómo queda la base?
+
+```java
+conexion.setAutoCommit(false);
+try (PreparedStatement ps = conexion.prepareStatement(
+        "UPDATE emp SET sal = sal + ? WHERE empno = ?")) {
+    ps.setInt(1, -100); ps.setInt(2, 7839); ps.executeUpdate();
+    ps.setInt(1, 100);  ps.setInt(2, 1234); ps.executeUpdate();
+    conexion.commit();
+} catch (SQLException e) {
+    conexion.rollback();
+}
+```
+
+- [ ] No cambia nada: el segundo UPDATE lanza excepción y se hace `rollback`.
+  > Un UPDATE sin filas devuelve 0, no lanza excepción.
+- [ ] No cambia nada: `commit()` detecta que el segundo no afectó a filas.
+  > `commit()` no revisa los recuentos.
+- [x] KING tiene 100 menos y nadie recibe los 100.
+  > Correcta: hay que comprobar que cada `executeUpdate()` devuelva 1 y lanzar una excepción si no.
+- [ ] KING tiene 100 menos y se crea el empleado 1234.
+  > UPDATE nunca inserta.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3md-02" title="Actualizar con la sentencia del recorrido">
+¿Qué ocurre en la segunda vuelta del bucle?
+
+```java
+Statement st = conexion.createStatement();
+ResultSet rs = st.executeQuery("SELECT empno FROM emp");
+while (rs.next()) {
+    st.executeUpdate("UPDATE emp SET sal = sal + 1 WHERE empno = " + rs.getInt(1));
+}
+```
+
+- [ ] Nada especial: actualiza a todos los empleados.
+  > Ejecutar otra sentencia con el mismo `Statement` cierra su `ResultSet`.
+- [ ] El UPDATE falla porque el `empno` se concatena.
+  > Es un entero leído de la base; el problema está en reutilizar el `Statement`.
+- [ ] Actualiza dos veces al primer empleado.
+  > El recorrido no vuelve al principio.
+- [x] `rs.next()` lanza `SQLException`: el resultado se cerró al ejecutar el UPDATE.
+  > Correcta: se necesita otra sentencia, idealmente un `PreparedStatement` para el UPDATE.
+
+Repasar: 3A §4 y la práctica de salarios.
+</Quiz>
+
+<Quiz id="t3md-03" title="Una sola subida por empleado">
+Reglas en este orden, con `else if`: MANAGER 10 %; alta antes del 1981-09-01 15 %; ANALYST del departamento 20 5 %; SALESMAN 8 %. JONES es MANAGER, del departamento 20 y alta 1981-04-02. ¿Qué porcentaje recibe?
+
+- [ ] 15 %, porque su alta es anterior a la fecha límite.
+  > También la cumple, pero la regla de MANAGER va antes.
+- [x] 10 %.
+  > Correcta: con `else if` se aplica solo la primera regla que se cumple.
+- [ ] 25 %, la suma de las dos reglas que cumple.
+  > Las reglas no se acumulan.
+- [ ] 5 %, por ser del departamento 20.
+  > Esa regla es para ANALYST.
+
+Repasar: 3A §10 y la práctica de salarios.
+</Quiz>
+
+<Quiz id="t3md-04" title="Rollback sin argumento">
+¿Qué queda guardado?
+
+```java
+conexion.setAutoCommit(false);
+Statement st = conexion.createStatement();
+st.executeUpdate("UPDATE emp SET job = 'ANALYST' WHERE empno = 7369");
+Savepoint sp = conexion.setSavepoint();
+st.executeUpdate("UPDATE emp SET sal = 9999 WHERE empno = 7369");
+conexion.rollback();
+conexion.commit();
+```
+
+- [ ] El cambio de oficio, gracias al savepoint.
+  > `rollback()` sin argumento deshace toda la transacción, también lo anterior al punto.
+- [ ] Los dos cambios, por el `commit()` final.
+  > El `commit()` llega cuando ya no hay nada pendiente.
+- [x] Nada.
+  > Correcta: para conservar el oficio haría falta `rollback(sp)`.
+- [ ] El cambio de sueldo.
+  > Es lo más reciente y también se deshace.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3md-05" title="wasNull en el momento equivocado">
+BLAKE (7698) tiene `comm` NULL. ¿Qué imprime?
+
+```java
+PreparedStatement ps = conexion.prepareStatement(
+        "SELECT ename, comm FROM emp WHERE empno = ?");
+ps.setInt(1, 7698);
+ResultSet rs = ps.executeQuery();
+rs.next();
+double c = rs.getDouble("comm");
+String n = rs.getString("ename");
+System.out.println(rs.wasNull());
+```
+
+- [ ] `true`, porque `comm` es NULL.
+  > `wasNull()` se refiere a la última columna leída.
+- [x] `false`
+  > Correcta: lo último leído es `ename`, que tiene valor. `wasNull()` va justo después del `getXxx` que interesa.
+- [ ] Lanza excepción por leer dos columnas.
+  > Se pueden leer varias columnas de la misma fila.
+- [ ] `null`
+  > `wasNull()` devuelve un booleano.
+
+Repasar: 3A §5, recorrer los resultados.
+</Quiz>
+
+<Quiz id="t3md-06" title="Ordenar con un parámetro">
+El usuario elige ordenar por salario. ¿Qué hace este código?
+
+```java
+PreparedStatement ps = conexion.prepareStatement(
+        "SELECT ename, sal FROM emp ORDER BY ?");
+ps.setString(1, "sal");
+ResultSet rs = ps.executeQuery();
+```
+
+- [ ] Ordena por salario, de forma segura.
+  > El `?` es un valor: ordena por el texto constante `'sal'`, no por la columna.
+- [ ] Lanza `SQLException`: `ORDER BY` no admite `?`.
+  > En MySQL se ejecuta sin error (otros motores pueden rechazarlo); el problema es que no hace lo que se pretende.
+- [ ] Ordena por `ename`, la primera columna.
+  > No hay nada que indique esa columna.
+- [x] No ordena por salario, porque ordena por un valor constante.
+  > Correcta: para columnas elegibles se usa una lista blanca y SQL decidido por la aplicación.
+
+Repasar: 3A §5, seguridad.
+</Quiz>
+
+<Quiz id="t3md-07" title="Posición cero">
+El resultado es desplazable. ¿Qué ocurre?
+
+```java
+ResultSet rs = st.executeQuery("SELECT ename FROM emp ORDER BY empno");
+boolean ok = rs.absolute(0);
+System.out.println(ok);
+System.out.println(rs.getString(1));
+```
+
+- [ ] Imprime `true` y `SMITH`.
+  > La fila 1 es la primera; 0 no es una fila.
+- [x] Imprime `false` y después `getString` lanza excepción.
+  > Correcta: `absolute(0)` deja el cursor antes de la primera fila.
+- [ ] Imprime `true` y `MILLER`.
+  > Los negativos cuentan desde el final; 0 no.
+- [ ] `absolute(0)` lanza excepción y no se imprime nada.
+  > Es una posición válida: antes de la primera fila.
+
+Repasar: 3A §10, movimiento del cursor.
+</Quiz>
+
+<Quiz id="t3md-08" title="Un updateRow que no se confirma">
+El resultado es actualizable. ¿Cuál es el salario de SMITH al final?
+
+```java
+conexion.setAutoCommit(false);
+ResultSet rs = st.executeQuery("SELECT empno, sal FROM emp WHERE empno = 7369");
+rs.next();
+rs.updateDouble("sal", 1000);
+rs.updateRow();
+conexion.rollback();
+```
+
+- [ ] 1000, porque `updateRow()` ya escribió en la tabla.
+  > Lo envía dentro de la transacción, que después se deshace.
+- [ ] 1000, porque los cursores no participan en las transacciones.
+  > Sí participan.
+- [x] 800, su valor original.
+  > Correcta: `updateRow()` no sustituye a `commit()`.
+- [ ] Lanza excepción: no se puede hacer `rollback` tras `updateRow`.
+  > Se puede deshacer como cualquier otra modificación.
+
+Repasar: 3A §10, modificar, insertar y borrar.
+</Quiz>
+
+<Quiz id="t3md-09" title="execute con un SELECT">
+¿Qué imprime?
+
+```java
+Statement st = conexion.createStatement();
+boolean b = st.execute("SELECT ename FROM emp");
+System.out.println(b + " " + st.getUpdateCount());
+```
+
+- [ ] `false 14`
+  > Un SELECT produce un `ResultSet`, no un recuento.
+- [ ] `true 14`
+  > El recuento de actualización no se aplica a un resultado de filas.
+- [ ] `false 0`
+  > El primer resultado sí es un `ResultSet`.
+- [x] `true -1`
+  > Correcta: hay `ResultSet` (se lee con `getResultSet()`) y no hay recuento, así que `getUpdateCount()` da −1.
+
+Repasar: 3A §5, elegir el método de ejecución.
+</Quiz>
+
+<Quiz id="t3md-10" title="Afirmaciones sobre DatabaseMetaData">
+Lee las afirmaciones:
+
+**I.** `getMaxConnections()` puede devolver 0 cuando el máximo es desconocido o no hay límite conocido.
+
+**II.** `getImportedKeys(...)` describe las claves foráneas de una tabla hacia otras.
+
+**III.** En `getTables(...)`, `null` en catálogo o esquema significa normalmente no restringir ese criterio.
+
+¿Cuáles son correctas?
+
+- [x] Todas: I, II y III.
+  > Correcta: las tres coinciden con la tabla de metadatos del temario.
+- [ ] Solo I y II.
+  > III también es cierta: `null` no equivale siempre a «catálogo predeterminado».
+- [ ] Solo II.
+  > I y III también son ciertas.
+- [ ] Ninguna.
+  > Las tres son ciertas.
+
+Repasar: 3A §6.
+</Quiz>
+
+<Quiz id="t3md-11" title="SET NULL sobre una columna obligatoria">
+¿Qué ocurre con el DELETE?
+
+```sql
+PRAGMA foreign_keys = ON;
+CREATE TABLE g (id INTEGER PRIMARY KEY);
+CREATE TABLE s (
+    id INTEGER PRIMARY KEY,
+    g INTEGER NOT NULL REFERENCES g (id) ON DELETE SET NULL
+);
+INSERT INTO g VALUES (1);
+INSERT INTO s VALUES (10, 1);
+DELETE FROM g WHERE id = 1;
+```
+
+- [ ] Borra el grupo y deja `s.g` a NULL.
+  > SET NULL necesita que la columna admita nulos.
+- [ ] Borra el grupo y también el proveedor.
+  > Eso sería CASCADE.
+- [ ] Borra el grupo y deja `s.g` en 1, sin comprobar.
+  > Las FK están activadas.
+- [x] Falla por la restricción NOT NULL de `s.g`.
+  > Correcta: la acción SET NULL no puede cumplirse sobre una columna NOT NULL.
+
+Repasar: 3B §6, acciones referenciales.
+</Quiz>
+
+<Quiz id="t3md-12" title="Contar facturas con LEFT JOIN">
+Ana tiene 2 facturas y Luis ninguna. ¿Qué fila devuelve para Luis?
+
+```sql
+SELECT c.nombre, COUNT(*), COUNT(f.id)
+FROM clientes c
+LEFT JOIN facturas f ON f.cliente_id = c.id
+GROUP BY c.id, c.nombre;
+```
+
+- [ ] `Luis | 0 | 0`
+  > `COUNT(*)` cuenta la fila que el LEFT JOIN conserva para Luis.
+- [x] `Luis | 1 | 0`
+  > Correcta: `COUNT(*)` cuenta filas y `COUNT(f.id)` ignora los NULL.
+- [ ] `Luis | 1 | 1`
+  > `f.id` es NULL para Luis.
+- [ ] Luis no aparece.
+  > El LEFT JOIN lo conserva.
+
+Repasar: 3B §8 y actividad Chinook.
+</Quiz>
+
+<Quiz id="t3md-13" title="Un filtro que anula el LEFT JOIN">
+Ana tiene facturas de 10 y 5 y Luis ninguna. ¿Qué devuelve?
+
+```sql
+SELECT c.nombre, COALESCE(SUM(f.total), 0)
+FROM clientes c
+LEFT JOIN facturas f ON f.cliente_id = c.id
+WHERE f.total > 0
+GROUP BY c.id, c.nombre;
+```
+
+- [ ] `Ana | 15` y `Luis | 0`.
+  > El WHERE se aplica después de la unión y descarta la fila de Luis, con `f.total` NULL.
+- [ ] `Luis | 0`
+  > Ana cumple el filtro.
+- [x] Solo `Ana | 15`.
+  > Correcta: para conservar a Luis, la condición sobre `f` va en el ON.
+- [ ] Error: no se puede usar WHERE con LEFT JOIN.
+  > Se puede; solo cambia el resultado.
+
+Repasar: 3B §8 y actividad Chinook.
+</Quiz>
+
+<Quiz id="t3md-14" title="NOT IN con un NULL">
+`a` contiene 1, 2 y 3; `b` contiene 1 y NULL. ¿Qué devuelven las dos consultas?
+
+```sql
+SELECT COUNT(*) FROM a WHERE x NOT IN (SELECT y FROM b);
+SELECT COUNT(*) FROM a WHERE NOT EXISTS (SELECT 1 FROM b WHERE b.y = a.x);
+```
+
+- [ ] `2` y `2`
+  > El NULL hace que `NOT IN` nunca sea verdadero.
+- [ ] `2` y `0`
+  > Es al revés: `NOT EXISTS` no se ve afectado por el NULL.
+- [x] `0` y `2`
+  > Correcta: `x NOT IN (1, NULL)` es desconocido para 2 y 3. `NOT EXISTS` devuelve 2 y 3.
+- [ ] `3` y `3`
+  > El 1 está en `b` y no debe contarse.
+
+Repasar: 3B §8, consultas.
+</Quiz>
+
+<Quiz id="t3md-15" title="Afinidad NUMERIC">
+¿Qué devuelve el SELECT?
+
+```sql
+CREATE TABLE t (n NUMERIC, s TEXT);
+INSERT INTO t VALUES ('3.0', 12);
+SELECT typeof(n), n, typeof(s) FROM t;
+```
+
+- [ ] `numeric | 3.0 | integer`
+  > NUMERIC es una afinidad, no una clase de almacenamiento.
+- [ ] `text | 3.0 | text`
+  > La afinidad NUMERIC convierte el texto numérico.
+- [ ] `real | 3.0 | integer`
+  > `'3.0'` se guarda como entero porque no pierde información, y TEXT convierte 12 en texto.
+- [x] `integer | 3 | text`
+  > Correcta: NUMERIC guarda `'3.0'` como el entero 3 y TEXT guarda 12 como texto.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3md-16" title="Unicidad compuesta con NULL">
+¿Qué devuelve el COUNT?
+
+```sql
+CREATE TABLE m (a INTEGER, b INTEGER, UNIQUE (a, b));
+INSERT INTO m VALUES (1, NULL);
+INSERT INTO m VALUES (1, NULL);
+SELECT COUNT(*) FROM m;
+```
+
+- [x] `2`
+  > Correcta: con un NULL en la combinación, SQLite no considera repetidas las filas.
+- [ ] `1`: la segunda fila repite la combinación.
+  > NULL no es igual a NULL para la restricción UNIQUE.
+- [ ] Error en el CREATE: UNIQUE no admite dos columnas.
+  > UNIQUE puede ser compuesta.
+- [ ] `0`: UNIQUE rechaza NULL.
+  > Las columnas admiten NULL.
+
+Repasar: 3B §5, qué garantiza cada restricción.
+</Quiz>
+
+<Quiz id="t3md-17" title="Vaciar la tabla y volver a insertar">
+Se ejecuta lo mismo en dos tablas: una con `INTEGER PRIMARY KEY AUTOINCREMENT` y otra solo con `INTEGER PRIMARY KEY`. ¿Qué `id` recibe `'d'` en cada una?
+
+```sql
+INSERT INTO t (n) VALUES ('a'), ('b'), ('c');
+DELETE FROM t;
+INSERT INTO t (n) VALUES ('d');
+```
+
+- [ ] 1 en las dos.
+  > AUTOINCREMENT recuerda el mayor valor usado.
+- [ ] 4 en las dos.
+  > Sin AUTOINCREMENT, con la tabla vacía se vuelve a empezar.
+- [x] 4 con AUTOINCREMENT y 1 sin él.
+  > Correcta: AUTOINCREMENT evita reutilizar identificadores ya usados.
+- [ ] 1 con AUTOINCREMENT y 4 sin él.
+  > Es justo al revés.
+
+Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
+</Quiz>
+
+<Quiz id="t3md-18" title="El PRAGMA de otra conexión">
+El grupo 99 no existe y `contact_groups` tiene la FK hacia `groups`. ¿Qué ocurre con el INSERT de `c2`?
+
+```java
+Connection c1 = DriverManager.getConnection("jdbc:sqlite:agenda.db");
+c1.createStatement().execute("PRAGMA foreign_keys = ON");
+Connection c2 = DriverManager.getConnection("jdbc:sqlite:agenda.db");
+c2.createStatement().executeUpdate("INSERT INTO contact_groups VALUES (1, 99)");
+```
+
+- [ ] Falla: el PRAGMA de `c1` activó las FK en el archivo.
+  > El PRAGMA se aplica a la conexión que lo ejecuta.
+- [ ] Falla porque dos conexiones no pueden abrir la misma base.
+  > SQLite admite varias conexiones a un archivo.
+- [x] Se inserta: `c2` no ha activado las FK.
+  > Correcta: hay que activar `PRAGMA foreign_keys` en cada conexión.
+- [ ] Se inserta y crea el grupo 99.
+  > Una FK nunca crea filas.
+
+Repasar: 3B §5, FOREIGN KEY.
+</Quiz>
+
+<Quiz id="t3md-19" title="Mayúsculas en los valores">
+Con la colación por defecto de SQLite, ¿qué devuelve?
+
+```sql
+SELECT 'Ana' = 'ana', 'Ana' LIKE 'ana';
+```
+
+- [ ] `1 | 1`
+  > `=` distingue mayúsculas con la colación por defecto.
+- [x] `0 | 1`
+  > Correcta: el resultado depende del operador; LIKE no distingue mayúsculas en ASCII por defecto.
+- [ ] `0 | 0`
+  > LIKE no distingue mayúsculas en ASCII por defecto.
+- [ ] `1 | 0`
+  > Es al revés.
+
+Repasar: 3B §4, tipos y sintaxis.
+</Quiz>
+
+<Quiz id="t3md-20" title="Afirmaciones sobre los tipos de SQLite">
+Lee las afirmaciones:
+
+**I.** En una tabla ordinaria, el tipo declarado impide guardar otra clase de almacenamiento.
+
+**II.** AUTOINCREMENT es necesario para que una columna `INTEGER PRIMARY KEY` reciba un valor automático.
+
+**III.** NUMERIC es una sexta clase de almacenamiento.
+
+¿Cuáles son correctas?
+
+- [ ] Solo I.
+  > Un INTEGER ordinario puede guardar `'abc'` como texto.
+- [ ] Solo II y III.
+  > Las dos son falsas.
+- [ ] Todas: I, II y III.
+  > Las tres son errores habituales.
+- [x] Ninguna.
+  > Correcta: el tipo influye pero no siempre impide, `rowid` se asigna sin AUTOINCREMENT y NUMERIC es una afinidad.
+
+Repasar: 3B §4 y §6.
+</Quiz>
+
+<QuizResults />

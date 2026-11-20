@@ -1,0 +1,440 @@
+---
+title: "4C · Con código · Normal"
+description: "20 preguntas de lectura y diagnóstico de consultas HQL, consultas nombradas, DML masiva y Criteria."
+sidebar:
+  order: 2
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Hibernate 5.4.33. `s` es una `Session` abierta dentro de una transacción, salvo que el fragmento muestre otra cosa. Datos de partida, salvo que se indique otra cosa:
+
+- Profesores (`id`, `nombre`): 1 Ana, 2 Ana, 3 Luis. Ana (1) tiene dos correos.
+- Ciclos (`nombre`, `horas`, profesor): DAM 2000 con Ana (1), SMR 1000 con Luis y ASIR 1400 sin profesor.
+
+<Quiz id="t4hc-01" title="Nombre de tabla en HQL">
+¿Qué ocurre?
+
+```java
+List<?> r = s.createQuery("from profesores").list();
+```
+
+- [ ] Devuelve los tres profesores.
+  > `profesores` es la tabla; HQL necesita el nombre de la entidad.
+- [ ] Devuelve una lista vacía.
+  > No llega a ejecutarse.
+- [x] Lanza excepción: `profesores is not mapped`.
+  > Correcta: debería ser `from Profesor`.
+- [ ] Devuelve filas `Object[]` con todas las columnas.
+  > No traduce tablas no mapeadas.
+
+Repasar: 4C §1.
+</Quiz>
+
+<Quiz id="t4hc-02" title="Parámetro con nombre enlazado por número">
+¿Qué ocurre?
+
+```java
+s.createQuery("select p from Profesor p where p.nombre = :nombre", Profesor.class)
+ .setParameter(1, "Ana")
+ .list();
+```
+
+- [ ] Devuelve las dos Ana: el 1 es el primer parámetro.
+  > Un marcador con nombre no se enlaza por posición.
+- [x] Lanza excepción: no hay un parámetro ordinal 1.
+  > Correcta: hay que usar `setParameter("nombre", "Ana")`.
+- [ ] Devuelve una lista vacía.
+  > Falla antes de consultar.
+- [ ] Enlaza `"Ana"` con `:nombre` automáticamente.
+  > Hibernate no relaciona el índice con el nombre.
+
+Repasar: 4C §2.
+</Quiz>
+
+<Quiz id="t4hc-03" title="Un parámetro nulo">
+¿Cuántos ciclos devuelve?
+
+```java
+s.createQuery("select c from Ciclo c where c.profesor = :p", Ciclo.class)
+ .setParameter("p", null)
+ .list().size();
+```
+
+- [ ] 1, ASIR, que no tiene profesor.
+  > Comparar con un NULL no es verdadero para ninguna fila.
+- [ ] 3, porque el filtro nulo se ignora.
+  > El filtro se aplica.
+- [ ] Lanza excepción: no se puede pasar `null`.
+  > Se puede pasar; el problema es la comparación.
+- [x] 0
+  > Correcta: para buscar nulos se escribe `c.profesor is null`.
+
+Repasar: 4C §2.
+</Quiz>
+
+<Quiz id="t4hc-04" title="Contar con el tipo equivocado">
+¿Qué ocurre?
+
+```java
+Integer total = s.createQuery("select count(p) from Profesor p", Integer.class)
+                 .uniqueResult();
+```
+
+- [ ] `total` vale 3.
+  > El recuento es `Long`, no `Integer`.
+- [ ] `total` vale `null`.
+  > No llega a ejecutarse.
+- [x] Lanza excepción: tipo incompatible con el resultado `Long`.
+  > Correcta: debe pedirse `Long.class`.
+- [ ] Se convierte a `Integer` sin problema.
+  > Hibernate no hace esa conversión en una consulta tipada.
+
+Repasar: 4C §3 y §4.
+</Quiz>
+
+<Quiz id="t4hc-05" title="La media de horas">
+¿Qué imprime?
+
+```java
+Object media = s.createQuery("select avg(c.horas) from Ciclo c").uniqueResult();
+System.out.println(media.getClass().getSimpleName());
+```
+
+- [ ] `Integer`, porque `horas` es `int`.
+  > La media no se asume entera.
+- [x] `Double`
+  > Correcta: (2000 + 1000 + 1400) / 3 = 1466,67.
+- [ ] `Long`
+  > Es el tipo de `count`.
+- [ ] `BigDecimal`
+  > No es el tipo que devuelve aquí.
+
+Repasar: 4C §3.
+</Quiz>
+
+<Quiz id="t4hc-06" title="uniqueResult con dos Ana">
+¿Qué ocurre?
+
+```java
+Profesor p = s.createQuery(
+        "select p from Profesor p where p.nombre = :n", Profesor.class)
+    .setParameter("n", "Ana")
+    .uniqueResult();
+```
+
+- [ ] Devuelve la primera Ana.
+  > Hay dos entidades distintas.
+- [ ] Devuelve `null`.
+  > Sería el caso sin resultados.
+- [ ] Devuelve una lista con las dos.
+  > `uniqueResult()` no devuelve listas.
+- [x] Lanza `NonUniqueResultException`.
+  > Correcta: se ajusta la condición o se usa `list()`.
+
+Repasar: 4C §4.
+</Quiz>
+
+<Quiz id="t4hc-07" title="Una tupla">
+¿Qué imprime?
+
+```java
+Object[] fila = s.createQuery(
+        "select p.id, p.nombre from Profesor p order by p.id", Object[].class)
+    .list().get(0);
+System.out.println(fila[1]);
+```
+
+- [ ] `1`
+  > Es `fila[0]`, el ID.
+- [ ] Lanza excepción: `Object[]` no es un tipo válido.
+  > Las proyecciones de varias columnas devuelven `Object[]`.
+- [x] `Ana`
+  > Correcta: cada elemento de la tupla sigue el orden del SELECT.
+- [ ] `Luis`
+  > Se ordena por ID y se toma la primera fila.
+
+Repasar: 4C §4.
+</Quiz>
+
+<Quiz id="t4hc-08" title="El desplazamiento de una página">
+Con el método del temario, ¿qué devuelve `pagina(s, 1, 1)` con los datos de partida?
+
+```java
+int inicio = Math.multiplyExact(pagina, tamanyo);
+return s.createQuery("select p.nombre from Profesor p order by p.id", String.class)
+        .setFirstResult(inicio)
+        .setMaxResults(tamanyo)
+        .list();
+```
+
+- [x] `[Ana]`, el profesor con ID 2.
+  > Correcta: salta 1 resultado y toma 1; las páginas empiezan en 0.
+- [ ] `[Ana]`, el profesor con ID 1.
+  > La página 0 sería la del ID 1.
+- [ ] `[Luis]`
+  > Sería la página 2.
+- [ ] `[Ana, Luis]`
+  > `setMaxResults(1)` limita a uno.
+
+Repasar: 4C §4, paginación estable.
+</Quiz>
+
+<Quiz id="t4hc-09" title="Número de páginas">
+Hay 25 profesores. ¿Qué devuelve para `tamanyo = 10`?
+
+```java
+long total = s.createQuery("select count(p) from Profesor p", Long.class).uniqueResult();
+return total / tamanyo + (total % tamanyo == 0 ? 0 : 1);
+```
+
+- [ ] 2
+  > Faltaría la página con los 5 últimos.
+- [ ] 2.5
+  > Es división entera con `long`.
+- [x] 3
+  > Correcta: 25 / 10 = 2 y el resto 5 añade una página.
+- [ ] 25
+  > Es el recuento, no el número de páginas.
+
+Repasar: 4C §4, paginación estable.
+</Quiz>
+
+<Quiz id="t4hc-10" title="Concatenar sin espacio">
+¿Qué ocurre?
+
+```java
+s.createQuery("update Profesor p" + "set p.nombre = 'X'").executeUpdate();
+```
+
+- [ ] Renombra a todos los profesores a X.
+  > La cadena resultante es `update Profesor pset ...`.
+- [ ] Renombra solo al profesor `p`.
+  > `p` es un alias, no un profesor.
+- [ ] No hace nada porque falta el WHERE.
+  > Sin WHERE afectaría a todos, pero aquí ni se ejecuta.
+- [x] Lanza un error de sintaxis por el espacio que falta antes de `set`.
+  > Correcta: al concatenar cadenas hay que revisar los espacios.
+
+Repasar: 4C §6.
+</Quiz>
+
+<Quiz id="t4hc-11" title="DML masiva sin transacción">
+¿Qué ocurre?
+
+```java
+try (Session s2 = factory.openSession()) {
+    s2.createQuery("update Profesor p set p.nombre = 'Z' where p.nombre = 'Nadie'")
+      .executeUpdate();
+}
+```
+
+- [ ] Devuelve 0, porque nadie se llama así.
+  > Antes de buscar filas exige una transacción.
+- [ ] Se ejecuta y se confirma al cerrar la sesión.
+  > Cerrar la sesión no confirma nada.
+- [x] Lanza `TransactionRequiredException`.
+  > Correcta: las modificaciones masivas van dentro de una transacción.
+- [ ] Se queda pendiente hasta el siguiente `commit`.
+  > No hay transacción a la que asociarla.
+
+Repasar: 4C §6.
+</Quiz>
+
+<Quiz id="t4hc-12" title="Una entidad que no se entera">
+¿Qué imprime?
+
+```java
+Profesor p = s.get(Profesor.class, 1);          // "Ana"
+s.createQuery("update Profesor p set p.nombre = 'Ana Maria' where p.id = 1")
+ .executeUpdate();
+System.out.println(p.nombre);
+```
+
+- [ ] `Ana Maria`
+  > La DML masiva no actualiza las entidades ya cargadas.
+- [x] `Ana`
+  > Correcta: por eso el temario hace `flush` antes y `clear` después.
+- [ ] `null`
+  > La entidad conserva su estado anterior.
+- [ ] Lanza excepción por modificar una entidad cargada.
+  > No hay conflicto: simplemente queda obsoleta.
+
+Repasar: 4C §6, contexto de persistencia.
+</Quiz>
+
+<Quiz id="t4hc-13" title="Borrar en masa un profesor con correos">
+¿Qué ocurre?
+
+```java
+s.createQuery("delete from Profesor p where p.id = :id")
+ .setParameter("id", 1)
+ .executeUpdate();
+```
+
+- [ ] Borra a Ana y sus dos correos por la cascada.
+  > La DML masiva no ejecuta las cascadas JPA.
+- [ ] Borra a Ana y deja sus correos sin profesor.
+  > La FK de los correos lo impide.
+- [ ] Devuelve 0 porque tiene correos.
+  > No filtra: intenta borrar y falla.
+- [x] Falla por violar la FK de los correos.
+  > Correcta: `ConstraintViolationException`; antes hay que resolver los dependientes.
+
+Repasar: 4C §6.
+</Quiz>
+
+<Quiz id="t4hc-14" title="Nombres que se repiten">
+¿Qué devuelve?
+
+```java
+List<Object[]> r = s.createQuery(
+        "select p.nombre, count(p) from Profesor p "
+        + "group by p.nombre having count(p) > 1", Object[].class)
+    .list();
+```
+
+- [ ] `[Ana, 2]` y `[Luis, 1]`.
+  > HAVING descarta a Luis.
+- [x] Una fila: `[Ana, 2]`.
+  > Correcta: HAVING filtra los grupos después de agrupar.
+- [ ] Dos filas `[Ana, 1]`.
+  > GROUP BY reúne a las dos Ana en un grupo.
+- [ ] Lanza excepción: `count` no admite alias.
+  > `count(p)` sobre la entidad es válido.
+
+Repasar: 4C §3.
+</Quiz>
+
+<Quiz id="t4hc-15" title="Por encima de la media">
+¿Qué devuelve?
+
+```java
+s.createQuery("select c.nombre from Ciclo c where c.horas > "
+        + "(select avg(c2.horas) from Ciclo c2)", String.class).list();
+```
+
+- [ ] `[DAM, ASIR]`
+  > ASIR tiene 1400, por debajo de la media de 1466,67.
+- [ ] `[SMR]`
+  > SMR es el que menos horas tiene.
+- [ ] `[]`
+  > DAM supera la media.
+- [x] `[DAM]`
+  > Correcta: solo DAM, con 2000, supera la media.
+
+Repasar: 4C §3.
+</Quiz>
+
+<Quiz id="t4hc-16" title="Unión por la asociación">
+¿Cuántas filas devuelve?
+
+```java
+s.createQuery("select c.nombre, p.nombre from Ciclo c join c.profesor p order by c.id",
+        Object[].class).list().size();
+```
+
+- [ ] 3, todos los ciclos.
+  > ASIR no tiene profesor y el join interno lo descarta.
+- [x] 2
+  > Correcta: DAM con Ana y SMR con Luis.
+- [ ] 9, el producto cartesiano.
+  > Se une por la asociación, no se combinan todos con todos.
+- [ ] 1
+  > Hay dos ciclos con profesor.
+
+Repasar: 4C §3.
+</Quiz>
+
+<Quiz id="t4hc-17" title="Un atributo mal escrito en Criteria">
+¿Qué ocurre?
+
+```java
+CriteriaBuilder cb = s.getCriteriaBuilder();
+CriteriaQuery<Profesor> q = cb.createQuery(Profesor.class);
+Root<Profesor> r = q.from(Profesor.class);
+q.select(r).where(cb.equal(r.get("nombr"), "Ana"));
+s.createQuery(q).list();
+```
+
+- [ ] No compila: `nombr` no existe.
+  > Es una cadena: el compilador no la comprueba.
+- [ ] Devuelve una lista vacía.
+  > Falla antes de consultar.
+- [ ] Devuelve las dos Ana.
+  > El atributo no existe.
+- [x] Lanza `IllegalArgumentException` al ejecutar: no encuentra el atributo.
+  > Correcta: con nombres como cadenas los errores aparecen en ejecución.
+
+Repasar: 4C §7.
+</Quiz>
+
+<Quiz id="t4hc-18" title="Un apellido con apóstrofo">
+Se busca el nombre `O'Brien`. ¿Qué es cierto?
+
+```java
+// A
+s.createQuery("select p from Profesor p where p.nombre = '" + nombre + "'", Profesor.class).list();
+// B
+s.createQuery("select p from Profesor p where p.nombre = :n", Profesor.class)
+ .setParameter("n", nombre).list();
+```
+
+- [ ] A y B funcionan igual.
+  > En A el apóstrofo cierra el literal y rompe la consulta.
+- [ ] A funciona y B falla con el apóstrofo.
+  > Es al revés.
+- [x] A lanza un error de sintaxis; B busca el nombre correctamente.
+  > Correcta: con parámetros, el apóstrofo es un dato.
+- [ ] Los dos fallan: HQL no admite apóstrofos.
+  > Como parámetro se admite.
+
+Repasar: 4C §2.
+</Quiz>
+
+<Quiz id="t4hc-19" title="Insertar con HQL">
+¿Cuál de estas sentencias HQL es válida en Hibernate 5?
+
+```java
+// A
+"insert into Profesor (nombre) values ('Eva')"
+// B
+"insert into Profesor (id, nombre, ape1, ape2) "
+    + "select p.id, p.nombre, p.ape1, p.ape2 from Person p"
+```
+
+- [ ] Las dos.
+  > HQL no admite `values`.
+- [ ] Solo A.
+  > A da `unexpected token: values`.
+- [ ] Ninguna.
+  > B es la forma admitida.
+- [x] Solo B.
+  > Correcta: HQL admite `INSERT ... SELECT`, no `INSERT ... VALUES`.
+
+Repasar: 4C §6.
+</Quiz>
+
+<Quiz id="t4hc-20" title="Join fetch sin distinct">
+Ana (1) tiene dos correos. ¿Cuántos elementos devuelve `list()`?
+
+```java
+s.createQuery("select p from Profesor p left join fetch p.correos where p.id = :id",
+        Profesor.class)
+ .setParameter("id", 1)
+ .list().size();
+```
+
+- [ ] 1, porque solo hay un profesor con ese ID.
+  > Sin `distinct`, el fetch devuelve una referencia por cada fila del join.
+- [x] 2: la misma Ana repetida, una vez por correo.
+  > Correcta: el método `conCorreos` del temario usa `select distinct p`.
+- [ ] 3: Ana y sus dos correos.
+  > Se seleccionan profesores, no correos.
+- [ ] Lanza `NonUniqueResultException`.
+  > `list()` no exige un único resultado.
+
+Repasar: 4C §3 y ejercicio de consultas.
+</Quiz>
+
+<QuizResults />

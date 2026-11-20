@@ -1,0 +1,425 @@
+---
+title: "Tema 4 · Mixto · Más difícil"
+description: "20 preguntas originales de diagnóstico y razonamiento: 10 de ORM e Hibernate y 10 de HQL."
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas originales · 10 de 4A–4B y 10 de 4C · cuatro opciones · una correcta.** Mayor dificultad: lado propietario, estados del contexto de persistencia, proxies, uniones implícitas y efectos de la DML masiva. El reparto 10/10 es de práctica, no una ponderación oficial.
+
+Hibernate 5.4.33 con `javax.persistence` y `FlushMode` por defecto. Se omiten imports. `s` es una `Session` abierta dentro de una transacción, salvo que el fragmento muestre otra cosa. En las preguntas de HQL hay tres profesores (1 Ana, 2 Ana, 3 Luis) y tres ciclos: DAM 2000 horas con Ana (1), SMR 1000 con Luis y ASIR 1400 sin profesor. Cada pregunta es independiente.
+
+<Quiz id="t4md-01" title="Quitar desde el lado inverso">
+`Profesor.modulos` tiene el `@JoinTable` y `Modulo.profesores` usa `mappedBy = "modulos"`. Ana imparte AD. ¿Cuántas filas quedan en `profesor_modulo` tras el commit?
+
+```java
+Profesor ana = s.get(Profesor.class, 1);
+Modulo ad = s.get(Modulo.class, 1);
+ad.profesores.remove(ana);
+tx.commit();
+```
+
+- [ ] 0: la pareja se ha quitado de la colección.
+  > Se ha quitado del lado inverso, que no escribe la relación.
+- [x] 1: la relación sigue en la base.
+  > Correcta: el propietario determina las escrituras; `removeModulo` actualiza los dos lados.
+- [ ] 0, y además se borra el módulo AD.
+  > No hay REMOVE sobre el módulo.
+- [ ] Lanza excepción por modificar el lado `mappedBy`.
+  > Se puede modificar; simplemente no se sincroniza con la tabla.
+
+Repasar: 4A §4, mantener ambos lados.
+</Quiz>
+
+<Quiz id="t4md-02" title="REMOVE sobre módulos compartidos">
+Se cambia `Profesor.modulos` a `cascade = CascadeType.ALL`. Ana y Luis imparten el módulo AD. ¿Qué riesgo aparece al borrar a Ana?
+
+- [ ] Ninguno: `ALL` solo afecta a la tabla intermedia.
+  > `ALL` incluye `REMOVE`, que se propaga a la entidad módulo.
+- [ ] Que Luis también se borre.
+  > La cascada va de profesor a módulo, no a otros profesores.
+- [ ] Que AD quede sin nombre.
+  > No cambia sus atributos.
+- [x] Que se intente borrar AD, que todavía usa Luis.
+  > Correcta: por eso la solución solo usa `PERSIST` y `MERGE` en esa relación.
+
+Repasar: 4A §5.
+</Quiz>
+
+<Quiz id="t4md-03" title="Persistir dos veces el mismo ID">
+`Usuario` tiene un `@Id` asignado. ¿Qué ocurre?
+
+```java
+s.persist(new Usuario(1, "a"));
+s.persist(new Usuario(1, "b"));
+```
+
+- [ ] Se guarda `b`, que sustituye a `a`.
+  > `persist` no reemplaza otra instancia.
+- [ ] Se guardan las dos con `seq` 1.
+  > La sesión no admite dos objetos distintos con el mismo ID.
+- [x] La segunda llamada lanza excepción: ya hay otro objeto con ese ID en la sesión.
+  > Correcta: Hibernate lo detecta en el contexto antes de llegar a la base.
+- [ ] Falla solo al hacer commit, por la PK de la tabla.
+  > Falla antes, en el propio `persist`.
+
+Repasar: 4A §7 y §8.
+</Quiz>
+
+<Quiz id="t4md-04" title="Un hashCode que cambia">
+`hashCode()` de `Pedido` se basa en su `id` generado. ¿Qué imprime?
+
+```java
+Set<Pedido> pendientes = new HashSet<>();
+Pedido p = new Pedido();          // id == null
+pendientes.add(p);
+s.persist(p);                     // IDENTITY: ahora id == 7
+s.flush();
+System.out.println(pendientes.contains(p));
+```
+
+- [ ] `true`: es el mismo objeto.
+  > El conjunto lo busca por el hash nuevo, en otra posición.
+- [ ] Lanza excepción al persistir un objeto que está en un `Set`.
+  > Persistir no comprueba las colecciones Java.
+- [ ] `true`, porque `HashSet` usa `==`.
+  > Usa `hashCode` y `equals`.
+- [x] `false`
+  > Correcta: un ID generado no existe al crear el objeto; usarlo en `hashCode` rompe el `HashSet`.
+
+Repasar: 4A §6, equals y hashCode.
+</Quiz>
+
+<Quiz id="t4md-05" title="Releer después de clear">
+El usuario 1 se llama `Manolo`. ¿Qué imprime?
+
+```java
+Usuario u = s.get(Usuario.class, 1);
+u.setUserNombre("Manuel");
+s.flush();
+s.clear();
+System.out.println(s.get(Usuario.class, 1).getUserNombre());
+```
+
+- [ ] `Manolo`: sin `commit` no se ve el cambio.
+  > La misma transacción ve lo que ya envió con `flush`.
+- [x] `Manuel`
+  > Correcta: `flush` envía el UPDATE y `clear` obliga a releer la fila; así comprueba el CRUD del temario.
+- [ ] `null`: `clear` borra las entidades.
+  > `clear` las desconecta, no las borra.
+- [ ] Lanza excepción: tras `clear` no se puede usar `get`.
+  > La sesión sigue abierta.
+
+Repasar: 4A §7 y 4B §5.
+</Quiz>
+
+<Quiz id="t4md-06" title="El campo público de un proxy">
+`Correo.profesor` es `@ManyToOne(fetch = LAZY)` y `Profesor` tiene el campo público `nombre` y el getter `getNombre()`. El profesor se llama Ana. ¿Qué imprime?
+
+```java
+Correo c = s.get(Correo.class, 1);
+System.out.println(c.profesor.nombre + " / " + c.profesor.getNombre());
+```
+
+- [ ] `Ana / Ana`
+  > Leer el campo del proxy no lo inicializa.
+- [ ] Lanza `LazyInitializationException`.
+  > La sesión está abierta.
+- [x] `null / Ana`
+  > Correcta: el getter inicializa el proxy; el campo del proxy sin inicializar está a `null`.
+- [ ] `Ana / null`
+  > Es al revés.
+
+Repasar: 4A §8, errores frecuentes.
+</Quiz>
+
+<Quiz id="t4md-07" title="Ignorar lo que devuelve merge">
+`det` es un `Usuario` separado. ¿Qué es cierto sobre este código?
+
+```java
+s.merge(det);
+s.remove(det);
+```
+
+- [ ] Funciona: `merge` vuelve a gestionar `det`.
+  > `merge` devuelve otra instancia gestionada; `det` sigue separado.
+- [x] Falla: `remove` necesita la instancia gestionada que devuelve `merge`.
+  > Correcta: la sesión ya tiene otra instancia gestionada con ese ID y rechaza `det`. Se escribe `Usuario g = (Usuario) s.merge(det); s.remove(g);`.
+- [ ] Borra la fila dos veces.
+  > Solo se intenta un borrado.
+- [ ] Inserta un usuario nuevo.
+  > `merge` copia estado sobre la entidad existente.
+
+Repasar: 4A §7.
+</Quiz>
+
+<Quiz id="t4md-08" title="MapsId y la clave compuesta">
+`Employee` usa `@EmbeddedId EmployeeId id` (con `companyId` y `employeeNumber`) y `@MapsId("companyId")` en su `company`. ¿Qué expresa `@MapsId`?
+
+- [ ] Que `company` se guarda en una columna distinta de la clave.
+  > Es justo lo contrario: comparten columna.
+- [ ] Que `employeeNumber` se genera desde la compañía.
+  > Solo afecta a la parte `companyId`.
+- [ ] Que la compañía se borra con el empleado.
+  > No es una cascada.
+- [x] Que la parte `companyId` de la clave se obtiene de la asociación con `Company`.
+  > Correcta: el ID escalar y la asociación quedan coherentes.
+
+Repasar: 4A §6, identificador compuesto.
+</Quiz>
+
+<Quiz id="t4md-09" title="Afirmaciones sobre la política de esquema">
+Lee las afirmaciones:
+
+**I.** `update` sustituye a una migración revisada.
+
+**II.** `create-drop` es seguro en una base con datos porque solo borra al terminar.
+
+**III.** `validate` comprueba el esquema existente si el dialecto puede validar sus metadatos.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > I y II son falsas.
+- [ ] Solo I y III.
+  > I es falsa.
+- [x] Solo III.
+  > Correcta: `create-drop` crea al arrancar y borra al cerrar; la solución solo lo usa en H2 en memoria.
+- [ ] Ninguna.
+  > III es cierta.
+
+Repasar: 4A §3 y 4B §6.
+</Quiz>
+
+<Quiz id="t4md-10" title="Load de una fila que no existe">
+No hay ningún usuario con `seq` 99. ¿En qué línea aparece el problema?
+
+```java
+Usuario u = s.load(Usuario.class, 99);        // línea 1
+boolean listo = Hibernate.isInitialized(u);   // línea 2
+Hibernate.initialize(u);                       // línea 3
+```
+
+- [ ] En la línea 1: `load` comprueba la fila.
+  > `load` puede devolver un proxy sin consultar.
+- [ ] En la línea 2: consultar el estado lo inicializa.
+  > `isInitialized` solo informa y devuelve `false`.
+- [x] En la línea 3: `ObjectNotFoundException`.
+  > Correcta: `load` retrasa la detección de la fila inexistente hasta inicializar el proxy.
+- [ ] En ninguna: el proxy funciona aunque no haya fila.
+  > Al inicializarlo necesita la fila.
+
+Repasar: 4A §7.
+</Quiz>
+
+<Quiz id="t4md-11" title="Paginar con join fetch">
+¿Qué ocurre?
+
+```java
+s.createQuery("select distinct p from Profesor p left join fetch p.correos order by p.id",
+        Profesor.class)
+ .setMaxResults(1)
+ .list();
+```
+
+- [ ] Limita la consulta SQL a una fila y devuelve un profesor con sus correos completos.
+  > Con una colección fetch, Hibernate no puede limitar el SQL por profesor.
+- [x] Avisa `HHH000104` y aplica la paginación en memoria, tras traer todas las filas.
+  > Correcta: paginar una colección fetch no equivale a paginar entidades padre.
+- [ ] Lanza excepción: no se puede usar `distinct` con `fetch`.
+  > Se puede; el temario lo usa en `conCorreos`.
+- [ ] Devuelve un correo, no un profesor.
+  > Se seleccionan profesores.
+
+Repasar: 4C §3.
+</Quiz>
+
+<Quiz id="t4md-12" title="uniqueResult con filas repetidas">
+Ana (1) tiene dos correos. ¿Qué ocurre?
+
+```java
+Profesor p = s.createQuery(
+        "select p from Profesor p left join fetch p.correos where p.id = :id", Profesor.class)
+    .setParameter("id", 1)
+    .uniqueResult();
+```
+
+- [ ] Lanza `NonUniqueResultException` porque `list()` tendría dos elementos.
+  > Los dos elementos son la misma instancia, y Hibernate 5.4 la acepta como único resultado.
+- [ ] Devuelve `null`.
+  > Hay resultado.
+- [x] Devuelve a Ana con sus correos.
+  > Correcta: aunque se repita la referencia, es la misma entidad; `distinct` evita la repetición en `list()`.
+- [ ] Devuelve el primer correo.
+  > La consulta selecciona profesores.
+
+Repasar: 4C §3 y §4.
+</Quiz>
+
+<Quiz id="t4md-13" title="Una unión implícita">
+¿Qué devuelve?
+
+```java
+Object[] r = s.createQuery(
+        "select count(c), count(c.profesor) from Ciclo c", Object[].class)
+    .uniqueResult();
+System.out.println(r[0] + " " + r[1]);
+```
+
+- [ ] `3 3`
+  > ASIR no tiene profesor.
+- [ ] `3 2`
+  > Parece lógico, pero la ruta `c.profesor` provoca una unión interna que descarta ASIR también para `count(c)`.
+- [x] `2 2`
+  > Correcta: navegar por una asociación en la consulta une con la entidad; con `left join c.profesor p` se obtendría `3 2`.
+- [ ] `2 3`
+  > `count(c.profesor)` no puede superar a `count(c)`.
+
+Repasar: 4C §3, uniones.
+</Quiz>
+
+<Quiz id="t4md-14" title="Un cambio pendiente antes de la DML">
+¿Qué devuelve `executeUpdate()`?
+
+```java
+Profesor luis = s.get(Profesor.class, 3);
+luis.nombre = "Ana";            // cambio aún no enviado
+int n = s.createQuery("update Profesor p set p.nombre = 'Z' where p.nombre = 'Ana'")
+         .executeUpdate();
+```
+
+- [ ] 2, porque el cambio de Luis no se ha enviado.
+  > Con el `FlushMode` por defecto, Hibernate envía antes los cambios pendientes que afectan a la consulta.
+- [x] 3
+  > Correcta: hay un flush automático antes del UPDATE. El temario hace `flush()` explícito para no depender de ello.
+- [ ] 0, porque `luis` está gestionado.
+  > Estar gestionado no excluye su fila.
+- [ ] Lanza excepción por modificar a Luis antes de la DML.
+  > No hay conflicto.
+
+Repasar: 4C §6, contexto de persistencia.
+</Quiz>
+
+<Quiz id="t4md-15" title="Tipos de una tupla de estadísticas">
+`horas` es `int`. ¿Qué tipos tiene cada valor de la tupla?
+
+```java
+Object[] r = s.createQuery("select avg(c.horas), sum(c.horas), max(c.horas), count(c) "
+        + "from Ciclo c", Object[].class).uniqueResult();
+```
+
+- [ ] `Integer`, `Integer`, `Integer`, `Integer`.
+  > La media y la suma no conservan el tipo `int`.
+- [ ] `Double`, `Double`, `Double`, `Long`.
+  > `max` conserva el tipo del atributo.
+- [ ] `Long`, `Long`, `Long`, `Long`.
+  > La media es `Double`.
+- [x] `Double`, `Long`, `Integer`, `Long`.
+  > Correcta: la media es `Double`, la suma de enteros `Long`, el máximo el tipo del atributo y el recuento `Long`.
+
+Repasar: 4C §3.
+</Quiz>
+
+<Quiz id="t4md-16" title="Desbordar el desplazamiento">
+¿Qué ocurre con `pagina(s, Integer.MAX_VALUE, 2)` usando el método del temario?
+
+```java
+if (pagina < 0 || tamanyo <= 0) {
+    throw new IllegalArgumentException("Página >= 0 y tamaño > 0");
+}
+int inicio = Math.multiplyExact(pagina, tamanyo);
+```
+
+- [ ] Lanza `IllegalArgumentException` por la validación.
+  > Los dos valores pasan la validación.
+- [x] Lanza `ArithmeticException` en `multiplyExact`.
+  > Correcta: detecta el desbordamiento en lugar de calcular un desplazamiento negativo.
+- [ ] Devuelve una lista vacía porque `inicio` sale negativo.
+  > `multiplyExact` no deja que se produzca el valor negativo.
+- [ ] Devuelve la primera página.
+  > No llega a consultar.
+
+Repasar: 4C §4, paginación estable.
+</Quiz>
+
+<Quiz id="t4md-17" title="Un parámetro sin enlazar">
+¿Qué ocurre?
+
+```java
+s.createNamedQuery("Profesores.ByName", Profesor.class).list();
+```
+
+- [ ] Devuelve todos los profesores, porque falta el filtro.
+  > La consulta tiene `:nombre` y necesita valor.
+- [ ] Devuelve los profesores con nombre NULL.
+  > Un parámetro sin enlazar no equivale a NULL.
+- [ ] Devuelve una lista vacía.
+  > No llega a ejecutarse.
+- [x] Lanza excepción: `Named parameter not bound : nombre`.
+  > Correcta: cada marcador necesita su `setParameter`.
+
+Repasar: 4C §5.
+</Quiz>
+
+<Quiz id="t4md-18" title="El mismo filtro por tres vías">
+`buscar`, `buscarNombrada` y `buscarCriteria` del temario filtran por nombre y apellidos. La entrada es `O'Brien`. ¿Qué es cierto?
+
+- [ ] Solo Criteria la acepta, porque no usa texto.
+  > Las tres enlazan el valor como parámetro.
+- [ ] Ninguna: HQL no admite apóstrofos.
+  > Como parámetro se admiten.
+- [x] Las tres devuelven el mismo resultado, porque el valor se enlaza como parámetro.
+  > Correcta: las pruebas del temario comparan las tres vías con apóstrofos e intentos de inyección.
+- [ ] La consulta nombrada falla porque se compila al arrancar.
+  > Compilarla al arrancar no impide enlazar el valor.
+
+Repasar: 4C §5 y §7.
+</Quiz>
+
+<Quiz id="t4md-19" title="Entre y dentro">
+¿Qué devuelven las dos consultas?
+
+```java
+// A
+"select c.nombre from Ciclo c where c.horas between 1000 and 1400 order by c.id"
+// B
+"select c.nombre from Ciclo c where c.nombre in (:ns) order by c.id"
+// con setParameterList("ns", List.of("DAM", "ASIR"))
+```
+
+- [ ] A: `[SMR]` · B: `[DAM, ASIR]`
+  > BETWEEN incluye los dos extremos: ASIR tiene 1400.
+- [x] A: `[SMR, ASIR]` · B: `[DAM, ASIR]`
+  > Correcta: BETWEEN es inclusivo e IN admite una lista enlazada.
+- [ ] A: `[SMR, ASIR]` · B: `[ASIR, DAM]`
+  > Se ordena por `id`: DAM es 1 y ASIR es 3.
+- [ ] A: `[DAM, SMR, ASIR]` · B: error
+  > DAM tiene 2000 e IN admite listas.
+
+Repasar: 4C §2.
+</Quiz>
+
+<Quiz id="t4md-20" title="Afirmaciones sobre la DML masiva">
+Lee las afirmaciones:
+
+**I.** Un DELETE masivo ejecuta las cascadas JPA de cada entidad afectada.
+
+**II.** `clear()` después de una DML masiva desconecta solo las entidades modificadas.
+
+**III.** Un INSERT SELECT con IDs explícitos nunca afecta al generador automático.
+
+¿Cuáles son correctas?
+
+- [ ] Solo I.
+  > Las operaciones masivas no ejecutan cascadas.
+- [ ] Solo II y III.
+  > Las dos son falsas.
+- [ ] Todas: I, II y III.
+  > Las tres son falsas.
+- [x] Ninguna.
+  > Correcta: no hay cascadas, `clear` desconecta todas las entidades y los IDs explícitos pueden desajustar el generador.
+
+Repasar: 4C §6.
+</Quiz>
+
+<QuizResults />

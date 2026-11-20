@@ -1,44 +1,56 @@
 ---
 title: Cuestionarios de Acceso a Datos
-description: Cuestionarios de autoevaluación del primer examen de Acceso a Datos (DAM2).
+description: Cuestionarios de autoevaluación de Acceso a Datos (DAM2) por temas, con mixtos de dificultad normal y alta.
 ---
 
 import { LinkCard, CardGrid, Aside } from '@astrojs/starlight/components';
 
-**Seis cuestionarios de 20 preguntas: 120 preguntas con cuatro opciones y una sola correcta.** Preparan UT02-A *Manejo de ficheros* (sin NIO) y UT02-B *Librerías XML en Java*. Tras corregir se explica **cada opción**, incluida la correcta: qué ocurre en esa situación y por qué una afirmación cierta puede no resolver lo preguntado.
+**Tres bloques, uno por tema. 18 cuestionarios de 20 preguntas: 360 preguntas con cuatro opciones y una sola correcta.** Cada tema tiene sus subtemas sin código y con código, y dos mixtos (normal y más difícil). Tras corregir se explica **cada opción**, incluida la correcta.
 
-Las preguntas y opciones se barajan en cada intento. Las respuestas, las marcas y el tiempo se guardan en tu navegador para que puedas continuar más tarde. Los nuevos identificadores separan este progreso del de los cuestionarios antiguos.
+Hay preguntas de varios tipos: situaciones de empresa en las que hay que elegir la mejor solución, afirmaciones I/II/III para decidir cuáles son correctas (todas, algunas o ninguna), fragmentos de código para predecir o diagnosticar, y distractores que son ciertos pero no resuelven lo que se pide.
+
+Las preguntas y opciones se barajan en cada intento. Las respuestas, las marcas y el tiempo se guardan en tu navegador.
 
 <Aside type="caution" title="Alcance">
-Se mantiene la exclusión de NIO (`Path`, `Files`, canales y opciones de apertura) que ya tenía este proyecto. El temario de la bóveda sí contiene NIO: esta selección no modifica el alcance registrado allí. Son preguntas originales de práctica, no preguntas oficiales ni una predicción del examen. No se presupone penalización ni tiempo límite.
+Son preguntas originales de práctica, no preguntas oficiales ni una predicción del examen. En el tema 2 se mantiene la exclusión de NIO (`Path`, `Files`, canales). Los temas 3 y 4 siguen los documentos 3A–3B y 4A–4C de la entrega final. Las referencias **Repasar** remiten a los apartados de esas fuentes.
 </Aside>
 
-## UT02-A · Manejo de ficheros
+## Tema 2 · Ficheros y XML
 
 <CardGrid>
-	<LinkCard title="A · Sin código" href="/ut02a/sin-codigo/" description="20 preguntas · Normal · Decisiones y situaciones sobre ficheros" />
-	<LinkCard title="A · Con código" href="/ut02a/con-codigo/" description="20 preguntas · Normal · Lectura, diagnóstico y elección de código Java" />
+	<LinkCard title="UT02-A · Sin código" href="/tema-2/ut02a/sin-codigo/" description="20 preguntas · Normal · Decisiones y situaciones sobre ficheros" />
+	<LinkCard title="UT02-A · Con código" href="/tema-2/ut02a/con-codigo/" description="20 preguntas · Normal · Lectura, diagnóstico y elección de código Java" />
+	<LinkCard title="UT02-B · Sin código" href="/tema-2/ut02b/sin-codigo/" description="20 preguntas · Normal · Elección y funcionamiento de DOM, SAX, StAX y JAXB" />
+	<LinkCard title="UT02-B · Con código" href="/tema-2/ut02b/con-codigo/" description="20 preguntas · Normal · Árboles, eventos, cursores y anotaciones" />
+	<LinkCard title="Mixto · Normal" href="/tema-2/mixto/" description="20 preguntas · 10 de A y 10 de B · Conceptos y código" />
+	<LinkCard title="Mixto · Más difícil" href="/tema-2/mixto-dificil/" description="20 preguntas · 10 de A y 10 de B · Diagnóstico y razonamiento" />
 </CardGrid>
 
-## UT02-B · XML en Java
+## Tema 3 · JDBC y SQLite
 
 <CardGrid>
-	<LinkCard title="B · Sin código" href="/ut02b/sin-codigo/" description="20 preguntas · Normal · Elección y funcionamiento de DOM, SAX, StAX y JAXB" />
-	<LinkCard title="B · Con código" href="/ut02b/con-codigo/" description="20 preguntas · Normal · Árboles, eventos, cursores y anotaciones" />
+	<LinkCard title="3A · Sin código" href="/tema-3/3a/sin-codigo/" description="20 preguntas · Normal · Drivers, conexión, sentencias, metadatos, transacciones y cursores" />
+	<LinkCard title="3A · Con código" href="/tema-3/3a/con-codigo/" description="20 preguntas · Normal · Lectura y diagnóstico de código JDBC sobre emp/dept" />
+	<LinkCard title="3B · Sin código" href="/tema-3/3b/sin-codigo/" description="20 preguntas · Normal · Embebido frente a servidor, consola, tipos y restricciones" />
+	<LinkCard title="3B · Con código" href="/tema-3/3b/con-codigo/" description="20 preguntas · Normal · SQL y JDBC sobre SQLite, comprobados en ejecución" />
+	<LinkCard title="Mixto · Normal" href="/tema-3/mixto/" description="20 preguntas · 10 de 3A y 10 de 3B · Situaciones y código" />
+	<LinkCard title="Mixto · Más difícil" href="/tema-3/mixto-dificil/" description="20 preguntas · 10 de 3A y 10 de 3B · Errores silenciosos, NULL y agrupación" />
 </CardGrid>
 
-## Simulacro
+## Tema 4 · Hibernate y HQL
 
 <CardGrid>
-	<LinkCard title="Mixto · Normal" href="/examen-mixto/" description="20 preguntas originales · 10 de A y 10 de B · Conceptos y código" />
-	<LinkCard title="Mixto · Más difícil" href="/examen-mixto-dificil/" description="20 preguntas originales · 10 de A y 10 de B · Diagnóstico y razonamiento" />
+	<LinkCard title="4A–4B · Sin código" href="/tema-4/orm/sin-codigo/" description="20 preguntas · Normal · ORM, JPA, configuración, relaciones, cascadas e identificadores" />
+	<LinkCard title="4A–4B · Con código" href="/tema-4/orm/con-codigo/" description="20 preguntas · Normal · Entidades, sesiones y estados del contexto" />
+	<LinkCard title="4C · Sin código" href="/tema-4/hql/sin-codigo/" description="20 preguntas · Normal · HQL, parámetros, resultados, paginación y DML masiva" />
+	<LinkCard title="4C · Con código" href="/tema-4/hql/con-codigo/" description="20 preguntas · Normal · Consultas HQL y Criteria comprobadas con Hibernate 5.4" />
+	<LinkCard title="Mixto · Normal" href="/tema-4/mixto/" description="20 preguntas · 10 de ORM y 10 de HQL · Situaciones y código" />
+	<LinkCard title="Mixto · Más difícil" href="/tema-4/mixto-dificil/" description="20 preguntas · 10 de ORM y 10 de HQL · Proxies, lado propietario y uniones implícitas" />
 </CardGrid>
 
 ## Cómo aprovechar la corrección
 
 1. Identifica qué problema se pide resolver y qué condiciones son obligatorias.
 2. Elige la opción antes de consultar la solución.
-3. Revisa las cuatro explicaciones y el apartado **Repasar** de UT02-A o UT02-B en tu bóveda.
+3. Revisa las cuatro explicaciones y el apartado **Repasar** en tu bóveda.
 4. Marca las dudas y, en otro intento, explica por qué descartarías los distractores.
-
-El material parte de los dos temarios Markdown y de las aclaraciones de la bóveda. Las referencias **A §…** y **B §…** son los apartados de esas fuentes, no enlaces a un resumen inexistente. Los cuestionarios anteriores se conservan en `archivo/`, fuera del sitio publicado.

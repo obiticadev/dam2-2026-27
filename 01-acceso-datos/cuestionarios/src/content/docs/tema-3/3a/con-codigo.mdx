@@ -1,0 +1,475 @@
+---
+title: "3A · Con código · Normal"
+description: "20 preguntas de lectura, elección y diagnóstico de código JDBC."
+sidebar:
+  order: 2
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Java 17 o posterior. Se omiten imports y el tratamiento de excepciones salvo que formen parte de la pregunta. `conexion` es una `Connection` abierta a MySQL con la base `emp`/`dept` del profesor, con sus datos originales: 14 empleados, de los que 3 son del departamento 10 y 6 del 30; BLAKE tiene `comm` NULL. Cada pregunta parte de ese estado.
+
+<Quiz id="t3ac-01" title="Leer antes de avanzar">
+¿Qué ocurre al ejecutar este fragmento?
+
+```java
+try (Statement st = conexion.createStatement();
+     ResultSet rs = st.executeQuery("SELECT ename FROM emp ORDER BY empno")) {
+    System.out.println(rs.getString("ename"));
+}
+```
+
+- [ ] Imprime `SMITH`, el primer empleado.
+  > El cursor empieza antes de la primera fila: aún no hay fila actual.
+- [ ] Imprime `null`, porque no hay fila.
+  > No devuelve `null`: leer sin fila actual es un error.
+- [x] Lanza `SQLException`, porque falta llamar a `next()`.
+  > Correcta: primero `next()` y después `getXxx`. SQLite lo tolera, pero MySQL no.
+- [ ] No compila: `getString` necesita un índice.
+  > `getString` admite el nombre o la posición de la columna.
+
+Repasar: 3A §5, recorrer los resultados.
+</Quiz>
+
+<Quiz id="t3ac-02" title="Numeración de los parámetros">
+¿Qué ocurre?
+
+```java
+PreparedStatement ps = conexion.prepareStatement(
+        "SELECT ename FROM emp WHERE deptno = ?");
+ps.setInt(0, 20);
+```
+
+- [ ] Asigna 20 al único `?`.
+  > El primer marcador tiene el índice 1, no 0.
+- [ ] Asigna 20 y lo usa al ejecutar con `executeQuery()`.
+  > La asignación falla antes de ejecutar.
+- [ ] Compila con error porque `setInt` no admite enteros.
+  > `setInt(int, int)` existe; el problema aparece al ejecutar.
+- [x] Lanza una excepción porque no existe el parámetro 0.
+  > Correcta: los parámetros se numeran desde 1.
+
+Repasar: 3A §5.
+</Quiz>
+
+<Quiz id="t3ac-03" title="Volver a pasar el SQL">
+¿Qué problema tiene este código?
+
+```java
+String sql = "SELECT ename FROM emp WHERE deptno = ?";
+PreparedStatement ps = conexion.prepareStatement(sql);
+ps.setInt(1, 10);
+ResultSet rs = ps.executeQuery(sql);
+```
+
+- [x] `executeQuery(sql)` en una sentencia preparada lanza `SQLException`; debe ser `executeQuery()`.
+  > Correcta: la preparada ya tiene su SQL; se ejecuta sin argumentos.
+- [ ] Ninguno: los dos `executeQuery` son equivalentes.
+  > La versión con texto es de `Statement`; en `PreparedStatement` no se usa.
+- [ ] Falta `setString` porque `deptno` es texto.
+  > `deptno` es numérico y `setInt` es adecuado.
+- [ ] El `?` debería estar entre comillas: `'?'`.
+  > Entre comillas sería un texto literal, no un marcador.
+
+Repasar: 3A §5, elegir el método de ejecución.
+</Quiz>
+
+<Quiz id="t3ac-04" title="Contar filas recorridas">
+¿Qué imprime?
+
+```java
+PreparedStatement ps = conexion.prepareStatement(
+        "SELECT ename FROM emp WHERE deptno = ?");
+ps.setInt(1, 10);
+int n = 0;
+try (ResultSet rs = ps.executeQuery()) {
+    while (rs.next()) {
+        n++;
+    }
+}
+System.out.println(n);
+```
+
+- [ ] `0`
+  > El departamento 10 tiene empleados.
+- [ ] `1`
+  > El `while` recorre todas las filas, no solo la primera.
+- [x] `3`
+  > Correcta: CLARK, KING y MILLER.
+- [ ] `14`
+  > Serían todos los empleados; el WHERE filtra el departamento 10.
+
+Repasar: 3A §5, recorrer los resultados.
+</Quiz>
+
+<Quiz id="t3ac-05" title="Filas afectadas por una subida">
+¿Qué imprime?
+
+```java
+PreparedStatement ps = conexion.prepareStatement(
+        "UPDATE emp SET sal = sal * 1.10 WHERE deptno = ?");
+ps.setInt(1, 30);
+System.out.println(ps.executeUpdate());
+```
+
+- [ ] `1`
+  > El UPDATE afecta a todas las filas que cumplen el WHERE.
+- [ ] `true`
+  > `executeUpdate` devuelve un `int`, no un booleano.
+- [ ] `14`
+  > Solo se modifican los del departamento 30.
+- [x] `6`
+  > Correcta: devuelve el número de filas modificadas del departamento 30.
+
+Repasar: 3A §5 y §7.
+</Quiz>
+
+<Quiz id="t3ac-06" title="Modificar un empleado que no existe">
+No existe el empleado 1234. ¿Qué imprime?
+
+```java
+PreparedStatement ps = conexion.prepareStatement(
+        "UPDATE emp SET sal = ? WHERE empno = ?");
+ps.setDouble(1, 2000);
+ps.setInt(2, 1234);
+int filas = ps.executeUpdate();
+System.out.println(filas == 0 ? "No existe" : "Actualizado");
+```
+
+- [ ] Lanza `SQLException` por empleado inexistente.
+  > Un UPDATE sin filas que cumplan el WHERE no es un error SQL.
+- [x] `No existe`
+  > Correcta: devuelve 0 y el programa decide cómo informar.
+- [ ] `Actualizado`
+  > `filas` vale 0.
+- [ ] Inserta el empleado 1234 con salario 2000.
+  > UPDATE nunca inserta filas nuevas.
+
+Repasar: 3A §9, UPDATE que no encuentra filas.
+</Quiz>
+
+<Quiz id="t3ac-07" title="Comisión NULL">
+BLAKE (7698) tiene `comm` NULL. ¿Qué imprime?
+
+```java
+PreparedStatement ps = conexion.prepareStatement(
+        "SELECT comm FROM emp WHERE empno = ?");
+ps.setInt(1, 7698);
+ResultSet rs = ps.executeQuery();
+rs.next();
+double c = rs.getDouble("comm");
+System.out.println(c + " " + rs.wasNull());
+```
+
+- [ ] `null true`
+  > Un `double` primitivo no puede ser `null`.
+- [ ] `0.0 false`
+  > `wasNull()` detecta que el último valor leído era NULL.
+- [x] `0.0 true`
+  > Correcta: `getDouble` devuelve 0 para NULL y `wasNull()` lo distingue.
+- [ ] Lanza `NullPointerException`.
+  > `getDouble` no lanza excepción con NULL.
+
+Repasar: 3A §5, recorrer los resultados.
+</Quiz>
+
+<Quiz id="t3ac-08" title="Lo que devuelve un CREATE">
+¿Qué imprime?
+
+```java
+try (Statement st = conexion.createStatement()) {
+    int r = st.executeUpdate(
+            "CREATE TABLE proyecto (id INT PRIMARY KEY, nombre VARCHAR(40))");
+    System.out.println(r);
+}
+```
+
+- [x] `0`
+  > Correcta: el DDL suele devolver 0 porque no modifica filas.
+- [ ] `1`
+  > No se ha insertado ninguna fila.
+- [ ] `true`
+  > `executeUpdate` devuelve `int`.
+- [ ] Lanza `SQLException` porque DDL exige `execute()`.
+  > `executeUpdate` admite DDL compatible.
+
+Repasar: 3A §5 y §7.
+</Quiz>
+
+<Quiz id="t3ac-09" title="Fallo antes del commit">
+El segundo UPDATE lanza `SQLException`. ¿Cómo queda la base?
+
+```java
+conexion.setAutoCommit(false);
+try (Statement st = conexion.createStatement()) {
+    st.executeUpdate("UPDATE emp SET sal = sal + 100 WHERE empno = 7369");
+    st.executeUpdate("UPDATE emp SET sal = sal - 100 WHERE empno = 7499");
+    conexion.commit();
+} catch (SQLException e) {
+    conexion.rollback();
+}
+```
+
+- [ ] SMITH tiene 100 más y ALLEN no cambia.
+  > El primer cambio no se ha confirmado: el `rollback()` lo deshace.
+- [ ] Los dos cambios se aplican, porque el primero ya se ejecutó.
+  > Ejecutar no es confirmar mientras el autocommit está desactivado.
+- [x] Ningún salario cambia.
+  > Correcta: la excepción salta antes del `commit()` y el `catch` deshace todo.
+- [ ] Queda una transacción abierta con el primer cambio guardado.
+  > `rollback()` cierra la transacción descartando lo pendiente.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3ac-10" title="Olvidar desactivar el autocommit">
+El segundo UPDATE falla. ¿Qué ocurre con el primero?
+
+```java
+try (Statement st = conexion.createStatement()) {
+    st.executeUpdate("UPDATE emp SET sal = sal + 100 WHERE empno = 7369");
+    st.executeUpdate("UPDATE emp SET sal = sal - 100 WHERE empno = 7499");
+    conexion.commit();
+} catch (SQLException e) {
+    conexion.rollback();
+}
+```
+
+- [x] Queda guardado: con autocommit cada sentencia se confirma al terminar.
+  > Correcta: falta `setAutoCommit(false)` antes de escribir.
+- [ ] Se deshace con el `rollback()` del `catch`.
+  > Ya estaba confirmado; además `rollback()` falla con autocommit activo.
+- [ ] No se ejecuta, porque JDBC espera al `commit()`.
+  > Sin desactivar el autocommit no espera a nada.
+- [ ] Se aplica a medias hasta que se cierre la conexión.
+  > Un UPDATE de una fila no se aplica «a medias».
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3ac-11" title="Volver a un punto intermedio">
+¿Qué cambios quedan guardados?
+
+```java
+conexion.setAutoCommit(false);
+Statement st = conexion.createStatement();
+st.executeUpdate("UPDATE emp SET job = 'ANALYST' WHERE empno = 7369");
+Savepoint sp = conexion.setSavepoint();
+st.executeUpdate("UPDATE emp SET sal = 9999 WHERE empno = 7369");
+conexion.rollback(sp);
+conexion.commit();
+```
+
+- [ ] Ninguno: `rollback` deshace toda la transacción.
+  > `rollback(sp)` solo deshace lo posterior al punto.
+- [x] Solo el cambio de oficio.
+  > Correcta: el sueldo se deshace hasta el savepoint y el `commit` confirma el oficio.
+- [ ] Solo el cambio de sueldo.
+  > El sueldo es justo lo que se deshace.
+- [ ] Los dos, porque hay `commit()`.
+  > El `commit()` confirma lo que queda tras volver al punto.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3ac-12" title="Recorrer las columnas de un resultado">
+¿Qué problema tiene el bucle?
+
+```java
+ResultSet rs = st.executeQuery("SELECT empno, ename, sal FROM emp");
+ResultSetMetaData md = rs.getMetaData();
+for (int i = 0; i < md.getColumnCount(); i++) {
+    System.out.println(md.getColumnName(i));
+}
+```
+
+- [ ] Ninguno: imprime las tres columnas.
+  > Empieza en 0, que no es una columna válida.
+- [ ] Falta llamar a `rs.next()` antes de `getMetaData()`.
+  > Los metadatos del resultado se pueden leer sin avanzar el cursor.
+- [ ] `getColumnCount()` devuelve 2, porque cuenta desde 0.
+  > Devuelve 3: el número de columnas.
+- [x] Las columnas empiezan en 1: debe ir de 1 a `getColumnCount()`, ambos incluidos.
+  > Correcta: `for (int i = 1; i <= md.getColumnCount(); i++)`.
+
+Repasar: 3A §6.
+</Quiz>
+
+<Quiz id="t3ac-13" title="Etiqueta de una columna con alias">
+¿Qué imprime?
+
+```java
+ResultSet rs = st.executeQuery("SELECT ename AS nombre, sal FROM emp");
+System.out.println(rs.getMetaData().getColumnLabel(1));
+```
+
+- [ ] `ename`
+  > Es el nombre de la columna de la tabla; la etiqueta del resultado es el alias.
+- [x] `nombre`
+  > Correcta: `getColumnLabel` devuelve el alias del SELECT.
+- [ ] `sal`
+  > `sal` es la columna 2.
+- [ ] `EMP.ENAME`
+  > La etiqueta no incluye la tabla.
+
+Repasar: 3A §6.
+</Quiz>
+
+<Quiz id="t3ac-14" title="Posición negativa">
+El resultado es desplazable. ¿Qué imprime?
+
+```java
+Statement st = conexion.createStatement(
+        ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+ResultSet rs = st.executeQuery("SELECT ename FROM emp ORDER BY empno");
+rs.absolute(-1);
+System.out.println(rs.getString(1));
+```
+
+- [ ] `SMITH`
+  > Es la primera fila; los valores negativos cuentan desde el final.
+- [ ] Lanza `SQLException`: no hay fila −1.
+  > `absolute` admite negativos.
+- [x] `MILLER`
+  > Correcta: `absolute(-1)` es la última fila; MILLER tiene el `empno` más alto.
+- [ ] `KING`
+  > KING no es el último por número de empleado.
+
+Repasar: 3A §10, movimiento del cursor.
+</Quiz>
+
+<Quiz id="t3ac-15" title="Modificación que no llega">
+El resultado es actualizable. ¿Qué pasa con el salario?
+
+```java
+ResultSet rs = st.executeQuery("SELECT empno, sal FROM emp WHERE empno = 7369");
+rs.next();
+rs.updateDouble("sal", 1000);
+rs.next();
+```
+
+- [ ] Queda en 1000, porque `updateDouble` escribe en la tabla.
+  > `updateXxx` cambia la fila del cursor; falta enviarlo con `updateRow()`.
+- [ ] Queda en 1000 al cerrar el resultado.
+  > Cerrar no envía cambios pendientes.
+- [ ] Lanza excepción porque no se puede llamar a `next()` tras `updateDouble`.
+  > Se puede mover el cursor; lo que se pierde es el cambio.
+- [x] No cambia: se ha movido el cursor sin llamar a `updateRow()`.
+  > Correcta: `updateRow()` envía la modificación antes de cambiar de fila.
+
+Repasar: 3A §10, modificar, insertar y borrar.
+</Quiz>
+
+<Quiz id="t3ac-16" title="Leer el parámetro de salida">
+`total_dept(IN p_dept INT, OUT p_total INT)` existe en MySQL. ¿Qué fragmento es correcto?
+
+```java
+CallableStatement cs = conexion.prepareCall("{call total_dept(?, ?)}");
+cs.setInt(1, 20);
+// ¿qué va aquí?
+```
+
+- [ ] `cs.execute(); cs.registerOutParameter(2, Types.INTEGER); cs.getInt(2);`
+  > El OUT se registra antes de ejecutar.
+- [ ] `cs.setInt(2, 0); cs.execute(); cs.getInt(2);`
+  > Asignar un valor no lo registra como salida.
+- [x] `cs.registerOutParameter(2, Types.INTEGER); cs.execute(); cs.getInt(2);`
+  > Correcta: registrar, ejecutar y leer la posición 2.
+- [ ] `cs.registerOutParameter(2, Types.INTEGER); cs.executeQuery(); cs.getInt(1);`
+  > La posición 1 es el IN; el resultado está en la 2.
+
+Repasar: 3A §8.
+</Quiz>
+
+<Quiz id="t3ac-17" title="Dos consultas con la misma sentencia">
+¿Qué ocurre en la última línea?
+
+```java
+Statement st = conexion.createStatement();
+ResultSet empleados = st.executeQuery("SELECT ename FROM emp");
+ResultSet departamentos = st.executeQuery("SELECT dname FROM dept");
+empleados.next();
+```
+
+- [ ] Avanza al primer empleado.
+  > Al ejecutar otra consulta con la misma sentencia se cierra el resultado anterior.
+- [x] Lanza `SQLException`: `empleados` está cerrado.
+  > Correcta: usa una sentencia para cada resultado que se recorra a la vez.
+- [ ] Avanza al primer departamento.
+  > Cada variable apunta a su propio resultado.
+- [ ] Devuelve `false` sin error.
+  > Llamar a un resultado cerrado lanza excepción.
+
+Repasar: 3A §4.
+</Quiz>
+
+<Quiz id="t3ac-18" title="Concatenar lo que escribe el usuario">
+El usuario escribe `x' OR '1'='1`. ¿Cuántas filas devuelve?
+
+```java
+String nombre = teclado.nextLine();
+String sql = "SELECT * FROM emp WHERE ename = '" + nombre + "'";
+ResultSet rs = conexion.createStatement().executeQuery(sql);
+```
+
+- [ ] 0, porque no hay ningún empleado llamado x.
+  > El texto cambia la condición: `ename = 'x' OR '1'='1'`.
+- [ ] Lanza `SQLException` por comillas mal cerradas.
+  > Las comillas cierran justo para formar una condición válida.
+- [ ] 1, el primer empleado.
+  > No hay nada que limite el resultado a una fila.
+- [x] 14: la condición siempre es verdadera.
+  > Correcta: es inyección SQL; con `PreparedStatement` y `setString` serían 0.
+
+Repasar: 3A §5, seguridad.
+</Quiz>
+
+<Quiz id="t3ac-19" title="Orden de cierre">
+¿En qué orden se cierran los recursos al salir del `try`?
+
+```java
+try (Connection c = DriverManager.getConnection(url);
+     PreparedStatement ps = c.prepareStatement(sql);
+     ResultSet rs = ps.executeQuery()) {
+    // ...
+}
+```
+
+- [ ] `Connection`, `PreparedStatement`, `ResultSet`.
+  > Es el orden de apertura; el cierre es el inverso.
+- [ ] Solo se cierra la `Connection`; lo demás queda abierto.
+  > Se cierran los tres recursos declarados.
+- [x] `ResultSet`, `PreparedStatement`, `Connection`.
+  > Correcta: try-with-resources cierra en orden inverso a la declaración.
+- [ ] Se cierran en orden aleatorio.
+  > El orden está definido: inverso a la declaración.
+
+Repasar: 3A §3, `Conexion.java`, y §4.
+</Quiz>
+
+<Quiz id="t3ac-20" title="Listar las tablas">
+La base solo tiene las cuatro tablas del script: `bonus`, `dept`, `emp` y `salgrade`. ¿Cuántas líneas imprime?
+
+```java
+DatabaseMetaData md = conexion.getMetaData();
+try (ResultSet t = md.getTables(conexion.getCatalog(), null, "%",
+        new String[] {"TABLE"})) {
+    while (t.next()) {
+        System.out.println(t.getString("TABLE_NAME"));
+    }
+}
+```
+
+- [ ] 1, porque el patrón `%` solo coincide con una tabla.
+  > `%` coincide con cualquier nombre.
+- [x] 4, una por tabla.
+  > Correcta: filtra la base actual y el tipo TABLE con cualquier nombre.
+- [ ] 0, porque `null` en el esquema no encuentra nada.
+  > `null` significa no filtrar por ese criterio.
+- [ ] Lanza excepción porque `TABLE_NAME` no existe.
+  > Es una de las columnas fijas del resultado de `getTables`.
+
+Repasar: 3A §6.
+</Quiz>
+
+<QuizResults />

@@ -1,0 +1,473 @@
+---
+title: "3B · Con código · Normal"
+description: "20 preguntas de SQL y JDBC sobre SQLite: restricciones, tipos, identificadores, transacciones y consultas."
+sidebar:
+  order: 2
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** SQLite 3.39 o posterior en una base nueva de prácticas; en Java, `sqlite-jdbc` con su configuración por defecto. Las claves foráneas **no** están activadas salvo que el fragmento ejecute `PRAGMA foreign_keys = ON`. Cada pregunta parte de su propio estado.
+
+<Quiz id="t3bc-01" title="Correo repetido">
+¿Qué ocurre con el segundo INSERT?
+
+```sql
+CREATE TABLE contacts (
+    contact_id INTEGER PRIMARY KEY,
+    first_name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE
+);
+INSERT INTO contacts (first_name, email) VALUES ('Ana', 'ana@ej.invalid');
+INSERT INTO contacts (first_name, email) VALUES ('Eva', 'ana@ej.invalid');
+```
+
+- [ ] Se inserta: solo `contact_id` debe ser único.
+  > `email` también tiene UNIQUE.
+- [ ] Sustituye a Ana por Eva.
+  > Un INSERT normal no reemplaza filas.
+- [x] Falla por la restricción UNIQUE de `email`.
+  > Correcta: el correo ya existe.
+- [ ] Se inserta con `email` NULL.
+  > SQLite no cambia el valor, y además la columna es NOT NULL.
+
+Repasar: 3B §5.
+</Quiz>
+
+<Quiz id="t3bc-02" title="UNIQUE y valores ausentes">
+¿Qué devuelve la consulta?
+
+```sql
+CREATE TABLE clientes (id INTEGER PRIMARY KEY, email TEXT UNIQUE);
+INSERT INTO clientes (email) VALUES (NULL);
+INSERT INTO clientes (email) VALUES (NULL);
+SELECT COUNT(*) FROM clientes;
+```
+
+- [ ] `1`: el segundo NULL se rechaza.
+  > SQLite permite varios NULL en una columna UNIQUE.
+- [x] `2`
+  > Correcta: los dos NULL no cuentan como valores repetidos.
+- [ ] `0`: UNIQUE no admite NULL.
+  > La columna no es NOT NULL.
+- [ ] Error en el CREATE TABLE.
+  > La definición es válida.
+
+Repasar: 3B §5, qué garantiza cada restricción.
+</Quiz>
+
+<Quiz id="t3bc-03" title="Una FK sin activar">
+El grupo 99 no existe. ¿Qué ocurre con el INSERT?
+
+```sql
+CREATE TABLE groups (group_id INTEGER PRIMARY KEY, name TEXT NOT NULL);
+CREATE TABLE contact_groups (
+    contact_id INTEGER NOT NULL,
+    group_id INTEGER NOT NULL REFERENCES groups (group_id),
+    PRIMARY KEY (contact_id, group_id)
+);
+INSERT INTO contact_groups VALUES (1, 99);
+```
+
+- [ ] Falla porque el grupo 99 no existe.
+  > Solo fallaría con `PRAGMA foreign_keys = ON` en esa conexión.
+- [ ] Falla porque falta el contacto 1.
+  > `contact_id` ni siquiera tiene FK en este esquema.
+- [ ] Crea automáticamente el grupo 99.
+  > Una FK nunca crea filas en la tabla referenciada.
+- [x] Se inserta: las FK no están activadas.
+  > Correcta: hay que activar `PRAGMA foreign_keys` en cada conexión.
+
+Repasar: 3B §5, FOREIGN KEY.
+</Quiz>
+
+<Quiz id="t3bc-04" title="Afinidad de una columna INTEGER">
+¿Qué devuelve el SELECT, en este orden?
+
+```sql
+CREATE TABLE t (n INTEGER);
+INSERT INTO t VALUES ('12');
+INSERT INTO t VALUES ('abc');
+SELECT typeof(n) FROM t ORDER BY rowid;
+```
+
+- [ ] `text` y `text`
+  > La afinidad INTEGER convierte `'12'` en número.
+- [x] `integer` y `text`
+  > Correcta: `'12'` se convierte; `'abc'` no puede convertirse y se guarda como texto.
+- [ ] `integer` y error en el segundo INSERT
+  > En una tabla ordinaria el tipo declarado no impide guardar otra clase.
+- [ ] `integer` y `integer`
+  > `'abc'` no es un número.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3bc-05" title="El punto de retorno del temario">
+Ana tiene el teléfono `555-0101`. ¿Cómo queda al terminar?
+
+```sql
+BEGIN IMMEDIATE;
+UPDATE contacts SET first_name = 'Ana Maria' WHERE contact_id = 1;
+SAVEPOINT antes_del_telefono;
+UPDATE contacts SET phone = '555-9999' WHERE contact_id = 1;
+ROLLBACK TO SAVEPOINT antes_del_telefono;
+RELEASE SAVEPOINT antes_del_telefono;
+COMMIT;
+```
+
+- [ ] `Ana`, `555-0101`: se deshace todo.
+  > `ROLLBACK TO` solo deshace lo posterior al punto.
+- [ ] `Ana Maria`, `555-9999`: el COMMIT lo confirma todo.
+  > El teléfono se deshizo antes del COMMIT.
+- [x] `Ana Maria`, `555-0101`.
+  > Correcta: se conserva el nombre y el teléfono vuelve a su valor.
+- [ ] Error: no se puede hacer COMMIT tras un ROLLBACK.
+  > `ROLLBACK TO` no termina la transacción.
+
+Repasar: 3B §7.
+</Quiz>
+
+<Quiz id="t3bc-06" title="Borrar en cascada">
+¿Qué devuelve la última consulta?
+
+```sql
+PRAGMA foreign_keys = ON;
+CREATE TABLE contacts (contact_id INTEGER PRIMARY KEY, first_name TEXT);
+CREATE TABLE contact_groups (
+    contact_id INTEGER NOT NULL
+        REFERENCES contacts (contact_id) ON DELETE CASCADE,
+    group_id INTEGER NOT NULL,
+    PRIMARY KEY (contact_id, group_id)
+);
+INSERT INTO contacts VALUES (1, 'Ana'), (2, 'Luis');
+INSERT INTO contact_groups VALUES (1, 1), (1, 2), (2, 1);
+DELETE FROM contacts WHERE contact_id = 1;
+SELECT COUNT(*) FROM contact_groups;
+```
+
+- [x] `1`
+  > Correcta: se borran las dos pertenencias de Ana y queda la de Luis.
+- [ ] `3`
+  > Con las FK activadas, CASCADE propaga el borrado.
+- [ ] `0`
+  > Solo se borran las filas que referencian al contacto 1.
+- [ ] Error: no se puede borrar un contacto con grupos.
+  > Eso pasaría con RESTRICT, no con CASCADE.
+
+Repasar: 3B §5 y §6, acciones referenciales.
+</Quiz>
+
+<Quiz id="t3bc-07" title="Total por cliente con ceros">
+Ana tiene facturas de 10 y 5; Luis no tiene facturas. ¿Qué filas devuelve?
+
+```sql
+SELECT c.nombre, COALESCE(SUM(f.total), 0) AS total
+FROM clientes c
+LEFT JOIN facturas f ON f.cliente_id = c.id
+GROUP BY c.id, c.nombre
+ORDER BY c.nombre;
+```
+
+- [ ] Solo `Ana | 15`.
+  > El LEFT JOIN conserva a los clientes sin facturas.
+- [ ] `Ana | 15` y `Luis | NULL`.
+  > `COALESCE` convierte la suma NULL en 0.
+- [ ] `Ana | 10`, `Ana | 5` y `Luis | 0`.
+  > GROUP BY agrupa las facturas de cada cliente.
+- [x] `Ana | 15` y `Luis | 0`.
+  > Correcta: LEFT JOIN conserva a Luis y COALESCE pone su total a 0.
+
+Repasar: 3B §8 y actividad Chinook.
+</Quiz>
+
+<Quiz id="t3bc-08" title="Cambiar a INNER JOIN">
+Mismos datos: Ana con facturas de 10 y 5, Luis sin facturas. ¿Cuántas filas devuelve?
+
+```sql
+SELECT c.nombre, SUM(f.total)
+FROM clientes c
+JOIN facturas f ON f.cliente_id = c.id
+GROUP BY c.id, c.nombre;
+```
+
+- [ ] 2, una por cliente.
+  > Luis no tiene ninguna factura con la que unirse.
+- [x] 1, solo Ana.
+  > Correcta: el JOIN interno descarta a los clientes sin facturas.
+- [ ] 3, una por factura más Luis.
+  > GROUP BY reúne las facturas de Ana y Luis no aparece.
+- [ ] 0, porque falta COALESCE.
+  > COALESCE cambia valores, no añade ni quita filas.
+
+Repasar: 3B §8 y actividad Chinook.
+</Quiz>
+
+<Quiz id="t3bc-09" title="Álbumes repetidos">
+Un álbum tiene 3 canciones de jazz y ningún otro álbum tiene jazz. ¿Cuántas filas devuelve?
+
+```sql
+SELECT a.Title
+FROM Album a
+JOIN Track t ON t.AlbumId = a.AlbumId
+JOIN Genre g ON g.GenreId = t.GenreId
+WHERE g.Name = 'Jazz';
+```
+
+- [ ] 1, porque es un solo álbum.
+  > El JOIN produce una fila por cada canción que cumple el filtro.
+- [ ] 0, porque falta GROUP BY.
+  > GROUP BY no es necesario para que haya filas.
+- [x] 3: el título se repite una vez por canción.
+  > Correcta: para una fila por álbum se usa EXISTS o DISTINCT.
+- [ ] Error: no se pueden encadenar dos JOIN.
+  > Se pueden encadenar tantos como haga falta.
+
+Repasar: 3B §8 y actividad Chinook.
+</Quiz>
+
+<Quiz id="t3bc-10" title="Nombre vacío">
+¿Qué ocurre?
+
+```sql
+CREATE TABLE contacts (id INTEGER PRIMARY KEY, first_name TEXT NOT NULL);
+INSERT INTO contacts (first_name) VALUES ('');
+```
+
+- [ ] Falla por NOT NULL.
+  > La cadena vacía es un valor, no NULL.
+- [ ] Guarda NULL en lugar de la cadena vacía.
+  > SQLite no transforma `''` en NULL.
+- [ ] Falla porque falta el `id`.
+  > `INTEGER PRIMARY KEY` se asigna solo.
+- [x] Se inserta la cadena vacía.
+  > Correcta: NOT NULL no impide `''`; haría falta un CHECK.
+
+Repasar: 3B §5, qué garantiza cada restricción.
+</Quiz>
+
+<Quiz id="t3bc-11" title="Un CHECK y un NULL">
+¿Qué ocurre con el INSERT?
+
+```sql
+CREATE TABLE socios (id INTEGER PRIMARY KEY, edad INTEGER CHECK (edad >= 18));
+INSERT INTO socios (edad) VALUES (NULL);
+```
+
+- [ ] Falla: NULL no es mayor o igual que 18.
+  > Un CHECK solo rechaza cuando la expresión es falsa; con NULL no lo es.
+- [x] Se inserta: un CHECK no rechaza NULL.
+  > Correcta: hay que combinarlo con NOT NULL si no se admite ausencia de valor.
+- [ ] Se inserta con edad 18.
+  > No hay DEFAULT y SQLite no inventa el valor.
+- [ ] Error en el CREATE: CHECK necesita NOT NULL.
+  > Se pueden declarar por separado.
+
+Repasar: 3B §5, qué garantiza cada restricción.
+</Quiz>
+
+<Quiz id="t3bc-12" title="DEFAULT y un NULL explícito">
+¿Qué devuelve el SELECT?
+
+```sql
+CREATE TABLE pedidos (id INTEGER PRIMARY KEY, estado TEXT DEFAULT 'nuevo');
+INSERT INTO pedidos (estado) VALUES (NULL);
+SELECT estado IS NULL FROM pedidos;
+```
+
+- [ ] `0`, porque se aplicó `'nuevo'`.
+  > DEFAULT solo se aplica cuando se omite la columna.
+- [ ] Error: no se puede insertar NULL en una columna con DEFAULT.
+  > La columna admite NULL.
+- [ ] `nuevo`
+  > La consulta devuelve el resultado de `IS NULL`, 1 o 0.
+- [x] `1`: se guarda el NULL indicado.
+  > Correcta: DEFAULT no reemplaza un NULL proporcionado explícitamente.
+
+Repasar: 3B §5, qué garantiza cada restricción.
+</Quiz>
+
+<Quiz id="t3bc-13" title="Identificador tras un borrado">
+¿Qué `id` recibe Dani?
+
+```sql
+CREATE TABLE t (id INTEGER PRIMARY KEY, nombre TEXT);
+INSERT INTO t (nombre) VALUES ('Ana'), ('Luis'), ('Eva');
+DELETE FROM t WHERE id = 3;
+INSERT INTO t (nombre) VALUES ('Dani');
+SELECT id FROM t WHERE nombre = 'Dani';
+```
+
+- [x] `3`
+  > Correcta: sin AUTOINCREMENT se toma el mayor `rowid` actual más uno, y el 3 vuelve a estar libre.
+- [ ] `4`
+  > Ese sería el resultado con AUTOINCREMENT, que no reutiliza valores.
+- [ ] `NULL`
+  > `INTEGER PRIMARY KEY` siempre recibe un entero.
+- [ ] Error: el identificador 3 ya se usó.
+  > Sin AUTOINCREMENT se pueden reutilizar valores eliminados.
+
+Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
+</Quiz>
+
+<Quiz id="t3bc-14" title="Clientes con varias facturas">
+Ana tiene 2 facturas, Luis 1 y Eva ninguna. ¿Qué devuelve?
+
+```sql
+SELECT c.nombre
+FROM clientes c
+JOIN facturas f ON f.cliente_id = c.id
+GROUP BY c.id, c.nombre
+HAVING COUNT(*) > 1;
+```
+
+- [ ] Ana y Luis.
+  > Luis solo tiene una factura.
+- [ ] Ana, Luis y Eva.
+  > Eva no tiene facturas y HAVING filtra por más de una.
+- [x] Solo Ana.
+  > Correcta: HAVING filtra los grupos después de agrupar.
+- [ ] Error: HAVING debe ir antes de GROUP BY.
+  > HAVING va después de GROUP BY.
+
+Repasar: 3B §8.
+</Quiz>
+
+<Quiz id="t3bc-15" title="Activar las FK desde Java">
+El grupo 99 no existe y la tabla tiene la FK del ejemplo de contactos. ¿Qué ocurre?
+
+```java
+try (Connection c = DriverManager.getConnection("jdbc:sqlite:agenda.db");
+     Statement st = c.createStatement()) {
+    st.execute("PRAGMA foreign_keys = ON");
+    st.executeUpdate("INSERT INTO contact_groups VALUES (1, 99)");
+}
+```
+
+- [ ] Se inserta: el PRAGMA solo vale en la consola.
+  > El PRAGMA se ejecuta por SQL y afecta a esa conexión.
+- [x] Lanza `SQLException` por violar la clave foránea.
+  > Correcta: con las FK activadas en la conexión, el grupo 99 debe existir.
+- [ ] Inserta y crea el grupo 99.
+  > Una FK nunca crea filas.
+- [ ] No compila: `execute` no admite PRAGMA.
+  > Es un `String` como cualquier otra sentencia.
+
+Repasar: 3B §5, FOREIGN KEY, y §8.
+</Quiz>
+
+<Quiz id="t3bc-16" title="Cursor desplazable en SQLite">
+¿Qué ocurre?
+
+```java
+Connection c = DriverManager.getConnection("jdbc:sqlite:empdept.db");
+Statement st = c.createStatement(
+        ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_UPDATABLE);
+```
+
+- [ ] Crea un resultado desplazable y actualizable.
+  > El driver de SQLite no ofrece ese tipo de cursor.
+- [ ] Crea la sentencia y lo ignora en silencio.
+  > El driver no degrada en silencio: avisa con una excepción.
+- [ ] No compila: faltan los imports de `ResultSet`.
+  > Las constantes son públicas de `ResultSet`; no es un problema de compilación del enunciado.
+- [x] Lanza `SQLException`: SQLite solo admite cursores `TYPE_FORWARD_ONLY`.
+  > Correcta: en SQLite se recorre hacia delante y se actualiza con un UPDATE preparado.
+
+Repasar: 3A §10 y 3B §8.
+</Quiz>
+
+<Quiz id="t3bc-17" title="Una fecha con setDate">
+La columna `alta` es `DATE`. ¿Qué imprime?
+
+```java
+PreparedStatement ps = c.prepareStatement("INSERT INTO t (alta) VALUES (?)");
+ps.setDate(1, java.sql.Date.valueOf("2026-11-20"));
+ps.executeUpdate();
+ResultSet rs = c.createStatement().executeQuery("SELECT typeof(alta) FROM t");
+rs.next();
+System.out.println(rs.getString(1));
+```
+
+- [ ] `text`, con `2026-11-20`.
+  > `sqlite-jdbc` guarda por defecto las fechas como milisegundos.
+- [x] `integer`
+  > Correcta: por eso hay que fijar una convención, como texto ISO con `setString`.
+- [ ] `date`
+  > SQLite no tiene clase de almacenamiento para fechas.
+- [ ] `real`
+  > Los milisegundos se guardan como entero.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3bc-18" title="Sin commit al cerrar">
+`t` está vacía. ¿Cuántas filas tiene al volver a abrir la base?
+
+```java
+try (Connection c = DriverManager.getConnection("jdbc:sqlite:datos.db")) {
+    c.setAutoCommit(false);
+    c.createStatement().executeUpdate("INSERT INTO t VALUES (1)");
+}
+// Se abre otra conexión y se ejecuta SELECT COUNT(*) FROM t
+```
+
+- [ ] 1: cerrar la conexión confirma los cambios.
+  > Cerrar sin `commit()` no confirma la transacción.
+- [x] 0: la transacción no se confirmó.
+  > Correcta: sin `commit()` el INSERT se descarta.
+- [ ] 1: SQLite ignora `setAutoCommit(false)`.
+  > El driver respeta el modo transaccional.
+- [ ] Error: la base queda bloqueada para siempre.
+  > Al cerrar se libera la transacción pendiente.
+
+Repasar: 3A §9 y 3B §7.
+</Quiz>
+
+<Quiz id="t3bc-19" title="Ejecutar un archivo en la consola">
+Tienes el script `chinook.sql` y estás en la consola sqlite3 con la base abierta. ¿Qué orden lo ejecuta?
+
+```bash
+sqlite3 chinook.db
+```
+
+- [ ] `.import chinook.sql`
+  > `.import` carga datos de un CSV en una tabla.
+- [ ] `EXECUTE 'chinook.sql';`
+  > No es una sentencia de SQLite.
+- [x] `.read chinook.sql`
+  > Correcta: ejecuta las instrucciones del archivo.
+- [ ] `.open chinook.sql`
+  > Abriría el script como si fuera una base de datos.
+
+Repasar: 3B §3.
+</Quiz>
+
+<Quiz id="t3bc-20" title="Proveedores sin grupo válido">
+¿Qué ocurre con el INSERT?
+
+```sql
+PRAGMA foreign_keys = ON;
+CREATE TABLE supplier_groups (group_id INTEGER PRIMARY KEY, group_name TEXT NOT NULL);
+CREATE TABLE suppliers (
+    supplier_id INTEGER PRIMARY KEY,
+    supplier_name TEXT NOT NULL,
+    group_id INTEGER NOT NULL,
+    FOREIGN KEY (group_id) REFERENCES supplier_groups (group_id)
+);
+INSERT INTO suppliers (supplier_name, group_id) VALUES ('ACME', NULL);
+```
+
+- [ ] Se inserta: la FK admite NULL.
+  > La columna es NOT NULL.
+- [ ] Se inserta con el grupo 1.
+  > No hay DEFAULT que lo asigne.
+- [ ] Falla solo porque no existe ningún grupo.
+  > Antes de mirar la FK, NOT NULL ya rechaza el NULL.
+- [x] Falla por la restricción NOT NULL de `group_id`.
+  > Correcta: el proveedor debe tener un grupo.
+
+Repasar: 3B §6, ejemplo de proveedores.
+</Quiz>
+
+<QuizResults />

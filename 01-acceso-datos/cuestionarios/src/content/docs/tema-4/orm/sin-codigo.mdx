@@ -1,0 +1,344 @@
+---
+title: "4A–4B · Sin código · Normal"
+description: "20 decisiones sobre ORM, JPA, entidades, configuración, sesiones, relaciones, cascadas e identificadores."
+sidebar:
+  order: 1
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Sin fragmentos de código. Hibernate 5.4 con anotaciones `javax.persistence`, como en el temario. Hay situaciones de empresa, afirmaciones I/II/III y distractores que son ciertos pero no resuelven lo que se pide.
+
+<Quiz id="t4on-01" title="Objetos y filas">
+Una empresa quiere trabajar en Java con objetos `Cliente` y que se guarden en la tabla `clientes` sin escribir el SQL de cada operación. ¿Qué describe esa correspondencia?
+
+- [ ] Un driver JDBC tipo 4.
+  > El driver comunica con el motor, pero no traduce objetos a filas.
+- [ ] La serialización de objetos.
+  > Convierte objetos en bytes, no en filas de una base relacional.
+- [x] El mapeo objeto-relacional (ORM).
+  > Correcta: tabla ↔ entidad, fila ↔ instancia, columna ↔ atributo y FK ↔ asociación.
+- [ ] Un procedimiento almacenado.
+  > Es código guardado en el servidor, no un mapeo de objetos.
+
+Repasar: 4A §1.
+</Quiz>
+
+<Quiz id="t4on-02" title="JPA, Hibernate y EclipseLink">
+Lee las afirmaciones:
+
+**I.** JPA es una especificación, no un framework que se ejecute por sí solo.
+
+**II.** Hibernate implementa JPA y añade API propias, como `Session` y HQL.
+
+**III.** EclipseLink es otro proveedor de JPA.
+
+¿Cuáles son correctas?
+
+- [ ] Solo I y II.
+  > III también es cierta.
+- [ ] Solo II.
+  > I y III también son ciertas.
+- [ ] Ninguna.
+  > Las tres describen correctamente JPA y sus proveedores.
+- [x] Todas: I, II y III.
+  > Correcta: JPA define la especificación; Hibernate y EclipseLink la implementan.
+
+Repasar: 4A §1.
+</Quiz>
+
+<Quiz id="t4on-03" title="Mezclar versiones">
+Un compañero copia una entidad de un tutorial reciente con `import jakarta.persistence.*` en el proyecto del curso, que usa Hibernate 5.4.33. ¿Qué es cierto?
+
+- [x] No se deben mezclar: el proyecto del curso usa `javax.persistence`.
+  > Correcta: `jakarta.persistence` corresponde a Hibernate 6/7.
+- [ ] Da igual: `javax` y `jakarta` son el mismo paquete con otro nombre.
+  > Para el compilador son paquetes distintos y no interoperan.
+- [ ] Basta con cambiar el dialecto en `hibernate.cfg.xml`.
+  > El dialecto describe el SQL del motor, no la versión de las anotaciones.
+- [ ] Hay que usar los dos imports a la vez para que funcione.
+  > Mezclarlos es justo lo que hay que evitar.
+
+Repasar: 4A §1, versión de esta entrega.
+</Quiz>
+
+<Quiz id="t4on-04" title="Constructor de una entidad">
+La entidad `Producto` solo tiene un constructor con parámetros. ¿Qué problema tiene para Hibernate?
+
+- [ ] Ninguno: Hibernate usa el constructor con parámetros.
+  > Hibernate necesita poder crear la instancia antes de rellenarla.
+- [ ] Hay que hacer el constructor privado.
+  > Debe ser público o protegido.
+- [x] Necesita un constructor sin argumentos, público o protegido.
+  > Correcta: así Hibernate puede cargarla; el constructor con parámetros puede convivir con él.
+- [ ] Debe implementar `Serializable` en lugar de tener constructor.
+  > Son cosas distintas; el constructor sin argumentos sigue siendo necesario.
+
+Repasar: 4A §2.
+</Quiz>
+
+<Quiz id="t4on-05" title="Un dato que no se guarda">
+La entidad `Alumno` tiene un atributo `edad` calculado a partir de la fecha de nacimiento. No debe existir como columna. ¿Qué anotación usar?
+
+- [ ] `@Column(nullable = true)`
+  > Sigue siendo una columna, solo que admite nulos.
+- [ ] `@Lob`
+  > Es para textos o binarios grandes.
+- [ ] `@Version`
+  > Es para el control de concurrencia optimista.
+- [x] `@Transient`
+  > Correcta: excluye el atributo de la persistencia.
+
+Repasar: 4A §2.
+</Quiz>
+
+<Quiz id="t4on-06" title="Un enum que puede cambiar">
+Un pedido tiene un enum `Estado { PENDIENTE, ENVIADO, ENTREGADO }`. Es probable que se añadan estados nuevos en medio. ¿Cómo conviene guardarlo?
+
+- [ ] Por posición (ORDINAL), porque ocupa menos.
+  > Al insertar un estado en medio cambiaría el significado de los números guardados.
+- [x] Con `@Enumerated(EnumType.STRING)`.
+  > Correcta: guarda el nombre y no depende de la posición del valor en el enum.
+- [ ] Con `@Temporal`.
+  > Es para fechas antiguas de tipo `Date` o `Calendar`.
+- [ ] Con `@Transient`, para que no se guarde.
+  > El estado debe guardarse.
+
+Repasar: 4A §2.
+</Quiz>
+
+<Quiz id="t4on-07" title="Afirmaciones sobre las anotaciones">
+Lee las afirmaciones:
+
+**I.** `@Temporal` es necesaria para mapear un `LocalDate` en Hibernate 5.4.
+
+**II.** Si `@Id` se pone en el campo, JPA accede por campos.
+
+**III.** Conviene mezclar acceso por campos y por propiedades en la misma entidad.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > I y III son falsas.
+- [ ] Solo I y II.
+  > I es falsa: `LocalDate` tiene soporte sin `@Temporal`.
+- [x] Solo II.
+  > Correcta: la posición de `@Id` marca el acceso; no se mezclan estilos sin `@Access` y una razón.
+- [ ] Ninguna.
+  > II es cierta.
+
+Repasar: 4A §2, acceso por campos o por propiedades, y 4B §5.
+</Quiz>
+
+<Quiz id="t4on-08" title="Hibernate nativo o JPA estándar">
+El proyecto del curso arranca con `hibernate.cfg.xml`. ¿Qué objetos usa para trabajar?
+
+- [ ] `EntityManagerFactory` → `EntityManager`.
+  > Son los de JPA estándar, que se configura con `persistence.xml`.
+- [ ] `DriverManager` → `Connection`.
+  > Son de JDBC, sin mapeo de entidades.
+- [x] `SessionFactory` → `Session`.
+  > Correcta: es el arranque de Hibernate nativo.
+- [ ] `DataSource` → `Statement`.
+  > Siguen siendo objetos JDBC.
+
+Repasar: 4A §3.
+</Quiz>
+
+<Quiz id="t4on-09" title="Una fábrica por consulta">
+En una aplicación de gestión, cada método crea una `SessionFactory` nueva, la usa y la cierra. ¿Qué es cierto?
+
+- [ ] Es lo recomendado para no dejar recursos abiertos.
+  > Lo que se abre y cierra en cada unidad de trabajo es la `Session`.
+- [ ] Da igual, porque crear la fábrica es inmediato.
+  > La fábrica es costosa de construir.
+- [ ] Es necesario porque la fábrica no se puede compartir.
+  > La fábrica se comparte; la que no se comparte entre hilos es la sesión.
+- [x] Es un error: se crea una fábrica para la aplicación, se reutiliza y se cierra al terminar.
+  > Correcta: como hace `HibernateUtils` en el proyecto del temario.
+
+Repasar: 4A §3 y 4B §5.
+</Quiz>
+
+<Quiz id="t4on-10" title="Afirmaciones sobre la sesión">
+Lee las afirmaciones:
+
+**I.** Una `Session` se abre para una unidad de trabajo.
+
+**II.** Una `Session` se puede compartir entre varios hilos.
+
+**III.** Tras un fallo, se hace `rollback` y se descarta la sesión.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > II es falsa.
+- [ ] Solo II y III.
+  > II es falsa e I es cierta.
+- [ ] Solo I.
+  > III también es cierta.
+- [x] Solo I y III.
+  > Correcta: la sesión no se comparte entre hilos.
+
+Repasar: 4A §3, §8 y 4B §5.
+</Quiz>
+
+<Quiz id="t4on-11" title="Arrancar contra la base de producción">
+El equipo va a conectar la aplicación a la base MySQL real, con datos de clientes. En pruebas usaban `hbm2ddl.auto = create-drop` sobre H2 en memoria. ¿Qué deben hacer?
+
+- [ ] Mantener `create-drop`, que solo crea lo que falta.
+  > Es destructivo: borra y crea el esquema.
+- [ ] Cambiar a `create`, que es menos agresivo.
+  > `create` también puede destruir tablas.
+- [x] Usar un esquema preparado con `validate` o `none`.
+  > Correcta: `validate` comprueba el esquema si el dialecto puede, y `none` lo deja a la administración manual.
+- [ ] Usar `update`, que sustituye a una migración.
+  > `update` no sustituye a una migración revisada.
+
+Repasar: 4A §3 y 4B §6.
+</Quiz>
+
+<Quiz id="t4on-12" title="Configurar otro motor">
+Se pasa el proyecto de H2 a MySQL 8 con Hibernate 5.4. ¿Qué hay que cambiar en la configuración?
+
+- [ ] Solo la URL.
+  > También cambian el driver, el dialecto y la dependencia.
+- [ ] Las anotaciones de las entidades.
+  > Las entidades no dependen del motor.
+- [ ] Nada: Hibernate detecta el motor por el nombre de la base.
+  > Hay que declarar driver y dialecto.
+- [x] Dependencia del conector, driver `com.mysql.cj.jdbc.Driver`, URL y dialecto `MySQL8Dialect`.
+  > Correcta: además del usuario y la contraseña reales, fuera del repositorio.
+
+Repasar: 4B §6.
+</Quiz>
+
+<Quiz id="t4on-13" title="Quién manda en un uno a muchos">
+Un `Profesor` tiene muchos `Correo`, y cada `Correo` guarda la FK de su profesor. En la relación bidireccional, ¿qué lado es normalmente el propietario?
+
+- [x] El `@ManyToOne` de `Correo`; el `@OneToMany` de `Profesor` usa `mappedBy`.
+  > Correcta: la fila hija guarda la FK.
+- [ ] El `@OneToMany` de `Profesor`, porque es el padre.
+  > El padre no guarda la FK en su tabla.
+- [ ] Los dos, cada uno con su `@JoinColumn`.
+  > Uno solo es propietario; el otro declara `mappedBy`.
+- [ ] Ninguno: Hibernate lo decide al arrancar.
+  > Lo decide el mapeo.
+
+Repasar: 4A §4, uno a muchos y muchos a uno.
+</Quiz>
+
+<Quiz id="t4on-14" title="Correos en orden">
+Un profesor tiene varios correos y el orden en que se añaden importa (el primero es el principal). Debe conservarse al guardar. ¿Qué colección usar?
+
+- [ ] `Set`, porque evita duplicados.
+  > No garantiza ningún orden.
+- [ ] `List` con `@OrderBy`.
+  > Ordena al consultar por atributos; no guarda una posición editable.
+- [x] `List` con `@OrderColumn`.
+  > Correcta: guarda la posición en una columna, como en la solución del temario.
+- [ ] `List` con `@IndexColumn`.
+  > Es la anotación antigua que el temario sustituye por `@OrderColumn`.
+
+Repasar: 4A §4, uno a muchos y muchos a uno.
+</Quiz>
+
+<Quiz id="t4on-15" title="Asignaciones con horas">
+Un profesor imparte varios módulos y un módulo lo imparten varios profesores. Ahora hay que guardar las **horas** y la **fecha de asignación** de cada pareja. ¿Qué conviene?
+
+- [ ] Un `@ManyToMany` con `@JoinTable` y dos columnas más.
+  > Una tabla intermedia de `@ManyToMany` no mapea atributos propios.
+- [x] Convertir la tabla intermedia en otra entidad.
+  > Correcta: cuando la relación tiene atributos propios, suele convenir una entidad de asignación.
+- [ ] Guardar las horas en `Profesor`.
+  > Dependen de la pareja profesor-módulo, no solo del profesor.
+- [ ] Un `@OneToOne` entre profesor y módulo.
+  > No representa varios módulos por profesor.
+
+Repasar: 4A §4, muchos a muchos.
+</Quiz>
+
+<Quiz id="t4on-16" title="Elegir la cascada">
+¿En cuál de estas relaciones encaja `cascade = CascadeType.ALL` desde el primer lado?
+
+- [ ] Profesor → módulos que comparte con otros profesores.
+  > Borrar un profesor borraría módulos que usan otros.
+- [ ] Empleado → departamento al que pertenece.
+  > El hijo no debe propagar operaciones al padre común.
+- [ ] Alumno → ciclo formativo en el que está matriculado.
+  > El ciclo existe con independencia del alumno.
+- [x] Factura → líneas de esa factura.
+  > Correcta: las líneas dependen del ciclo de vida de su factura.
+
+Repasar: 4A §5.
+</Quiz>
+
+<Quiz id="t4on-17" title="Quitar una línea de la factura">
+Al quitar una línea de la colección de su factura, la fila debe desaparecer de la base. ¿Qué lo consigue?
+
+- [ ] `CascadeType.PERSIST`
+  > Propaga hacer persistente una entidad nueva, no elimina huérfanos.
+- [ ] `ON DELETE CASCADE` en la tabla.
+  > Actúa al borrar la factura, no al quitar la línea de la colección.
+- [x] `orphanRemoval = true` en la relación dependiente.
+  > Correcta: elimina el hijo cuando deja de pertenecer a la relación.
+- [ ] `FetchType.EAGER`
+  > Decide cuándo se carga, no qué se borra.
+
+Repasar: 4A §5.
+</Quiz>
+
+<Quiz id="t4on-18" title="Afirmaciones sobre la igualdad">
+Lee las afirmaciones:
+
+**I.** Las clases de clave compuesta deben implementar `equals` y `hashCode` por valor.
+
+**II.** Una clave natural sirve para la igualdad si es única, no nula e inmutable.
+
+**III.** Un nombre editable es una buena base para `equals`.
+
+¿Cuáles son correctas?
+
+- [x] Solo I y II.
+  > Correcta: un dato editable cambiaría la igualdad del objeto.
+- [ ] Todas: I, II y III.
+  > III es falsa.
+- [ ] Solo I.
+  > II también es cierta.
+- [ ] Solo II y III.
+  > III es falsa e I es cierta.
+
+Repasar: 4A §6, equals y hashCode.
+</Quiz>
+
+<Quiz id="t4on-19" title="Identificadores en Oracle">
+La empresa usa en Oracle una secuencia para generar los números de pedido. ¿Qué estrategia de `@GeneratedValue` corresponde?
+
+- [ ] `IDENTITY`
+  > Usa una columna de identidad, no una secuencia.
+- [ ] `TABLE`
+  > Usa una tabla auxiliar.
+- [ ] Asignado, sin `@GeneratedValue`.
+  > La aplicación tendría que dar el valor.
+- [x] `SEQUENCE`, con un `@SequenceGenerator` de nombre coherente.
+  > Correcta: obtiene los valores de una secuencia del motor.
+
+Repasar: 4A §6, identificador simple.
+</Quiz>
+
+<Quiz id="t4on-20" title="Dos personas editando el mismo cliente">
+Dos administrativos abren a la vez la ficha del mismo cliente y los dos guardan cambios. La empresa quiere detectar que el segundo está sobrescribiendo una versión antigua. ¿Qué ofrece el temario?
+
+- [ ] `@Transient` en los campos editables.
+  > No se guardarían.
+- [x] Un campo `@Version` para el bloqueo optimista.
+  > Correcta: detecta modificaciones incompatibles al guardar.
+- [ ] Compartir la misma `Session` entre los dos usuarios.
+  > La sesión no se comparte y no resuelve el conflicto.
+- [ ] `CascadeType.REFRESH` en el cliente.
+  > Propaga una recarga; no detecta conflictos.
+
+Repasar: 4A §7, concurrencia.
+</Quiz>
+
+<QuizResults />

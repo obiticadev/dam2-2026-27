@@ -15,21 +15,49 @@ export default defineConfig({
 			locales: {
 				root: { label: 'Español', lang: 'es' },
 			},
+			// Un bloque por tema: subtemas (sin código / con código) y sus mixtos
 			sidebar: [
 				{ label: 'Inicio', slug: 'index' },
 				{
-					label: 'UT02-A · Ficheros (sin NIO)',
-					items: [{ autogenerate: { directory: 'ut02a' } }],
-				},
-				{
-					label: 'UT02-B · XML',
-					items: [{ autogenerate: { directory: 'ut02b' } }],
-				},
-				{
-					label: 'Simulacros mixtos · 20 preguntas',
+					label: 'Tema 2 · Ficheros y XML',
 					items: [
-						{ label: 'Normal', slug: 'examen-mixto' },
-						{ label: 'Más difícil', slug: 'examen-mixto-dificil' },
+						{ label: 'UT02-A · Ficheros (sin NIO)', items: [{ autogenerate: { directory: 'tema-2/ut02a' } }] },
+						{ label: 'UT02-B · XML', items: [{ autogenerate: { directory: 'tema-2/ut02b' } }] },
+						{
+							label: 'Mixtos · 20 preguntas',
+							items: [
+								{ label: 'Normal', slug: 'tema-2/mixto' },
+								{ label: 'Más difícil', slug: 'tema-2/mixto-dificil' },
+							],
+						},
+					],
+				},
+				{
+					label: 'Tema 3 · JDBC y SQLite',
+					items: [
+						{ label: '3A · Conectores JDBC', items: [{ autogenerate: { directory: 'tema-3/3a' } }] },
+						{ label: '3B · SQLite', items: [{ autogenerate: { directory: 'tema-3/3b' } }] },
+						{
+							label: 'Mixtos · 20 preguntas',
+							items: [
+								{ label: 'Normal', slug: 'tema-3/mixto' },
+								{ label: 'Más difícil', slug: 'tema-3/mixto-dificil' },
+							],
+						},
+					],
+				},
+				{
+					label: 'Tema 4 · Hibernate y HQL',
+					items: [
+						{ label: '4A–4B · ORM e Hibernate', items: [{ autogenerate: { directory: 'tema-4/orm' } }] },
+						{ label: '4C · HQL y consultas', items: [{ autogenerate: { directory: 'tema-4/hql' } }] },
+						{
+							label: 'Mixtos · 20 preguntas',
+							items: [
+								{ label: 'Normal', slug: 'tema-4/mixto' },
+								{ label: 'Más difícil', slug: 'tema-4/mixto-dificil' },
+							],
+						},
 					],
 				},
 			],

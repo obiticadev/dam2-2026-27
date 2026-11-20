@@ -1,0 +1,352 @@
+---
+title: "3A · Sin código · Normal"
+description: "20 decisiones sobre drivers, conexión, sentencias, metadatos, transacciones y cursores JDBC."
+sidebar:
+  order: 1
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Sin fragmentos de código. Hay situaciones de empresa, afirmaciones I/II/III para decidir cuáles son ciertas y distractores que son verdad pero no resuelven lo que se pide.
+
+<Quiz id="t3an-01" title="Una API para varios gestores">
+Una empresa tiene sus datos en MySQL y está pensando migrar a Oracle. Quiere que su aplicación Java cambie lo mínimo. ¿Qué aporta JDBC en esa situación?
+
+- [ ] Que cualquier sentencia SQL funcione igual en los dos motores.
+  > JDBC unifica las llamadas Java, pero no el dialecto SQL: una sentencia propia de Oracle puede necesitar cambios en MySQL.
+- [x] Una misma interfaz Java; cambian sobre todo el driver, la URL y las credenciales.
+  > Correcta: el código usa `java.sql` y el driver de cada motor implementa la comunicación concreta.
+- [ ] La conversión automática de las tablas MySQL al formato de Oracle.
+  > JDBC es una API de acceso, no una herramienta de migración de datos.
+- [ ] La eliminación del driver, porque JDBC ya habla con todos los motores.
+  > Sin el driver de cada fabricante no hay comunicación: JDBC define interfaces que el driver implementa.
+
+Repasar: 3A §1.
+</Quiz>
+
+<Quiz id="t3an-02" title="JDBC y ODBC">
+Lee las afirmaciones:
+
+**I.** ODBC y JDBC tienen un propósito parecido: acceder de forma uniforme a distintos gestores.
+
+**II.** JDBC está pensada para Java.
+
+**III.** Usar JDBC hace innecesario un driver específico del motor.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > III es falsa: el driver es quien implementa JDBC para un motor concreto.
+- [x] Solo I y II.
+  > Correcta: comparten objetivo, JDBC es la de Java y siempre se necesita el driver del motor.
+- [ ] Solo II.
+  > I también es cierta: ambas buscan un acceso uniforme a gestores distintos.
+- [ ] Ninguna.
+  > I y II describen correctamente ODBC y JDBC.
+
+Repasar: 3A §1.
+</Quiz>
+
+<Quiz id="t3an-03" title="Centralizar reglas y permisos">
+Un banco no quiere que las aplicaciones de las oficinas se conecten directamente a la base de datos: prefiere que pasen por un servidor de aplicaciones que aplique las reglas de negocio y los permisos. ¿Qué arquitectura describe?
+
+- [ ] Dos capas, porque solo hay cliente y base de datos.
+  > En dos capas la aplicación se conecta directamente al servidor de datos, justo lo que el banco quiere evitar.
+- [ ] Driver tipo 2, porque usa una biblioteca nativa.
+  > Los tipos de driver describen cómo se traduce JDBC, no cuántas capas tiene la aplicación.
+- [x] Tres capas, con una capa de servicios entre cliente y datos.
+  > Correcta: la capa intermedia centraliza reglas, permisos y conexiones.
+- [ ] Motor embebido, porque la base va dentro del servidor.
+  > Embebido significa que el motor se ejecuta dentro del proceso de la aplicación; no es este caso.
+
+Repasar: 3A §2, dos capas y tres capas.
+</Quiz>
+
+<Quiz id="t3an-04" title="El driver habitual de MySQL">
+Una aplicación de escritorio usa MySQL Connector/J: un driver escrito en Java que habla directamente el protocolo de red del servidor. ¿De qué tipo es?
+
+- [ ] Tipo 1, puente JDBC–ODBC.
+  > El puente traducía a ODBC y se retiró del JDK en Java 8.
+- [ ] Tipo 2, API nativa.
+  > El tipo 2 necesita una biblioteca nativa del fabricante instalada en el cliente.
+- [ ] Tipo 3, middleware.
+  > El tipo 3 pasa por un servidor intermedio que traduce el protocolo.
+- [x] Tipo 4, protocolo directo.
+  > Correcta: Java puro y comunicación directa con el SGBD, como Connector/J u Oracle Thin.
+
+Repasar: 3A §2, clasificación de los controladores.
+</Quiz>
+
+<Quiz id="t3an-05" title="Afirmaciones sobre los tipos de driver">
+Lee las afirmaciones:
+
+**I.** El tipo 2 necesita una biblioteca nativa compatible con el sistema operativo del cliente.
+
+**II.** El tipo 3 añade un servidor intermedio que hay que administrar.
+
+**III.** El «tipo 5» que aparece en algunos materiales es una quinta categoría de la clasificación clásica.
+
+¿Cuáles son correctas?
+
+- [x] Solo I y II.
+  > Correcta: «tipo 5» es una etiqueta comercial; la clasificación clásica tiene cuatro tipos.
+- [ ] Solo I y III.
+  > III es falsa y II es cierta: el middleware es una capa más que administrar.
+- [ ] Todas: I, II y III.
+  > «Tipo 5» no añade una categoría nueva.
+- [ ] Solo II.
+  > I también es cierta: el tipo 2 usa código nativo mediante JNI.
+
+Repasar: 3A §2, clasificación de los controladores.
+</Quiz>
+
+<Quiz id="t3an-06" title="¿Hace falta Class.forName?">
+Un compañero copia un ejemplo antiguo que empieza con `Class.forName(...)`. El proyecto usa un driver JDBC 4 añadido al classpath con Maven. ¿Qué es cierto?
+
+- [ ] Sin `Class.forName` la conexión siempre falla.
+  > Los drivers JDBC 4 se registran solos al estar en el classpath.
+- [x] Normalmente no es necesario: el driver se descubre automáticamente.
+  > Correcta: puede aparecer en código antiguo, pero no es obligatorio con JDBC 4.
+- [ ] Sustituye a añadir el JAR del driver al proyecto.
+  > Si el JAR no está, `Class.forName` lanza `ClassNotFoundException`: no lo suple.
+- [ ] Indica que `DriverManager` está obsoleto.
+  > `DriverManager` no está obsoleto; `DataSource` es preferible para pools o configuración centralizada.
+
+Repasar: 3A §3, dependencias y registro.
+</Quiz>
+
+<Quiz id="t3an-07" title="Oracle por servicio o por SID">
+El administrador indica que la base Oracle se identifica por el **nombre de servicio** XE en localhost:1521. ¿Qué URL corresponde?
+
+- [ ] `jdbc:oracle:thin:@localhost:1521:XE`
+  > Esa forma, con dos puntos antes de XE, es la de SID; no es equivalente al servicio.
+- [ ] `jdbc:mysql://localhost:1521/XE`
+  > Es el prefijo del driver de MySQL; no conecta con Oracle.
+- [x] `jdbc:oracle:thin:@//localhost:1521/XE`
+  > Correcta: `@//host:puerto/servicio` es el formato Thin por nombre de servicio.
+- [ ] `jdbc:oracle:oci:XE`
+  > OCI requiere bibliotecas nativas y no incluye host ni puerto en ese formato.
+
+Repasar: 3A §3, URL de conexión.
+</Quiz>
+
+<Quiz id="t3an-08" title="Credenciales fuera del código">
+Una empresa sube su código a un repositorio compartido. ¿Qué práctica del temario evita publicar la contraseña de la base de datos?
+
+- [ ] Escribirla en el código y no imprimirla nunca.
+  > Aunque no se imprima, quedaría en el repositorio.
+- [ ] Ponerla dentro de la URL de conexión.
+  > Sigue estando en el código o en la configuración que se sube.
+- [ ] Cifrarla con el driver JDBC.
+  > El driver no ofrece esa función; el problema es dónde se guarda.
+- [x] Configurar URL y credenciales fuera del código, por ejemplo en variables de entorno.
+  > Correcta: la clase `Conexion` del temario lee `DB_URL`, `DB_USER` y `DB_PASSWORD`.
+
+Repasar: 3A §3, dependencias y registro, y `Conexion.java`.
+</Quiz>
+
+<Quiz id="t3an-09" title="Quién hace cada cosa">
+¿Qué objeto JDBC crea las sentencias y delimita las transacciones?
+
+- [x] `Connection`.
+  > Correcta: representa la sesión con el motor y ofrece `prepareStatement`, `commit` y `rollback`.
+- [ ] `ResultSet`.
+  > Recorre las filas de un resultado; no crea sentencias.
+- [ ] `DatabaseMetaData`.
+  > Describe el motor y sus objetos; no ejecuta trabajo transaccional.
+- [ ] `ResultSetMetaData`.
+  > Describe las columnas de un resultado concreto.
+
+Repasar: 3A §4.
+</Quiz>
+
+<Quiz id="t3an-10" title="Afirmaciones sobre el cierre de recursos">
+Lee las afirmaciones:
+
+**I.** Un `ResultSet` deja de ser válido al cerrar la sentencia que lo produjo.
+
+**II.** `ResultSetMetaData` es un recurso independiente que hay que cerrar aparte.
+
+**III.** Se puede guardar un `ResultSet` y recorrerlo después de cerrar la conexión.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > II y III son falsas.
+- [ ] Solo I y III.
+  > III es falsa: el resultado depende de su conexión y su sentencia.
+- [x] Solo I.
+  > Correcta: `ResultSetMetaData` no se cierra aparte y un resultado no sobrevive al cierre de la conexión.
+- [ ] Ninguna.
+  > I es cierta: cerrar la sentencia invalida su resultado.
+
+Repasar: 3A §4.
+</Quiz>
+
+<Quiz id="t3an-11" title="Elegir el método de ejecución">
+Un programa debe dar de alta un pedido y saber cuántas filas se han insertado. ¿Qué método de ejecución corresponde?
+
+- [ ] `executeQuery()`, porque devuelve un `ResultSet`.
+  > Un INSERT no devuelve filas; `executeQuery` está pensado para consultas.
+- [x] `executeUpdate()`, que devuelve el número de filas afectadas.
+  > Correcta: INSERT, UPDATE y DELETE devuelven el recuento.
+- [ ] `execute()`, que devuelve `true` si la inserción fue bien.
+  > El booleano indica si el primer resultado es un `ResultSet`, no si hubo éxito.
+- [ ] `next()`, para avanzar a la fila insertada.
+  > `next()` es de `ResultSet`; no ejecuta sentencias.
+
+Repasar: 3A §5, elegir el método de ejecución.
+</Quiz>
+
+<Quiz id="t3an-12" title="El false de execute">
+Se ejecuta un UPDATE con `execute()` y devuelve `false`. ¿Qué significa?
+
+- [ ] Que la sentencia ha fallado.
+  > Un fallo se comunica normalmente con `SQLException`, no con `false`.
+- [ ] Que no se ha modificado ninguna fila.
+  > El número de filas se obtiene con `executeUpdate` o `getUpdateCount`; el booleano no lo indica.
+- [ ] Que la transacción se ha deshecho.
+  > `execute` no confirma ni deshace transacciones.
+- [x] Que el primer resultado no es un `ResultSet`.
+  > Correcta: es lo esperable para un UPDATE, aunque haya ido bien.
+
+Repasar: 3A §5, elegir el método de ejecución.
+</Quiz>
+
+<Quiz id="t3an-13" title="Buscador con datos del usuario">
+Una tienda online tiene un buscador en el que el cliente escribe el nombre de un producto. ¿Qué solución es segura frente a la inyección SQL?
+
+- [ ] Concatenar el texto en el SQL tras quitar los espacios.
+  > Quitar espacios no impide entradas como `' OR 1=1 --`.
+- [ ] Usar `Statement` y comprobar que el texto no está vacío.
+  > Un texto no vacío puede seguir cambiando la estructura de la consulta.
+- [x] `PreparedStatement` con `?` y el valor asignado con `setString`.
+  > Correcta: el valor se trata como dato y no altera la estructura del SQL.
+- [ ] Un `?` para el nombre de la tabla y otro para el valor.
+  > Los marcadores sustituyen valores, nunca nombres de tablas o columnas.
+
+Repasar: 3A §5.
+</Quiz>
+
+<Quiz id="t3an-14" title="Afirmaciones sobre parámetros y resultados">
+Lee las afirmaciones:
+
+**I.** El primer `?` de una sentencia preparada tiene el índice 0.
+
+**II.** El cursor de un `ResultSet` empieza en la primera fila.
+
+**III.** `getInt()` devuelve `null` cuando la columna es NULL.
+
+¿Cuáles son correctas?
+
+- [ ] Solo I.
+  > Los parámetros empiezan en 1.
+- [ ] Solo II y III.
+  > El cursor empieza antes de la primera fila y `getInt` devuelve 0 para un NULL.
+- [ ] Todas: I, II y III.
+  > Las tres contienen un error frecuente.
+- [x] Ninguna.
+  > Correcta: parámetros desde 1, cursor antes de la primera fila y `getInt` da 0 (se comprueba con `wasNull`).
+
+Repasar: 3A §5, recorrer los resultados.
+</Quiz>
+
+<Quiz id="t3an-15" title="Importes sin errores de redondeo">
+Una gestoría calcula nóminas y necesita importes exactos, sin el error binario de los decimales en coma flotante. ¿Qué método de lectura recomienda el temario?
+
+- [ ] `getDouble()`.
+  > `double` arrastra errores binarios con importes decimales.
+- [ ] `getInt()`.
+  > Perdería los céntimos.
+- [x] `getBigDecimal()`.
+  > Correcta: trabaja con importes decimales exactos.
+- [ ] `getString()` y sumar los textos.
+  > Concatenar textos no es una operación aritmética.
+
+Repasar: 3A §5, recorrer los resultados.
+</Quiz>
+
+<Quiz id="t3an-16" title="Documentar una base desconocida">
+Una consultora recibe una base de datos sin documentación y quiere listar sus tablas, sus columnas y sus claves primarias desde Java. ¿Qué objeto debe usar?
+
+- [ ] `ResultSetMetaData`, obtenido de un SELECT de cada tabla.
+  > Describe solo las columnas de un resultado; no lista tablas ni claves.
+- [x] `DatabaseMetaData`, obtenido con `getMetaData()` de la conexión.
+  > Correcta: `getTables`, `getColumns` y `getPrimaryKeys` describen la base completa.
+- [ ] `Statement`, con la orden `.tables`.
+  > `.tables` es una orden de la consola sqlite3, no SQL que se envíe por JDBC.
+- [ ] `CallableStatement`, llamando a un procedimiento del sistema.
+  > No es lo que propone el temario y depende del motor.
+
+Repasar: 3A §6.
+</Quiz>
+
+<Quiz id="t3an-17" title="Transferencia entre cuentas">
+Un banco resta 100 € de una cuenta y los suma a otra. Si la segunda operación falla, la primera no puede quedar aplicada. ¿Qué propiedad ACID lo garantiza?
+
+- [x] Atomicidad.
+  > Correcta: se confirman todos los cambios o se deshacen todos.
+- [ ] Consistencia.
+  > Se refiere a respetar restricciones y reglas al completar la transacción.
+- [ ] Aislamiento.
+  > Regula cómo interactúan transacciones concurrentes.
+- [ ] Durabilidad.
+  > Garantiza que lo confirmado persiste; no deshace un cambio a medias.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3an-18" title="Afirmaciones sobre transacciones">
+Lee las afirmaciones:
+
+**I.** Una conexión nueva suele tener el autocommit activado.
+
+**II.** Un UPDATE que no encuentra filas lanza siempre una excepción.
+
+**III.** Un `Savepoint` permite deshacer parte de una transacción, pero no sustituye al `commit` final.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > II es falsa: el UPDATE devuelve 0 y no lanza excepción.
+- [x] Solo I y III.
+  > Correcta: por eso los ejercicios comprueban que cada UPDATE afecte a una fila.
+- [ ] Solo II y III.
+  > II es falsa e I es cierta.
+- [ ] Solo III.
+  > I también es cierta.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3an-19" title="Navegar por un listado">
+Una aplicación muestra empleados y el usuario puede pulsar «anterior», «siguiente» y «ir al último». ¿Qué resultado necesita?
+
+- [ ] `TYPE_FORWARD_ONLY`, el tipo por defecto.
+  > Solo avanza: no permite `previous()` ni `last()`.
+- [ ] `CONCUR_UPDATABLE`, para poder moverse.
+  > La concurrencia decide si se puede modificar, no si se puede retroceder.
+- [ ] `CONCUR_READ_ONLY`, porque no se modifica nada.
+  > Es correcto que no se modifica, pero no da movimiento hacia atrás.
+- [x] Un tipo desplazable, como `TYPE_SCROLL_INSENSITIVE`.
+  > Correcta: permite `previous()`, `last()` o `absolute(n)` si el driver lo admite.
+
+Repasar: 3A §10, tipo y concurrencia.
+</Quiz>
+
+<Quiz id="t3an-20" title="Parámetros de un procedimiento">
+Un procedimiento recibe un código de cliente y devuelve su saldo en un parámetro de salida. ¿Qué orden de pasos es correcto con `CallableStatement`?
+
+- [ ] Ejecutar, registrar el OUT y leerlo.
+  > El parámetro OUT debe registrarse antes de ejecutar.
+- [x] Asignar el IN con `setXxx`, registrar el OUT, ejecutar y leer el OUT con `getXxx`.
+  > Correcta: `registerOutParameter` va antes de `execute()`.
+- [ ] Registrar el IN con `registerOutParameter` y leerlo con `getXxx`.
+  > Los IN se asignan con `setXxx`; `registerOutParameter` es para los de salida.
+- [ ] Pasar el SQL de nuevo a `execute(sql)` para obtener el saldo.
+  > Una llamada preparada se ejecuta con `execute()` sin volver a pasar SQL.
+
+Repasar: 3A §8.
+</Quiz>
+
+<QuizResults />

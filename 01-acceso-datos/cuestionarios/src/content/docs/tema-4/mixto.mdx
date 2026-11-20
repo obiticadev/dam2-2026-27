@@ -1,0 +1,424 @@
+---
+title: "Tema 4 · Mixto · Normal"
+description: "20 preguntas originales: 10 de ORM e Hibernate (4A–4B) y 10 de HQL (4C), con y sin código."
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas originales · 10 de 4A–4B y 10 de 4C · cuatro opciones · una correcta.** Mezcla situaciones, afirmaciones I/II/III y fragmentos de código. El reparto 10/10 es de práctica, no una ponderación oficial.
+
+Hibernate 5.4.33 con `javax.persistence`. Se omiten imports. `s` es una `Session` abierta dentro de una transacción, salvo que el fragmento muestre otra cosa. En las preguntas de HQL hay tres profesores (1 Ana, 2 Ana, 3 Luis) y tres ciclos: DAM 2000 horas con Ana (1), SMR 1000 con Luis y ASIR 1400 sin profesor. Cada pregunta es independiente.
+
+<Quiz id="t4mn-01" title="Arranque con JPA estándar">
+Un proyecto nuevo no quiere depender de la API propia de Hibernate y se configura con `META-INF/persistence.xml`. ¿Con qué objetos trabaja?
+
+- [ ] `SessionFactory` y `Session`.
+  > Son el arranque de Hibernate nativo con `hibernate.cfg.xml`.
+- [x] `EntityManagerFactory` y `EntityManager`.
+  > Correcta: es el arranque JPA estándar con una unidad de persistencia, y puede usar Hibernate como proveedor.
+- [ ] `DriverManager` y `Connection`.
+  > Es JDBC, sin mapeo de entidades.
+- [ ] Los dos archivos, que siempre deben ir duplicados.
+  > No son dos archivos que haya que duplicar obligatoriamente.
+
+Repasar: 4A §3.
+</Quiz>
+
+<Quiz id="t4mn-02" title="Cuándo cerrar la fábrica">
+¿Cuándo hay que llamar a `shutdown()`?
+
+```java
+public final class HibernateUtils {
+    private static final SessionFactory FACTORY =
+            new Configuration().configure().buildSessionFactory();
+    public static SessionFactory getSessionFactory() { return FACTORY; }
+    public static void shutdown() { FACTORY.close(); }
+}
+```
+
+- [ ] Después de cada operación CRUD.
+  > La fábrica se reutiliza durante toda la aplicación.
+- [ ] Antes de abrir cada sesión.
+  > Sin fábrica no se pueden abrir sesiones.
+- [x] Una sola vez, al terminar toda la aplicación.
+  > Correcta: es lo que indica el comentario del temario.
+- [ ] Nunca: la fábrica se cierra sola con cada `Session`.
+  > Cerrar una sesión no cierra la fábrica.
+
+Repasar: 4B §4 y §5.
+</Quiz>
+
+<Quiz id="t4mn-03" title="Afirmaciones sobre las cascadas">
+Lee las afirmaciones:
+
+**I.** `PERSIST` propaga hacer persistente una entidad nueva.
+
+**II.** `MERGE` propaga la copia del estado a una instancia gestionada.
+
+**III.** `DETACH` propaga la separación del contexto.
+
+¿Cuáles son correctas?
+
+- [ ] Solo I.
+  > II y III también son ciertas.
+- [ ] Solo I y II.
+  > III también es cierta.
+- [x] Todas: I, II y III.
+  > Correcta: `ALL` agrupa estas cascadas con `REMOVE` y `REFRESH`.
+- [ ] Ninguna.
+  > Las tres coinciden con la tabla del temario.
+
+Repasar: 4A §5.
+</Quiz>
+
+<Quiz id="t4mn-04" title="El lado inverso de un uno a uno">
+`Profesor.direccion` es el propietario de la relación. ¿Qué anotación lleva el lado de `Direccion`?
+
+```java
+@Entity
+public class Direccion {
+    @Id @GeneratedValue public Integer id;
+    // ?
+    public Profesor profesor;
+}
+```
+
+- [ ] `@OneToOne @JoinColumn(name = "profesor_id")`
+  > Crearía una segunda FK; solo un lado es propietario.
+- [ ] `@ManyToOne(mappedBy = "direccion")`
+  > No es una relación muchos a uno y `@ManyToOne` no admite `mappedBy`.
+- [ ] `@OneToOne(mappedBy = "profesor")`
+  > `mappedBy` apunta al atributo del propietario, que es `direccion`.
+- [x] `@OneToOne(mappedBy = "direccion")`
+  > Correcta: el inverso nombra el atributo del propietario.
+
+Repasar: 4A §4, uno a uno.
+</Quiz>
+
+<Quiz id="t4mn-05" title="Muchos a muchos con dos tablas intermedias">
+Las dos entidades declaran su propio `@JoinTable` para la misma relación. ¿Qué problema tiene?
+
+```java
+// En Profesor
+@ManyToMany @JoinTable(name = "profesor_modulo")
+public Set<Modulo> modulos;
+// En Modulo
+@ManyToMany @JoinTable(name = "modulo_profesor")
+public Set<Profesor> profesores;
+```
+
+- [x] Son dos relaciones independientes; un lado debe usar `mappedBy`.
+  > Correcta: solo un lado declara `@JoinTable` y el otro usa `mappedBy = "modulos"`.
+- [ ] Ninguno: las dos tablas se sincronizan solas.
+  > Hibernate no sincroniza dos relaciones distintas.
+- [ ] Falta `cascade = ALL` en los dos lados.
+  > Con módulos compartidos `ALL` es peligroso, y no resuelve el problema.
+- [ ] `Set` no se puede usar en muchos a muchos.
+  > Sí se puede.
+
+Repasar: 4A §4, muchos a muchos.
+</Quiz>
+
+<Quiz id="t4mn-06" title="Comprobar si existe">
+Antes de dar de alta un usuario, el programa quiere saber si ya hay uno con ese `seq`. ¿Qué método encaja?
+
+- [ ] `load`, porque es más rápido.
+  > Puede devolver un proxy y retrasar la detección de una fila inexistente.
+- [ ] `refresh`, para recargarlo.
+  > Necesita una instancia gestionada que ya exista.
+- [ ] `merge`, para crearlo si no existe.
+  > Copia estado; no responde si existe.
+- [x] `get`, que devuelve `null` si no existe.
+  > Correcta: permite comprobar `null` en el momento.
+
+Repasar: 4A §7.
+</Quiz>
+
+<Quiz id="t4mn-07" title="Dos objetos con el mismo ID">
+¿Qué ocurre en la última línea?
+
+```java
+Usuario u = s.get(Usuario.class, 5);
+Usuario otra = new Usuario(5, "otra");
+s.update(otra);
+```
+
+- [ ] Sustituye `u` por `otra` en la sesión.
+  > La sesión no admite dos instancias del mismo ID.
+- [x] Lanza `NonUniqueObjectException`.
+  > Correcta: hay que usar la entidad gestionada o `merge`, según el objetivo.
+- [ ] Actualiza la fila con el nombre `otra` sin problema.
+  > Ya hay otra instancia de ese ID asociada.
+- [ ] Inserta un usuario nuevo con `seq` 5.
+  > `update` no inserta.
+
+Repasar: 4A §8, errores frecuentes.
+</Quiz>
+
+<Quiz id="t4mn-08" title="Guardar una fotografía">
+La entidad `Empleado` debe guardar su fotografía (un `byte[]` grande) y un currículum muy largo en texto. ¿Qué anotación corresponde a esos campos?
+
+- [ ] `@Transient`
+  > No se guardarían.
+- [ ] `@Version`
+  > Es para el control de concurrencia.
+- [x] `@Lob`
+  > Correcta: mapea textos o binarios de gran tamaño, según el tipo Java.
+- [ ] `@Enumerated`
+  > Es para enums.
+
+Repasar: 4A §2.
+</Quiz>
+
+<Quiz id="t4mn-09" title="Afirmaciones sobre los errores frecuentes">
+Lee las afirmaciones:
+
+**I.** `NonUniqueResultException` aparece al pedir un resultado único de una consulta que devuelve varios.
+
+**II.** Una entidad no reconocida suele deberse a que falta registrar la clase.
+
+**III.** La carga diferida se resuelve bien dejando una sesión global abierta.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > III es falsa.
+- [x] Solo I y II.
+  > Correcta: lo necesario se carga dentro de la unidad de trabajo, no con una sesión global.
+- [ ] Solo II y III.
+  > III es falsa e I es cierta.
+- [ ] Solo I.
+  > II también es cierta.
+
+Repasar: 4A §8.
+</Quiz>
+
+<Quiz id="t4mn-10" title="Pasar el proyecto a SQLite">
+Con Hibernate 5.4, ¿qué hace falta para que el proyecto use SQLite?
+
+- [ ] Solo cambiar la URL a `jdbc:sqlite:`.
+  > También hace falta el dialecto.
+- [ ] El dialecto `MySQL8Dialect`, porque SQLite es compatible.
+  > Son motores distintos.
+- [x] `sqlite-jdbc` y un dialecto externo, como `org.sqlite.hibernate.dialect.SQLiteDialect`.
+  > Correcta: Hibernate 5.4 no incluye dialecto para SQLite.
+- [ ] Nada: SQLite no necesita driver porque es embebido.
+  > El driver JDBC es necesario igualmente.
+
+Repasar: 4B §6, SQLite.
+</Quiz>
+
+<Quiz id="t4mn-11" title="Declarar dos consultas nombradas">
+¿Qué declaración es correcta?
+
+```java
+// A
+@NamedQueries({
+    @NamedQuery(name = "Profesores.findAll", query = "select p from Profesor p"),
+    @NamedQuery(name = "Profesores.ByName",
+                query = "select p from Profesor p where p.nombre = :nombre")
+})
+// B
+@NamedQueries({
+    @NamedQuery(name = "Profesores.findAll", query = "select p from Profesor p")
+    @NamedQuery(name = "Profesores.ByName",
+                query = "select p from Profesor p where p.nombre = :nombre")
+})
+```
+
+- [ ] B, porque las anotaciones no llevan comas.
+  > Dentro de un array de anotaciones los elementos se separan con comas.
+- [x] A
+  > Correcta: varias `@NamedQuery` en `@NamedQueries` van separadas por comas.
+- [ ] Las dos.
+  > B no compila.
+- [ ] Ninguna: solo se permite una consulta nombrada por entidad.
+  > `@NamedQueries` existe para declarar varias.
+
+Repasar: 4C §5.
+</Quiz>
+
+<Quiz id="t4mn-12" title="Buscar por inicial">
+¿Cuántos profesores devuelve?
+
+```java
+s.createQuery("select p from Profesor p where p.nombre like :patron", Profesor.class)
+ .setParameter("patron", "A%")
+ .list().size();
+```
+
+- [ ] 0, porque `%` no se admite en un parámetro.
+  > El comodín forma parte del valor del parámetro.
+- [ ] 1
+  > Hay dos profesores que empiezan por A.
+- [ ] 3
+  > Luis no empieza por A.
+- [x] 2
+  > Correcta: las dos Ana.
+
+Repasar: 4C §2.
+</Quiz>
+
+<Quiz id="t4mn-13" title="Solo los nombres">
+Un desplegable necesita únicamente los nombres de los profesores, sin cargar las entidades completas. ¿Qué consulta y tipo corresponden?
+
+- [ ] `select p from Profesor p` → `List<Profesor>`, y después leer el nombre.
+  > Funciona, pero carga entidades completas, justo lo que se quería evitar.
+- [ ] `select p.nombre from Profesor p` → `List<Object[]>`.
+  > Una sola columna es un escalar, no una tupla.
+- [x] `select p.nombre from Profesor p` → `List<String>`.
+  > Correcta: una proyección de un atributo devuelve escalares.
+- [ ] `select nombre from profesores` → `List<String>`.
+  > Usa la tabla, no la entidad.
+
+Repasar: 4C §4.
+</Quiz>
+
+<Quiz id="t4mn-14" title="El nombre de la consulta nombrada">
+¿Qué problema tiene?
+
+```java
+s.createNamedQuery(Profesores.ByName, Profesor.class)
+ .setParameter("nombre", "Ana")
+ .list();
+```
+
+- [ ] Falta `setString` en lugar de `setParameter`.
+  > `setParameter` es el patrón moderno.
+- [ ] El tipo debe ser `Object[].class`.
+  > Devuelve entidades `Profesor`.
+- [ ] Debe usarse `createQuery` con el nombre.
+  > Las consultas nombradas se obtienen con `createNamedQuery`.
+- [x] El nombre va sin comillas; debe ser `"Profesores.ByName"`.
+  > Correcta: se obtiene por su nombre como cadena.
+
+Repasar: 4C §5.
+</Quiz>
+
+<Quiz id="t4mn-15" title="Afirmaciones sobre los valores en HQL">
+Lee las afirmaciones:
+
+**I.** Que dos textos con distinta capitalización den el mismo resultado depende del motor y la colación.
+
+**II.** Una cadena con una fecha es siempre una comparación temporal portable.
+
+**III.** Los parámetros deben tener el tipo del atributo: enteros, `BigDecimal` o tipos temporales compatibles.
+
+¿Cuáles son correctas?
+
+- [x] Solo I y III.
+  > Correcta: no se asume que una cadena de fecha compare como fecha.
+- [ ] Todas: I, II y III.
+  > II es falsa.
+- [ ] Solo II.
+  > II es la única falsa.
+- [ ] Solo III.
+  > I también es cierta.
+
+Repasar: 4C §2.
+</Quiz>
+
+<Quiz id="t4mn-16" title="Un orden que no basta">
+Se pagina así con los datos de partida. ¿Qué problema tiene?
+
+```java
+s.createQuery("select p from Profesor p order by p.nombre", Profesor.class)
+ .setFirstResult(pagina * 1)
+ .setMaxResults(1)
+ .list();
+```
+
+- [ ] Ninguno: ya está ordenado.
+  > Las dos Ana empatan y su orden no está garantizado.
+- [ ] `setFirstResult` debe ir después de `list()`.
+  > Se aplica antes de ejecutar.
+- [x] No es estable: hace falta un desempate, como `order by p.nombre, p.id`.
+  > Correcta: con empates una misma Ana podría salir en dos páginas.
+- [ ] HQL no permite ordenar al paginar.
+  > Ordenar es precisamente lo que se pide.
+
+Repasar: 4C §4, paginación estable.
+</Quiz>
+
+<Quiz id="t4mn-17" title="Join fetch con una asociación vacía">
+¿Cuántos ciclos devuelve?
+
+```java
+s.createQuery("select c from Ciclo c join fetch c.profesor", Ciclo.class)
+ .list().size();
+```
+
+- [ ] 3, porque `fetch` solo cambia la carga.
+  > También es una unión interna: ASIR no tiene profesor.
+- [ ] 0, porque `fetch` no devuelve ciclos.
+  > Devuelve ciclos con su profesor ya cargado.
+- [ ] 6, uno por cada profesor y ciclo.
+  > No es un producto cartesiano.
+- [x] 2
+  > Correcta: para conservar ASIR haría falta `left join fetch`.
+
+Repasar: 4C §3.
+</Quiz>
+
+<Quiz id="t4mn-18" title="Varias estadísticas a la vez">
+Un informe necesita en una sola consulta la media, la suma, el mínimo, el máximo y el número de ciclos. ¿Qué tipo de resultado se usa?
+
+- [ ] `List<Ciclo>`
+  > No se seleccionan entidades.
+- [x] `List<Object[]>`, con una tupla de cinco valores.
+  > Correcta: como el método `estadisticas` del temario.
+- [ ] `List<Double>`
+  > Hay varias columnas y no todas son `Double`.
+- [ ] `Long`
+  > Solo el recuento es `Long`.
+
+Repasar: 4C §3 y §4.
+</Quiz>
+
+<Quiz id="t4mn-19" title="Cambios después de clear">
+¿Qué nombre queda para el profesor 1, que era `Ana`?
+
+```java
+Transaction tx = s.beginTransaction();
+Profesor p = s.get(Profesor.class, 1);
+s.createQuery("update Profesor p set p.nombre = 'X' where p.id = -1").executeUpdate();
+s.clear();
+p.nombre = "Cambiado";
+tx.commit();
+```
+
+- [ ] `Cambiado`, porque `p` se cargó en esta sesión.
+  > `clear()` desconecta todas las entidades del contexto.
+- [ ] `X`, por el UPDATE masivo.
+  > El UPDATE no afecta a ninguna fila (`id = -1`).
+- [x] `Ana`
+  > Correcta: tras `clear`, `p` está separada y su cambio no se envía.
+- [ ] Lanza excepción al modificar `p`.
+  > Se puede modificar; simplemente no se sincroniza.
+
+Repasar: 4C §6, contexto de persistencia.
+</Quiz>
+
+<Quiz id="t4mn-20" title="Un intento de inyección">
+¿Cuántos profesores devuelve?
+
+```java
+String entrada = "x' or '1'='1";
+s.createQuery("select p from Profesor p where p.nombre = :n", Profesor.class)
+ .setParameter("n", entrada)
+ .list().size();
+```
+
+- [ ] 3: la condición pasa a ser siempre verdadera.
+  > Con un parámetro, el texto no cambia la consulta.
+- [ ] Lanza un error de sintaxis.
+  > Los apóstrofos del parámetro son datos.
+- [x] 0
+  > Correcta: busca un profesor que se llame literalmente así.
+- [ ] 1
+  > Nadie se llama así.
+
+Repasar: 4C §2 y §7.
+</Quiz>
+
+<QuizResults />

@@ -1,0 +1,360 @@
+---
+title: "3B · Sin código · Normal"
+description: "20 decisiones sobre motores embebidos, consola, tipos, restricciones, identificadores y transacciones en SQLite."
+sidebar:
+  order: 1
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Sin fragmentos de código. Situaciones en las que hay que elegir entre un servidor y un motor embebido, afirmaciones I/II/III y matices de SQLite que lo diferencian de MySQL u Oracle.
+
+<Quiz id="t3bn-01" title="Una app sin conexión">
+Una empresa de reparto quiere una app para las tabletas de sus repartidores. Debe guardar entregas aunque no haya cobertura y no se quiere administrar ningún servidor en el dispositivo. ¿Qué conviene?
+
+- [ ] MySQL instalado en cada tableta.
+  > Exige instalar y administrar un servidor, justo lo que se quiere evitar.
+- [x] SQLite, un motor embebido en la propia aplicación.
+  > Correcta: funciona sin red, sin servidor y con pocos recursos de administración.
+- [ ] Oracle accedido por red desde la tableta.
+  > Sin cobertura no hay red para llegar al servidor.
+- [ ] Un driver JDBC tipo 3 con middleware.
+  > Añade un servidor intermedio y sigue necesitando red.
+
+Repasar: 3B §1 y §2.
+</Quiz>
+
+<Quiz id="t3bn-02" title="Muchos usuarios escribiendo a la vez">
+Una cadena de tiendas tiene 300 cajas que registran ventas al mismo tiempo en una base central, con usuarios y permisos distintos. ¿Qué conviene?
+
+- [ ] SQLite, porque es ACID.
+  > Es ACID, pero serializa las escrituras y no gestiona cuentas de usuario como un servidor.
+- [ ] SQLite con WAL, que permite varios escritores simultáneos.
+  > WAL mejora la convivencia de lectores y un escritor; no permite varios escritores a la vez.
+- [x] Un servidor como MySQL, PostgreSQL u Oracle.
+  > Correcta: centraliza datos, gestiona permisos y atiende muchos clientes concurrentes.
+- [ ] Un fichero de texto compartido por red.
+  > No ofrece transacciones ni control de concurrencia.
+
+Repasar: 3B §1 y §2.
+</Quiz>
+
+<Quiz id="t3bn-03" title="Afirmaciones sobre los motores embebidos">
+Lee las afirmaciones:
+
+**I.** En un motor embebido, el motor se ejecuta dentro del proceso de la aplicación.
+
+**II.** «Embebida» significa que los datos nunca se pueden compartir con otra aplicación.
+
+**III.** En SQLite, la protección básica depende del acceso al archivo y de la aplicación.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > II es falsa: significa que no hace falta un servidor independiente.
+- [ ] Solo II y III.
+  > II es falsa e I es cierta.
+- [ ] Solo I.
+  > III también es cierta: SQLite no gestiona cuentas de usuario.
+- [x] Solo I y III.
+  > Correcta: embebido no impide compartir información; solo prescinde del servidor.
+
+Repasar: 3B §1.
+</Quiz>
+
+<Quiz id="t3bn-04" title="Dónde viven los datos">
+Una aplicación de escritorio usa SQLite con una base persistente. ¿Dónde se guardan normalmente los datos?
+
+- [x] En un archivo; durante el trabajo pueden aparecer archivos auxiliares de diario o WAL.
+  > Correcta: la base persistente es normalmente un archivo portable entre plataformas.
+- [ ] En un servicio que escucha en el puerto 3306.
+  > Ese es el puerto habitual de MySQL; SQLite no abre puertos.
+- [ ] Solo en memoria; se pierden al cerrar la aplicación.
+  > Eso pasa con `jdbc:sqlite::memory:`, no con una base persistente.
+- [ ] En el registro del sistema operativo.
+  > SQLite guarda la base en su propio archivo.
+
+Repasar: 3B §2.
+</Quiz>
+
+<Quiz id="t3bn-05" title="Afirmaciones sobre la versión de SQLite">
+Lee las afirmaciones sobre una versión actual de SQLite:
+
+**I.** Solo admite LEFT JOIN.
+
+**II.** No tiene procedimientos almacenados al estilo de MySQL u Oracle.
+
+**III.** Su ALTER TABLE es más limitado que el de otros motores.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > I es falsa desde la 3.39.0, que añadió RIGHT y FULL OUTER JOIN.
+- [x] Solo II y III.
+  > Correcta: el temario corrige la idea antigua de «solo LEFT JOIN».
+- [ ] Solo I y II.
+  > I es falsa y III es cierta.
+- [ ] Solo II.
+  > III también es cierta.
+
+Repasar: 3B §2.
+</Quiz>
+
+<Quiz id="t3bn-06" title="Una ruta mal escrita">
+Al abrir `sqlite3 ventsa.db` (en lugar de `ventas.db`) la consola no da error y `.tables` no muestra nada. ¿Qué ha pasado?
+
+- [ ] La base `ventas.db` se ha vaciado.
+  > No se ha abierto `ventas.db`, así que no se ha tocado.
+- [ ] Falta arrancar el servidor de SQLite.
+  > SQLite no tiene servidor que arrancar.
+- [x] SQLite ha abierto una base nueva y vacía con ese nombre.
+  > Correcta: si el archivo no existe, puede crearlo; un error en la ruta crea una base vacía en otro lugar.
+- [ ] `.tables` necesita `;` al final.
+  > Las órdenes de punto no llevan punto y coma.
+
+Repasar: 3B §3.
+</Quiz>
+
+<Quiz id="t3bn-07" title="Ver cómo está creada una tabla">
+En la consola sqlite3 quieres ver la sentencia CREATE con la que se definió la tabla `contacts`. ¿Qué orden usas?
+
+- [ ] `.tables contacts`
+  > `.tables` lista nombres, no muestra la definición.
+- [ ] `DESCRIBE contacts;`
+  > Es una orden de MySQL, no de SQLite.
+- [ ] `.headers on`
+  > Solo añade los nombres de columna a la salida de las consultas.
+- [x] `.schema contacts`
+  > Correcta: muestra el SQL de definición del objeto indicado.
+
+Repasar: 3B §3.
+</Quiz>
+
+<Quiz id="t3bn-08" title="Afirmaciones sobre las órdenes de punto">
+Lee las afirmaciones sobre `.tables`, `.read` o `.mode column`:
+
+**I.** Son órdenes de la consola, no sentencias SQL.
+
+**II.** No llevan punto y coma.
+
+**III.** Se pueden enviar desde Java con `executeQuery`.
+
+¿Cuáles son correctas?
+
+- [x] Solo I y II.
+  > Correcta: las interpreta la consola sqlite3; el motor no las entiende por JDBC.
+- [ ] Todas: I, II y III.
+  > III es falsa: desde JDBC se usan SQL o los metadatos.
+- [ ] Solo I.
+  > II también es cierta.
+- [ ] Solo III.
+  > III es la única falsa.
+
+Repasar: 3B §3.
+</Quiz>
+
+<Quiz id="t3bn-09" title="Clases de almacenamiento">
+¿Cuál de estas **no** es una de las cinco clases de almacenamiento de SQLite?
+
+- [ ] `TEXT`
+  > Es una clase de almacenamiento.
+- [ ] `BLOB`
+  > Es una clase de almacenamiento.
+- [x] `NUMERIC`
+  > Correcta: es una afinidad de columna, no una sexta clase. Las clases son NULL, INTEGER, REAL, TEXT y BLOB.
+- [ ] `REAL`
+  > Es una clase de almacenamiento.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3bn-10" title="Guardar fechas y booleanos">
+Un programa de reservas necesita guardar en SQLite si una reserva está pagada y en qué fecha se hizo. ¿Qué es correcto?
+
+- [ ] Usar las clases BOOLEAN y DATE de SQLite.
+  > No hay clases de almacenamiento exclusivas para booleanos ni fechas.
+- [x] Booleano como 0/1 y fecha con una convención coherente, como texto ISO.
+  > Correcta: también valen números julianos o marcas de tiempo, siempre con la misma convención.
+- [ ] Guardar la fecha como texto libre, cada uno en su formato.
+  > Sin una convención coherente no se puede ordenar ni comparar bien.
+- [ ] Declarar la columna DATE para que SQLite rechace textos inválidos.
+  > En tablas ordinarias el tipo declarado no siempre impide guardar otras clases.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3bn-11" title="Correo único pero opcional">
+En una tabla de clientes, el correo es opcional, pero si se indica no puede repetirse. ¿Qué cumple el requisito en SQLite?
+
+- [ ] `email TEXT NOT NULL UNIQUE`
+  > NOT NULL lo haría obligatorio.
+- [x] `email TEXT UNIQUE`
+  > Correcta: SQLite permite varios NULL en una restricción UNIQUE y rechaza los valores repetidos.
+- [ ] `email TEXT PRIMARY KEY`
+  > Usarlo como clave identificaría al cliente, que no es lo pedido.
+- [ ] `email TEXT DEFAULT ''`
+  > No impide repetidos; varios clientes acabarían con la cadena vacía.
+
+Repasar: 3B §5, qué garantiza cada restricción.
+</Quiz>
+
+<Quiz id="t3bn-12" title="Afirmaciones sobre restricciones">
+Lee las afirmaciones:
+
+**I.** NOT NULL impide guardar una cadena vacía.
+
+**II.** DEFAULT sustituye un NULL indicado explícitamente en el INSERT.
+
+**III.** Las claves foráneas se comprueban siempre, sin configurar nada.
+
+¿Cuáles son correctas?
+
+- [ ] Solo I.
+  > NOT NULL exige un valor, pero `''` es un valor.
+- [ ] Solo I y III.
+  > III es falsa: hay que activar `PRAGMA foreign_keys` en cada conexión.
+- [x] Ninguna.
+  > Correcta: `''` no es NULL, DEFAULT solo actúa si se omite la columna y las FK se activan por conexión.
+- [ ] Todas: I, II y III.
+  > Las tres son errores habituales.
+
+Repasar: 3B §5, qué garantiza cada restricción.
+</Quiz>
+
+<Quiz id="t3bn-13" title="Alumnos y asignaturas">
+Un instituto quiere registrar qué alumnos están matriculados en qué asignaturas, sin repetir una misma matrícula. ¿Qué diseño corresponde?
+
+- [ ] Una columna `asignaturas` con los nombres separados por comas.
+  > No permite FK ni impide repetir matrículas.
+- [ ] Una FK de alumnos a asignaturas.
+  > Solo permitiría una asignatura por alumno.
+- [ ] Una sola tabla con todas las columnas de alumno y asignatura.
+  > Repetiría los datos y no resuelve la relación muchos a muchos.
+- [x] Una tabla intermedia con dos FK y una PK compuesta por ambas.
+  > Correcta: como `contact_groups`; la PK compuesta impide repetir la misma pertenencia.
+
+Repasar: 3B §5, contactos y grupos.
+</Quiz>
+
+<Quiz id="t3bn-14" title="Al menos un grupo">
+Con el esquema de contactos y grupos del temario, el negocio exige que **cada contacto pertenezca al menos a un grupo**. ¿Qué es cierto?
+
+- [ ] Las dos FK de `contact_groups` ya lo garantizan.
+  > Garantizan que los contactos y grupos referenciados existan, no que haya al menos una pertenencia.
+- [ ] La PK compuesta lo garantiza.
+  > Impide pertenencias repetidas, no la ausencia de pertenencias.
+- [x] La aplicación debe comprobarlo dentro de su transacción o con una estrategia adicional.
+  > Correcta: la estructura admite contactos sin grupos.
+- [ ] Basta con `ON DELETE CASCADE`.
+  > Propaga borrados; no obliga a crear pertenencias.
+
+Repasar: 3B §5, regla de negocio.
+</Quiz>
+
+<Quiz id="t3bn-15" title="Un identificador sin escribirlo">
+La tabla tiene `id INTEGER PRIMARY KEY` y el INSERT no indica el `id`. ¿Qué ocurre?
+
+- [ ] Falla, porque la PK es obligatoria.
+  > Esa columna es alias de `rowid` y SQLite le asigna un valor.
+- [ ] Hay que declarar AUTOINCREMENT para que se asigne un valor.
+  > No es necesario: AUTOINCREMENT solo cambia la reutilización de valores.
+- [x] SQLite asigna un valor nuevo, porque la columna es alias de `rowid`.
+  > Correcta: `rowid` es un entero con signo de 64 bits.
+- [ ] Se guarda NULL como identificador.
+  > Con `INTEGER PRIMARY KEY` se asigna un entero.
+
+Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
+</Quiz>
+
+<Quiz id="t3bn-16" title="Afirmaciones sobre AUTOINCREMENT">
+Lee las afirmaciones:
+
+**I.** AUTOINCREMENT evita reutilizar identificadores ya usados, con un coste añadido.
+
+**II.** Sin AUTOINCREMENT se pueden reutilizar algunos valores eliminados.
+
+**III.** Con AUTOINCREMENT los números son siempre consecutivos, sin huecos.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > III es falsa: no se debe suponer que sean consecutivos.
+- [ ] Solo III.
+  > III es la única falsa.
+- [ ] Solo I.
+  > II también es cierta.
+- [x] Solo I y II.
+  > Correcta: puede haber huecos aunque se use AUTOINCREMENT.
+
+Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
+</Quiz>
+
+<Quiz id="t3bn-17" title="Borrar un grupo de proveedores">
+Al borrar un grupo de proveedores, sus proveedores deben quedarse **sin grupo**, no borrarse. ¿Qué acción y requisito corresponden?
+
+- [ ] CASCADE; ningún requisito.
+  > CASCADE borraría también los proveedores.
+- [ ] RESTRICT; la FK con NOT NULL.
+  > RESTRICT impediría borrar el grupo mientras tenga proveedores.
+- [ ] SET DEFAULT; la FK sin valor por defecto.
+  > Sin DEFAULT no hay valor que aplicar y no es «sin grupo».
+- [x] SET NULL; la columna `group_id` debe admitir nulos.
+  > Correcta: en el ejemplo es `NOT NULL`, así que habría que cambiarlo.
+
+Repasar: 3B §6, acciones referenciales.
+</Quiz>
+
+<Quiz id="t3bn-18" title="Reservar la escritura desde el principio">
+Un proceso va a hacer varias escrituras y quiere asegurarse desde el inicio de que nadie más está escribiendo. ¿Qué inicio de transacción lo intenta?
+
+- [x] `BEGIN IMMEDIATE`
+  > Correcta: intenta adquirir el permiso de escritura al empezar y puede fallar si hay otro escritor.
+- [ ] `BEGIN DEFERRED`
+  > Retrasa la adquisición de bloqueos hasta que hacen falta.
+- [ ] `BEGIN INMEDIATE`
+  > La palabra correcta es IMMEDIATE.
+- [ ] `SAVEPOINT inicio`
+  > Marca un punto de retorno; no reserva la escritura.
+
+Repasar: 3B §7.
+</Quiz>
+
+<Quiz id="t3bn-19" title="Afirmaciones sobre los puntos de retorno">
+Lee las afirmaciones:
+
+**I.** `ROLLBACK TO SAVEPOINT` deshace lo posterior al punto, pero no termina la transacción.
+
+**II.** `RELEASE SAVEPOINT` libera el punto de retorno.
+
+**III.** Desde Java se recomienda mezclar BEGIN manuales con el control transaccional de `Connection`.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > III es falsa: en Java se usa `Connection` y no se mezcla con BEGIN sin necesidad.
+- [ ] Solo III.
+  > III es la única falsa.
+- [x] Solo I y II.
+  > Correcta: tras `ROLLBACK TO` todavía hace falta `COMMIT`.
+- [ ] Solo I.
+  > II también es cierta.
+
+Repasar: 3B §7.
+</Quiz>
+
+<Quiz id="t3bn-20" title="Una base temporal para pruebas">
+Un equipo quiere que cada prueba automática empiece con una base SQLite vacía que desaparezca al terminar, sin dejar archivos. ¿Qué URL JDBC usa?
+
+- [ ] `jdbc:sqlite:pruebas.db`
+  > Crearía un archivo persistente.
+- [ ] `jdbc:mysql://localhost/pruebas`
+  > Necesita un servidor MySQL y no es SQLite.
+- [ ] `jdbc:sqlite:` seguido de `.open`
+  > `.open` es una orden de la consola, no parte de la URL.
+- [x] `jdbc:sqlite::memory:`
+  > Correcta: base temporal en memoria, como la que usa la suite JDBC del temario.
+
+Repasar: 3B §8, acceso desde Java.
+</Quiz>
+
+<QuizResults />

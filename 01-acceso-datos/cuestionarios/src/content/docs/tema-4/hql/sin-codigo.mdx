@@ -1,0 +1,352 @@
+---
+title: "4C · Sin código · Normal"
+description: "20 decisiones sobre HQL: entidades y atributos, parámetros, agregados, uniones, resultados, paginación, consultas nombradas, DML masiva y Criteria."
+sidebar:
+  order: 1
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Sin fragmentos de código. HQL de Hibernate 5.4 sobre el modelo del temario: la entidad `Profesor` (tabla `profesores`) y `Ciclo`, que referencia a un `Profesor`. Hay situaciones de empresa, afirmaciones I/II/III y distractores cercanos.
+
+<Quiz id="t4hn-01" title="Qué consulta HQL">
+La entidad `Profesor` se guarda en la tabla `profesores`. ¿Qué nombra una consulta HQL?
+
+- [x] La entidad `Profesor` y sus atributos Java.
+  > Correcta: HQL consulta entidades y atributos, no tablas y columnas.
+- [ ] La tabla `profesores` y sus columnas.
+  > Eso sería SQL; en HQL `profesores` no está mapeado.
+- [ ] Cualquiera de los dos, Hibernate los traduce.
+  > Solo reconoce los nombres de las entidades mapeadas.
+- [ ] El nombre del archivo `Profesor.java`.
+  > Se usa el nombre de la entidad, no el del archivo.
+
+Repasar: 4C §1.
+</Quiz>
+
+<Quiz id="t4hn-02" title="Afirmaciones sobre los nombres">
+Lee las afirmaciones:
+
+**I.** `Profesor`, `Profesores` y `profesor` son intercambiables en una consulta HQL.
+
+**II.** Un bloque HQL se puede pegar tal cual en la consola de MySQL.
+
+**III.** Los atributos de la consulta deben coincidir con los de la clase Java.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > I y II son falsas.
+- [ ] Solo I y III.
+  > I es falsa salvo que haya un mapeo explícito.
+- [x] Solo III.
+  > Correcta: HQL se envía a Hibernate y usa los nombres exactos de entidades y atributos.
+- [ ] Ninguna.
+  > III es cierta.
+
+Repasar: 4C §1.
+</Quiz>
+
+<Quiz id="t4hn-03" title="Buscar con lo que escribe el usuario">
+Un formulario busca profesores por nombre y apellidos. ¿Qué es seguro en HQL?
+
+- [ ] Concatenar los textos, porque HQL no tiene inyección.
+  > También se puede alterar una consulta HQL concatenada.
+- [ ] Concatenar los textos después de quitar los apóstrofos.
+  > Quitar apóstrofos cambia los datos y no es una protección completa.
+- [ ] Usar `?` sin número, como en los ejemplos antiguos.
+  > Los posicionales modernos llevan ordinal, como `?1`.
+- [x] Parámetros con nombre, como `:nombre`, enlazados con `setParameter`.
+  > Correcta: los valores, incluso con apóstrofos, se tratan como datos.
+
+Repasar: 4C §2.
+</Quiz>
+
+<Quiz id="t4hn-04" title="Enlazar un parámetro con nombre">
+La consulta tiene `:ape1`. ¿Cómo se le da valor?
+
+- [ ] `setParameter(1, "Lopez")`
+  > Un marcador con nombre no se enlaza por índice.
+- [x] `setParameter("ape1", "Lopez")`
+  > Correcta: por nombre y sin los dos puntos.
+- [ ] `setString(":ape1", "Lopez")`
+  > `setString` no es el patrón moderno y el nombre va sin dos puntos.
+- [ ] `setParameter("?1", "Lopez")`
+  > `?1` sería un posicional, no el marcador `:ape1`.
+
+Repasar: 4C §2.
+</Quiz>
+
+<Quiz id="t4hn-05" title="Ciclos sin profesor">
+Hay que listar los ciclos que todavía no tienen profesor asignado. ¿Qué condición recomienda el temario?
+
+- [ ] `c.profesor = :p` con `setParameter("p", null)`.
+  > Comparar con un parámetro nulo no encuentra nada.
+- [ ] `c.profesor = 0`
+  > El ID 0 no significa «sin profesor».
+- [x] `c.profesor is null`
+  > Correcta: para un nulo no se usa `= NULL`.
+- [ ] `c.profesor = ''`
+  > Una cadena vacía no es una referencia nula.
+
+Repasar: 4C §2.
+</Quiz>
+
+<Quiz id="t4hn-06" title="El tipo de un recuento">
+¿Qué tipo Java devuelve normalmente `select count(p) from Profesor p`?
+
+- [ ] `Integer`
+  > Pedir `Integer.class` en una consulta tipada falla por tipo incompatible.
+- [ ] `Double`
+  > Es el habitual de `avg`.
+- [ ] `int`
+  > Las consultas devuelven objetos, no primitivos.
+- [x] `Long`
+  > Correcta: el temario mantiene el recuento como `long`.
+
+Repasar: 4C §3 y §4.
+</Quiz>
+
+<Quiz id="t4hn-07" title="Nombres repetidos">
+Secretaría quiere saber qué nombres de profesor aparecen más de una vez y cuántas veces. ¿Qué estructura de consulta corresponde?
+
+- [ ] `where count(p) > 1`
+  > WHERE filtra filas antes de agrupar; no admite agregados.
+- [x] `group by p.nombre` y `having count(p) > 1`
+  > Correcta: HAVING filtra los grupos después de agrupar.
+- [ ] `order by count(p)`
+  > Ordena, pero no filtra los nombres repetidos.
+- [ ] `select distinct p.nombre`
+  > Quita los repetidos, justo lo contrario de lo que se busca.
+
+Repasar: 4C §3.
+</Quiz>
+
+<Quiz id="t4hn-08" title="Ciclos con más horas que la media">
+¿Qué recurso de HQL permite comparar cada ciclo con la media de horas de todos?
+
+- [ ] Un `join` de `Ciclo` consigo mismo sin condición.
+  > Un producto cartesiano no es una relación ni calcula la media.
+- [ ] `having avg(c.horas)` sin `group by`.
+  > No compara cada ciclo con la media global.
+- [ ] `setMaxResults` con la media.
+  > Limita el número de resultados, no filtra por horas.
+- [x] Una subconsulta: `where c.horas > (select avg(c2.horas) from Ciclo c2)`.
+  > Correcta: la consulta anidada calcula la media de todos.
+
+Repasar: 4C §3.
+</Quiz>
+
+<Quiz id="t4hn-09" title="Unir ciclos y profesores">
+Cada `Ciclo` tiene el atributo `profesor`, y `Profesor` no tiene un atributo `ciclo`. ¿Cómo se unen en HQL?
+
+- [ ] `from Ciclo c join Profesor p on`, con el ON vacío.
+  > Un ON vacío no es válido ni describe la relación.
+- [ ] `join p.ciclo`
+  > Ese atributo no existe en el modelo.
+- [x] `from Ciclo c join c.profesor p`
+  > Correcta: se une por la asociación real del modelo.
+- [ ] `from Ciclo c, Profesor p`, sin condición.
+  > Es un producto cartesiano, no una relación.
+
+Repasar: 4C §3.
+</Quiz>
+
+<Quiz id="t4hn-10" title="Correos disponibles después de cerrar">
+Una pantalla muestra un profesor y sus correos **después** de cerrar la sesión. La colección es LAZY. ¿Qué recomienda el temario?
+
+- [ ] Poner todas las relaciones en EAGER.
+  > El temario lo desaconseja como solución general.
+- [x] Recuperarlos en la consulta con `join fetch` antes de cerrar la sesión.
+  > Correcta: se carga lo que necesita esa consulta.
+- [ ] Mantener una sesión global abierta toda la aplicación.
+  > También lo desaconseja.
+- [ ] Leer el campo público del proxy directamente.
+  > Un campo de un proxy LAZY puede aparecer nulo.
+
+Repasar: 4C §3 y 4A §8.
+</Quiz>
+
+<Quiz id="t4hn-11" title="Afirmaciones sobre los tipos de resultado">
+Lee las afirmaciones sobre el modelo del temario:
+
+**I.** `select p from Profesor p` devuelve una `List<Profesor>`.
+
+**II.** `select p.nombre from Profesor p` devuelve una `List<String>`.
+
+**III.** `select p.id, p.nombre from Profesor p` devuelve una `List<Object[]>`.
+
+¿Cuáles son correctas?
+
+- [ ] Solo I.
+  > II y III también son ciertas.
+- [ ] Solo I y II.
+  > III también es cierta: varias columnas forman una tupla.
+- [ ] Ninguna.
+  > Las tres coinciden con la tabla del temario.
+- [x] Todas: I, II y III.
+  > Correcta: entidad, escalar y tupla.
+
+Repasar: 4C §4.
+</Quiz>
+
+<Quiz id="t4hn-12" title="Buscar con uniqueResult">
+Se usa `uniqueResult()` para buscar un profesor por nombre. ¿Qué casos hay que tener en cuenta?
+
+- [ ] Solo el caso de un resultado: si no, devuelve una lista.
+  > `uniqueResult()` nunca devuelve una lista.
+- [ ] Que lance excepción si no hay resultados.
+  > Si no hay resultados devuelve `null`.
+- [x] Que devuelva `null` si no hay resultados o lance `NonUniqueResultException` si hay varios.
+  > Correcta: hay que comprobar los dos casos.
+- [ ] Que devuelva el primero de varios resultados.
+  > Con varias entidades distintas lanza excepción.
+
+Repasar: 4C §4.
+</Quiz>
+
+<Quiz id="t4hn-13" title="La tercera página">
+Las páginas empiezan en 0 y tienen 10 profesores. Para mostrar la página 2, ¿qué valores se aplican?
+
+- [ ] `setFirstResult(2)` y `setMaxResults(10)`
+  > El primer resultado es un desplazamiento en filas, no un número de página.
+- [ ] `setFirstResult(10)` y `setMaxResults(20)`
+  > Mostraría 20 resultados desde el 10.
+- [ ] `setFirstResult(30)` y `setMaxResults(10)`
+  > Sería la página 3.
+- [x] `setFirstResult(20)` y `setMaxResults(10)`
+  > Correcta: desplazamiento = página × tamaño, con un orden estable.
+
+Repasar: 4C §4, paginación estable.
+</Quiz>
+
+<Quiz id="t4hn-14" title="Afirmaciones sobre la paginación">
+Lee las afirmaciones:
+
+**I.** Hay que incluir un orden determinista, normalmente con el ID como desempate.
+
+**II.** El número de páginas se calcula con `double` y `Math.round`.
+
+**III.** Paginar una colección con `join fetch` equivale a paginar las entidades padre.
+
+¿Cuáles son correctas?
+
+- [x] Solo I.
+  > Correcta: las páginas se calculan con división entera y resto, y la paginación con fetch no es equivalente.
+- [ ] Solo I y II.
+  > II es falsa.
+- [ ] Solo I y III.
+  > III es falsa.
+- [ ] Todas: I, II y III.
+  > II y III son falsas.
+
+Repasar: 4C §3 y §4.
+</Quiz>
+
+<Quiz id="t4hn-15" title="Una consulta que se repite">
+La misma búsqueda de profesores por nombre se usa en muchas partes de la aplicación. El equipo quiere declararla una vez con un nombre estable. ¿Qué ofrece HQL?
+
+- [ ] `@Transient` sobre un método de búsqueda.
+  > Excluye atributos de la persistencia.
+- [x] `@NamedQuery`, obtenida con `createNamedQuery("Profesores.ByName", Profesor.class)`.
+  > Correcta: varias se agrupan en `@NamedQueries`, separadas por comas.
+- [ ] Un procedimiento almacenado llamado desde HQL.
+  > No es lo que propone el temario.
+- [ ] Una constante `String` concatenada con los valores.
+  > Concatenar valores es inseguro.
+
+Repasar: 4C §5.
+</Quiz>
+
+<Quiz id="t4hn-16" title="Renombrar a muchos profesores">
+Se quiere cambiar el nombre de todos los profesores que se llaman de una forma a otra con una sola sentencia HQL. ¿Qué es cierto?
+
+- [ ] Se puede ejecutar sin transacción, como una consulta.
+  > Una DML masiva debe ejecutarse dentro de una transacción.
+- [ ] Actualiza también los profesores ya cargados en la sesión.
+  > No actualiza automáticamente las entidades cargadas.
+- [ ] Aplica las cascadas JPA de cada profesor.
+  > Las operaciones masivas no ejecutan cascadas.
+- [x] Se ejecuta con `executeUpdate()` dentro de una transacción, con `flush` antes y `clear` después.
+  > Correcta: así el contexto no queda con datos obsoletos.
+
+Repasar: 4C §6.
+</Quiz>
+
+<Quiz id="t4hn-17" title="Borrar en masa a un padre">
+Se quiere borrar con `delete from Profesor p where ...` a profesores que tienen correos. ¿Qué es cierto?
+
+- [ ] Se borran también sus correos por la cascada `ALL`.
+  > La DML masiva no ejecuta las cascadas JPA.
+- [ ] Hibernate deja los correos con `profesor_id` NULL.
+  > No hace ese cambio por su cuenta.
+- [x] Puede fallar por la FK de los correos; hay que planificar las dependencias.
+  > Correcta: no se borran padres con dependientes sin resolver sus FK.
+- [ ] Solo se borran los profesores sin correos.
+  > La sentencia no filtra por dependientes; simplemente falla.
+
+Repasar: 4C §6.
+</Quiz>
+
+<Quiz id="t4hn-18" title="Afirmaciones sobre INSERT en HQL">
+Lee las afirmaciones:
+
+**I.** HQL admite `INSERT ... SELECT` en Hibernate 5.
+
+**II.** HQL admite `INSERT ... VALUES` igual que SQL.
+
+**III.** Insertar IDs explícitos puede interferir con el generador automático.
+
+¿Cuáles son correctas?
+
+- [ ] Todas: I, II y III.
+  > II es falsa: no es el INSERT con VALUES.
+- [x] Solo I y III.
+  > Correcta: hay que alinear destino, atributos y alias de la selección.
+- [ ] Solo II.
+  > II es la única falsa.
+- [ ] Solo I.
+  > III también es cierta.
+
+Repasar: 4C §6.
+</Quiz>
+
+<Quiz id="t4hn-19" title="Consultas construidas desde Java">
+Un buscador avanzado añade filtros según lo que rellena el usuario. El equipo quiere componer la consulta con objetos Java en lugar de concatenar texto. ¿Qué ofrece el temario?
+
+- [ ] Concatenar HQL según los filtros.
+  > Es lo que se quiere evitar.
+- [ ] Consultas nombradas, una por cada combinación.
+  > Habría que escribir todas las combinaciones posibles.
+- [x] Criteria, con `CriteriaBuilder`, `CriteriaQuery` y `Root`.
+  > Correcta: compone condiciones sin concatenar SQL ni HQL.
+- [ ] `setFirstResult` y `setMaxResults`.
+  > Paginan; no añaden filtros.
+
+Repasar: 4C §7.
+</Quiz>
+
+<Quiz id="t4hn-20" title="Afirmaciones sobre Criteria">
+Lee las afirmaciones:
+
+**I.** Los nombres de atributo escritos como cadenas pueden seguir teniendo errores.
+
+**II.** El metamodelo estático puede mejorar su comprobación.
+
+**III.** En el temario, Criteria es una ampliación editorial, no una lección del profesor.
+
+¿Cuáles son correctas?
+
+- [ ] Solo I.
+  > II y III también son ciertas.
+- [ ] Solo II y III.
+  > I también es cierta: un nombre mal escrito falla al ejecutar.
+- [x] Todas: I, II y III.
+  > Correcta: el temario lo identifica como ampliación.
+- [ ] Ninguna.
+  > Las tres son ciertas.
+
+Repasar: 4C §7.
+</Quiz>
+
+<QuizResults />

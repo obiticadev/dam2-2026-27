@@ -17,27 +17,36 @@ alumno (no hay servidor ni base de datos).
 ## Estructura
 
 ```
-PLANTILLA.mdx              # Ejemplo de cada tipo de pregunta (copiar para crear nuevos; no se publica)
-packages/starlight-quiz/   # Fork local del plugin de cuestionarios
+PLANTILLA.mdx                # Ejemplo de cada tipo de pregunta (copiar para crear nuevos; no se publica)
+packages/starlight-quiz/     # Fork local del plugin de cuestionarios
 src/content/docs/
-├── index.mdx              # Portada
-├── examen-mixto.mdx       # 20 preguntas mixtas, dificultad normal
-├── examen-mixto-dificil.mdx # 20 preguntas mixtas, mayor dificultad
-├── ut02a/                 # sin-codigo.mdx y con-codigo.mdx, nivel normal
-└── ut02b/                 # sin-codigo.mdx y con-codigo.mdx, nivel normal
+├── index.mdx                # Portada con los tres bloques
+├── tema-2/                  # Ficheros y XML
+│   ├── ut02a/  ut02b/       # sin-codigo.mdx y con-codigo.mdx, nivel normal
+│   └── mixto.mdx  mixto-dificil.mdx
+├── tema-3/                  # JDBC y SQLite
+│   ├── 3a/  3b/             # sin-codigo.mdx y con-codigo.mdx, nivel normal
+│   └── mixto.mdx  mixto-dificil.mdx
+└── tema-4/                  # Hibernate y HQL
+    ├── orm/  hql/           # 4A–4B y 4C: sin-codigo.mdx y con-codigo.mdx
+    └── mixto.mdx  mixto-dificil.mdx
 ```
 
-`archivo/` conserva los once cuestionarios anteriores sin publicarlos. La selección activa contiene exactamente **seis cuestionarios y 120 preguntas**. Cada mixto tiene diez preguntas de A y diez de B; es una distribución de práctica, no una ponderación oficial. No se modificó la bóveda.
+`archivo/` conserva los once cuestionarios antiguos del tema 2 sin publicarlos. La selección activa contiene **18 cuestionarios y 360 preguntas**: seis por tema. Cada mixto tiene diez preguntas de cada mitad del tema (A/B, 3A/3B, 4A–4B/4C); es una distribución de práctica, no una ponderación oficial.
 
-Cada carpeta de unidad se añade sola a la barra lateral; para una unidad nueva crea `src/content/docs/utXX/` y añade el grupo en `sidebar` de `astro.config.mjs`.
+La barra lateral agrupa cada tema en un bloque (`sidebar` de `astro.config.mjs`). Para un tema nuevo: crear `src/content/docs/tema-N/` con sus subcarpetas, añadir el bloque en `sidebar`, la tarjeta en la portada y sus rutas en `scripts/verificar-cuestionarios.mjs`.
 
-Convenciones: **cuatro opciones**, una sola `[x]`, un comentario `>` por opción, `id` estable y único, y una referencia final `Repasar` al apartado del temario. Los prefijos nuevos (`an`, `ac`, `bn`, `bc`, `mn`, `md`) evitan reutilizar las respuestas guardadas de preguntas anteriores. Con `showCorrect: true`, al corregir se muestran las explicaciones de las cuatro opciones; si se desactiva, solo se explica la elegida.
+Convenciones: **cuatro opciones**, una sola `[x]`, un comentario `>` por opción, `id` estable y único, y una referencia final `Repasar` al apartado del temario. Prefijos: tema 2 `an`, `ac`, `bn`, `bc`, `mn`, `md`; tema 3 `t3an`, `t3ac`, `t3bn`, `t3bc`, `t3mn`, `t3md`; tema 4 `t4on`, `t4oc`, `t4hn`, `t4hc`, `t4mn`, `t4md`. Las preguntas de «todas / ninguna son correctas» se escriben con afirmaciones **I/II/III** en el enunciado y opciones como «Solo I y III» o «Ninguna», porque las opciones se barajan y «todas las anteriores» perdería sentido. Con `showCorrect: true`, al corregir se muestran las explicaciones de las cuatro opciones.
+
+Mover el tema 2 a `tema-2/` cambió sus URL: el progreso guardado en el navegador para esas páginas empieza de cero.
 
 Las explicaciones aparecen dentro de cada opción, sin repetir las respuestas en cajas separadas. Al corregir, la correcta se marca en verde, solo una elección incorrecta se marca en rojo y las demás quedan en gris. Un indicador textual con ✓/✕ complementa el color; el resultado también se anuncia mediante una región accesible. Reiniciar oculta explicaciones y restaura los colores iniciales.
 
 ## Fuentes y criterio editorial
 
-Se consultaron en `D:/obsidian/DAM2` los temarios `Fuentes/AD/temario/UT02-A-manejo-de-ficheros.md` y `UT02-B-librerias-xml-java.md`, el índice de AD, la nota del primer examen, el repaso esencial y las aclaraciones DOM pertinentes. Las referencias § corresponden a los encabezados numerados de las fuentes. Los escenarios son práctica elaborada, no preguntas oficiales.
+**Temas 3 y 4.** Parten de los documentos 3A–3B y 4A–4C de la entrega final (en la bóveda, `Fuentes/AD/Temas 3 y 4/`) y de sus ejercicios. Las preguntas con código se comprobaron en ejecución el 2026-11-20: el SQL con `sqlite3` 3.54, el JDBC con `sqlite-jdbc` 3.51.0.0 y H2 1.4.200 (en modo MySQL para lo que depende de un servidor estricto) y el código Hibernate con Hibernate 5.4.33 y H2. Los procedimientos almacenados de MySQL no se ejecutaron por falta de servidor.
+
+**Tema 2.** Se consultaron en `D:/obsidian/DAM2` los temarios `Fuentes/AD/temario/UT02-A-manejo-de-ficheros.md` y `UT02-B-librerias-xml-java.md`, el índice de AD, la nota del primer examen, el repaso esencial y las aclaraciones DOM pertinentes. Las referencias § corresponden a los encabezados numerados de las fuentes. Los escenarios son práctica elaborada, no preguntas oficiales.
 
 Se conserva la exclusión de NIO que tenía el proyecto, aunque la nota del examen de la bóveda contempla ambos temas completos. JAXB usa la versión 2 (`javax.xml.bind`) con dependencias externas en Java 17+. Las precisiones añadidas al temario se identifican cuando procede.
 
