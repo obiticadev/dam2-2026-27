@@ -12,7 +12,7 @@ export default defineConfig({
 				root: { label: 'Español', lang: 'es' },
 			},
 			sidebar: [
-				{ label: 'Cuestionario completo · 18 preguntas', slug: 'index' },
+				{ label: 'Cuestionario completo · 31 preguntas', slug: 'index' },
 			],
 			plugins: [
 				starlightQuiz({

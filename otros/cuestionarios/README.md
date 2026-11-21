@@ -4,12 +4,15 @@ Copia adaptada del proyecto de `01-acceso-datos/cuestionarios`, con el mismo
 Astro Starlight y su plugin local `packages/starlight-quiz`.
 El proyecto original no se modifica.
 
-Contiene únicamente las **18 preguntas de las cuatro imágenes facilitadas**,
-con cuatro opciones y una sola correcta por pregunta. Las soluciones corresponden
-a las respuestas rojas de las imágenes, sin añadir preguntas ni explicaciones
-inventadas. Se conservan las referencias a páginas y diapositivas.
+Contiene las **31 preguntas de `PREGUNTAS EXAMEN T4.pdf`**, localizado en
+`/home/oliwheel/Downloads/` (5 páginas). Las 18 preguntas iniciales procedentes
+de cuatro imágenes se conservan sin cambios; se añaden las 13 restantes.
+Cada pregunta tiene cuatro opciones y una sola solución marcada por la fuente.
+Las claves se contrastaron con las opciones en rojo y negrita del PDF,
+extrayendo tanto el texto como su color, sin inferir las respuestas.
+Se conservan las referencias a páginas y diapositivas del temario.
 
-Las 18 preguntas se presentan **en un único cuestionario en la página principal**,
+Las 31 preguntas se presentan **en un único cuestionario en la página principal**,
 sin dividirlas por imágenes o temas, con un solo resultado y cronómetro.
 Las antiguas cuatro URL redirigen al cuestionario único mediante `public/_redirects`.
 
@@ -19,6 +22,31 @@ Las antiguas cuatro URL redirigen al cuestionario único mediante `public/_redir
 | Dispositivos y pizarras digitales | 2 | 5 | b, d, d, b, c |
 | IA en la educación | 3 | 4 | b, b, b, d |
 | Recursos, redes y licencias | 4 | 5 | d, b, d, a, b |
+
+## Revisión frente al PDF (21 de noviembre de 2026)
+
+- **18 de 18 preguntas existentes localizadas**, con coincidencia de todas las
+  opciones y claves salvo diferencias editoriales sin cambio de significado.
+- Correspondencia por identificadores: `tec-integracion-01..04` = PDF 19–22;
+  `tec-dispositivos-01..05` = PDF 9–13; `tec-ia-01..04` = PDF 5–8;
+  `tec-recursos-01..05` = PDF 14–18.
+- **13 añadidas**: PDF 1–4 y 23–31. Identificadores `tec-pdf-NN`, donde NN es
+  el número original del PDF, no la numeración aleatoria del intento.
+- Las diferencias editoriales son puntos finales, signos de interrogación,
+  mayúsculas, comillas, `transp.` frente a `Transparencia` y, en PDF 13, la opción
+  correcta dice «profesorado» donde la imagen original decía «profesor».
+  No cambia la solución; se conserva el texto de las imágenes en las 18 iniciales.
+- **Ambigüedad de la fuente, PDF 23 (página 3):** pregunta qué medio es una red
+  social y marca LinkedIn, pero también ofrece YouTube. YouTube también puede
+  considerarse una red social y el propio PDF lo denomina así en la pregunta 15.
+  Se conserva la clave d del PDF y se añade una nota editorial tras responder,
+  recomendando contrastar la clasificación de la transparencia 18 con el profesorado.
+  No se convierte arbitrariamente en una pregunta de respuesta múltiple.
+
+Las nuevas preguntas cubren iluminación, duración y sonido de vídeos, OBS,
+redes sociales, micrófonos, Quizlet, diseño didáctico de vídeos, IA generativa,
+prompts, multimodalidad y ámbitos de aplicación de la IA. No quedan preguntas
+del banco de 31 sin incorporar. No se incluye el PDF binario en el repositorio.
 
 ## Uso
 
@@ -37,7 +65,7 @@ npm run preview
 ```
 
 El build genera `dist/`. La comprobación contrasta los enunciados y las
-72 opciones del MDX con el HTML compilado, además de verificar las claves
+124 opciones del MDX con el HTML compilado, además de verificar las claves
 de respuesta transcritas, la página única y sus redirecciones.
 
 Se mantienen la navegación pregunta a pregunta, el barajado, las marcas para
