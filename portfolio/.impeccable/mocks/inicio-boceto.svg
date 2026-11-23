@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="940" viewBox="0 0 1440 940" role="img" aria-labelledby="title desc">
+  <title id="title">Boceto de la página de inicio del portfolio</title>
+  <desc id="desc">Perfil provisional y caso de estudio de Presupuestos ISF. Un diagrama conecta el catálogo, el editor y el PDF final.</desc>
+  <defs>
+    <pattern id="grid" width="48" height="28" patternUnits="userSpaceOnUse">
+      <path d="M-24 14 0 0l48 28 24-14M-24 14 0 28 48 0l24 14" fill="none" stroke="#dfd7c7" stroke-width="1"/>
+    </pattern>
+    <style>
+      text{font-family:"DejaVu Sans Mono",monospace;fill:#27241f}
+      .body{font-size:14px;fill:#5c5347}.small{font-size:12px;fill:#5c5347}
+      .label{font-size:14px;font-weight:700}.heading{font-size:28px;font-weight:700;letter-spacing:-.7px}
+      .panel{fill:#f8f4e9;stroke:#c9c0af}.line{stroke:#c9c0af}
+      .node{stroke:#454036;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    </style>
+  </defs>
+  <path fill="#eee8db" d="M0 0h1440v940H0z"/>
+  <path fill="#f8f4e9" d="M0 0h1440v62H0z"/>
+  <path class="line" d="M0 62h1440"/>
+  <g transform="translate(24 19)" fill="none" stroke="#454036" stroke-width="1.5">
+    <rect width="25" height="25" rx="6" fill="#d6e6bc"/>
+    <path d="M6 14h13M9 9l3 3-3 3m6-6 3 3-3 3"/>
+  </g>
+  <text class="label" x="61" y="36">Tu nombre</text>
+  <rect x="245" y="13" width="126" height="36" rx="7" fill="#d6e6bc" stroke="#767f65"/>
+  <text class="label" x="267" y="36">Proyectos</text>
+  <text class="label" x="400" y="36">Perfil</text>
+  <text class="label" x="486" y="36">CV</text>
+  <text class="label" x="547" y="36">Contacto</text>
+
+  <text class="label" x="24" y="105">Portfolio</text>
+  <path class="line" d="M24 124h190"/>
+  <rect x="16" y="143" width="205" height="38" rx="7" fill="#e1ead0" stroke="#b9c2a6"/>
+  <path d="M28 157h7l3 3h8v11H28z" fill="#8c9f72" stroke="#59694a"/>
+  <text class="label" x="55" y="168">Presupuestos ISF</text>
+  <path d="M35 192v81m0-69h10m-10 28h10m-10 28h10" fill="none" class="line"/>
+  <text class="body" x="55" y="209">Catálogo</text>
+  <text class="body" x="55" y="237">Editor</text>
+  <text class="body" x="55" y="265">PDF final</text>
+
+  <rect class="panel" x="240" y="80" width="900" height="770" rx="14"/>
+  <text x="267" y="144" font-size="47" font-weight="700" letter-spacing="-1.7">Tu nombre</text>
+  <text class="body" x="269" y="176" font-size="16">Desarrollo de aplicaciones</text>
+  <path class="line" d="M268 200h844"/>
+  <text class="heading" x="268" y="243">Presupuestos ISF</text>
+  <text class="body" x="269" y="273">Del catálogo de conceptos al presupuesto emitido en PDF.</text>
+  <rect x="268" y="301" width="844" height="410" rx="12" fill="#f4efe2" stroke="#c9c0af"/>
+  <rect x="269" y="302" width="842" height="408" rx="11" fill="url(#grid)"/>
+
+  <g fill="none" stroke="#827660" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <path d="m446 527 112-64m-14 1 14-1-7 12M746 524l114-66m-14 1 14-1-7 12"/>
+  </g>
+  <g class="node">
+    <path d="M316 517l70-41 80 46-70 41z" fill="#dce7cb"/>
+    <path d="M339 493l46-27 41 24-46 27z" fill="#e7c989"/>
+    <path d="M339 467l46-27 41 24v26l-46 27-41-24z" fill="#f1d99f"/>
+    <path d="M339 467l41 24 46-27m-46 27v26m-29-38 14 8" fill="none"/>
+    <path d="M602 517l70-41 80 46-70 41z" fill="#dce7cb"/>
+    <path d="M626 484l61-35 39 22-61 36z" fill="#c4d5f1"/>
+    <path d="M626 484v-63l61-35v63z" fill="#c4d5f1"/>
+    <path d="M635 471v-44l43-25v45z" fill="#f6f2e7"/>
+    <path d="m643 434 28-16m-28 25 22-13m-22 22 28-16m-9 55 25-14" fill="none"/>
+    <path d="M892 517l70-41 80 46-70 41z" fill="#dce7cb"/>
+    <path d="M940 510v-78l41-24 18 10v67l-59 34z" fill="#e0cdea"/>
+    <path d="M981 408v21l18-11m-49 37 38-22m-38 34 38-22m-38 34 24-14" fill="none"/>
+  </g>
+  <g text-anchor="middle">
+    <rect x="313" y="589" width="155" height="36" rx="8" fill="#f8f4e9" stroke="#a89c88"/>
+    <text class="label" x="390" y="612">Catálogo</text>
+    <rect x="599" y="589" width="155" height="36" rx="8" fill="#f8f4e9" stroke="#a89c88"/>
+    <text class="label" x="676" y="612">Editor</text>
+    <rect x="889" y="589" width="155" height="36" rx="8" fill="#f8f4e9" stroke="#a89c88"/>
+    <text class="label" x="966" y="612">PDF final</text>
+  </g>
+  <text class="small" x="282" y="691">Esquema del flujo</text>
+  <rect x="268" y="733" width="230" height="42" rx="8" fill="#d6e6bc" stroke="#646e54"/>
+  <text class="label" x="284" y="760">Ver caso de estudio</text>
+  <path d="M464 754h15m-6-6 6 6-6 6" fill="none" stroke="#27241f" stroke-width="1.5"/>
+  <text class="label" x="519" y="760" text-decoration="underline">Código en GitHub</text>
+  <path class="line" d="M268 798h844"/>
+  <text class="small" x="269" y="827">Catálogo, clientes, presupuestos y emisión</text>
+
+  <rect class="panel" x="1157" y="80" width="265" height="770" rx="14"/>
+  <text class="label" x="1176" y="116">El proyecto</text>
+  <path class="line" d="M1176 135h226"/>
+  <text class="body" x="1176" y="165">
+    <tspan x="1176">Aplicación interna de ISF</tspan>
+    <tspan x="1176" dy="22">para gestionar clientes,</tspan>
+    <tspan x="1176" dy="22">editar presupuestos y</tspan>
+    <tspan x="1176" dy="22">emitir PDF corporativos.</tspan>
+  </text>
+  <text class="label" x="1176" y="294">Mi aportación</text>
+  <text class="body" x="1176" y="324">
+    <tspan x="1176">Desarrollo de principio</tspan>
+    <tspan x="1176" dy="22">a fin, incluido el</tspan>
+    <tspan x="1176" dy="22">despliegue interno.</tspan>
+  </text>
+  <text class="heading" x="268" y="904">Del catálogo al PDF</text>
+</svg>
