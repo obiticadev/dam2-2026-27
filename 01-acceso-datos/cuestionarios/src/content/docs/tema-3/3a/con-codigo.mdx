@@ -7,10 +7,10 @@ sidebar:
 
 import { Quiz, QuizResults } from 'starlight-quiz/components';
 
-**20 preguntas · cuatro opciones · una correcta.** Java 17 o posterior. Se omiten imports y el tratamiento de excepciones salvo que formen parte de la pregunta. `conexion` es una `Connection` abierta a MySQL con la base `emp`/`dept` del profesor, con sus datos originales: 14 empleados, de los que 3 son del departamento 10 y 6 del 30; BLAKE tiene `comm` NULL. Cada pregunta parte de ese estado.
+**20 preguntas · cuatro opciones · una correcta.** Java 17 o posterior. Se omiten imports y el tratamiento de excepciones salvo que formen parte de la pregunta. `conexion` es una `Connection` abierta a MySQL con la base `emp`/`dept` original: 14 empleados repartidos en los departamentos 10 (3), 20 (5) y 30 (6). **Cada enunciado repite los datos que necesita**, porque las preguntas se muestran de una en una.
 
 <Quiz id="t3ac-01" title="Leer antes de avanzar">
-¿Qué ocurre al ejecutar este fragmento?
+`conexion` está abierta a MySQL. La tabla `emp` tiene 14 empleados y el de menor `empno` es SMITH (7369). ¿Qué ocurre al ejecutar este fragmento?
 
 ```java
 try (Statement st = conexion.createStatement();
@@ -32,7 +32,7 @@ Repasar: 3A §5, recorrer los resultados.
 </Quiz>
 
 <Quiz id="t3ac-02" title="Numeración de los parámetros">
-¿Qué ocurre?
+`conexion` está abierta a MySQL y la tabla `emp` tiene la columna numérica `deptno`. ¿Qué ocurre?
 
 ```java
 PreparedStatement ps = conexion.prepareStatement(
@@ -53,7 +53,7 @@ Repasar: 3A §5.
 </Quiz>
 
 <Quiz id="t3ac-03" title="Volver a pasar el SQL">
-¿Qué problema tiene este código?
+`conexion` está abierta a MySQL y `deptno` es una columna numérica de `emp`. ¿Qué problema tiene este código?
 
 ```java
 String sql = "SELECT ename FROM emp WHERE deptno = ?";
@@ -75,7 +75,7 @@ Repasar: 3A §5, elegir el método de ejecución.
 </Quiz>
 
 <Quiz id="t3ac-04" title="Contar filas recorridas">
-¿Qué imprime?
+La tabla `emp` tiene 14 empleados: 3 en el departamento 10 (CLARK, KING y MILLER), 5 en el 20 y 6 en el 30. ¿Qué imprime?
 
 ```java
 PreparedStatement ps = conexion.prepareStatement(
@@ -103,7 +103,7 @@ Repasar: 3A §5, recorrer los resultados.
 </Quiz>
 
 <Quiz id="t3ac-05" title="Filas afectadas por una subida">
-¿Qué imprime?
+La tabla `emp` tiene 14 empleados: 3 en el departamento 10, 5 en el 20 y 6 en el 30. El autocommit está activado. ¿Qué imprime?
 
 ```java
 PreparedStatement ps = conexion.prepareStatement(
@@ -125,7 +125,7 @@ Repasar: 3A §5 y §7.
 </Quiz>
 
 <Quiz id="t3ac-06" title="Modificar un empleado que no existe">
-No existe el empleado 1234. ¿Qué imprime?
+La tabla `emp` tiene los 14 empleados originales; ninguno tiene el `empno` 1234. ¿Qué imprime?
 
 ```java
 PreparedStatement ps = conexion.prepareStatement(
@@ -149,7 +149,7 @@ Repasar: 3A §9, UPDATE que no encuentra filas.
 </Quiz>
 
 <Quiz id="t3ac-07" title="Comisión NULL">
-BLAKE (7698) tiene `comm` NULL. ¿Qué imprime?
+En la tabla `emp`, el empleado 7698 (BLAKE) existe y su columna `comm` es NULL. ¿Qué imprime?
 
 ```java
 PreparedStatement ps = conexion.prepareStatement(
@@ -174,7 +174,7 @@ Repasar: 3A §5, recorrer los resultados.
 </Quiz>
 
 <Quiz id="t3ac-08" title="Lo que devuelve un CREATE">
-¿Qué imprime?
+`conexion` está abierta a MySQL y la tabla `proyecto` todavía no existe. ¿Qué imprime?
 
 ```java
 try (Statement st = conexion.createStatement()) {
@@ -197,7 +197,7 @@ Repasar: 3A §5 y §7.
 </Quiz>
 
 <Quiz id="t3ac-09" title="Fallo antes del commit">
-El segundo UPDATE lanza `SQLException`. ¿Cómo queda la base?
+Los empleados 7369 (SMITH) y 7499 (ALLEN) existen. El primer UPDATE se ejecuta bien y el segundo lanza `SQLException`, por ejemplo porque se cae la red. ¿Cómo quedan los salarios?
 
 ```java
 conexion.setAutoCommit(false);
@@ -223,7 +223,7 @@ Repasar: 3A §9.
 </Quiz>
 
 <Quiz id="t3ac-10" title="Olvidar desactivar el autocommit">
-El segundo UPDATE falla. ¿Qué ocurre con el primero?
+`conexion` se acaba de abrir y conserva la configuración por defecto: el autocommit está activado. Los empleados 7369 y 7499 existen. El primer UPDATE se ejecuta bien y el segundo lanza `SQLException`. ¿Qué ocurre con el primero?
 
 ```java
 try (Statement st = conexion.createStatement()) {
@@ -248,7 +248,7 @@ Repasar: 3A §9.
 </Quiz>
 
 <Quiz id="t3ac-11" title="Volver a un punto intermedio">
-¿Qué cambios quedan guardados?
+El empleado 7369 (SMITH) existe: es CLERK y cobra 800. Ninguna sentencia falla. ¿Qué cambios quedan guardados?
 
 ```java
 conexion.setAutoCommit(false);
@@ -273,7 +273,7 @@ Repasar: 3A §9.
 </Quiz>
 
 <Quiz id="t3ac-12" title="Recorrer las columnas de un resultado">
-¿Qué problema tiene el bucle?
+`st` es un `Statement` de `conexion` y la consulta selecciona tres columnas. ¿Qué problema tiene el bucle?
 
 ```java
 ResultSet rs = st.executeQuery("SELECT empno, ename, sal FROM emp");
@@ -296,7 +296,7 @@ Repasar: 3A §6.
 </Quiz>
 
 <Quiz id="t3ac-13" title="Etiqueta de una columna con alias">
-¿Qué imprime?
+`st` es un `Statement` de una conexión MySQL. ¿Qué imprime?
 
 ```java
 ResultSet rs = st.executeQuery("SELECT ename AS nombre, sal FROM emp");
@@ -316,7 +316,7 @@ Repasar: 3A §6.
 </Quiz>
 
 <Quiz id="t3ac-14" title="Posición negativa">
-El resultado es desplazable. ¿Qué imprime?
+Ordenados por `empno`, los 14 empleados empiezan por SMITH (7369) y terminan por MILLER (7934); KING es el 7839. ¿Qué imprime?
 
 ```java
 Statement st = conexion.createStatement(
@@ -339,7 +339,7 @@ Repasar: 3A §10, movimiento del cursor.
 </Quiz>
 
 <Quiz id="t3ac-15" title="Modificación que no llega">
-El resultado es actualizable. ¿Qué pasa con el salario?
+`st` se creó con `TYPE_SCROLL_INSENSITIVE` y `CONCUR_UPDATABLE`, y el driver ofrece un resultado actualizable. SMITH (7369) cobra 800 y el autocommit está activado. ¿Qué pasa con el salario?
 
 ```java
 ResultSet rs = st.executeQuery("SELECT empno, sal FROM emp WHERE empno = 7369");
@@ -361,7 +361,7 @@ Repasar: 3A §10, modificar, insertar y borrar.
 </Quiz>
 
 <Quiz id="t3ac-16" title="Leer el parámetro de salida">
-`total_dept(IN p_dept INT, OUT p_total INT)` existe en MySQL. ¿Qué fragmento es correcto?
+En MySQL existe el procedimiento `total_dept(IN p_dept INT, OUT p_total INT)`, que guarda en `p_total` cuántos empleados tiene el departamento. ¿Qué fragmento completa la llamada y lee el total?
 
 ```java
 CallableStatement cs = conexion.prepareCall("{call total_dept(?, ?)}");
@@ -382,7 +382,7 @@ Repasar: 3A §8.
 </Quiz>
 
 <Quiz id="t3ac-17" title="Dos consultas con la misma sentencia">
-¿Qué ocurre en la última línea?
+Las tablas `emp` y `dept` tienen filas. ¿Qué ocurre en la última línea?
 
 ```java
 Statement st = conexion.createStatement();
@@ -404,7 +404,7 @@ Repasar: 3A §4.
 </Quiz>
 
 <Quiz id="t3ac-18" title="Concatenar lo que escribe el usuario">
-El usuario escribe `x' OR '1'='1`. ¿Cuántas filas devuelve?
+La tabla `emp` tiene 14 empleados y ninguno se llama `x`. El usuario escribe `x' OR '1'='1`. ¿Cuántas filas devuelve?
 
 ```java
 String nombre = teclado.nextLine();
@@ -425,7 +425,7 @@ Repasar: 3A §5, seguridad.
 </Quiz>
 
 <Quiz id="t3ac-19" title="Orden de cierre">
-¿En qué orden se cierran los recursos al salir del `try`?
+`url` y `sql` son válidos y no se produce ninguna excepción. ¿En qué orden se cierran los recursos al salir del `try`?
 
 ```java
 try (Connection c = DriverManager.getConnection(url);
@@ -448,7 +448,7 @@ Repasar: 3A §3, `Conexion.java`, y §4.
 </Quiz>
 
 <Quiz id="t3ac-20" title="Listar las tablas">
-La base solo tiene las cuatro tablas del script: `bonus`, `dept`, `emp` y `salgrade`. ¿Cuántas líneas imprime?
+`conexion` apunta a la base `emp` de MySQL, que solo tiene las cuatro tablas del script (`bonus`, `dept`, `emp` y `salgrade`) y ninguna vista. ¿Cuántas líneas imprime?
 
 ```java
 DatabaseMetaData md = conexion.getMetaData();

@@ -1,0 +1,395 @@
+---
+title: "Tema 3 · Casos reales · Normal"
+description: "20 incidencias del día a día: 10 de JDBC y 10 de SQLite, con y sin código."
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · 10 de 3A y 10 de 3B · cuatro opciones · una correcta.** Incidencias de proyectos reales: unas con fragmentos de código y otras de decisión. Java 17 o posterior; se omiten imports y el tratamiento de excepciones salvo que formen parte de la pregunta. **Cada enunciado indica los datos que necesita.** Las respuestas con código se comprobaron con H2 en modo MySQL, `sqlite3` 3.54 y `sqlite-jdbc` 3.51.
+
+<Quiz id="t3rmn-01" title="Una letra de menos en la URL">
+La variable de entorno `DB_URL` vale `jdbc:mysq://localhost:3306/ventas`. El driver de MySQL está en el classpath y el servidor funciona. ¿Qué error aparece al conectar?
+
+- [ ] «Access denied for user».
+  > No se llega a contactar con el servidor.
+- [ ] «Unknown database 'ventas'».
+  > El servidor nunca recibe la petición.
+- [x] «No suitable driver found».
+  > Correcta: ningún driver acepta el prefijo `jdbc:mysq:`. `DriverManager` elige el driver por la URL, así que un prefijo mal escrito parece un driver ausente.
+- [ ] «Communications link failure».
+  > Es un fallo de red con un driver ya elegido.
+
+Repasar: 3A §3, URL de conexión.
+</Quiz>
+
+<Quiz id="t3rmn-02" title="Conexiones dentro de un bucle">
+`clientes` contiene 5 000 elementos y `url` apunta a un servidor MySQL con un máximo de 151 conexiones simultáneas. ¿Qué es lo más probable?
+
+```java
+for (Cliente cli : clientes) {
+    Connection c = DriverManager.getConnection(url, usuario, clave);
+    PreparedStatement ps = c.prepareStatement(
+            "UPDATE cliente SET puntos = puntos + 1 WHERE id = ?");
+    ps.setInt(1, cli.id());
+    ps.executeUpdate();
+}
+```
+
+- [ ] Funciona, pero es algo más lento de lo necesario.
+  > Además de lento, no cierra las conexiones.
+- [ ] El recolector de basura cierra cada conexión al acabar la vuelta.
+  > No hay ninguna garantía de cuándo se liberan; hay que cerrarlas explícitamente.
+- [ ] Falla en la primera vuelta porque falta `commit()`.
+  > Con el autocommit por defecto, cada UPDATE se confirma.
+- [x] Se acumulan conexiones abiertas hasta que el servidor las rechaza.
+  > Correcta: lo correcto es abrir una conexión fuera del bucle, reutilizar la sentencia y cerrar con try-with-resources.
+
+Repasar: 3A §4.
+</Quiz>
+
+<Quiz id="t3rmn-03" title="Buscador con la caja vacía">
+`emp` tiene 14 empleados. El usuario pulsa «Buscar» sin escribir nada. ¿Qué imprime?
+
+```java
+String texto = "";
+PreparedStatement ps = conexion.prepareStatement(
+        "SELECT COUNT(*) FROM emp WHERE ename LIKE ?");
+ps.setString(1, "%" + texto + "%");
+ResultSet rs = ps.executeQuery();
+rs.next();
+System.out.println(rs.getInt(1));
+```
+
+- [ ] `0`, porque no hay ningún nombre vacío.
+  > El patrón es `%%`, que coincide con cualquier texto.
+- [x] `14`
+  > Correcta: con el texto vacío se obtiene todo. Si no es lo que se quiere, la aplicación debe exigir un texto mínimo.
+- [ ] Lanza excepción por un parámetro vacío.
+  > Un texto vacío es un valor válido.
+- [ ] `1`
+  > COUNT cuenta todas las filas que cumplen el patrón.
+
+Repasar: 3A §5, consultas y parámetros.
+</Quiz>
+
+<Quiz id="t3rmn-04" title="Una conexión del pool que no confirma">
+En una aplicación con pool de conexiones, un método de pedidos hace `setAutoCommit(false)`, confirma su transacción y devuelve la conexión al pool sin restaurar nada. Después, otro método toma esa conexión, hace un UPDATE confiando en el autocommit y no llama a `commit()`. ¿Qué riesgo hay?
+
+- [x] Que el UPDATE quede sin confirmar: sigue sin autocommit.
+  > Correcta: el cambio puede perderse o bloquear filas. Hay que dejar la conexión como se encontró, por ejemplo restaurando el autocommit en un `finally`, o configurar el pool para que lo haga.
+- [ ] Ninguno: el pool reinicia siempre todas las propiedades.
+  > Depende del pool y de su configuración; no se puede dar por supuesto.
+- [ ] Que el UPDATE se confirme dos veces.
+  > Una sentencia no se confirma dos veces.
+- [ ] Que el driver lance una excepción por no haber llamado a `commit()`.
+  > No hay excepción: el cambio simplemente queda pendiente.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3rmn-05" title="Sumar la comisión al salario">
+KING (7839) cobra 5000 y su `comm` es NULL. ¿Qué ocurre?
+
+```java
+ResultSet rs = conexion.createStatement()
+        .executeQuery("SELECT sal, comm FROM emp WHERE empno = 7839");
+rs.next();
+BigDecimal sal = rs.getBigDecimal("sal");
+BigDecimal comm = rs.getBigDecimal("comm");
+System.out.println(sal.add(comm));
+```
+
+- [ ] Imprime `5000.00`: un NULL suma 0.
+  > `getBigDecimal` devuelve `null` y no se puede sumar.
+- [ ] Imprime `null`.
+  > No llega a imprimir: la suma falla antes.
+- [x] Lanza `NullPointerException` en `sal.add(comm)`.
+  > Correcta: un NULL leído como objeto es `null` en Java. Se resuelve con `COALESCE(comm, 0)` en el SQL o comprobándolo antes.
+- [ ] Lanza `SQLException` al leer `comm` porque es NULL.
+  > Leer un NULL es válido.
+
+Repasar: 3A §5, recorrer los resultados.
+</Quiz>
+
+<Quiz id="t3rmn-06" title="Saber cuántas filas hay antes de pintar">
+Una pantalla necesita mostrar «N resultados» antes del listado. El programador hace `rs.last()` y `rs.getRow()` sobre un `ResultSet` creado con las opciones por defecto, y con MySQL obtiene una `SQLException`. ¿Qué es correcto?
+
+- [ ] Hay que llamar antes a `rs.next()`.
+  > El problema es el tipo de resultado, no la posición del cursor.
+- [x] El resultado solo avanza: `last()` exige uno desplazable.
+  > Correcta: el tipo por defecto es `TYPE_FORWARD_ONLY`. Se pide uno desplazable, se usa `SELECT COUNT(*)` o se cuentan las filas al recorrerlo.
+- [ ] `getRow()` solo funciona con `CONCUR_UPDATABLE`.
+  > La concurrencia no interviene en el desplazamiento.
+- [ ] MySQL no permite contar filas de un resultado desde Java.
+  > Lo permite, por ejemplo con COUNT.
+
+Repasar: 3A §10, movimiento del cursor.
+</Quiz>
+
+<Quiz id="t3rmn-07" title="Copiar un departamento al histórico">
+`emp_hist(empno, ename, sal)` existe y está vacía; el departamento 10 tiene 3 empleados. ¿Qué imprime?
+
+```java
+int n = conexion.createStatement().executeUpdate(
+        "INSERT INTO emp_hist (empno, ename, sal) " +
+        "SELECT empno, ename, sal FROM emp WHERE deptno = 10");
+System.out.println(n);
+```
+
+- [ ] `1`: es un solo INSERT.
+  > Inserta una fila por cada fila del SELECT.
+- [ ] Lanza excepción: `executeUpdate` no admite un SELECT.
+  > Es un INSERT que contiene un SELECT; devuelve un recuento.
+- [ ] `0`: las filas se copian, pero no se cuentan.
+  > El recuento incluye las filas insertadas.
+- [x] `3`
+  > Correcta: `executeUpdate` devuelve las filas insertadas.
+
+Repasar: 3A §7, crear y modificar datos.
+</Quiz>
+
+<Quiz id="t3rmn-08" title="Un rollback que no deshace nada">
+En un MySQL heredado, el programa desactiva el autocommit, hace dos UPDATE y, al fallar el segundo, llama a `rollback()`. El primer cambio sigue guardado. Las tablas se crearon con el motor MyISAM. ¿Cuál es la causa?
+
+- [ ] Que `rollback()` necesita un `Savepoint`.
+  > Sin savepoint deshace toda la transacción, si el motor la admite.
+- [ ] Que hay que llamar a `rollback()` dos veces.
+  > Repetirlo no cambia nada.
+- [x] Que MyISAM no es transaccional.
+  > Correcta: hay que usar un motor como InnoDB. La transacción depende del motor de almacenamiento, como recuerda la práctica de salarios. `supportsTransactions()` informa del SGBD en general.
+- [ ] Que JDBC no admite transacciones en MySQL.
+  > Las admite con un motor transaccional.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3rmn-09" title="El nombre de la tabla como parámetro">
+Una utilidad recibe el nombre de la tabla que se quiere listar. ¿Qué ocurre?
+
+```java
+PreparedStatement ps = conexion.prepareStatement("SELECT * FROM ?");
+ps.setString(1, "emp");
+ResultSet rs = ps.executeQuery();
+```
+
+- [ ] Lista la tabla `emp` de forma segura.
+  > Un `?` solo sustituye valores, no nombres de tablas.
+- [ ] Lista la tabla, pero es vulnerable a inyección.
+  > No llega a listar nada.
+- [ ] Devuelve un resultado vacío.
+  > La sentencia no es válida.
+- [x] Lanza `SQLException` por un error de sintaxis.
+  > Correcta: falla al preparar o al ejecutar, según el driver. Para nombres de tabla se usa una lista blanca, comprobada con `getTables` si hace falta.
+
+Repasar: 3A §5, seguridad.
+</Quiz>
+
+<Quiz id="t3rmn-10" title="Subir el 3 % a todo un departamento">
+Hay que subir un 3 % el salario a los 6 empleados del departamento 30. No hay ninguna regla distinta para cada uno. ¿Qué solución es la más adecuada?
+
+- [ ] Un `ResultSet` actualizable que recorra los 6 y haga `updateRow()` en cada uno.
+  > Funciona, pero añade complejidad cuando todos reciben lo mismo.
+- [x] Un único `UPDATE emp SET sal = sal * 1.03 WHERE deptno = ?` preparado.
+  > Correcta: el recorrido fila a fila tiene sentido cuando cada fila necesita una decisión distinta, como en la práctica de salarios.
+- [ ] Seis `Statement` con el `empno` concatenado.
+  > Es más código, sin parámetros y sin ninguna ventaja.
+- [ ] Un procedimiento almacenado para cada empleado.
+  > Es desproporcionado para una operación de conjunto.
+
+Repasar: 3A §7 y §10.
+</Quiz>
+
+<Quiz id="t3rmn-11" title="Lo que necesita la app para usar SQLite">
+Una aplicación Java de escritorio va a guardar sus datos en un archivo SQLite. ¿Qué necesita?
+
+- [ ] Instalar el servicio SQLite y abrir el puerto 3306.
+  > SQLite no tiene servicio ni puerto.
+- [ ] El driver de MySQL y usuario y contraseña de SQLite.
+  > Son motores distintos y SQLite no tiene cuentas.
+- [ ] Solo la consola `sqlite3` instalada en cada equipo.
+  > La consola es una herramienta; la aplicación necesita el driver.
+- [x] El driver `sqlite-jdbc` y una URL `jdbc:sqlite:`.
+  > Correcta: la dependencia `org.xerial:sqlite-jdbc` y una ruta válida, sin credenciales. El motor viaja con el driver dentro de la aplicación.
+
+Repasar: 3B §8, acceso desde Java.
+</Quiz>
+
+<Quiz id="t3rmn-12" title="Añadir una columna obligatoria">
+La tabla `clientes(id INTEGER PRIMARY KEY)` ya tiene datos. En la versión 2 de la aplicación se ejecuta esta migración. ¿Qué ocurre?
+
+```sql
+ALTER TABLE clientes ADD COLUMN email TEXT NOT NULL;
+```
+
+- [ ] Añade la columna y deja `''` en las filas existentes.
+  > SQLite no inventa un valor para las filas que ya existen.
+- [x] Falla: hace falta un DEFAULT no nulo.
+  > Correcta: por ejemplo, `ADD COLUMN pais TEXT NOT NULL DEFAULT 'ES'` sí funciona.
+- [ ] Añade la columna con NULL en las filas existentes.
+  > La columna sería NOT NULL y contendría NULL: SQLite lo rechaza.
+- [ ] SQLite no permite ADD COLUMN.
+  > ADD COLUMN existe, con restricciones.
+
+Repasar: 3B §2.
+</Quiz>
+
+<Quiz id="t3rmn-13" title="Importar en una tabla ya creada">
+`clientes.csv` tiene tres líneas: `id,nombre`, `1,Ana` y `2,Luis`. ¿Qué devuelve el SELECT?
+
+```bash
+sqlite3 tienda.db
+sqlite> CREATE TABLE clientes (id INTEGER, nombre TEXT);
+sqlite> .mode csv
+sqlite> .import clientes.csv clientes
+sqlite> SELECT COUNT(*) FROM clientes;
+```
+
+- [ ] `2`
+  > Eso pasaría si `.import` creara la tabla y usara la cabecera como nombres de columna.
+- [ ] Error: `.import` no funciona con una tabla existente.
+  > Funciona e inserta todas las líneas.
+- [x] `3`: la cabecera se ha importado como un cliente más.
+  > Correcta: con la tabla ya creada, la primera línea son datos. Hay que quitarla o saltarla.
+- [ ] `0`: falta `.headers on`.
+  > `.headers` afecta a la salida de las consultas, no a la importación.
+
+Repasar: 3B §3.
+</Quiz>
+
+<Quiz id="t3rmn-14" title="Informes mientras se guarda">
+Una aplicación de almacén genera informes largos mientras otra parte del programa sigue registrando entradas. Con el diario por defecto, los informes y las escrituras se estorban. ¿Qué mejora ofrece WAL?
+
+- [ ] Varios escritores simultáneos.
+  > Sigue habiendo un solo escritor.
+- [ ] Un servidor de red para los informes.
+  > SQLite sigue siendo embebido.
+- [ ] Eliminar los archivos auxiliares.
+  > WAL usa precisamente un archivo auxiliar.
+- [x] Leer deja de bloquear la escritura.
+  > Correcta: lectores y escritor conviven mejor, aunque sigue habiendo un solo escritor.
+
+Repasar: 3B §2.
+</Quiz>
+
+<Quiz id="t3rmn-15" title="SET DEFAULT hacia un grupo que no existe">
+Base SQLite nueva y vacía. ¿Qué ocurre con el DELETE?
+
+```sql
+PRAGMA foreign_keys = ON;
+CREATE TABLE grupos (id INTEGER PRIMARY KEY);
+CREATE TABLE socios (
+    id INTEGER PRIMARY KEY,
+    grupo INTEGER DEFAULT 0 REFERENCES grupos (id) ON DELETE SET DEFAULT
+);
+INSERT INTO grupos VALUES (1);
+INSERT INTO socios VALUES (10, 1);
+DELETE FROM grupos WHERE id = 1;
+```
+
+- [ ] Borra el grupo y el socio pasa al grupo 0.
+  > El grupo 0 no existe, así que el valor por defecto rompe la integridad.
+- [x] Falla por la clave foránea.
+  > Correcta: el valor por defecto también debe respetar la integridad referencial; habría que crear antes el grupo 0.
+- [ ] Borra el grupo y el socio.
+  > Eso sería CASCADE.
+- [ ] Borra el grupo y deja `grupo` a NULL.
+  > Eso sería SET NULL.
+
+Repasar: 3B §6, acciones referenciales.
+</Quiz>
+
+<Quiz id="t3rmn-16" title="DB Browser abierto con cambios">
+Una técnica edita datos en DB Browser for SQLite y no pulsa «Escribir cambios». Mientras tanto, la aplicación de la tienda empieza a fallar al guardar con «database is locked». ¿Qué está pasando?
+
+- [ ] DB Browser ha corrompido el archivo.
+  > El archivo está bien; está ocupado.
+- [ ] La aplicación ha perdido el driver al actualizar DB Browser.
+  > Llega a SQLite, que le responde con el bloqueo.
+- [x] DB Browser tiene una transacción de escritura abierta.
+  > Correcta: la mantiene hasta que se escriben o se descartan los cambios, y mientras tanto SQLite no admite otro escritor.
+- [ ] Faltan las claves foráneas en la aplicación.
+  > Las FK no producen bloqueos.
+
+Repasar: 3B §3 y §7.
+</Quiz>
+
+<Quiz id="t3rmn-17" title="Clientes que nunca han comprado">
+Base SQLite nueva. Marketing quiere los clientes sin ninguna factura. ¿Qué devuelve?
+
+```sql
+CREATE TABLE clientes (id INTEGER PRIMARY KEY, nombre TEXT);
+CREATE TABLE facturas (id INTEGER PRIMARY KEY, cliente_id INTEGER);
+INSERT INTO clientes VALUES (1, 'Ana'), (2, 'Luis'), (3, 'Eva');
+INSERT INTO facturas VALUES (1, 1), (2, 1), (3, 3);
+SELECT c.nombre
+FROM clientes c
+LEFT JOIN facturas f ON f.cliente_id = c.id
+WHERE f.id IS NULL;
+```
+
+- [ ] Ana y Eva.
+  > Son las que sí tienen facturas.
+- [ ] Nadie: el WHERE anula el LEFT JOIN.
+  > Aquí el filtro busca justo las filas sin pareja.
+- [x] Luis.
+  > Correcta: el LEFT JOIN conserva a Luis con la factura a NULL y el WHERE se queda solo con él.
+- [ ] Ana, Luis y Eva.
+  > El WHERE descarta a quien tiene facturas.
+
+Repasar: 3B §8.
+</Quiz>
+
+<Quiz id="t3rmn-18" title="La hora de creación">
+Base SQLite nueva. El pedido se crea en Madrid a las 10:00 en hora local, en invierno (UTC+1). ¿Qué se guarda en `creado`?
+
+```sql
+CREATE TABLE pedidos (
+    id INTEGER PRIMARY KEY,
+    creado TEXT DEFAULT CURRENT_TIMESTAMP
+);
+INSERT INTO pedidos (id) VALUES (1);
+```
+
+- [ ] Un entero con milisegundos.
+  > `CURRENT_TIMESTAMP` produce texto.
+- [ ] Un valor de clase DATE.
+  > No existe una clase de almacenamiento para fechas.
+- [ ] `'… 10:00:00'`, la hora local del equipo.
+  > `CURRENT_TIMESTAMP` usa UTC.
+- [x] Un texto `'aaaa-mm-dd 09:00:00'`, en UTC.
+  > Correcta: es texto ISO en UTC. Al mostrarlo hay que convertir a hora local, por ejemplo con `datetime(creado, 'localtime')`.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3rmn-19" title="Editar a través de una vista">
+La aplicación muestra `v_clientes_activos`, una vista sobre `clientes`, y el programador intenta hacer `UPDATE v_clientes_activos SET telefono = ...`. SQLite lo rechaza. ¿Qué alternativa ofrece?
+
+- [ ] Declarar la vista como STRICT.
+  > STRICT se aplica a tablas, no a vistas.
+- [ ] Activar `PRAGMA foreign_keys` antes de hacer el UPDATE.
+  > No tiene relación con modificar vistas.
+- [x] Actualizar la tabla base o usar un trigger INSTEAD OF.
+  > Correcta: las vistas no se modifican directamente en SQLite.
+- [ ] Volver a crear la vista con la opción `WITHOUT ROWID`.
+  > Es una opción de tablas.
+
+Repasar: 3B §2.
+</Quiz>
+
+<Quiz id="t3rmn-20" title="RIGHT JOIN con un driver antiguo">
+Un proyecto heredado incluye `sqlite-jdbc` 3.23.1, el del aula antigua. Una consulta con `RIGHT JOIN` funciona en la consola `sqlite3` 3.54, pero falla desde Java. ¿Por qué?
+
+- [ ] Porque Java no admite RIGHT JOIN.
+  > El SQL lo ejecuta el motor incluido en el driver, no Java.
+- [ ] Porque RIGHT JOIN necesita activar las claves foráneas.
+  > Las FK no intervienen en las uniones.
+- [ ] Porque la consola y el driver leen archivos distintos.
+  > Ambos pueden abrir el mismo archivo.
+- [x] Porque el motor incluido en ese driver es anterior a la 3.39.
+  > Correcta: el driver lleva su propio motor SQLite, y RIGHT JOIN llegó en la 3.39. Hay que actualizar la dependencia y comprobar la versión con `getDatabaseProductVersion()`.
+
+Repasar: 3B §2 y §8.
+</Quiz>
+
+<QuizResults />

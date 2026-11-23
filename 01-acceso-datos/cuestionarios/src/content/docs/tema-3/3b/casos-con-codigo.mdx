@@ -1,0 +1,442 @@
+---
+title: "3B · Con código · Casos reales"
+description: "20 fragmentos SQL y JDBC sobre SQLite con sorpresas reales: tipos que no se imponen, mayúsculas, NULL, división entera, bloqueos, bases en memoria y claves foráneas."
+sidebar:
+  order: 4
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** SQLite 3.39 o posterior; en Java, `sqlite-jdbc` con su configuración por defecto. Las claves foráneas **no** están activadas salvo que el fragmento o la URL lo indiquen. **Cada enunciado indica el esquema y los datos de partida.** Las respuestas se comprobaron con `sqlite3` 3.54 y `sqlite-jdbc` 3.51.
+
+<Quiz id="t3brc-01" title="Un script copiado de MySQL">
+Base SQLite nueva y vacía. El script se copió tal cual de MySQL. ¿Qué devuelve el SELECT?
+
+```sql
+CREATE TABLE productos (id INT AUTO_INCREMENT PRIMARY KEY, nombre TEXT);
+INSERT INTO productos (nombre) VALUES ('teclado'), ('ratón');
+SELECT id, nombre FROM productos;
+```
+
+- [ ] Error de sintaxis en `AUTO_INCREMENT`.
+  > SQLite acepta `INT AUTO_INCREMENT` como nombre de tipo, aunque no signifique nada para él.
+- [ ] `1 | teclado` y `2 | ratón`
+  > Solo una columna declarada exactamente `INTEGER PRIMARY KEY` es alias de `rowid` y recibe un valor automático.
+- [x] Las dos filas con `id` NULL.
+  > Correcta: `INT AUTO_INCREMENT PRIMARY KEY` no es alias de `rowid`, y por una peculiaridad histórica esa PK admite NULL. Se escribe `id INTEGER PRIMARY KEY`.
+- [ ] Solo la primera fila: la segunda repite el NULL de la PK.
+  > SQLite no considera iguales dos NULL en la clave.
+
+Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
+</Quiz>
+
+<Quiz id="t3brc-02" title="Un VARCHAR que no limita">
+Base SQLite nueva y vacía. ¿Qué devuelve el SELECT?
+
+```sql
+CREATE TABLE socios (nombre VARCHAR(10));
+INSERT INTO socios VALUES ('Maria del Carmen Lopez');
+SELECT length(nombre) FROM socios;
+```
+
+- [ ] `10`: SQLite trunca el texto.
+  > SQLite no trunca según la longitud declarada.
+- [x] `22`
+  > Correcta: en una tabla ordinaria la longitud de `VARCHAR(10)` no se impone; haría falta un CHECK.
+- [ ] Error: el valor supera la longitud.
+  > Eso pasaría en MySQL en modo estricto, no en SQLite.
+- [ ] `NULL`: el valor no cabe y se descarta.
+  > SQLite guarda el texto completo.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3brc-03" title="Correo único sin distinguir mayúsculas">
+Base SQLite nueva y vacía. ¿Qué ocurre con el segundo INSERT?
+
+```sql
+CREATE TABLE usuarios (email TEXT UNIQUE COLLATE NOCASE);
+INSERT INTO usuarios VALUES ('Ana@ej.es');
+INSERT INTO usuarios VALUES ('ana@ej.es');
+```
+
+- [ ] Se inserta: UNIQUE distingue mayúsculas.
+  > Con `COLLATE NOCASE` la restricción compara sin distinguirlas.
+- [ ] Sustituye la primera fila.
+  > Un INSERT normal no reemplaza filas.
+- [ ] Se inserta en minúsculas y cambia la primera.
+  > La colación decide cómo se compara, no transforma los valores guardados.
+- [x] Falla por la restricción UNIQUE.
+  > Correcta: con NOCASE, `Ana@ej.es` y `ana@ej.es` son el mismo valor. Sin la colación se aceptarían los dos.
+
+Repasar: 3B §4 y §5.
+</Quiz>
+
+<Quiz id="t3brc-04" title="Activos importados como texto">
+Base SQLite nueva y vacía; tabla ordinaria. ¿Qué devuelve la consulta?
+
+```sql
+CREATE TABLE clientes (activo INTEGER);
+INSERT INTO clientes VALUES (1), ('true'), (0);
+SELECT COUNT(*) FROM clientes WHERE activo = 1;
+```
+
+- [ ] `2`: `'true'` se convierte en 1.
+  > La afinidad INTEGER solo convierte textos que parecen números.
+- [ ] Error en el INSERT: `'true'` no es INTEGER.
+  > Una tabla ordinaria no lo impide; lo guarda como texto.
+- [x] `1`
+  > Correcta: `'true'` se guarda como texto y no es igual a 1. Un `CHECK (activo IN (0, 1))` lo habría rechazado.
+- [ ] `0`
+  > La primera fila vale 1.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3brc-05" title="Reservas de 2026">
+Base SQLite nueva y vacía. Una fecha se tecleó con otro formato. ¿Qué devuelve la consulta?
+
+```sql
+CREATE TABLE reservas (fecha TEXT);
+INSERT INTO reservas VALUES ('2026-03-15'), ('5/11/2026'), ('2026-11-30');
+SELECT COUNT(*) FROM reservas
+WHERE fecha BETWEEN '2026-01-01' AND '2026-12-31';
+```
+
+- [ ] `3`: las tres reservas son de 2026.
+  > `'5/11/2026'` se compara como texto: empieza por `5`, que va después de `2`.
+- [x] `2`
+  > Correcta: solo las fechas ISO caen en el rango de textos. Hay que usar una sola convención.
+- [ ] `0`: BETWEEN no funciona con texto.
+  > Funciona con texto, comparando carácter a carácter.
+- [ ] Error: no existe el tipo DATE.
+  > La columna es TEXT y la consulta es válida.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3brc-06" title="Céntimos en coma flotante">
+¿Qué devuelve la consulta en SQLite?
+
+```sql
+SELECT 0.1 + 0.2 = 0.3, 10 + 20 = 30;
+```
+
+- [ ] `1 | 1`
+  > `0.1 + 0.2` en coma flotante no es exactamente `0.3`.
+- [ ] `0 | 0`
+  > La suma de enteros es exacta.
+- [x] `0 | 1`
+  > Correcta: por eso los importes suelen guardarse como enteros en céntimos.
+- [ ] `1 | 0`
+  > Es justo al revés.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3brc-07" title="Buscar contactos sin teléfono">
+Base SQLite nueva y vacía. ¿Qué devuelven las dos consultas?
+
+```sql
+CREATE TABLE contactos (nombre TEXT, tel TEXT);
+INSERT INTO contactos VALUES ('Ana', NULL), ('Luis', '555');
+SELECT COUNT(*) FROM contactos WHERE tel = NULL;
+SELECT COUNT(*) FROM contactos WHERE tel IS NULL;
+```
+
+- [ ] `1` y `1`
+  > `tel = NULL` nunca es verdadero: su resultado es desconocido.
+- [ ] `1` y `0`
+  > Es al revés.
+- [ ] Error en la primera: no se puede comparar con NULL.
+  > Es SQL válido; simplemente no selecciona ninguna fila.
+- [x] `0` y `1`
+  > Correcta: la ausencia de valor se comprueba con `IS NULL`.
+
+Repasar: 3B §8.
+</Quiz>
+
+<Quiz id="t3brc-08" title="Media con una nota pendiente">
+Base SQLite nueva y vacía. Un alumno tiene una nota pendiente (NULL). ¿Qué devuelve?
+
+```sql
+CREATE TABLE notas (valor INTEGER);
+INSERT INTO notas VALUES (10), (NULL), (6);
+SELECT AVG(valor) FROM notas;
+```
+
+- [ ] `5.33…`: divide entre 3.
+  > AVG ignora los NULL y divide entre los 2 valores conocidos.
+- [x] `8.0`
+  > Correcta: si la nota pendiente debe contar como 0, se usa `AVG(COALESCE(valor, 0))`.
+- [ ] `NULL`: basta un NULL para anular la media.
+  > Eso pasa en una expresión como `10 + NULL`, no en un agregado.
+- [ ] `8`: AVG de enteros devuelve un entero.
+  > AVG devuelve un valor REAL.
+
+Repasar: 3B §8.
+</Quiz>
+
+<Quiz id="t3brc-09" title="División entre enteros">
+¿Qué devuelve la consulta en SQLite?
+
+```sql
+SELECT 7 / 2, 7 / 2.0;
+```
+
+- [ ] `3.5 | 3.5`
+  > Entre dos enteros, la división es entera.
+- [ ] `4 | 3.5`
+  > La división entera trunca, no redondea.
+- [x] `3 | 3.5`
+  > Correcta: basta con que un operando sea REAL para obtener decimales.
+- [ ] `3 | 3`
+  > `2.0` es REAL y el resultado tiene decimales.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3brc-10" title="Códigos guardados como texto">
+Base SQLite nueva y vacía. ¿En qué orden salen los códigos?
+
+```sql
+CREATE TABLE pasillos (cod TEXT);
+INSERT INTO pasillos VALUES ('9'), ('10'), ('2');
+SELECT cod FROM pasillos ORDER BY cod;
+```
+
+- [ ] `2`, `9`, `10`
+  > Ese sería el orden numérico; la columna es TEXT.
+- [ ] `10`, `9`, `2`
+  > Sería el orden descendente.
+- [x] `10`, `2`, `9`
+  > Correcta: se ordena carácter a carácter. Para un orden numérico, la columna debería ser INTEGER o usar `ORDER BY CAST(cod AS INTEGER)`.
+- [ ] `9`, `10`, `2`, el orden de inserción.
+  > ORDER BY ordena; el orden de inserción no está garantizado.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3brc-11" title="Activar las FK desde la URL">
+`agenda.db` contiene `g(id INTEGER PRIMARY KEY)`, vacía, y `s(g INTEGER REFERENCES g (id))`. ¿Qué ocurre?
+
+```java
+try (Connection c = DriverManager.getConnection(
+        "jdbc:sqlite:agenda.db?foreign_keys=on")) {
+    c.createStatement().executeUpdate("INSERT INTO s VALUES (99)");
+}
+```
+
+- [ ] Se inserta: la URL no admite opciones.
+  > `sqlite-jdbc` lee opciones de configuración en la URL.
+- [x] Lanza `SQLException` por la clave foránea.
+  > Correcta: la opción de la URL activa las FK en esa conexión, como haría `PRAGMA foreign_keys = ON`.
+- [ ] Lanza excepción al conectar: no existe la base `agenda.db?foreign_keys=on`.
+  > El driver separa la ruta de las opciones.
+- [ ] Se inserta y crea la fila 99 en `g`.
+  > Una FK nunca crea filas.
+
+Repasar: 3B §5, FOREIGN KEY, y §8.
+</Quiz>
+
+<Quiz id="t3brc-12" title="Dos conexiones a :memory:">
+En una prueba automática se crea la tabla con una conexión y se consulta con otra. ¿Qué ocurre en la última línea?
+
+```java
+Connection a = DriverManager.getConnection("jdbc:sqlite::memory:");
+a.createStatement().execute("CREATE TABLE t (n INTEGER)");
+Connection b = DriverManager.getConnection("jdbc:sqlite::memory:");
+b.createStatement().executeQuery("SELECT * FROM t");
+```
+
+- [ ] Devuelve un resultado vacío.
+  > Ni siquiera existe la tabla para `b`.
+- [ ] Devuelve la tabla que creó `a`.
+  > Cada conexión a `:memory:` tiene su propia base.
+- [ ] Falla al abrir `b`: solo puede haber una base en memoria.
+  > Se pueden abrir varias, cada una independiente.
+- [x] Lanza `SQLException`: «no such table: t».
+  > Correcta: hay que usar la misma conexión durante toda la prueba o una base en archivo temporal.
+
+Repasar: 3B §8, acceso desde Java.
+</Quiz>
+
+<Quiz id="t3brc-13" title="El guardado que se queda esperando">
+`datos.db` contiene `g(id INTEGER PRIMARY KEY)`. La conexión `c1` empieza a escribir y la pantalla espera a que el usuario confirme. Mientras, `c2` intenta guardar. ¿Qué ocurre con `c2`?
+
+```java
+c1.setAutoCommit(false);
+c1.createStatement().executeUpdate("INSERT INTO g VALUES (1)");
+// c1 sigue sin commit
+c2.createStatement().executeUpdate("INSERT INTO g VALUES (2)");
+```
+
+- [ ] Se inserta en paralelo.
+  > SQLite admite un solo escritor a la vez.
+- [x] Espera unos segundos y lanza `SQLException`: «database is locked».
+  > Correcta: `c1` tiene el permiso de escritura. Las transacciones de escritura deben ser cortas.
+- [ ] Se inserta y la fila de `c1` se descarta.
+  > Una conexión no deshace la transacción de otra.
+- [ ] Se queda esperando para siempre.
+  > El driver tiene un tiempo de espera por defecto y luego lanza la excepción.
+
+Repasar: 3B §2 y §7.
+</Quiz>
+
+<Quiz id="t3brc-14" title="Savepoint desde Java en SQLite">
+`c` es una conexión `sqlite-jdbc`; `st` es un `Statement` suyo y la tabla `sp(n)` está vacía. ¿Qué devuelve `group_concat(n)` al terminar?
+
+```java
+c.setAutoCommit(false);
+st.executeUpdate("INSERT INTO sp VALUES (1)");
+Savepoint s = c.setSavepoint();
+st.executeUpdate("INSERT INTO sp VALUES (2)");
+c.rollback(s);
+st.executeUpdate("INSERT INTO sp VALUES (3)");
+c.commit();
+```
+
+- [ ] `1,2,3`
+  > El 2 se deshizo al volver al savepoint.
+- [ ] `3`
+  > El 1 es anterior al savepoint y se conserva.
+- [x] `1,3`
+  > Correcta: `rollback(s)` deshace solo lo posterior al punto y la transacción continúa hasta `commit()`.
+- [ ] Error: SQLite no admite savepoints desde JDBC.
+  > Los admite: SQLite tiene SAVEPOINT y el driver lo expone.
+
+Repasar: 3B §7.
+</Quiz>
+
+<Quiz id="t3brc-15" title="Buscar Álvaro sin mayúsculas">
+Con la configuración por defecto de SQLite, ¿qué devuelve?
+
+```sql
+SELECT 'Álvaro' LIKE 'á%', 'Ana' LIKE 'a%', 'Álvaro' LIKE 'Á%';
+```
+
+- [ ] `1 | 1 | 1`
+  > LIKE solo ignora mayúsculas en las letras ASCII; `Á` y `á` no lo son.
+- [ ] `0 | 0 | 1`
+  > `'Ana' LIKE 'a%'` sí coincide: `A` y `a` son ASCII.
+- [ ] `1 | 1 | 0`
+  > La tercera coincide exactamente.
+- [x] `0 | 1 | 1`
+  > Correcta: en buscadores con tildes conviene normalizar el texto o usar una extensión ICU.
+
+Repasar: 3B §4, tipos y sintaxis.
+</Quiz>
+
+<Quiz id="t3brc-16" title="Una tabla sin rowid y sin clave">
+Base SQLite nueva y vacía. ¿Qué ocurre?
+
+```sql
+CREATE TABLE eventos (momento TEXT, texto TEXT) WITHOUT ROWID;
+```
+
+- [ ] Se crea con un `rowid` oculto igualmente.
+  > Justo eso es lo que elimina WITHOUT ROWID.
+- [ ] Se crea y usa la primera columna como clave.
+  > SQLite no la elige por su cuenta.
+- [x] Error: una tabla WITHOUT ROWID necesita una PRIMARY KEY.
+  > Correcta: usa la PK declarada como estructura de almacenamiento, así que es obligatoria.
+- [ ] Se crea con AUTOINCREMENT implícito.
+  > WITHOUT ROWID no se combina con AUTOINCREMENT.
+
+Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
+</Quiz>
+
+<Quiz id="t3brc-17" title="Clientes que facturan más de 100">
+La tabla `facturas(cliente TEXT, total INTEGER)` existe. ¿Qué ocurre con la consulta?
+
+```sql
+SELECT cliente
+FROM facturas
+WHERE SUM(total) > 100
+GROUP BY cliente;
+```
+
+- [ ] Devuelve los clientes con más de 100 facturados.
+  > WHERE filtra filas antes de agrupar y no puede usar agregados.
+- [x] Error «misuse of aggregate»: la condición debe ir en `HAVING SUM(total) > 100`.
+  > Correcta: HAVING filtra los grupos ya agregados.
+- [ ] Devuelve todos los clientes.
+  > La consulta no llega a ejecutarse.
+- [ ] Devuelve las facturas de más de 100.
+  > Eso sería `WHERE total > 100`, sin SUM.
+
+Repasar: 3B §8.
+</Quiz>
+
+<Quiz id="t3brc-18" title="DELETE sin WHERE dentro de una transacción">
+La tabla `t` tiene 3 filas. En la consola se ejecuta un DELETE sin WHERE por error, pero dentro de una transacción. ¿Cuántas filas tiene `t` al final?
+
+```sql
+BEGIN;
+DELETE FROM t;
+ROLLBACK;
+SELECT COUNT(*) FROM t;
+```
+
+- [ ] `0`: DELETE se aplica de inmediato.
+  > Dentro de la transacción no se confirma hasta el COMMIT.
+- [ ] Error: no se puede hacer ROLLBACK de un DELETE.
+  > Se puede deshacer cualquier DML de la transacción.
+- [ ] `1`: ROLLBACK recupera solo la última fila.
+  > Recupera todas las borradas.
+- [x] `3`
+  > Correcta: antes de una operación arriesgada en consola, BEGIN permite deshacerla.
+
+Repasar: 3B §7.
+</Quiz>
+
+<Quiz id="t3brc-19" title="Un nombre de solo espacios">
+Base SQLite nueva y vacía. ¿Qué ocurre con el INSERT?
+
+```sql
+CREATE TABLE clientes (
+    nombre TEXT NOT NULL CHECK (length(trim(nombre)) > 0)
+);
+INSERT INTO clientes VALUES ('   ');
+```
+
+- [ ] Se inserta: NOT NULL ya se cumple.
+  > NOT NULL se cumple, pero el CHECK no.
+- [x] Falla por el CHECK.
+  > Correcta: `trim` quita los espacios y la longitud queda en 0. Es la forma de rechazar nombres vacíos que NOT NULL no impide.
+- [ ] Se inserta como NULL.
+  > SQLite no convierte los espacios en NULL.
+- [ ] Error en el CREATE: CHECK no admite funciones.
+  > CHECK admite expresiones con funciones como `trim` y `length`.
+
+Repasar: 3B §5, qué garantiza cada restricción.
+</Quiz>
+
+<Quiz id="t3brc-20" title="Borrar un grupo sin acción declarada">
+Base SQLite nueva y vacía. ¿Qué ocurre con el DELETE?
+
+```sql
+PRAGMA foreign_keys = ON;
+CREATE TABLE grupos (id INTEGER PRIMARY KEY);
+CREATE TABLE socios (
+    id INTEGER PRIMARY KEY,
+    grupo INTEGER REFERENCES grupos (id)
+);
+INSERT INTO grupos VALUES (1);
+INSERT INTO socios VALUES (10, 1);
+DELETE FROM grupos WHERE id = 1;
+```
+
+- [ ] Borra el grupo y también el socio.
+  > Eso haría `ON DELETE CASCADE`, que no está declarado.
+- [ ] Borra el grupo y deja `grupo` a NULL.
+  > Eso haría `ON DELETE SET NULL`.
+- [x] Falla por la clave foránea.
+  > Correcta: sin acción declarada se aplica NO ACTION, que rechaza dejar al socio apuntando a un grupo inexistente.
+- [ ] Borra el grupo sin comprobar nada.
+  > Las FK se activaron en esta conexión.
+
+Repasar: 3B §6, acciones referenciales.
+</Quiz>
+
+<QuizResults />

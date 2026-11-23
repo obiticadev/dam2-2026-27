@@ -7,7 +7,7 @@ import { Quiz, QuizResults } from 'starlight-quiz/components';
 
 **20 preguntas originales · 10 de 3A y 10 de 3B · cuatro opciones · una correcta.** Mezcla situaciones, afirmaciones I/II/III y fragmentos de código. El reparto 10/10 es de práctica, no una ponderación oficial.
 
-Java 17 o posterior. Se omiten imports y el tratamiento de excepciones salvo que formen parte de la pregunta. En Java, `conexion` es una `Connection` abierta a MySQL con la base `emp`/`dept` original. En SQLite, las FK no están activadas salvo que el fragmento lo indique. Cada pregunta es independiente.
+Java 17 o posterior. Se omiten imports y el tratamiento de excepciones salvo que formen parte de la pregunta. En Java, `conexion` es una `Connection` abierta a MySQL con la base `emp`/`dept` original. En SQLite, las FK no están activadas salvo que el fragmento lo indique. **Cada enunciado repite los datos que necesita.**
 
 <Quiz id="t3mn-01" title="Un pool de conexiones">
 Una aplicación web atiende cientos de peticiones por minuto y abrir una conexión nueva en cada una es lento. El equipo quiere configurar las conexiones en un único sitio y reutilizarlas. ¿Qué recomienda el temario?
@@ -40,7 +40,7 @@ Repasar: 3A §6.
 </Quiz>
 
 <Quiz id="t3mn-03" title="Commit dentro del bucle">
-Se suben los sueldos de 5 empleados. La tercera actualización lanza `SQLException`. ¿Cuántas subidas quedan guardadas?
+`numeros` contiene los `empno` de 5 empleados que existen. Las dos primeras actualizaciones van bien y la tercera lanza `SQLException`, por ejemplo por un bloqueo. ¿Cuántas subidas quedan guardadas?
 
 ```java
 conexion.setAutoCommit(false);
@@ -92,7 +92,7 @@ Repasar: 3A §9.
 </Quiz>
 
 <Quiz id="t3mn-05" title="Guardar un empleado sin jefe">
-El nuevo empleado no tiene jefe (`mgr`). ¿Qué línea completa correctamente el parámetro 4?
+La columna `mgr` de `emp` admite NULL y guarda el `empno` del jefe. El nuevo empleado 8001 no tiene jefe. ¿Qué línea completa correctamente el parámetro 4?
 
 ```java
 PreparedStatement ps = conexion.prepareStatement(
@@ -117,7 +117,7 @@ Repasar: 3A §5.
 </Quiz>
 
 <Quiz id="t3mn-06" title="Columnas por posición con SELECT *">
-`emp` tiene las columnas `empno, ename, job, mgr, hiredate, sal, comm, deptno`. ¿Qué imprime?
+`emp` tiene las columnas `empno, ename, job, mgr, hiredate, sal, comm, deptno`, en ese orden. El empleado 7839 es KING, con oficio PRESIDENT. ¿Qué imprime?
 
 ```java
 ResultSet rs = conexion.createStatement()
@@ -139,7 +139,7 @@ Repasar: 3A §5, recorrer los resultados.
 </Quiz>
 
 <Quiz id="t3mn-07" title="Llamar a una función">
-La función MySQL `salario_anual(p_empno INT)` devuelve un DECIMAL. ¿Qué posición tiene el valor devuelto?
+La función MySQL `salario_anual(p_empno INT)` devuelve un DECIMAL con el salario anual del empleado; el 7839 existe. ¿Qué posición tiene el valor devuelto?
 
 ```java
 CallableStatement cs = conexion.prepareCall("{? = call salario_anual(?)}");
@@ -199,7 +199,7 @@ Repasar: 3A §10.
 </Quiz>
 
 <Quiz id="t3mn-10" title="Ventas de varios cafés">
-`ventas` es un `Map<String, Integer>` con el nombre del café y lo vendido. ¿Por qué el código lanza la excepción del `if`?
+`ventas` es un `Map<String, Integer>` con el nombre de cada café y lo vendido esta semana. `semana` es un `PreparedStatement` de `UPDATE cafes SET ventas_semana = ? WHERE nombre = ?`. El bucle va dentro de una transacción (autocommit desactivado) cuyo `catch` hace `rollback()`; `nombre` es la clave primaria de `cafes`. ¿Por qué el código lanza la excepción del `if`?
 
 ```java
 for (Map.Entry<String, Integer> v : ventas.entrySet()) {
@@ -282,7 +282,7 @@ Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
 </Quiz>
 
 <Quiz id="t3mn-14" title="Borrar un grupo con proveedores">
-¿Qué ocurre con el DELETE?
+Base SQLite nueva y vacía. ¿Qué ocurre con el DELETE?
 
 ```sql
 PRAGMA foreign_keys = ON;
@@ -348,7 +348,7 @@ Repasar: 3B §3.
 </Quiz>
 
 <Quiz id="t3mn-17" title="Tabla estricta">
-¿Qué ocurre con el INSERT?
+Base SQLite 3.37 o posterior, nueva y vacía. ¿Qué ocurre con el INSERT?
 
 ```sql
 CREATE TABLE medidas (id INTEGER PRIMARY KEY, valor INTEGER) STRICT;

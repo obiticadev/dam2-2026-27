@@ -42,6 +42,8 @@ export default defineConfig({
 							items: [
 								{ label: 'Normal', slug: 'tema-3/mixto' },
 								{ label: 'Más difícil', slug: 'tema-3/mixto-dificil' },
+								{ label: 'Casos reales · Normal', slug: 'tema-3/casos-mixto' },
+								{ label: 'Casos reales · Más difícil', slug: 'tema-3/casos-mixto-dificil' },
 							],
 						},
 					],

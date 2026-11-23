@@ -1,0 +1,450 @@
+---
+title: "Tema 3 · Casos reales · Más difícil"
+description: "20 incidencias difíciles de diagnosticar: transacciones a medias, comodines, metadatos, PRAGMA que no se aplican, uniones que duplican y comparaciones entre tipos."
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · 10 de 3A y 10 de 3B · cuatro opciones · una correcta.** Errores que no lanzan excepción o que aparecen lejos de su causa. Java 17 o posterior; se omiten imports y el tratamiento de excepciones salvo que formen parte de la pregunta. **Cada enunciado indica los datos que necesita.** Las respuestas con código se comprobaron con H2 en modo MySQL, `sqlite3` 3.54 y `sqlite-jdbc` 3.51.
+
+<Quiz id="t3rmd-01" title="Transferencias con el catch dentro del bucle">
+`emp.sal` tiene `CHECK (sal >= 0)`. JAMES (7900) cobra 950 y MILLER (7934) 1300. La segunda transferencia mueve 2000 de JAMES a MILLER. No hay más errores. ¿Cómo quedan JAMES y MILLER?
+
+```java
+conexion.setAutoCommit(false);
+for (Transferencia t : lote) {   // la de JAMES a MILLER es la segunda
+    try {
+        mas.setBigDecimal(1, t.importe());   mas.setInt(2, t.destino());   mas.executeUpdate();
+        menos.setBigDecimal(1, t.importe()); menos.setInt(2, t.origen());  menos.executeUpdate();
+    } catch (SQLException e) {
+        log.warning("Transferencia fallida: " + e.getMessage());
+    }
+}
+conexion.commit();
+```
+
+- [ ] JAMES 950 y MILLER 1300: la transferencia fallida se deshace sola.
+  > Un error en una sentencia no deshace las anteriores de la transacción.
+- [x] JAMES 950 y MILLER 3300: el abono se confirmó y el cargo falló.
+  > Correcta: al capturar la excepción dentro del bucle y confirmar al final, se guarda media transferencia. Hace falta un savepoint por transferencia o un rollback de todo el lote.
+- [ ] JAMES -1050 y MILLER 3300: el CHECK solo avisa.
+  > El CHECK rechaza el cargo y JAMES no cambia.
+- [ ] Ningún cambio de todo el lote: el `commit()` falla por el error anterior.
+  > La excepción ya se capturó y el `commit()` confirma lo que se ejecutó bien.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3rmd-02" title="El rollback que no compila">
+¿Qué ocurre con este código?
+
+```java
+try (Connection c = DriverManager.getConnection(url)) {
+    c.setAutoCommit(false);
+    actualizarStock(c);
+    registrarVenta(c);
+    c.commit();
+} catch (SQLException e) {
+    c.rollback();
+}
+```
+
+- [ ] Funciona: el `catch` deshace la venta.
+  > No llega a compilar.
+- [ ] Compila, pero el rollback falla porque la conexión ya está cerrada.
+  > El problema aparece antes, al compilar.
+- [x] No compila: `c` solo existe dentro del bloque try.
+  > Correcta: el recurso no es visible en el `catch`. El `rollback()` va en un try/catch interno, dentro del try-with-resources.
+- [ ] Compila y el rollback lo hace el driver al cerrar.
+  > No compila, y además no conviene depender de lo que haga el driver al cerrar.
+
+Repasar: 3A §3, `Conexion.java`, y §9.
+</Quiz>
+
+<Quiz id="t3rmd-03" title="Comparar importes">
+SCOTT (7788) cobra 3000 en una columna `sal NUMERIC(7,2)`. ¿Qué imprime?
+
+```java
+ResultSet rs = conexion.createStatement()
+        .executeQuery("SELECT sal FROM emp WHERE empno = 7788");
+rs.next();
+BigDecimal sal = rs.getBigDecimal(1);
+System.out.println(sal + " " + sal.equals(new BigDecimal("3000"))
+        + " " + (sal.compareTo(new BigDecimal("3000")) == 0));
+```
+
+- [ ] `3000 true true`
+  > El valor conserva la escala 2 de la columna: `3000.00`.
+- [ ] `3000.00 true true`
+  > `equals` también compara la escala, y 2 no es igual a 0.
+- [x] `3000.00 false true`
+  > Correcta: para comparar importes se usa `compareTo`, que ignora la escala.
+- [ ] `3000.00 false false`
+  > `compareTo` compara solo el valor numérico.
+
+Repasar: 3A §5, recorrer los resultados.
+</Quiz>
+
+<Quiz id="t3rmd-04" title="Un panel que no se actualiza">
+Un panel de control en MySQL (InnoDB, nivel REPEATABLE READ por defecto) mantiene abierta una conexión con el autocommit desactivado. Cada minuto lanza un SELECT y nunca llama a `commit()` porque «solo lee». Las ventas nuevas no aparecen hasta reiniciar la aplicación. ¿Cuál es la causa más probable?
+
+- [ ] Que el `ResultSet` no es `TYPE_SCROLL_SENSITIVE`.
+  > Cada minuto se lanza una consulta nueva; el problema es la transacción.
+- [ ] Que un SELECT nunca ve datos confirmados por otras conexiones.
+  > Sí los ve, en cuanto empieza una transacción nueva.
+- [ ] Que el driver guarda en caché el resultado de la primera consulta.
+  > JDBC no reutiliza resultados entre consultas: cada `executeQuery` vuelve a preguntar al motor.
+- [x] Que sigue dentro de la misma transacción, y en REPEATABLE READ ve siempre la misma instantánea. Hay que terminarla o usar el autocommit.
+  > Correcta: el aislamiento también afecta a las lecturas. Una transacción de lectura que no termina sigue viendo los datos del principio.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3rmd-05" title="Buscar «50%»">
+`prod` contiene `'Cupon 50% dto'`, `'Pack 500 g'` y `'Caja 5 kg'`. El usuario busca el texto `50%`. ¿Qué imprime?
+
+```java
+String texto = "50%";
+PreparedStatement ps = conexion.prepareStatement(
+        "SELECT COUNT(*) FROM prod WHERE nombre LIKE ?");
+ps.setString(1, "%" + texto + "%");
+ResultSet rs = ps.executeQuery();
+rs.next();
+System.out.println(rs.getInt(1));
+```
+
+- [ ] `1`: solo el cupón contiene «50%».
+  > Dentro del valor, `%` sigue siendo un comodín de LIKE.
+- [x] `2`
+  > Correcta: el patrón `%50%%` coincide también con `Pack 500 g`. Para buscar `%` o `_` literalmente hay que escaparlos y usar `ESCAPE`.
+- [ ] `3`
+  > `Caja 5 kg` no contiene `50`.
+- [ ] Lanza excepción por un `%` duplicado.
+  > Es un patrón válido.
+
+Repasar: 3A §5, consultas y parámetros.
+</Quiz>
+
+<Quiz id="t3rmd-06" title="Funciona en Windows, falla en Linux">
+Un equipo desarrolló en Windows con un driver **tipo 2** de su gestor. Al desplegar en un servidor Linux, la conexión falla con un `UnsatisfiedLinkError` al cargar una biblioteca. El JAR del driver está en el classpath. ¿Cuál es el diagnóstico?
+
+- [ ] Falta registrar el driver con `Class.forName`.
+  > El driver se ha cargado; lo que falta es su biblioteca nativa.
+- [x] El tipo 2 necesita la biblioteca nativa del fabricante compatible con ese sistema, y en Linux no está instalada.
+  > Correcta: se instala el cliente nativo para Linux o se cambia a un driver tipo 4, en Java puro.
+- [ ] La URL de Windows no vale en Linux.
+  > El error es de carga de una biblioteca, no de la URL.
+- [ ] Linux no admite JDBC.
+  > JDBC es Java y funciona en cualquier sistema con una JVM.
+
+Repasar: 3A §2, clasificación de los controladores.
+</Quiz>
+
+<Quiz id="t3rmd-07" title="Volver a un savepoint ya confirmado">
+`pedido` está vacía. ¿Qué ocurre en la última línea?
+
+```java
+conexion.setAutoCommit(false);
+Statement st = conexion.createStatement();
+st.executeUpdate("INSERT INTO pedido VALUES (1)");
+Savepoint sp = conexion.setSavepoint();
+st.executeUpdate("INSERT INTO pedido VALUES (2)");
+conexion.commit();
+conexion.rollback(sp);
+```
+
+- [ ] Deshace el pedido 2.
+  > Ya estaba confirmado y no se puede deshacer.
+- [ ] No hace nada, sin error.
+  > El savepoint ya no es válido y el driver lo indica.
+- [ ] Deshace los dos pedidos.
+  > Un rollback no deshace lo confirmado.
+- [x] Lanza `SQLException`: el `commit()` terminó la transacción y su savepoint dejó de existir.
+  > Correcta: un savepoint solo vive dentro de su transacción.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3rmd-08" title="La contraseña en los logs">
+Para «simplificar», un equipo pone las credenciales en la URL (`...?user=app&password=S3cr3t`), lee la URL de una variable de entorno y registra en el log cada `SQLException` junto con la URL usada. ¿Qué problema introduce?
+
+- [ ] Ninguno: la URL viene de una variable de entorno.
+  > La contraseña no está en el código, pero acaba escrita en los logs.
+- [x] Cada error escribe la contraseña en los logs, que suelen tener una difusión mucho más amplia que los secretos.
+  > Correcta: además de leer las credenciales del entorno, hay que evitar que aparezcan en mensajes y trazas.
+- [ ] Que el driver no admite credenciales en la URL.
+  > Muchos drivers las admiten; el problema es la exposición.
+- [ ] Que la conexión será más lenta.
+  > No cambia el rendimiento.
+
+Repasar: 3A §3, `Conexion.java`.
+</Quiz>
+
+<Quiz id="t3rmd-09" title="Un patrón de tablas que coincide de más">
+La base contiene las tablas `emp`, `emp_hist`, `empresa` y `emp2`. Solo se querían las que empiezan por `emp_`. ¿Cuántas imprime?
+
+```java
+DatabaseMetaData md = conexion.getMetaData();
+try (ResultSet t = md.getTables(conexion.getCatalog(), null, "emp_%",
+        new String[] {"TABLE"})) {
+    while (t.next()) {
+        System.out.println(t.getString("TABLE_NAME"));
+    }
+}
+```
+
+- [ ] 1: solo `emp_hist`.
+  > En los patrones de metadatos, `_` es un comodín de un carácter.
+- [ ] 4: todas empiezan por «emp».
+  > `emp` no tiene ningún carácter después de «emp», y `_` exige uno.
+- [x] 3: `emp_hist`, `empresa` y `emp2`.
+  > Correcta: `emp_%` significa «emp + un carácter cualquiera + lo que sea». Para un `_` literal se escapa con `getSearchStringEscape()`.
+- [ ] 0: `_` no se admite en los patrones.
+  > Se admite como comodín.
+
+Repasar: 3A §6.
+</Quiz>
+
+<Quiz id="t3rmd-10" title="Un log que sobrevive al rollback">
+La tabla `log` existe y está vacía. En MySQL, ¿cuántas filas tiene `log` al final?
+
+```java
+conexion.setAutoCommit(false);
+Statement st = conexion.createStatement();
+st.executeUpdate("INSERT INTO log VALUES ('inicio')");
+st.execute("CREATE TABLE tmp (a INT)");
+conexion.rollback();
+```
+
+- [ ] 0: el rollback deshace el INSERT.
+  > El CREATE TABLE confirmó implícitamente lo anterior.
+- [ ] 0: el CREATE falla dentro de una transacción.
+  > El CREATE se ejecuta sin error.
+- [ ] Lanza excepción: no se puede hacer rollback tras un DDL.
+  > Se puede llamar, pero ya no queda nada pendiente.
+- [x] 1
+  > Correcta: el DDL de MySQL hace un commit implícito. Mezclar DDL y DML en la misma transacción rompe la atomicidad.
+
+Repasar: 3A §7, crear y modificar datos.
+</Quiz>
+
+<Quiz id="t3rmd-11" title="El PRAGMA dentro de la transacción">
+`agenda.db` contiene `g(id INTEGER PRIMARY KEY)`, vacía, y `s(g INTEGER REFERENCES g (id))`. ¿Qué imprime?
+
+```java
+try (Connection c = DriverManager.getConnection("jdbc:sqlite:agenda.db")) {
+    c.setAutoCommit(false);
+    Statement st = c.createStatement();
+    st.execute("PRAGMA foreign_keys = ON");
+    System.out.println(st.executeUpdate("INSERT INTO s VALUES (98)"));
+    c.commit();
+}
+```
+
+- [ ] Lanza `SQLException` por la clave foránea.
+  > El PRAGMA no tuvo efecto: se ejecutó con una transacción ya abierta.
+- [ ] Lanza excepción: no se puede ejecutar un PRAGMA desde JDBC.
+  > Se puede; el problema es el momento.
+- [x] `1`: la fila huérfana se inserta.
+  > Correcta: `PRAGMA foreign_keys` no hace nada dentro de una transacción. Se activa antes de `setAutoCommit(false)` o en la URL (`?foreign_keys=on`).
+- [ ] `0`: el INSERT se ignora.
+  > Se inserta una fila.
+
+Repasar: 3B §5, FOREIGN KEY, y §7.
+</Quiz>
+
+<Quiz id="t3rmd-12" title="INT PRIMARY KEY no es INTEGER PRIMARY KEY">
+Base SQLite nueva y vacía. ¿Qué devuelve el SELECT?
+
+```sql
+CREATE TABLE t (id INT PRIMARY KEY, n TEXT);
+INSERT INTO t (n) VALUES ('a');
+INSERT INTO t (n) VALUES ('b');
+SELECT COUNT(*), SUM(id IS NULL) FROM t;
+```
+
+- [ ] `2 | 0`: SQLite asigna 1 y 2.
+  > Solo `INTEGER PRIMARY KEY`, escrito exactamente así, es alias de `rowid`.
+- [ ] Error en el segundo INSERT: la PK está repetida.
+  > Dos NULL no se consideran repetidos.
+- [ ] Error en el primer INSERT: la PK no admite NULL.
+  > Por una peculiaridad histórica, las PK que no son `INTEGER PRIMARY KEY` admiten NULL.
+- [x] `2 | 2`
+  > Correcta: las dos filas tienen `id` NULL. Hay que escribir `INTEGER PRIMARY KEY` o añadir NOT NULL.
+
+Repasar: 3B §5, qué garantiza cada restricción, y §6.
+</Quiz>
+
+<Quiz id="t3rmd-13" title="Facturado multiplicado por los pagos">
+Base SQLite nueva. Ana tiene una factura de 100 que pagó en dos plazos de 50. ¿Qué devuelve el informe?
+
+```sql
+CREATE TABLE facturas (id INTEGER PRIMARY KEY, cliente TEXT, total INTEGER);
+CREATE TABLE pagos (id INTEGER PRIMARY KEY, factura_id INTEGER, importe INTEGER);
+INSERT INTO facturas VALUES (1, 'Ana', 100);
+INSERT INTO pagos VALUES (1, 1, 50), (2, 1, 50);
+SELECT SUM(f.total) AS facturado, SUM(p.importe) AS pagado
+FROM facturas f
+JOIN pagos p ON p.factura_id = f.id;
+```
+
+- [ ] `100 | 100`
+  > El JOIN repite la factura una vez por cada pago.
+- [x] `200 | 100`
+  > Correcta: la unión multiplica las filas de la factura. Se agregan los pagos por separado, en una subconsulta, y después se unen.
+- [ ] `100 | 50`
+  > Los dos pagos se suman.
+- [ ] `200 | 200`
+  > Cada pago aparece una sola vez.
+
+Repasar: 3B §8, consultas, Chinook y JDBC.
+</Quiz>
+
+<Quiz id="t3rmd-14" title="Altas del año con setDate">
+`c` es una conexión `sqlite-jdbc` con la configuración por defecto, y `t(alta DATE)` está vacía. ¿Qué imprime?
+
+```java
+PreparedStatement ps = c.prepareStatement("INSERT INTO t VALUES (?)");
+ps.setDate(1, java.sql.Date.valueOf("2026-11-20"));
+ps.executeUpdate();
+ResultSet rs = c.createStatement().executeQuery(
+        "SELECT COUNT(*) FROM t WHERE alta >= '2026-01-01'");
+rs.next();
+System.out.println(rs.getInt(1));
+```
+
+- [ ] `1`: la fecha es de 2026.
+  > El driver la guardó como milisegundos, un entero.
+- [ ] Lanza excepción al comparar un entero con un texto.
+  > SQLite los compara sin error.
+- [x] `0`
+  > Correcta: en SQLite un número siempre es menor que un texto, así que la condición es falsa. Hay que usar una sola convención, como texto ISO con `setString`.
+- [ ] `1`: la afinidad DATE convierte el texto en fecha.
+  > No hay clase DATE y el texto `'2026-01-01'` no es un número.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3rmd-15" title="NOT NULL con DEFAULT y un NULL explícito">
+Base SQLite nueva y vacía. El formulario envía `estado` como NULL cuando el usuario no lo elige. ¿Qué ocurre?
+
+```sql
+CREATE TABLE pedidos (
+    id INTEGER PRIMARY KEY,
+    estado TEXT NOT NULL DEFAULT 'nuevo'
+);
+INSERT INTO pedidos (estado) VALUES (NULL);
+```
+
+- [ ] Se inserta con `'nuevo'`.
+  > DEFAULT solo se aplica cuando se omite la columna.
+- [ ] Se inserta con NULL.
+  > La columna es NOT NULL.
+- [x] Falla por la restricción NOT NULL.
+  > Correcta: la aplicación debe omitir la columna o enviar `'nuevo'`. DEFAULT no reemplaza un NULL explícito.
+- [ ] Se inserta con la cadena vacía.
+  > SQLite no inventa valores.
+
+Repasar: 3B §5, qué garantiza cada restricción.
+</Quiz>
+
+<Quiz id="t3rmd-16" title="Leer primero y escribir después">
+Dos procesos usan la misma base SQLite. Cada uno hace `BEGIN`, que por defecto es DEFERRED, lee el stock con un SELECT y, si hay unidades, lo actualiza. Con carga aparecen errores «database is locked» o «busy» justo en el UPDATE. ¿Qué cambio lo evita?
+
+- [ ] `ROLLBACK TO` antes del UPDATE.
+  > Deshace trabajo, pero no consigue el permiso de escritura.
+- [ ] Activar `PRAGMA foreign_keys`.
+  > No tiene relación con los bloqueos.
+- [ ] Usar una base en memoria.
+  > Cada proceso tendría su propia base.
+- [x] Empezar con `BEGIN IMMEDIATE`, para pedir el permiso de escritura al principio.
+  > Correcta: con DEFERRED, dos lectores pueden intentar pasar a escritores a la vez y uno falla. IMMEDIATE lo decide al empezar, antes de leer.
+
+Repasar: 3B §7.
+</Quiz>
+
+<Quiz id="t3rmd-17" title="La colación de la columna en el WHERE">
+Base SQLite nueva y vacía. ¿Qué devuelve la consulta?
+
+```sql
+CREATE TABLE usuarios (email TEXT COLLATE NOCASE);
+INSERT INTO usuarios VALUES ('ana@ej.es');
+SELECT COUNT(*) FROM usuarios WHERE email = 'ANA@EJ.ES';
+```
+
+- [ ] `0`: `=` siempre distingue mayúsculas.
+  > La colación de la columna se aplica a la comparación.
+- [ ] Error: COLLATE solo vale en ORDER BY.
+  > Puede declararse en la columna.
+- [x] `1`
+  > Correcta: al comparar una columna NOCASE, `=` no distingue mayúsculas ASCII.
+- [ ] `1`, pero solo si se usa LIKE.
+  > Aquí también vale `=`, por la colación.
+
+Repasar: 3B §4, tipos y sintaxis.
+</Quiz>
+
+<Quiz id="t3rmd-18" title="Savepoints anidados">
+`t(n)` está vacía. ¿Qué devuelve el SELECT final?
+
+```sql
+BEGIN;
+INSERT INTO t VALUES (1);
+SAVEPOINT a;
+INSERT INTO t VALUES (2);
+SAVEPOINT b;
+INSERT INTO t VALUES (3);
+ROLLBACK TO a;
+COMMIT;
+SELECT group_concat(n) FROM t;
+```
+
+- [ ] `1,2`: solo se deshace lo posterior a `b`.
+  > Se vuelve a `a`, que es anterior a `b`.
+- [ ] `NULL`: se deshace todo.
+  > `ROLLBACK TO a` conserva lo anterior a `a`.
+- [ ] Error: `b` sigue abierto y el COMMIT falla.
+  > Volver a `a` descarta también `b`; el COMMIT termina la transacción.
+- [x] `1`
+  > Correcta: volver a `a` deshace el 2 y el 3, y el COMMIT confirma el 1.
+
+Repasar: 3B §7.
+</Quiz>
+
+<Quiz id="t3rmd-19" title="Ordenar por un dato que falta">
+Base SQLite nueva y vacía. ¿En qué orden salen los nombres?
+
+```sql
+CREATE TABLE contactos (nombre TEXT, tel TEXT);
+INSERT INTO contactos VALUES ('Ana', '555'), ('Luis', NULL), ('Eva', '111');
+SELECT nombre FROM contactos ORDER BY tel;
+```
+
+- [ ] Eva, Ana, Luis: los NULL van al final.
+  > En SQLite, NULL es menor que cualquier valor en orden ascendente.
+- [x] Luis, Eva, Ana
+  > Correcta: los NULL van primero en ASC. Para enviarlos al final se usa `ORDER BY tel NULLS LAST` o `tel IS NULL, tel`.
+- [ ] Ana, Luis, Eva, el orden de inserción.
+  > ORDER BY ordena por `tel`.
+- [ ] Error: no se puede ordenar con valores NULL.
+  > Es válido; solo hay que saber dónde los coloca.
+
+Repasar: 3B §8.
+</Quiz>
+
+<Quiz id="t3rmd-20" title="La base en una carpeta sincronizada">
+Dos dependientes abren el mismo `tienda.db`, guardado en una carpeta que OneDrive sincroniza entre sus dos portátiles, y trabajan a la vez. Al día siguiente hay ventas que no aparecen y archivos «en conflicto». ¿Cuál es el diagnóstico?
+
+- [x] Cada portátil escribe en su propia copia y la sincronización no coordina los bloqueos ni las transacciones de SQLite, así que los cambios se pisan.
+  > Correcta: compartir datos entre equipos que escriben a la vez requiere un servidor o una sincronización diseñada para ello.
+- [ ] Falta activar WAL en los dos portátiles.
+  > WAL no coordina dos copias distintas del archivo.
+- [ ] Hay que usar AUTOINCREMENT para no repetir identificadores.
+  > No resuelve que haya dos copias que se sobrescriben.
+- [ ] SQLite no admite archivos guardados en OneDrive.
+  > Puede abrirlos; el problema es la escritura simultánea en dos copias.
+
+Repasar: 3B §1 y §2.
+</Quiz>
+
+<QuizResults />

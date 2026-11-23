@@ -237,7 +237,7 @@ Repasar: 3B §5, contactos y grupos.
 </Quiz>
 
 <Quiz id="t3bn-14" title="Al menos un grupo">
-Con el esquema de contactos y grupos del temario, el negocio exige que **cada contacto pertenezca al menos a un grupo**. ¿Qué es cierto?
+La agenda del temario tiene `contacts`, `groups` y la tabla intermedia `contact_groups`, con una FK a cada una y PK compuesta `(contact_id, group_id)`. El negocio exige que **cada contacto pertenezca al menos a un grupo**. ¿Qué es cierto?
 
 - [ ] Las dos FK de `contact_groups` ya lo garantizan.
   > Garantizan que los contactos y grupos referenciados existan, no que haya al menos una pertenencia.
@@ -290,7 +290,7 @@ Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
 </Quiz>
 
 <Quiz id="t3bn-17" title="Borrar un grupo de proveedores">
-Al borrar un grupo de proveedores, sus proveedores deben quedarse **sin grupo**, no borrarse. ¿Qué acción y requisito corresponden?
+En el ejemplo del temario, `suppliers.group_id` es `INTEGER NOT NULL` y referencia a `supplier_groups`. Al borrar un grupo, sus proveedores deben quedarse **sin grupo**, no borrarse. ¿Qué acción y requisito corresponden?
 
 - [ ] CASCADE; ningún requisito.
   > CASCADE borraría también los proveedores.

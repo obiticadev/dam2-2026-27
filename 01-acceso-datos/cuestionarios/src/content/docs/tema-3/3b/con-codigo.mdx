@@ -7,10 +7,10 @@ sidebar:
 
 import { Quiz, QuizResults } from 'starlight-quiz/components';
 
-**20 preguntas · cuatro opciones · una correcta.** SQLite 3.39 o posterior en una base nueva de prácticas; en Java, `sqlite-jdbc` con su configuración por defecto. Las claves foráneas **no** están activadas salvo que el fragmento ejecute `PRAGMA foreign_keys = ON`. Cada pregunta parte de su propio estado.
+**20 preguntas · cuatro opciones · una correcta.** SQLite 3.39 o posterior en una base nueva de prácticas; en Java, `sqlite-jdbc` con su configuración por defecto. Las claves foráneas **no** están activadas salvo que el fragmento ejecute `PRAGMA foreign_keys = ON`. **Cada enunciado indica el esquema y los datos de partida**, porque las preguntas se muestran de una en una.
 
 <Quiz id="t3bc-01" title="Correo repetido">
-¿Qué ocurre con el segundo INSERT?
+Base SQLite nueva y vacía. ¿Qué ocurre con el segundo INSERT?
 
 ```sql
 CREATE TABLE contacts (
@@ -35,7 +35,7 @@ Repasar: 3B §5.
 </Quiz>
 
 <Quiz id="t3bc-02" title="UNIQUE y valores ausentes">
-¿Qué devuelve la consulta?
+Base SQLite nueva y vacía. ¿Qué devuelve la consulta?
 
 ```sql
 CREATE TABLE clientes (id INTEGER PRIMARY KEY, email TEXT UNIQUE);
@@ -57,7 +57,7 @@ Repasar: 3B §5, qué garantiza cada restricción.
 </Quiz>
 
 <Quiz id="t3bc-03" title="Una FK sin activar">
-El grupo 99 no existe. ¿Qué ocurre con el INSERT?
+Base SQLite nueva, conexión con la configuración por defecto: nadie ha ejecutado `PRAGMA foreign_keys = ON`. Tras crear las tablas, `groups` está vacía. ¿Qué ocurre con el INSERT?
 
 ```sql
 CREATE TABLE groups (group_id INTEGER PRIMARY KEY, name TEXT NOT NULL);
@@ -82,7 +82,7 @@ Repasar: 3B §5, FOREIGN KEY.
 </Quiz>
 
 <Quiz id="t3bc-04" title="Afinidad de una columna INTEGER">
-¿Qué devuelve el SELECT, en este orden?
+Base SQLite nueva; `t` es una tabla ordinaria (sin STRICT). ¿Qué devuelve el SELECT, en este orden?
 
 ```sql
 CREATE TABLE t (n INTEGER);
@@ -104,7 +104,7 @@ Repasar: 3B §4.
 </Quiz>
 
 <Quiz id="t3bc-05" title="El punto de retorno del temario">
-Ana tiene el teléfono `555-0101`. ¿Cómo queda al terminar?
+La tabla `contacts(contact_id INTEGER PRIMARY KEY, first_name TEXT, phone TEXT)` tiene una sola fila: `(1, 'Ana', '555-0101')`. Ninguna otra conexión está escribiendo. ¿Cómo queda la fila al terminar?
 
 ```sql
 BEGIN IMMEDIATE;
@@ -129,7 +129,7 @@ Repasar: 3B §7.
 </Quiz>
 
 <Quiz id="t3bc-06" title="Borrar en cascada">
-¿Qué devuelve la última consulta?
+Base SQLite nueva y vacía. ¿Qué devuelve la última consulta?
 
 ```sql
 PRAGMA foreign_keys = ON;
@@ -159,7 +159,7 @@ Repasar: 3B §5 y §6, acciones referenciales.
 </Quiz>
 
 <Quiz id="t3bc-07" title="Total por cliente con ceros">
-Ana tiene facturas de 10 y 5; Luis no tiene facturas. ¿Qué filas devuelve?
+Tablas: `clientes(id INTEGER PRIMARY KEY, nombre TEXT)` y `facturas(id INTEGER PRIMARY KEY, cliente_id INTEGER, total REAL)`. Solo hay dos clientes: Ana, con facturas de 10 y 5, y Luis, sin facturas. ¿Qué filas devuelve?
 
 ```sql
 SELECT c.nombre, COALESCE(SUM(f.total), 0) AS total
@@ -182,7 +182,7 @@ Repasar: 3B §8 y actividad Chinook.
 </Quiz>
 
 <Quiz id="t3bc-08" title="Cambiar a INNER JOIN">
-Mismos datos: Ana con facturas de 10 y 5, Luis sin facturas. ¿Cuántas filas devuelve?
+Tablas: `clientes(id INTEGER PRIMARY KEY, nombre TEXT)` y `facturas(id INTEGER PRIMARY KEY, cliente_id INTEGER, total REAL)`. Solo hay dos clientes: Ana, con facturas de 10 y 5, y Luis, sin facturas. ¿Cuántas filas devuelve?
 
 ```sql
 SELECT c.nombre, SUM(f.total)
@@ -204,7 +204,7 @@ Repasar: 3B §8 y actividad Chinook.
 </Quiz>
 
 <Quiz id="t3bc-09" title="Álbumes repetidos">
-Un álbum tiene 3 canciones de jazz y ningún otro álbum tiene jazz. ¿Cuántas filas devuelve?
+Base Chinook: `Track` tiene `AlbumId` y `GenreId`, y cada canción pertenece a un álbum y a un género. En toda la base solo hay 3 canciones de jazz y las tres son del mismo álbum. ¿Cuántas filas devuelve?
 
 ```sql
 SELECT a.Title
@@ -227,7 +227,7 @@ Repasar: 3B §8 y actividad Chinook.
 </Quiz>
 
 <Quiz id="t3bc-10" title="Nombre vacío">
-¿Qué ocurre?
+Base SQLite nueva y vacía. ¿Qué ocurre?
 
 ```sql
 CREATE TABLE contacts (id INTEGER PRIMARY KEY, first_name TEXT NOT NULL);
@@ -247,7 +247,7 @@ Repasar: 3B §5, qué garantiza cada restricción.
 </Quiz>
 
 <Quiz id="t3bc-11" title="Un CHECK y un NULL">
-¿Qué ocurre con el INSERT?
+Base SQLite nueva y vacía. ¿Qué ocurre con el INSERT?
 
 ```sql
 CREATE TABLE socios (id INTEGER PRIMARY KEY, edad INTEGER CHECK (edad >= 18));
@@ -267,7 +267,7 @@ Repasar: 3B §5, qué garantiza cada restricción.
 </Quiz>
 
 <Quiz id="t3bc-12" title="DEFAULT y un NULL explícito">
-¿Qué devuelve el SELECT?
+Base SQLite nueva y vacía. ¿Qué devuelve el SELECT?
 
 ```sql
 CREATE TABLE pedidos (id INTEGER PRIMARY KEY, estado TEXT DEFAULT 'nuevo');
@@ -288,7 +288,7 @@ Repasar: 3B §5, qué garantiza cada restricción.
 </Quiz>
 
 <Quiz id="t3bc-13" title="Identificador tras un borrado">
-¿Qué `id` recibe Dani?
+Base SQLite nueva y vacía; la tabla no usa AUTOINCREMENT. ¿Qué `id` recibe Dani?
 
 ```sql
 CREATE TABLE t (id INTEGER PRIMARY KEY, nombre TEXT);
@@ -311,7 +311,7 @@ Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
 </Quiz>
 
 <Quiz id="t3bc-14" title="Clientes con varias facturas">
-Ana tiene 2 facturas, Luis 1 y Eva ninguna. ¿Qué devuelve?
+Tablas: `clientes(id INTEGER PRIMARY KEY, nombre TEXT)` y `facturas(id INTEGER PRIMARY KEY, cliente_id INTEGER, total REAL)`. Solo hay tres clientes: Ana con 2 facturas, Luis con 1 y Eva sin ninguna. ¿Qué devuelve?
 
 ```sql
 SELECT c.nombre
@@ -334,7 +334,7 @@ Repasar: 3B §8.
 </Quiz>
 
 <Quiz id="t3bc-15" title="Activar las FK desde Java">
-El grupo 99 no existe y la tabla tiene la FK del ejemplo de contactos. ¿Qué ocurre?
+`agenda.db` ya contiene `groups(group_id INTEGER PRIMARY KEY, name TEXT NOT NULL)` y `contact_groups(contact_id INTEGER NOT NULL, group_id INTEGER NOT NULL REFERENCES groups (group_id), PRIMARY KEY (contact_id, group_id))`. No existe el grupo 99. ¿Qué ocurre?
 
 ```java
 try (Connection c = DriverManager.getConnection("jdbc:sqlite:agenda.db");
@@ -357,7 +357,7 @@ Repasar: 3B §5, FOREIGN KEY, y §8.
 </Quiz>
 
 <Quiz id="t3bc-16" title="Cursor desplazable en SQLite">
-¿Qué ocurre?
+`empdept.db` existe y el proyecto usa `sqlite-jdbc` con su configuración por defecto. ¿Qué ocurre?
 
 ```java
 Connection c = DriverManager.getConnection("jdbc:sqlite:empdept.db");
@@ -378,7 +378,7 @@ Repasar: 3A §10 y 3B §8.
 </Quiz>
 
 <Quiz id="t3bc-17" title="Una fecha con setDate">
-La columna `alta` es `DATE`. ¿Qué imprime?
+`c` es una conexión `sqlite-jdbc` con la configuración por defecto. La tabla `t(alta DATE)` existe y está vacía. ¿Qué imprime?
 
 ```java
 PreparedStatement ps = c.prepareStatement("INSERT INTO t (alta) VALUES (?)");
@@ -402,7 +402,7 @@ Repasar: 3B §4.
 </Quiz>
 
 <Quiz id="t3bc-18" title="Sin commit al cerrar">
-`t` está vacía. ¿Cuántas filas tiene al volver a abrir la base?
+`datos.db` contiene la tabla `t(n INTEGER)`, vacía. No se produce ninguna excepción. ¿Cuántas filas tiene `t` al volver a abrir la base?
 
 ```java
 try (Connection c = DriverManager.getConnection("jdbc:sqlite:datos.db")) {
@@ -444,7 +444,7 @@ Repasar: 3B §3.
 </Quiz>
 
 <Quiz id="t3bc-20" title="Proveedores sin grupo válido">
-¿Qué ocurre con el INSERT?
+Base SQLite nueva y vacía. ¿Qué ocurre con el INSERT?
 
 ```sql
 PRAGMA foreign_keys = ON;

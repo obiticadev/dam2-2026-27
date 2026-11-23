@@ -1,0 +1,515 @@
+---
+title: "3A · Con código · Casos reales"
+description: "20 fragmentos JDBC con errores típicos de proyecto: recursos cerrados, LIKE e IN con parámetros, importes, NULL, transacciones, cursores y metadatos."
+sidebar:
+  order: 4
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Java 17 o posterior. Se omiten imports y el tratamiento de excepciones salvo que formen parte de la pregunta. `conexion` es una `Connection` abierta a MySQL con la base `emp`/`dept` del temario. **Cada enunciado indica los datos que necesita.** Las respuestas se comprobaron en ejecución con H2 en modo MySQL; la pregunta del procedimiento almacenado no se ejecutó por falta de servidor MySQL.
+
+<Quiz id="t3arc-01" title="Devolver el ResultSet desde un método">
+`emp` tiene 14 empleados. Un compañero escribe un método para reutilizar la consulta. ¿Qué ocurre en la última línea?
+
+```java
+static ResultSet empleados(Connection c) throws SQLException {
+    try (PreparedStatement ps = c.prepareStatement("SELECT ename FROM emp");
+         ResultSet rs = ps.executeQuery()) {
+        return rs;
+    }
+}
+
+ResultSet rs = empleados(conexion);
+rs.next();
+```
+
+- [ ] Avanza al primer empleado.
+  > El try-with-resources cierra `rs` y `ps` al salir del método, aunque el resultado se devuelva.
+- [ ] Devuelve `false` porque no quedan filas.
+  > Un resultado cerrado no devuelve `false`: lanza excepción.
+- [x] Lanza `SQLException` porque el resultado ya está cerrado.
+  > Correcta: hay que recorrerlo dentro del método y devolver datos, como una `List`, no el `ResultSet`.
+- [ ] No compila: no se puede devolver un recurso del try.
+  > Compila; el fallo aparece al ejecutar.
+
+Repasar: 3A §4.
+</Quiz>
+
+<Quiz id="t3arc-02" title="Buscar nombres que contienen un texto">
+El buscador debe encontrar los empleados cuyo nombre contiene el texto escrito, por ejemplo `AR`. ¿Qué ocurre?
+
+```java
+PreparedStatement ps = conexion.prepareStatement(
+        "SELECT ename FROM emp WHERE ename LIKE '%?%'");
+ps.setString(1, "AR");
+```
+
+- [x] `setString` lanza `SQLException`: entre comillas, `?` es un carácter literal y la sentencia no tiene parámetros.
+  > Correcta: se escribe `LIKE ?` y se asigna `setString(1, "%" + texto + "%")`.
+- [ ] Busca los nombres que contienen `AR`.
+  > El `?` está dentro de un literal de texto, así que no es un marcador.
+- [ ] Busca los nombres que contienen un signo de interrogación.
+  > Lo haría si se ejecutara, pero falla antes, al asignar un parámetro que no existe.
+- [ ] Funciona, pero es vulnerable a inyección SQL.
+  > No llega a funcionar, y con un `?` real tampoco sería vulnerable.
+
+Repasar: 3A §5, consultas y parámetros.
+</Quiz>
+
+<Quiz id="t3arc-03" title="Un IN con tantos marcadores como valores">
+Existen SMITH (7369) y ALLEN (7499); no existe el 9999. ¿Qué imprime?
+
+```java
+List<Integer> ids = List.of(7369, 7499, 9999);
+String marcas = String.join(", ", Collections.nCopies(ids.size(), "?"));
+PreparedStatement ps = conexion.prepareStatement(
+        "SELECT COUNT(*) FROM emp WHERE empno IN (" + marcas + ")");
+for (int i = 0; i < ids.size(); i++) {
+    ps.setInt(i + 1, ids.get(i));
+}
+ResultSet rs = ps.executeQuery();
+rs.next();
+System.out.println(rs.getInt(1));
+```
+
+- [ ] `3`
+  > El 9999 no existe y no se cuenta.
+- [x] `2`
+  > Correcta: se generan `?, ?, ?`, se asigna cada valor desde el índice 1 y solo coinciden dos empleados.
+- [ ] Lanza excepción: se está concatenando SQL.
+  > Solo se concatenan marcadores fijos, no datos del usuario: es seguro.
+- [ ] Lanza excepción en `setInt(0, ...)`.
+  > El bucle usa `i + 1`: los índices van de 1 a 3.
+
+Repasar: 3A §5, consultas y parámetros.
+</Quiz>
+
+<Quiz id="t3arc-04" title="Sumar importes de una factura">
+La tabla `linea(importe DECIMAL(7,2))` contiene dos filas: `0.10` y `0.20`. ¿Qué imprimen las dos líneas?
+
+```java
+double d = 0;
+BigDecimal b = BigDecimal.ZERO;
+try (ResultSet rs = conexion.createStatement()
+        .executeQuery("SELECT importe FROM linea")) {
+    while (rs.next()) {
+        d += rs.getDouble("importe");
+        b = b.add(rs.getBigDecimal("importe"));
+    }
+}
+System.out.println(d);
+System.out.println(b);
+```
+
+- [ ] `0.3` y `0.30`
+  > La suma con `double` arrastra el error binario.
+- [ ] `0.30000000000000004` y `0.30000000000000004`
+  > `BigDecimal` suma de forma exacta.
+- [x] `0.30000000000000004` y `0.30`
+  > Correcta: por eso los importes se manejan con `BigDecimal`. La escala 2 de la columna se conserva.
+- [ ] `0.3` y `0.3`
+  > Ni el `double` es exacto ni `BigDecimal` pierde la escala de la columna.
+
+Repasar: 3A §5, recorrer los resultados.
+</Quiz>
+
+<Quiz id="t3arc-05" title="El jefe del presidente">
+KING (7839) no tiene jefe: su `mgr` es NULL. ¿Qué imprime?
+
+```java
+ResultSet rs = conexion.createStatement()
+        .executeQuery("SELECT mgr FROM emp WHERE empno = 7839");
+rs.next();
+int a = rs.getInt("mgr");
+Integer b = rs.getObject("mgr", Integer.class);
+System.out.println(a + " " + b);
+```
+
+- [ ] `null null`
+  > Un `int` no puede ser `null`.
+- [ ] `0 0`
+  > `getObject` con `Integer.class` devuelve `null` para un NULL SQL.
+- [ ] Lanza `NullPointerException`.
+  > Ninguna de las dos lecturas lanza excepción.
+- [x] `0 null`
+  > Correcta: el primitivo recibe 0 y el objeto conserva la ausencia de valor.
+
+Repasar: 3A §5, recorrer los resultados.
+</Quiz>
+
+<Quiz id="t3arc-06" title="Reutilizar la sentencia preparada">
+SMITH (7369) cobra 800 y ALLEN (7499) 1600. El programador quería subir solo a SMITH, pero añadió una segunda ejecución para «probar» con ALLEN. ¿Cuánto cobra ALLEN al final?
+
+```java
+PreparedStatement ps = conexion.prepareStatement(
+        "UPDATE emp SET sal = ? WHERE empno = ?");
+ps.setBigDecimal(1, new BigDecimal("1000"));
+ps.setInt(2, 7369);
+ps.executeUpdate();
+ps.setInt(2, 7499);
+ps.executeUpdate();
+```
+
+- [ ] 1600: el parámetro 1 se vacía tras cada ejecución.
+  > Los valores asignados se conservan hasta que se cambian o se llama a `clearParameters()`.
+- [ ] Lanza excepción porque falta el parámetro 1.
+  > El parámetro 1 sigue teniendo el valor anterior.
+- [x] 1000: el parámetro 1 conserva su valor.
+  > Correcta: reutilizar una sentencia preparada conserva sus parámetros; conviene reasignarlos todos en cada vuelta.
+- [ ] 1100: suma 1000 a su salario anterior.
+  > El SQL asigna (`sal = ?`), no suma.
+
+Repasar: 3A §5 y §7.
+</Quiz>
+
+<Quiz id="t3arc-07" title="El cambio que el otro usuario no ve">
+SMITH (7369) cobra 800. Dos conexiones independientes, `c1` y `c2`, trabajan sobre la misma base y no hay errores. ¿Qué ve `c2`?
+
+```java
+c1.setAutoCommit(false);
+c1.createStatement().executeUpdate(
+        "UPDATE emp SET sal = 900 WHERE empno = 7369");
+// Sin commit todavía
+ResultSet rs = c2.createStatement()
+        .executeQuery("SELECT sal FROM emp WHERE empno = 7369");
+rs.next();
+System.out.println(rs.getBigDecimal(1));
+```
+
+- [x] `800.00`
+  > Correcta: el cambio de `c1` no está confirmado y `c2` ve el último valor confirmado.
+- [ ] `900.00`
+  > Solo `c1` ve su propio cambio pendiente.
+- [ ] `null`
+  > El empleado existe y tiene salario.
+- [ ] Lanza excepción porque la fila está siendo modificada.
+  > Leer el valor confirmado no requiere esperar a `c1` en este escenario.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3arc-08" title="Un departamento con apóstrofo">
+El usuario da de alta el departamento 50 con el nombre `O'Brien`. ¿Qué ocurre?
+
+```java
+String nombre = "O'Brien";
+conexion.createStatement().executeUpdate(
+        "INSERT INTO dept (deptno, dname) VALUES (50, '" + nombre + "')");
+```
+
+- [ ] Inserta `O'Brien` sin problemas.
+  > El apóstrofo cierra el literal de texto antes de tiempo.
+- [ ] Inserta `O` y descarta el resto.
+  > El resto, `Brien'`, deja la sentencia mal formada: no se inserta nada.
+- [ ] Inserta `OBrien`, sin el apóstrofo.
+  > JDBC no modifica el texto concatenado.
+- [x] Lanza `SQLException` por un error de sintaxis.
+  > Correcta: con `PreparedStatement` y `setString(2, nombre)` el apóstrofo se trata como dato.
+
+Repasar: 3A §5, seguridad.
+</Quiz>
+
+<Quiz id="t3arc-09" title="Columnas obligatorias de emp">
+En `emp` solo `empno`, su clave primaria, se declaró NOT NULL. Las demás columnas admiten NULL. ¿Cuántas veces imprime `obligatoria`?
+
+```java
+DatabaseMetaData md = conexion.getMetaData();
+try (ResultSet r = md.getColumns(conexion.getCatalog(), null, "emp", "%")) {
+    while (r.next()) {
+        if ("NO".equals(r.getString("IS_NULLABLE"))) {
+            System.out.println("obligatoria");
+        }
+    }
+}
+```
+
+- [ ] 0, porque `getColumns` no informa de la nulabilidad.
+  > `IS_NULLABLE` es una de sus columnas estándar.
+- [x] 1
+  > Correcta: solo `empno` tiene `IS_NULLABLE = "NO"`.
+- [ ] 8, una por columna.
+  > Solo cuentan las que no admiten nulos.
+- [ ] Lanza excepción: el patrón de columnas no puede ser `%`.
+  > `%` es el comodín de los patrones de metadatos.
+
+Repasar: 3A §6.
+</Quiz>
+
+<Quiz id="t3arc-10" title="Hacia dónde apunta la FK">
+La única clave foránea de la base va de `emp.deptno` a `dept.deptno`. ¿Qué imprime?
+
+```java
+DatabaseMetaData md = conexion.getMetaData();
+try (ResultSet r = md.getImportedKeys(conexion.getCatalog(), null, "emp")) {
+    while (r.next()) {
+        System.out.println(r.getString("PKTABLE_NAME"));
+    }
+}
+```
+
+- [ ] `emp`
+  > `PKTABLE_NAME` es la tabla referenciada, no la que tiene la FK.
+- [ ] Nada: `emp` no tiene claves importadas.
+  > Las FK de `emp` hacia otras tablas son sus claves importadas.
+- [ ] `emp` y `dept`
+  > Hay una sola FK, así que se imprime una sola línea.
+- [x] `dept`
+  > Correcta: las claves importadas de `emp` apuntan a `dept`. Desde `dept` se verían con `getExportedKeys`.
+
+Repasar: 3A §6.
+</Quiz>
+
+<Quiz id="t3arc-11" title="Consola genérica con un DELETE">
+El departamento 40 existe, pero no tiene empleados. El administrador escribe la sentencia en una consola genérica. ¿Qué imprime?
+
+```java
+String sql = "DELETE FROM emp WHERE deptno = 40";
+Statement st = conexion.createStatement();
+if (st.execute(sql)) {
+    System.out.println("Filas devueltas");
+} else {
+    System.out.println("Filas afectadas: " + st.getUpdateCount());
+}
+```
+
+- [ ] `Filas devueltas`
+  > Un DELETE no produce `ResultSet`: `execute` devuelve `false`.
+- [ ] Lanza `SQLException` porque no se borra nada.
+  > Que no haya filas que borrar no es un error.
+- [x] `Filas afectadas: 0`
+  > Correcta: no hay `ResultSet` y el recuento es 0.
+- [ ] `Filas afectadas: -1`
+  > −1 indica que no hay recuento, como tras un SELECT; aquí sí lo hay.
+
+Repasar: 3A §5, elegir el método de ejecución.
+</Quiz>
+
+<Quiz id="t3arc-12" title="El regalo duplicado">
+Las tablas `pedido(id PRIMARY KEY)` y `linea(pedido_id, producto, PRIMARY KEY (pedido_id, producto))` están vacías. El regalo repite por error un producto ya incluido. ¿Cuántas filas quedan en `pedido` y en `linea`?
+
+```java
+conexion.setAutoCommit(false);
+Statement st = conexion.createStatement();
+st.executeUpdate("INSERT INTO pedido VALUES (1)");
+st.executeUpdate("INSERT INTO linea VALUES (1, 'cafe')");
+Savepoint sp = conexion.setSavepoint();
+try {
+    st.executeUpdate("INSERT INTO linea VALUES (1, 'cafe')"); // regalo
+} catch (SQLException e) {
+    conexion.rollback(sp);
+}
+conexion.commit();
+```
+
+- [ ] 0 y 0: el error deshace toda la transacción.
+  > Solo se vuelve al savepoint.
+- [ ] 1 y 2: el regalo se guarda igualmente.
+  > Viola la clave primaria compuesta y no se inserta.
+- [ ] 0 y 1: `rollback(sp)` deshace la cabecera.
+  > La cabecera es anterior al savepoint y se conserva.
+- [x] 1 y 1
+  > Correcta: se conserva lo anterior al savepoint y el `commit()` lo confirma.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3arc-13" title="Insertar desde el cursor sin la clave">
+`st` es desplazable y `CONCUR_UPDATABLE`. `empno` es la clave primaria de `emp` y no tiene valor automático. ¿Qué ocurre?
+
+```java
+ResultSet rs = st.executeQuery("SELECT empno, ename, deptno FROM emp");
+rs.moveToInsertRow();
+rs.updateString("ename", "NURIA");
+rs.updateInt("deptno", 10);
+rs.insertRow();
+```
+
+- [ ] Inserta a NURIA con el siguiente `empno` libre.
+  > `empno` no es autoincremental: nadie le asigna valor.
+- [x] `insertRow()` lanza `SQLException`: falta la clave primaria, que no admite NULL.
+  > Correcta: antes de `insertRow()` hay que asignar todos los campos obligatorios.
+- [ ] Inserta a NURIA con `empno` 0.
+  > Una columna sin asignar no recibe 0: queda NULL y se rechaza.
+- [ ] No hace nada hasta llamar a `moveToCurrentRow()`.
+  > `insertRow()` envía la fila; `moveToCurrentRow()` solo devuelve el cursor a donde estaba.
+
+Repasar: 3A §10, modificar, insertar y borrar.
+</Quiz>
+
+<Quiz id="t3arc-14" title="Recoger el salario nuevo">
+En MySQL existe `subir_sueldo(IN p_empno INT, IN p_pct DECIMAL(5,2), OUT p_nuevo DECIMAL(7,2))`. ¿Qué falta en el hueco para poder leer el nuevo salario?
+
+```java
+CallableStatement cs = conexion.prepareCall("{call subir_sueldo(?, ?, ?)}");
+cs.setInt(1, 7369);
+cs.setBigDecimal(2, new BigDecimal("5.00"));
+// hueco
+cs.execute();
+BigDecimal nuevo = cs.getBigDecimal(3);
+```
+
+- [ ] `cs.setBigDecimal(3, BigDecimal.ZERO);`
+  > Asignar un valor no lo convierte en parámetro de salida.
+- [ ] Nada: `getBigDecimal(3)` funciona sin preparación.
+  > Sin registrarlo no se puede leer como salida.
+- [ ] `cs.registerOutParameter(1, Types.DECIMAL);`
+  > La posición 1 es el `empno` de entrada; la salida es la 3.
+- [x] `cs.registerOutParameter(3, Types.DECIMAL);`
+  > Correcta: el OUT se registra antes de `execute()` y se lee después.
+
+Repasar: 3A §8.
+</Quiz>
+
+<Quiz id="t3arc-15" title="Una consulta por departamento">
+`dept` tiene 4 departamentos y `emp` tiene 14 empleados. ¿Cuántas consultas se envían a la base?
+
+```java
+ResultSet d = conexion.createStatement()
+        .executeQuery("SELECT deptno FROM dept");
+PreparedStatement ps = conexion.prepareStatement(
+        "SELECT ename FROM emp WHERE deptno = ?");
+while (d.next()) {
+    ps.setInt(1, d.getInt(1));
+    try (ResultSet e = ps.executeQuery()) {
+        while (e.next()) { /* ... */ }
+    }
+}
+```
+
+- [ ] 1
+  > Además de la de departamentos, se lanza una por cada departamento.
+- [ ] 2: la preparada se ejecuta una sola vez.
+  > Se ejecuta en cada vuelta del bucle.
+- [x] 5: una para los departamentos y una por cada uno de los 4.
+  > Correcta: es el patrón «1 + N». Con muchos departamentos, un JOIN en una sola consulta evita tantas idas y vueltas.
+- [ ] 15: una por cada empleado y otra para los departamentos.
+  > Las consultas se lanzan por departamento, no por empleado.
+
+Repasar: 3A §5, consultas y parámetros.
+</Quiz>
+
+<Quiz id="t3arc-16" title="Contratados antes de una fecha">
+`hiredate` es una columna DATE. Fechas de alta de los 14 empleados: SMITH 1980-12-17, ALLEN 1981-02-20, WARD 1981-02-22, JONES 1981-04-02, BLAKE 1981-05-01, CLARK 1981-06-09, TURNER 1981-09-08 y MARTIN 1981-09-28. Los otros seis entraron de noviembre de 1981 en adelante. ¿Qué imprime?
+
+```java
+PreparedStatement ps = conexion.prepareStatement(
+        "SELECT COUNT(*) FROM emp WHERE hiredate < ?");
+ps.setDate(1, java.sql.Date.valueOf("1981-09-01"));
+ResultSet rs = ps.executeQuery();
+rs.next();
+System.out.println(rs.getInt(1));
+```
+
+- [ ] `0`, porque `setDate` exige el formato `01/09/1981`.
+  > `Date.valueOf` recibe el formato ISO `aaaa-mm-dd`.
+- [ ] Lanza excepción: las fechas se pasan con `setString`.
+  > `setDate` es el método tipado para una columna DATE.
+- [ ] `14`
+  > El filtro deja fuera a los contratados en esa fecha o después.
+- [x] `6`
+  > Correcta: el parámetro tipado compara fechas, no textos.
+
+Repasar: 3A §5, consultas y parámetros.
+</Quiz>
+
+<Quiz id="t3arc-17" title="El commit fuera del try">
+SMITH (7369) cobra 800. `Conexion.abrir()` devuelve una conexión nueva. ¿Qué ocurre en la última línea?
+
+```java
+Connection c = Conexion.abrir();
+try (c; Statement st = c.createStatement()) {
+    c.setAutoCommit(false);
+    st.executeUpdate("UPDATE emp SET sal = 900 WHERE empno = 7369");
+}
+c.commit();
+```
+
+- [ ] Confirma la subida de SMITH.
+  > Cuando llega a `commit()`, la conexión ya está cerrada.
+- [x] Lanza `SQLException`: la conexión se cerró al salir del try.
+  > Correcta: el `commit()` debe ir dentro del bloque, antes de que se cierre la conexión.
+- [ ] No compila: `c` no es visible fuera del try.
+  > Se declaró antes del try, así que es visible; desde Java 9 se puede usar como recurso.
+- [ ] No hace nada, porque el autocommit ya confirmó el cambio.
+  > El autocommit se había desactivado antes del UPDATE.
+
+Repasar: 3A §4 y §9.
+</Quiz>
+
+<Quiz id="t3arc-18" title="Un UPDATE con executeQuery">
+¿Qué ocurre?
+
+```java
+ResultSet rs = conexion.createStatement().executeQuery(
+        "UPDATE emp SET sal = sal + 50 WHERE empno = 7369");
+```
+
+- [ ] Actualiza y devuelve un `ResultSet` vacío.
+  > `executeQuery` está reservado a sentencias que devuelven filas.
+- [ ] Actualiza y devuelve un `ResultSet` con el recuento.
+  > El recuento lo devuelve `executeUpdate` como `int`.
+- [x] Lanza `SQLException`: para un UPDATE hay que usar `executeUpdate()` o `execute()`.
+  > Correcta: el driver rechaza la combinación.
+- [ ] No compila: el SQL de un UPDATE no es válido como texto.
+  > El SQL es un `String`; el compilador no lo analiza.
+
+Repasar: 3A §5, elegir el método de ejecución.
+</Quiz>
+
+<Quiz id="t3arc-19" title="Comprobar exactamente una fila">
+El departamento 10 tiene 3 empleados: KING cobra 5000. El código copia el patrón del ejercicio de transferencias. ¿Cuánto cobra KING al final?
+
+```java
+conexion.setAutoCommit(false);
+try (PreparedStatement ps = conexion.prepareStatement(
+        "UPDATE emp SET sal = sal * 1.10 WHERE deptno = ?")) {
+    ps.setInt(1, 10);
+    if (ps.executeUpdate() != 1) {
+        throw new SQLException("Departamento no encontrado");
+    }
+    conexion.commit();
+} catch (SQLException e) {
+    conexion.rollback();
+}
+```
+
+- [x] 5000: el UPDATE afecta a 3 filas, se lanza la excepción y el rollback deshace la subida.
+  > Correcta: la comprobación debe ajustarse a lo que se actualiza. Aquí `!= 1` está mal y el mensaje despista.
+- [ ] 5500: la subida se aplica y se confirma.
+  > `executeUpdate()` devuelve 3 y se entra en el `if`.
+- [ ] 5500: el rollback no deshace un UPDATE ya ejecutado.
+  > Con el autocommit desactivado, lo ejecutado y no confirmado se deshace.
+- [ ] 5000: no existe el departamento 10.
+  > Existe y tiene 3 empleados.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3arc-20" title="Cabecera de una exportación CSV">
+Una exportación genérica escribe una cabecera CSV con las etiquetas del resultado. ¿Qué imprime con MySQL?
+
+```java
+ResultSet rs = conexion.createStatement().executeQuery(
+        "SELECT ename AS Nombre, sal * 12 AS anual FROM emp");
+ResultSetMetaData md = rs.getMetaData();
+StringJoiner cab = new StringJoiner(";");
+for (int i = 1; i <= md.getColumnCount(); i++) {
+    cab.add(md.getColumnLabel(i));
+}
+System.out.println(cab);
+```
+
+- [ ] `ename;sal`
+  > `getColumnLabel` devuelve el alias del SELECT, no el nombre de la columna.
+- [ ] `ename;sal * 12`
+  > Con alias, la etiqueta de la expresión es `anual`.
+- [x] `Nombre;anual`
+  > Correcta: las etiquetas son los alias y el bucle va de 1 a `getColumnCount()`, incluido.
+- [ ] `Nombre`
+  > Hay dos columnas y el bucle recorre las dos.
+
+Repasar: 3A §6.
+</Quiz>
+
+<QuizResults />

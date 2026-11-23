@@ -1,0 +1,312 @@
+---
+title: "3B · Sin código · Casos reales"
+description: "20 incidencias reales con SQLite: rutas y permisos, bloqueos, copias, claves foráneas, tipos que no se imponen, fechas, importes e identificadores."
+sidebar:
+  order: 3
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Sin fragmentos de código. Incidencias y decisiones de aplicaciones reales que usan SQLite. Todos los datos necesarios están en el propio enunciado. Se supone SQLite 3.39 o posterior.
+
+<Quiz id="t3brn-01" title="Instalada en Archivos de programa">
+Una aplicación de escritorio se instala en `C:\Program Files\Agenda\` con su base `agenda.db` al lado del ejecutable. Los usuarios sin permisos de administrador pueden consultar los datos, pero al guardar reciben «attempt to write a readonly database». ¿Qué arreglo corresponde?
+
+- [ ] Abrir la base con la URL `jdbc:sqlite::memory:`.
+  > Los datos dejarían de persistir al cerrar la aplicación.
+- [ ] Instalar un servidor SQLite con permisos de escritura.
+  > SQLite no tiene servidor: el motor va dentro de la aplicación.
+- [x] Guardar la base en una carpeta de datos del usuario.
+  > Correcta: SQLite escribe el archivo y sus auxiliares, así que necesita permiso de escritura en esa carpeta.
+- [ ] Desactivar el autocommit.
+  > El problema es el permiso del sistema de archivos, no el modo transaccional.
+
+Repasar: 3B §3.
+</Quiz>
+
+<Quiz id="t3brn-02" title="«no such table» solo a veces">
+Una aplicación usa la URL `jdbc:sqlite:datos.db`. Desde el IDE funciona, pero al lanzarla con un acceso directo falla con «no such table: clientes» y en otra carpeta aparece un `datos.db` vacío. ¿Qué ha pasado?
+
+- [ ] El archivo original se ha corrompido al cerrar mal la aplicación.
+  > El original sigue intacto en su carpeta.
+- [x] Se abrió otra ruta y SQLite creó en ella una base vacía.
+  > Correcta: la ruta relativa se resuelve desde el directorio de trabajo y, si el archivo no existe, SQLite lo crea. Hay que construir una ruta absoluta o controlada por la aplicación.
+- [ ] Falta activar las claves foráneas en la conexión de la aplicación.
+  > No tiene relación con que la tabla no exista.
+- [ ] El driver de SQLite no admite rutas relativas en la URL.
+  > Las admite: el problema es desde dónde se resuelven.
+
+Repasar: 3B §3 y §8.
+</Quiz>
+
+<Quiz id="t3brn-03" title="La copia de seguridad incompleta">
+Una tienda copia cada noche `ventas.db` a un disco externo mientras el programa sigue abierto y con el modo WAL activo. Al restaurar una copia faltan las ventas de las últimas horas. Junto a la base había un `ventas.db-wal` que no se copiaba. ¿Qué explica la pérdida?
+
+- [ ] SQLite borra las ventas antiguas al activar WAL.
+  > WAL no borra datos.
+- [ ] El disco externo no admite archivos SQLite.
+  > El formato es portable; el problema es lo que se copió.
+- [ ] Las ventas de las últimas horas no estaban confirmadas todavía.
+  > Estaban confirmadas, pero sus cambios todavía estaban en el archivo WAL.
+- [x] El archivo WAL, que no se copiaba, tenía los cambios recientes.
+  > Correcta: mientras está en uso, la base puede tener archivos auxiliares de diario o WAL. Hay que copiar con la aplicación cerrada o con un mecanismo de copia del propio SQLite.
+
+Repasar: 3B §2.
+</Quiz>
+
+<Quiz id="t3brn-04" title="Cinco oficinas y una carpeta compartida">
+Cinco oficinas abren el mismo archivo SQLite en una carpeta de red y lo usan para registrar pedidos a la vez. Los errores «database is locked» son cada vez más frecuentes. ¿Qué decisión es la adecuada?
+
+- [ ] Activar WAL para que todas escriban a la vez.
+  > WAL mejora la convivencia de lectores y escritor, pero sigue habiendo un solo escritor.
+- [ ] Repetir la escritura en un bucle hasta que funcione.
+  > Esconde el síntoma y no resuelve la concurrencia.
+- [x] Pasar a un servidor como MySQL o PostgreSQL.
+  > Correcta: SQLite serializa las escrituras y no está pensado para muchos escritores en red; un servidor atiende muchos clientes concurrentes.
+- [ ] Copiar el archivo a cada oficina.
+  > Cada oficina tendría datos distintos: ya no serían comunes.
+
+Repasar: 3B §1 y §2.
+</Quiz>
+
+<Quiz id="t3brn-05" title="Bloqueada dentro de la misma aplicación">
+En una aplicación de escritorio con una sola persona usándola, guardar a veces da «database is locked». Investigando se ve que una pantalla desactiva el autocommit, hace un INSERT y espera a que el usuario pulse «Aceptar» antes del `commit()`. Mientras tanto, otra conexión de la misma aplicación intenta escribir. ¿Cuál es la causa?
+
+- [ ] El archivo está en un disco demasiado lento para varias conexiones.
+  > La lentitud no crea un bloqueo de escritura.
+- [x] La transacción abierta retiene la escritura hasta el `commit()`.
+  > Correcta: las transacciones de escritura deben ser cortas y no esperar a que el usuario responda.
+- [ ] SQLite solo admite una conexión por archivo.
+  > Admite varias conexiones; lo que serializa son las escrituras.
+- [ ] Falta `PRAGMA foreign_keys = ON`.
+  > Las claves foráneas no producen bloqueos.
+
+Repasar: 3B §2 y §7.
+</Quiz>
+
+<Quiz id="t3brn-06" title="Huérfanos con la FK declarada">
+La tabla `pedidos` declara una FK a `clientes`. En DB Browser borrar un cliente con pedidos da error, pero en producción aparecen pedidos de clientes que ya no existen, borrados desde la aplicación Java. ¿Qué falta?
+
+- [ ] Declarar la FK otra vez con NOT NULL.
+  > NOT NULL obliga a tener un valor; no comprueba que el cliente exista.
+- [ ] Usar AUTOINCREMENT en `clientes` para no reutilizar sus identificadores.
+  > Afecta a los identificadores, no a la integridad referencial.
+- [ ] Recrear la base desde DB Browser.
+  > La FK ya está declarada; el problema es que la aplicación no la aplica.
+- [x] Activar las FK en cada conexión de la aplicación.
+  > Correcta: `PRAGMA foreign_keys` se aplica a cada conexión. La de la aplicación también debe activarlo.
+
+Repasar: 3B §5, qué garantiza cada restricción.
+</Quiz>
+
+<Quiz id="t3brn-07" title="El informe mensual que no cuadra">
+En una tabla de reservas, unas fechas se guardaron como `2026-11-05` y otras como `5/11/2026`, según quién las tecleó. El informe de noviembre, que filtra por un rango de fechas, se deja reservas fuera. ¿Qué se debe hacer?
+
+- [ ] Declarar la columna como DATE para que SQLite convierta los formatos.
+  > SQLite no tiene una clase de almacenamiento para fechas y no reinterpreta `5/11/2026`.
+- [ ] Ordenar el resultado con ORDER BY antes de filtrar.
+  > Ordenar textos con formatos mezclados tampoco da el orden cronológico.
+- [x] Una sola convención, como ISO `aaaa-mm-dd`, y convertir lo existente.
+  > Correcta: con ISO, comparar y ordenar como texto coincide con el orden cronológico.
+- [ ] Guardar las fechas en una columna BLOB.
+  > No arregla la comparación y la complica.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3brn-08" title="Precios en coma flotante">
+Una caja registradora guarda los precios en columnas REAL. A final de mes la suma de los tiques no coincide al céntimo con la contabilidad. ¿Qué convención evita el problema en SQLite?
+
+- [ ] Declarar la columna como `DECIMAL(10,2)` para que SQLite use decimales exactos.
+  > En SQLite es una afinidad NUMERIC; un valor con decimales puede seguir guardándose como REAL.
+- [x] Guardar los importes como INTEGER en céntimos y convertirlos al mostrarlos.
+  > Correcta: los enteros son exactos. En Java se pueden manejar con `BigDecimal`.
+- [ ] Guardarlos como TEXT y sumarlos con `||`.
+  > `||` concatena textos, no suma.
+- [ ] Redondear cada tique a un decimal.
+  > Pierde precisión y no elimina el error de base.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3brn-09" title="VARCHAR(10) que guarda 40 caracteres">
+Una tabla migrada desde MySQL declara `codigo VARCHAR(10)`. En SQLite se han colado códigos de 40 caracteres que rompen la aplicación que los consume. ¿Qué es cierto?
+
+- [ ] Es un fallo del driver JDBC, que no envía la longitud.
+  > La longitud declarada no se impone en una tabla ordinaria de SQLite.
+- [ ] Basta con declarar `VARCHAR(10) NOT NULL`.
+  > NOT NULL no limita la longitud.
+- [ ] SQLite trunca los valores a 10 caracteres al leerlos.
+  > Ni trunca al guardar ni al leer.
+- [x] No la impone: hace falta un CHECK con `length` o validar.
+  > Correcta: el tipo declarado influye en la afinidad, pero no limita el tamaño. Por ejemplo, `CHECK (length(codigo) <= 10)`.
+
+Repasar: 3B §4 y §5.
+</Quiz>
+
+<Quiz id="t3brn-10" title="Activo: true, 1 o 'sí'">
+Una columna `activo INTEGER` debería contener 0 o 1. Una importación escribió también los textos `'true'` y `'sí'`. La consulta `WHERE activo = 1` no devuelve esos clientes. ¿Por qué y qué conviene?
+
+- [x] Son textos y no valen 1: normalizar a 0/1 y añadir un CHECK.
+  > Correcta: en una tabla ordinaria `'true'` se guarda como texto. Un `CHECK (activo IN (0, 1))` impide que vuelva a pasar.
+- [ ] SQLite tiene una clase BOOLEAN que no admite textos.
+  > No existe una clase de almacenamiento booleana.
+- [ ] El driver convierte `'true'` en 1, pero la consola no.
+  > Ninguno de los dos lo convierte.
+- [ ] Hay que comparar con `activo = TRUE` en lugar de con el número 1.
+  > `TRUE` vale 1, así que el resultado sería el mismo.
+
+Repasar: 3B §4.
+</Quiz>
+
+<Quiz id="t3brn-11" title="Dos cuentas con el mismo correo">
+`email` es UNIQUE, pero en la tabla de usuarios conviven `Ana@ej.es` y `ana@ej.es`, y la usuaria recibe los correos duplicados. ¿Qué cambio hace que se consideren iguales?
+
+- [ ] Añadir NOT NULL a `email` para que no haya correos vacíos.
+  > No cambia cómo se comparan las mayúsculas.
+- [ ] Convertir `email` en la clave primaria de la tabla de usuarios.
+  > Seguiría comparando con distinción de mayúsculas.
+- [x] `COLLATE NOCASE` en la columna, o guardarlo en minúsculas.
+  > Correcta: la colación por defecto distingue mayúsculas; NOCASE no lo hace para letras ASCII.
+- [ ] Usar LIKE en lugar de UNIQUE.
+  > LIKE es un operador de consulta, no una restricción.
+
+Repasar: 3B §4 y §5.
+</Quiz>
+
+<Quiz id="t3brn-12" title="Numeración de facturas sin huecos">
+La normativa obliga a numerar las facturas de forma correlativa, sin huecos. El programador usa como número de factura el `INTEGER PRIMARY KEY` de la tabla. ¿Es una buena idea?
+
+- [ ] Sí, porque el `rowid` es siempre consecutivo.
+  > Borrar una factura deja un hueco y, sin AUTOINCREMENT, se pueden reutilizar valores.
+- [ ] Sí, siempre que la columna se declare con AUTOINCREMENT.
+  > AUTOINCREMENT evita reutilizar números, pero puede dejar huecos.
+- [x] No: el número legal se genera con una regla propia.
+  > Correcta: se calcula dentro de la transacción y el `rowid` queda como identificador interno. No hay que suponer que los identificadores serán consecutivos.
+- [ ] No, porque el `rowid` solo llega a 32 767.
+  > Es un entero con signo de 64 bits.
+
+Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
+</Quiz>
+
+<Quiz id="t3brn-13" title="Un identificador que vuelve a usarse">
+Una app de citas borra el cliente con `id` 57, que era el último. Un sistema externo seguía guardando el 57 como referencia. El siguiente cliente recibe otra vez el 57 y el sistema externo lo confunde con el anterior. La tabla usa `INTEGER PRIMARY KEY`. ¿Qué lo evita?
+
+- [ ] `WITHOUT ROWID`.
+  > No ofrece el comportamiento de AUTOINCREMENT.
+- [ ] Añadir un índice UNIQUE adicional sobre la columna `id`.
+  > La clave ya es única; el problema es que un valor libre se reutiliza.
+- [ ] `PRAGMA foreign_keys = ON`.
+  > Las FK no gobiernan cómo se asignan los identificadores.
+- [x] Declarar `INTEGER PRIMARY KEY AUTOINCREMENT`.
+  > Correcta: impide reutilizar identificadores ya usados, con un pequeño coste añadido.
+
+Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
+</Quiz>
+
+<Quiz id="t3brn-14" title="Cambiar el tipo de una columna">
+En una base SQLite en producción hay que cambiar el tipo de una columna y añadirle un CHECK. ¿Cuál es el procedimiento habitual?
+
+- [ ] `ALTER TABLE ... MODIFY COLUMN`, como en MySQL.
+  > El ALTER TABLE de SQLite es más limitado y no tiene esa forma.
+- [x] Crear una tabla nueva, copiar los datos, borrar la antigua y renombrar.
+  > Correcta: hecho dentro de una transacción, evita las limitaciones de ALTER TABLE sin perder datos.
+- [ ] Editar el texto que devuelve `.schema` en la consola.
+  > `.schema` muestra la definición; no la cambia.
+- [ ] Borrar la columna con DROP COLUMN y volver a crearla con el tipo nuevo.
+  > Se perderían los datos de esa columna.
+
+Repasar: 3B §2.
+</Quiz>
+
+<Quiz id="t3brn-15" title="La cabecera que aparece como cliente">
+Se importa `clientes.csv`, cuya primera línea es `id,nombre`, con `.import` en una tabla `clientes` que **ya existía**. Al consultar aparece un cliente llamado `nombre`. ¿Qué ha pasado?
+
+- [ ] El CSV estaba corrupto.
+  > El archivo es correcto; el problema es cómo se interpretó su primera línea.
+- [ ] `.import` siempre ignora la primera línea.
+  > Si la tabla ya existe, la primera línea se trata como datos.
+- [ ] Faltaba un `;` al final de `.import`.
+  > Las órdenes de punto no llevan punto y coma.
+- [x] Al existir la tabla, la cabecera entró como una fila.
+  > Correcta: hay que quitarla o saltarla. El temario pide configurar el modo y revisar si hay cabecera.
+
+Repasar: 3B §3.
+</Quiz>
+
+<Quiz id="t3brn-16" title="Importar 100 000 filas tarda minutos">
+Un programa inserta 100 000 filas en SQLite, una a una, con el autocommit activado, y tarda varios minutos. ¿Qué cambio suele reducirlo a segundos?
+
+- [ ] Abrir una conexión nueva para cada INSERT y cerrarla al terminar.
+  > Añade todavía más trabajo por fila.
+- [ ] Usar `Statement` en lugar de `PreparedStatement`.
+  > Habría que analizar el SQL de cada fila y además sería menos seguro.
+- [ ] Declarar AUTOINCREMENT en la tabla.
+  > Añade coste, no lo quita.
+- [x] Una sola transacción para todas las inserciones.
+  > Correcta: con autocommit cada INSERT es una transacción que se confirma por separado. Una sola transacción, además, es atómica.
+
+Repasar: 3B §7.
+</Quiz>
+
+<Quiz id="t3brn-17" title="El instalador que falla la segunda vez">
+El programa ejecuta su script de creación de tablas cada vez que arranca. La primera vez funciona, pero la segunda falla con «table clientes already exists». ¿Qué ajuste es el más sencillo?
+
+- [ ] Borrar el archivo `.db` en cada arranque.
+  > Se perderían todos los datos.
+- [x] Usar `CREATE TABLE IF NOT EXISTS` en el script.
+  > Correcta: crea la tabla solo si no existe y deja intactos los datos.
+- [ ] Capturar la excepción y no hacer nada.
+  > Esconde también otros errores reales del script.
+- [ ] Ejecutar el script con `.read` en vez de hacerlo desde Java.
+  > El script falla igual desde la consola.
+
+Repasar: 3B §5.
+</Quiz>
+
+<Quiz id="t3brn-18" title="Permisos por usuario">
+Un cliente pide que su aplicación local con SQLite tenga usuarios «lector» y «editor», y que el **motor** impida que el lector modifique datos. ¿Qué responde el temario?
+
+- [ ] Se crean con `CREATE USER` y `GRANT`, igual que en MySQL.
+  > SQLite no gestiona cuentas de usuario.
+- [ ] Se configuran con `PRAGMA foreign_keys`.
+  > Ese PRAGMA activa las claves foráneas.
+- [ ] Se consigue creando las tablas sensibles con `WITHOUT ROWID`.
+  > Cambia el almacenamiento, no los permisos.
+- [x] SQLite no tiene cuentas: para eso se necesita un servidor.
+  > Correcta: la protección depende del acceso al archivo y de la aplicación. Es una de las diferencias entre un motor embebido y uno cliente-servidor.
+
+Repasar: 3B §1.
+</Quiz>
+
+<Quiz id="t3brn-19" title="Sincronizar tabletas">
+Cada tableta de los comerciales crea pedidos en su propia base SQLite con `INTEGER PRIMARY KEY`, y por la noche se envían a la central. Dos tabletas mandan el pedido 1, el 2, el 3… y chocan. ¿Qué diseño lo evita?
+
+- [ ] Declarar AUTOINCREMENT en la tabla de pedidos de cada tableta.
+  > Cada tableta sigue con su propio contador, que empieza en 1.
+- [ ] Activar las claves foráneas en la base de la central.
+  > No impide que dos pedidos distintos tengan el mismo número.
+- [x] Un identificador global (UUID) o asignado por la central.
+  > Correcta: también vale el par «dispositivo + número local». El `rowid` solo es único dentro de su propio archivo.
+- [ ] Usar el modo WAL en todas las tabletas para evitar choques.
+  > WAL afecta a la concurrencia local, no a la unicidad entre bases.
+
+Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
+</Quiz>
+
+<Quiz id="t3brn-20" title="Detectar tipos erróneos en cuanto entran">
+Un equipo quiere que SQLite rechace, en el momento del INSERT, un texto como `'abc'` en una columna de cantidades. Hoy se guarda sin aviso y el error aparece semanas después. Usan SQLite 3.45. ¿Qué opción del temario lo consigue?
+
+- [ ] Declarar la columna como `INTEGER` en una tabla ordinaria.
+  > Con un texto que no se puede convertir, lo guarda como texto.
+- [ ] Usar AUTOINCREMENT.
+  > Solo afecta a los identificadores.
+- [x] Crear la tabla como STRICT.
+  > Correcta: las tablas STRICT comprueban el tipo con sus propias reglas; están disponibles desde la versión 3.37.
+- [ ] Activar `.headers on`.
+  > Es una opción de presentación de la consola.
+
+Repasar: 3B §4.
+</Quiz>
+
+<QuizResults />

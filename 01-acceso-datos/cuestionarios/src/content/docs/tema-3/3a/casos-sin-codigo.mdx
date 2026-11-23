@@ -1,0 +1,312 @@
+---
+title: "3A · Sin código · Casos reales"
+description: "20 incidencias del día a día con JDBC: despliegues, errores de conexión, seguridad, importes, NULL, transacciones y metadatos."
+sidebar:
+  order: 3
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**20 preguntas · cuatro opciones · una correcta.** Sin fragmentos de código. Cada pregunta es una incidencia o decisión de un proyecto real con JDBC: lo que falla, por qué falla y qué arreglo lo resuelve de verdad. Todos los datos necesarios están en el propio enunciado.
+
+<Quiz id="t3arn-01" title="Funciona en el IDE, falla al desplegar">
+Una aplicación conecta bien con MySQL desde Eclipse. Al ejecutar el JAR en el servidor de producción falla al arrancar con `No suitable driver found for jdbc:mysql://bd.empresa.local:3306/ventas`. El servidor MySQL está encendido y la URL es la misma. ¿Cuál es la causa más probable?
+
+- [ ] La contraseña del usuario de producción es distinta a la de desarrollo.
+  > Con una contraseña incorrecta el driver sí se encuentra y el servidor responde «Access denied».
+- [x] Falta el JAR del driver en el classpath de producción.
+  > Correcta: `DriverManager` no encuentra ningún driver que acepte la URL `jdbc:mysql:`. Hay que empaquetar la dependencia o añadirla al classpath.
+- [ ] Falta `Class.forName` antes de conectar.
+  > Con un driver JDBC 4 en el classpath no es necesario. Y si el JAR falta, `Class.forName` tampoco lo arregla: lanza `ClassNotFoundException`.
+- [ ] El servidor MySQL rechaza conexiones remotas.
+  > Sería un fallo de red al conectar («Communications link failure»), no la ausencia de driver.
+
+Repasar: 3A §3, dependencias y registro.
+</Quiz>
+
+<Quiz id="t3arn-02" title="Leer bien el mensaje de error">
+Tras cambiar de ordenador, un programa que antes funcionaba lanza `SQLException: Access denied for user 'app'@'192.168.1.40'`. El driver está en el proyecto y el servidor responde. ¿Por dónde empezar?
+
+- [ ] Por reinstalar el driver: el mensaje indica que no se ha cargado.
+  > Si no hubiera driver, no habría llegado a hablar con el servidor.
+- [ ] Por cambiar el puerto de la URL.
+  > Con un puerto incorrecto no se llegaría a autenticar; el servidor ya ha contestado.
+- [ ] Por desactivar el autocommit.
+  > El autocommit no interviene en la autenticación.
+- [x] Por las credenciales y los permisos de ese usuario.
+  > Correcta: el servidor ha contestado y ha rechazado al usuario `app` desde esa IP. En MySQL los permisos dependen también del host de origen.
+
+Repasar: 3A §3, URL de conexión.
+</Quiz>
+
+<Quiz id="t3arn-03" title="El servicio que el listener no conoce">
+El administrador de Oracle te da estos datos: host `bd01`, puerto 1521, **nombre de servicio** `VENTASPDB`. Escribes `jdbc:oracle:thin:@bd01:1521:VENTASPDB` y Oracle responde que no reconoce ese identificador. ¿Qué cambio lo arregla?
+
+- [ ] Cambiar a `jdbc:oracle:oci:@bd01:1521:VENTASPDB`.
+  > OCI necesita bibliotecas nativas en el cliente y no cambia el problema: sigue tratando el dato como SID.
+- [x] Usar `jdbc:oracle:thin:@//bd01:1521/VENTASPDB`.
+  > Correcta: `@host:puerto:X` espera un SID; `@//host:puerto/X` espera un nombre de servicio. No son equivalentes.
+- [ ] Añadir `Class.forName("oracle.jdbc.OracleDriver")`.
+  > El driver ya ha contactado con Oracle; el fallo está en el identificador.
+- [ ] Usar el puerto 3306.
+  > Es el puerto habitual de MySQL, no de Oracle.
+
+Repasar: 3A §3, URL de conexión.
+</Quiz>
+
+<Quiz id="t3arn-04" title="Contraseña subida a GitHub">
+Un compañero subió a un repositorio público la clase `Conexion` con la contraseña real de la base escrita en el código. ¿Qué respuesta resuelve el problema?
+
+- [ ] Borrar la línea en un nuevo commit y subirlo lo antes posible.
+  > La contraseña sigue en el historial del repositorio y cualquiera puede recuperarla.
+- [ ] Hacer el repositorio privado y no tocar nada más.
+  > La contraseña ya ha sido pública y puede haberse copiado.
+- [ ] Cifrar la contraseña con el driver JDBC.
+  > El driver no ofrece esa función y el problema es dónde vive el secreto.
+- [x] Cambiar la contraseña y leerla del entorno, no del código.
+  > Correcta: hay que invalidar el secreto filtrado y, como hace `Conexion.java` del temario, leer `DB_URL`, `DB_USER` y `DB_PASSWORD` del entorno.
+
+Repasar: 3A §3, `Conexion.java`.
+</Quiz>
+
+<Quiz id="t3arn-05" title="Too many connections a media mañana">
+Una intranet funciona bien al arrancar, pero a media mañana MySQL rechaza conexiones con `Too many connections`. Cada petición abre una conexión con `DriverManager`, hace su consulta y devuelve los datos, pero el código nunca llama a `close()`. ¿Qué lo resuelve de raíz?
+
+- [ ] Subir el límite `max_connections` del servidor hasta que deje de fallar.
+  > Retrasa el fallo, pero las conexiones se siguen acumulando.
+- [ ] Usar `PreparedStatement` en vez de `Statement`.
+  > Mejora la seguridad, pero no libera conexiones.
+- [x] Cerrar los recursos con try-with-resources y, con carga, usar un pool.
+  > Correcta: cada recurso se libera al acabar la petición; el pool además reutiliza conexiones.
+- [ ] Llamar a `Class.forName` una sola vez al arrancar.
+  > Registrar el driver no tiene relación con las conexiones abiertas.
+
+Repasar: 3A §4.
+</Quiz>
+
+<Quiz id="t3arn-06" title="Ordenar por la columna que elige el usuario">
+En una tabla web el usuario pulsa la cabecera «Nombre», «Salario» o «Alta» para ordenar el listado. ¿Cómo se construye la consulta de forma segura?
+
+- [ ] Con `ORDER BY ?` y `setString` con el nombre de la columna.
+  > Un parámetro es un valor: se ordenaría por un texto constante, no por la columna.
+- [ ] Concatenando el texto que llega del navegador después de quitarle los espacios.
+  > Quitar espacios no impide inyectar SQL.
+- [ ] Con un `CallableStatement`, que impide la inyección.
+  > Lo que importa es cómo se construye el SQL, no el tipo de sentencia.
+- [x] Con una lista blanca de columnas fijada por la aplicación.
+  > Correcta: los `?` sirven para valores. Para nombres de columnas la aplicación decide el SQL a partir de opciones cerradas.
+
+Repasar: 3A §5, seguridad.
+</Quiz>
+
+<Quiz id="t3arn-07" title="Filtrar por varios departamentos">
+Un informe permite marcar varios departamentos, por ejemplo 10, 20 y 30, y la consulta usa `WHERE deptno IN (?)`. El programador asigna al único `?` el texto `"10,20,30"`. ¿Qué es correcto?
+
+- [ ] Funciona: JDBC separa los valores por las comas.
+  > JDBC no interpreta el contenido: el `?` recibe un único valor de texto.
+- [ ] Solo falla si hay espacios después de las comas.
+  > El problema no son los espacios: un marcador nunca representa una lista.
+- [x] Un `?` por cada valor, cada uno con su `setInt`.
+  > Correcta: se genera un marcador por cada elemento marcado y se asignan con `setInt(1, ...)`, `setInt(2, ...)`, etc.
+- [ ] Hay que concatenar la lista en el SQL, porque los `?` no admiten IN.
+  > Los `?` sí funcionan dentro de IN, uno por valor; concatenar reabre la puerta a la inyección.
+
+Repasar: 3A §5, consultas y parámetros.
+</Quiz>
+
+<Quiz id="t3arn-08" title="El céntimo que desaparece">
+Una tienda suma en Java los importes de sus facturas, guardados como `DECIMAL(10,2)`, y el total sale `1234.5699999999999`. ¿Qué cambio lo resuelve?
+
+- [ ] Usar `float` en lugar de `double`.
+  > `float` tiene todavía menos precisión: el error es mayor.
+- [x] Usar `BigDecimal` al leer, operar y escribir.
+  > Correcta: `BigDecimal` representa los decimales de forma exacta, sin el error binario de la coma flotante.
+- [ ] Redondear el resultado final con `Math.round`.
+  > Oculta el síntoma en un caso, pero los errores se siguen acumulando en otros cálculos.
+- [ ] Declarar la columna como `DOUBLE`.
+  > Trasladaría el error binario también a la base de datos.
+
+Repasar: 3A §5, recorrer los resultados.
+</Quiz>
+
+<Quiz id="t3arn-09" title="Comisión cero o sin comisión">
+Un informe muestra «Comisión: 0» a todos los empleados que **no tienen** comisión (columna NULL) y también a TURNER, que tiene una comisión real de 0. El jefe quiere distinguirlos. ¿Qué cambio lo consigue?
+
+- [ ] Leer la columna con `getInt`: devuelve `null` cuando la columna es NULL.
+  > Un `int` primitivo no puede ser `null`: `getInt` devuelve 0.
+- [ ] Usar `COUNT(comm)` en la consulta.
+  > Contaría las filas con comisión, pero no distingue el valor de cada empleado.
+- [x] Comprobar `wasNull()` tras leerla, o leerla con `getBigDecimal`.
+  > Correcta: `wasNull()` indica si el último valor leído era NULL, y `getBigDecimal` devuelve `null` en ese caso.
+- [ ] Cambiar todas las comisiones NULL por 0 en la tabla.
+  > Así se perdería justo la información que se quiere mostrar.
+
+Repasar: 3A §5, recorrer los resultados.
+</Quiz>
+
+<Quiz id="t3arn-10" title="Una importación a medias">
+Un proceso nocturno importa 10 000 pedidos con un INSERT por pedido y el autocommit activado. Falla en el pedido 6 214 por un dato corrupto. Al día siguiente hay 6 213 pedidos nuevos y nadie sabe si se puede relanzar. El negocio quiere «todos o ninguno». ¿Qué hay que cambiar?
+
+- [ ] Nada: los pedidos que ya se han guardado son correctos.
+  > Contradice el requisito «todos o ninguno» y complica relanzar la importación.
+- [ ] Usar `execute()` en vez de `executeUpdate()`.
+  > El método de ejecución no cambia cuándo se confirma.
+- [ ] Llamar a `commit()` después de cada INSERT.
+  > Es justo lo que ya hace el autocommit.
+- [x] Una transacción: commit al final, rollback si falla.
+  > Correcta: la importación pasa a ser atómica y se puede relanzar entera después de corregir el dato.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3arn-11" title="La tabla que ya existe">
+Un script de instalación en MySQL, con el autocommit desactivado, hace `CREATE TABLE auditoria`, después varios INSERT, y el tercero falla. El `catch` hace `rollback()`. Al relanzarlo falla con «Table 'auditoria' already exists». ¿Por qué?
+
+- [ ] Porque `rollback()` solo deshace el último INSERT.
+  > Sin savepoint, deshace todo lo pendiente desde el último commit.
+- [x] En MySQL el DDL hace commit implícito y la tabla quedó creada.
+  > Correcta: no hay que suponer que un rollback deshace un CREATE TABLE. El script debe comprobar si la tabla existe o separar la parte de DDL.
+- [ ] Porque `executeUpdate` con DDL no participa en transacciones en ningún motor.
+  > El comportamiento depende del motor; en MySQL el problema es el commit implícito.
+- [ ] Porque el driver repite automáticamente el CREATE al reconectar.
+  > JDBC no repite sentencias por su cuenta.
+
+Repasar: 3A §7, crear y modificar datos.
+</Quiz>
+
+<Quiz id="t3arn-12" title="Migrar de MySQL a Oracle">
+Una empresa cambia de MySQL a Oracle. Se cambian el driver, la URL y las credenciales, y todo compila, pero las consultas con `LIMIT 10` fallan al ejecutarse. ¿Qué explica el temario?
+
+- [ ] Que el driver de Oracle está mal instalado.
+  > El resto de consultas funcionan: el driver se ha cargado bien.
+- [ ] Que JDBC tendría que haber traducido `LIMIT` automáticamente.
+  > JDBC no traduce dialectos.
+- [x] Que JDBC unifica las llamadas Java, no el dialecto SQL.
+  > Correcta: el SQL propio de un motor puede tener que reescribirse para otro.
+- [ ] Que hay que usar `Statement` en lugar de `PreparedStatement`.
+  > El tipo de sentencia no cambia la sintaxis que acepta el motor.
+
+Repasar: 3A §1.
+</Quiz>
+
+<Quiz id="t3arn-13" title="Una consola SQL genérica">
+Una herramienta interna deja que el administrador escriba cualquier sentencia SQL: unas veces un SELECT y otras un UPDATE o un DELETE. El programa no sabe cuál llegará. ¿Cómo se ejecuta y se muestra el resultado?
+
+- [ ] Con `executeQuery()` siempre, y capturando la excepción si no era un SELECT.
+  > Usar excepciones para controlar el flujo es frágil, y la modificación podría haberse aplicado ya.
+- [x] Con `execute()` y, según su booleano, `getResultSet()` o `getUpdateCount()`.
+  > Correcta: `execute()` sirve cuando no se conoce de antemano el tipo de resultado. El booleano indica si hay un `ResultSet`, no si ha ido bien.
+- [ ] Con `executeUpdate()` siempre, porque también devuelve las filas de un SELECT.
+  > `executeUpdate` devuelve un recuento; con un SELECT los drivers lanzan excepción.
+- [ ] Mirando si el texto empieza por «SELECT» y eligiendo el método.
+  > Falla con comentarios, espacios iniciales, WITH y otros casos; `execute()` resuelve la duda.
+
+Repasar: 3A §5, elegir el método de ejecución.
+</Quiz>
+
+<Quiz id="t3arn-14" title="Demasiadas tablas en el listado">
+Una utilidad lista las tablas de la base `ventas` con `getTables(null, null, "%", new String[] {"TABLE"})`. En el servidor MySQL de desarrollo hay otras bases, y el listado incluye tablas de todas ellas. ¿Qué ajuste corresponde?
+
+- [ ] Cambiar `"%"` por `"*"`.
+  > El comodín de los patrones de metadatos es `%`, no `*`.
+- [ ] Usar `ResultSetMetaData` en lugar de `DatabaseMetaData`.
+  > `ResultSetMetaData` describe las columnas de un resultado; no lista tablas.
+- [ ] Quitar el filtro `"TABLE"`.
+  > Aparecerían también las vistas: el listado sería todavía más largo.
+- [x] Pasar `conexion.getCatalog()` como catálogo.
+  > Correcta: `null` significa «no filtrar por ese criterio». En MySQL el catálogo selecciona la base.
+
+Repasar: 3A §6.
+</Quiz>
+
+<Quiz id="t3arn-15" title="Antes de borrar una tabla">
+Antes de eliminar la tabla `clientes`, una consultora quiere saber desde Java qué otras tablas la referencian con claves foráneas. ¿Qué método de `DatabaseMetaData` le da esa información?
+
+- [ ] `getImportedKeys` sobre `clientes`.
+  > Devuelve las FK de `clientes` hacia otras tablas: justo la dirección contraria.
+- [ ] `getPrimaryKeys` sobre `clientes`.
+  > Solo dice cuál es su clave primaria.
+- [x] `getExportedKeys` sobre `clientes`.
+  > Correcta: lista las referencias de otras tablas hacia la clave primaria de `clientes`.
+- [ ] `getColumns` sobre `clientes`.
+  > Describe sus columnas, no quién depende de ellas.
+
+Repasar: 3A §6.
+</Quiz>
+
+<Quiz id="t3arn-16" title="Un procedimiento al pasar a SQLite">
+Una aplicación de escritorio llama con `CallableStatement` a un procedimiento de MySQL que calcula el total de un pedido. Se quiere distribuir con SQLite para trabajar sin servidor. ¿Qué implica?
+
+- [ ] Nada: `CallableStatement` funciona igual con cualquier motor.
+  > La llamada necesita que el motor tenga ese procedimiento.
+- [ ] Hay que reescribir el procedimiento en PL/SQL.
+  > PL/SQL es de Oracle; SQLite tampoco lo ejecuta.
+- [x] SQLite no tiene procedimientos: la lógica pasa a Java.
+  > Correcta: el cálculo se hace en la aplicación, dentro de su transacción, o con consultas SQL.
+- [ ] Basta con cambiar `{call ...}` por `begin ...; end;`.
+  > Esa sintaxis es de los bloques PL/SQL de Oracle.
+
+Repasar: 3A §8.
+</Quiz>
+
+<Quiz id="t3arn-17" title="Una pantalla de edición que no edita">
+Una pantalla muestra empleados con el nombre de su departamento mediante un JOIN de `emp` y `dept`, y pide un `ResultSet` `CONCUR_UPDATABLE` para editarlos con `updateRow()`. Al guardar se produce un error de resultado de solo lectura. ¿Cuál es el diagnóstico?
+
+- [ ] Falta llamar a `commit()` antes de `updateRow()`.
+  > El orden es el contrario, y no explica el error de solo lectura.
+- [ ] `CONCUR_UPDATABLE` solo funciona con `TYPE_FORWARD_ONLY`.
+  > El tipo de desplazamiento no es la causa.
+- [ ] El driver no admite resultados actualizables en ningún caso.
+  > Con una consulta sencilla de una tabla sí suelen admitirse.
+- [x] Con JOIN no suele ser actualizable: el driver lo degrada.
+  > Correcta: conviene comprobar `getConcurrency()`. Se necesita una consulta de una sola tabla con su clave primaria, o un UPDATE preparado.
+
+Repasar: 3A §10, modificar, insertar y borrar.
+</Quiz>
+
+<Quiz id="t3arn-18" title="Un regalo opcional en el pedido">
+Al confirmar un pedido se insertan la cabecera y las líneas, y después, de forma opcional, una línea de regalo promocional. Si el regalo falla, por ejemplo por falta de stock, el pedido debe guardarse igualmente sin él. Todo va en una transacción. ¿Qué técnica corresponde?
+
+- [ ] Hacer `rollback()` si falla el regalo y volver a insertar el pedido.
+  > Funcionaría con más trabajo y más riesgo; hay una forma directa de deshacer solo una parte.
+- [x] Un `Savepoint` antes del regalo y `rollback(sp)` si falla.
+  > Correcta: el savepoint deshace solo la parte opcional; el commit final confirma el resto.
+- [ ] Activar el autocommit solo para el regalo.
+  > Al activarlo se confirma lo que hubiera pendiente, y el pedido deja de ser una unidad.
+- [ ] Insertar el regalo en otra conexión.
+  > Quedaría fuera de la transacción del pedido y podría guardarse sin él.
+
+Repasar: 3A §9.
+</Quiz>
+
+<Quiz id="t3arn-19" title="Credenciales dentro de la app móvil">
+Una startup quiere que su app Android se conecte directamente con JDBC a la base MySQL de la empresa, con el usuario y la contraseña incluidos en la app. ¿Qué arquitectura recomienda el temario?
+
+- [ ] Dos capas, cifrando la contraseña dentro de la app.
+  > La app instalada se puede analizar y la clave de descifrado viaja con ella.
+- [ ] Dos capas, con un driver tipo 2.
+  > El tipo de driver no resuelve dónde viven las credenciales.
+- [ ] Una base SQLite local en cada móvil, sin sincronizar con la central.
+  > Cambia el requisito: los datos dejarían de ser comunes.
+- [x] Tres capas: solo un servicio intermedio conoce las credenciales.
+  > Correcta: la capa intermedia centraliza permisos, reglas de negocio y conexiones.
+
+Repasar: 3A §2, dos capas y tres capas.
+</Quiz>
+
+<Quiz id="t3arn-20" title="Ver los cambios de otros mientras navego">
+Una pantalla de seguimiento abre un `ResultSet` `TYPE_SCROLL_SENSITIVE` porque el equipo da por hecho que mostrará al momento los cambios que hagan otros usuarios. En pruebas no se ve ninguno. ¿Qué es cierto?
+
+- [ ] Es un fallo seguro de programación: `TYPE_SCROLL_SENSITIVE` siempre los muestra.
+  > La sensibilidad es una petición que depende del soporte del driver.
+- [x] Depende del driver; para ver datos frescos, se repite la consulta.
+  > Correcta: no se puede dar por supuesta. Hay que comprobar qué ofrece el driver o refrescar la consulta.
+- [ ] Hay que añadir `CONCUR_UPDATABLE` para ver los cambios.
+  > La concurrencia decide si se puede modificar el resultado, no si se ven cambios ajenos.
+- [ ] Hay que usar `TYPE_FORWARD_ONLY`.
+  > Solo avanza y tampoco refleja cambios externos.
+
+Repasar: 3A §10, tipo y concurrencia.
+</Quiz>
+
+<QuizResults />

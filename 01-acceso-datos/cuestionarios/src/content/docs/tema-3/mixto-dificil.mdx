@@ -7,10 +7,10 @@ import { Quiz, QuizResults } from 'starlight-quiz/components';
 
 **20 preguntas originales · 10 de 3A y 10 de 3B · cuatro opciones · una correcta.** Mayor dificultad: errores que no lanzan excepción, estados que hay que seguir paso a paso y matices de NULL, agrupación y restricciones. El reparto 10/10 es de práctica, no una ponderación oficial.
 
-Java 17 o posterior. Se omiten imports y el tratamiento de excepciones salvo que formen parte de la pregunta. En Java, `conexion` es una `Connection` abierta a MySQL con la base `emp`/`dept` original. En SQLite, las FK no están activadas salvo que el fragmento lo indique. Cada pregunta es independiente.
+Java 17 o posterior. Se omiten imports y el tratamiento de excepciones salvo que formen parte de la pregunta. En Java, `conexion` es una `Connection` abierta a MySQL con la base `emp`/`dept` original. En SQLite, las FK no están activadas salvo que el fragmento lo indique. **Cada enunciado repite los datos que necesita.**
 
 <Quiz id="t3md-01" title="Una transferencia que no falla">
-El empleado 1234 no existe. ¿Cómo queda la base?
+KING (7839) existe y cobra 5000; ningún empleado tiene el `empno` 1234. Se quieren pasar 100 de KING a otro empleado. ¿Cómo queda la base?
 
 ```java
 conexion.setAutoCommit(false);
@@ -37,7 +37,7 @@ Repasar: 3A §9.
 </Quiz>
 
 <Quiz id="t3md-02" title="Actualizar con la sentencia del recorrido">
-¿Qué ocurre en la segunda vuelta del bucle?
+`emp` tiene 14 empleados y el driver es MySQL Connector/J. ¿Qué ocurre en la segunda vuelta del bucle?
 
 ```java
 Statement st = conexion.createStatement();
@@ -75,7 +75,7 @@ Repasar: 3A §10 y la práctica de salarios.
 </Quiz>
 
 <Quiz id="t3md-04" title="Rollback sin argumento">
-¿Qué queda guardado?
+El empleado 7369 (SMITH) existe: es CLERK y cobra 800. Ninguna sentencia falla. ¿Qué queda guardado?
 
 ```java
 conexion.setAutoCommit(false);
@@ -100,7 +100,7 @@ Repasar: 3A §9.
 </Quiz>
 
 <Quiz id="t3md-05" title="wasNull en el momento equivocado">
-BLAKE (7698) tiene `comm` NULL. ¿Qué imprime?
+En `emp`, el empleado 7698 es BLAKE y su columna `comm` es NULL. ¿Qué imprime?
 
 ```java
 PreparedStatement ps = conexion.prepareStatement(
@@ -126,7 +126,7 @@ Repasar: 3A §5, recorrer los resultados.
 </Quiz>
 
 <Quiz id="t3md-06" title="Ordenar con un parámetro">
-El usuario elige ordenar por salario. ¿Qué hace este código?
+`conexion` está abierta a MySQL. En un listado de empleados el usuario elige ordenar por salario. ¿Qué hace este código?
 
 ```java
 PreparedStatement ps = conexion.prepareStatement(
@@ -148,7 +148,7 @@ Repasar: 3A §5, seguridad.
 </Quiz>
 
 <Quiz id="t3md-07" title="Posición cero">
-El resultado es desplazable. ¿Qué ocurre?
+`st` se creó con `TYPE_SCROLL_INSENSITIVE`. Ordenados por `empno`, los 14 empleados empiezan por SMITH y terminan por MILLER. ¿Qué ocurre?
 
 ```java
 ResultSet rs = st.executeQuery("SELECT ename FROM emp ORDER BY empno");
@@ -170,7 +170,7 @@ Repasar: 3A §10, movimiento del cursor.
 </Quiz>
 
 <Quiz id="t3md-08" title="Un updateRow que no se confirma">
-El resultado es actualizable. ¿Cuál es el salario de SMITH al final?
+`st` se creó con `CONCUR_UPDATABLE` y el driver ofrece un resultado actualizable. SMITH (7369) cobra 800. ¿Cuál es su salario al final?
 
 ```java
 conexion.setAutoCommit(false);
@@ -194,7 +194,7 @@ Repasar: 3A §10, modificar, insertar y borrar.
 </Quiz>
 
 <Quiz id="t3md-09" title="execute con un SELECT">
-¿Qué imprime?
+`emp` tiene 14 empleados. ¿Qué imprime?
 
 ```java
 Statement st = conexion.createStatement();
@@ -238,7 +238,7 @@ Repasar: 3A §6.
 </Quiz>
 
 <Quiz id="t3md-11" title="SET NULL sobre una columna obligatoria">
-¿Qué ocurre con el DELETE?
+Base SQLite nueva y vacía. ¿Qué ocurre con el DELETE?
 
 ```sql
 PRAGMA foreign_keys = ON;
@@ -265,7 +265,7 @@ Repasar: 3B §6, acciones referenciales.
 </Quiz>
 
 <Quiz id="t3md-12" title="Contar facturas con LEFT JOIN">
-Ana tiene 2 facturas y Luis ninguna. ¿Qué fila devuelve para Luis?
+Tablas: `clientes(id INTEGER PRIMARY KEY, nombre TEXT)` y `facturas(id INTEGER PRIMARY KEY, cliente_id INTEGER, total REAL)`. Solo hay dos clientes: Ana, con 2 facturas, y Luis, sin ninguna. ¿Qué fila devuelve para Luis?
 
 ```sql
 SELECT c.nombre, COUNT(*), COUNT(f.id)
@@ -287,7 +287,7 @@ Repasar: 3B §8 y actividad Chinook.
 </Quiz>
 
 <Quiz id="t3md-13" title="Un filtro que anula el LEFT JOIN">
-Ana tiene facturas de 10 y 5 y Luis ninguna. ¿Qué devuelve?
+Tablas: `clientes(id INTEGER PRIMARY KEY, nombre TEXT)` y `facturas(id INTEGER PRIMARY KEY, cliente_id INTEGER, total REAL)`. Solo hay dos clientes: Ana, con facturas de 10 y 5, y Luis, sin ninguna. ¿Qué devuelve?
 
 ```sql
 SELECT c.nombre, COALESCE(SUM(f.total), 0)
@@ -310,7 +310,7 @@ Repasar: 3B §8 y actividad Chinook.
 </Quiz>
 
 <Quiz id="t3md-14" title="NOT IN con un NULL">
-`a` contiene 1, 2 y 3; `b` contiene 1 y NULL. ¿Qué devuelven las dos consultas?
+La tabla `a(x INTEGER)` contiene 1, 2 y 3; la tabla `b(y INTEGER)` contiene 1 y NULL. ¿Qué devuelven las dos consultas?
 
 ```sql
 SELECT COUNT(*) FROM a WHERE x NOT IN (SELECT y FROM b);
@@ -330,7 +330,7 @@ Repasar: 3B §8, consultas.
 </Quiz>
 
 <Quiz id="t3md-15" title="Afinidad NUMERIC">
-¿Qué devuelve el SELECT?
+Base SQLite nueva; `t` es una tabla ordinaria. ¿Qué devuelve el SELECT?
 
 ```sql
 CREATE TABLE t (n NUMERIC, s TEXT);
@@ -351,7 +351,7 @@ Repasar: 3B §4.
 </Quiz>
 
 <Quiz id="t3md-16" title="Unicidad compuesta con NULL">
-¿Qué devuelve el COUNT?
+Base SQLite nueva y vacía. ¿Qué devuelve el COUNT?
 
 ```sql
 CREATE TABLE m (a INTEGER, b INTEGER, UNIQUE (a, b));
@@ -373,7 +373,7 @@ Repasar: 3B §5, qué garantiza cada restricción.
 </Quiz>
 
 <Quiz id="t3md-17" title="Vaciar la tabla y volver a insertar">
-Se ejecuta lo mismo en dos tablas: una con `INTEGER PRIMARY KEY AUTOINCREMENT` y otra solo con `INTEGER PRIMARY KEY`. ¿Qué `id` recibe `'d'` en cada una?
+Se ejecuta lo mismo en dos tablas nuevas y vacías: una `t(id INTEGER PRIMARY KEY AUTOINCREMENT, n TEXT)` y otra `t(id INTEGER PRIMARY KEY, n TEXT)`. ¿Qué `id` recibe `'d'` en cada una?
 
 ```sql
 INSERT INTO t (n) VALUES ('a'), ('b'), ('c');
@@ -394,7 +394,7 @@ Repasar: 3B §6, rowid e INTEGER PRIMARY KEY.
 </Quiz>
 
 <Quiz id="t3md-18" title="El PRAGMA de otra conexión">
-El grupo 99 no existe y `contact_groups` tiene la FK hacia `groups`. ¿Qué ocurre con el INSERT de `c2`?
+`agenda.db` ya contiene `groups(group_id INTEGER PRIMARY KEY, name TEXT)` y `contact_groups(contact_id INTEGER, group_id INTEGER REFERENCES groups (group_id))`. No existe el grupo 99 y el driver usa su configuración por defecto. ¿Qué ocurre con el INSERT de `c2`?
 
 ```java
 Connection c1 = DriverManager.getConnection("jdbc:sqlite:agenda.db");
