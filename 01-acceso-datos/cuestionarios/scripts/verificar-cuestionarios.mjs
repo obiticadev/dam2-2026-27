@@ -129,8 +129,8 @@ for (let number = 1; number <= 20; number++) {
   assert.equal(id, `t3eo-${String(number).padStart(2, '0')}`);
   assert.equal([...body.matchAll(/<li>\s*<strong>[a-d]\.<\/strong>/g)].length, 4, `${id}: cuatro opciones`);
   assert.equal([...body.matchAll(/<blockquote>/g)].length, 4, `${id}: cuatro explicaciones`);
-  assert.equal([...body.matchAll(/class="sl-badge success[^"]*"[^>]*>(?:Correcta|Respuesta esperada)<\/span>/g)].length,
-    1, `${id}: una solución visible en el HTML`);
+  assert.equal([...body.matchAll(/<span class="sr-only solucion-examen">Opción (?:correcta|esperada)\.<\/span>/g)].length,
+    1, `${id}: una solución identificada en el HTML`);
   assert.match(body, /Repasar: /, `${id}: referencia de estudio`);
 }
 console.log(`${examRoute}: 20 preguntas resueltas en el HTML.`);
