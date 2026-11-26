@@ -58,55 +58,89 @@ El anexo de fuentes es la diapositiva 11 y no se expone durante los seis minutos
 
 ## Oliver — 03:00 a 06:00
 
+**Versión directa para improvisar:** tres frases por diapositiva, en presente simple, con detalles curiosos y sin preguntas al público. Recuerda las tres ideas, no cada palabra. Las traducciones son solo para preparar.
+
+**Nota de ensayo:** las franjas de tiempo son las del reparto original. Este resumen no cubre por sí solo los tres minutos: hay que cronometrarlo y ajustar la duración si se mantiene este formato. Las diapositivas conservan los ejemplos de otros tiempos verbales; este guion simplificado no los practica.
+
 ### 6. Old stories. A new home. — 03:00–03:40 (40 s)
 
-**Pistas:** immigrants → 1800s → turnips → pumpkins → has changed.
+**Pistas:** Irish and Scottish roots → pumpkin faces → jack-o’-lantern.
 
-> Thanks, Rubén! Now we’re in the United States. In the eighteen hundreds, Irish and Scottish immigrants brought Halloween customs with them. Immigrants are people who move to live in another country.
->
-> People carved lanterns from turnips, a root vegetable. In America, people started using pumpkins instead. A pumpkin lantern is called a jack-o’-lantern. Halloween has changed over time. Old ideas have found new homes!
+> Thanks, Rubén! Now we are in the United States, where Halloween has strong links to Irish and Scottish traditions.  
+> One popular custom is to cut a face in a pumpkin and put a light inside.  
+> This pumpkin has a special name: a jack-o’-lantern.
 
-**Acción:** señalar el nabo y la calabaza. *Eighteen hundreds* = siglo XIX; no decir que Halloween nació en Estados Unidos.
+**Traducción al castellano:**
+
+> ¡Gracias, Rubén! Ahora estamos en Estados Unidos, donde Halloween tiene una fuerte relación con las tradiciones irlandesas y escocesas.  
+> Una costumbre popular consiste en tallar una cara en una calabaza y poner una luz dentro.  
+> Esta calabaza tiene un nombre especial: jack-o’-lantern.
+
+**Acción:** señalar la calabaza al explicar el nombre. No presentar Estados Unidos como el origen de Halloween.
 
 ### 7. Knock, knock. — 03:40–04:20 (40 s)
 
-**Pistas:** costumes → knock → candy → polite → generous.
+**Pistas:** door to door → trick or treat → sweets/candy.
 
-> Many children dress up and go trick-or-treating. They usually visit houses in the evening with an adult. They knock and say, “Trick or treat!” Then a neighbour gives them candy.
->
-> In Britain, people usually say “sweets”. In America, they usually say “candy”. Same tasty idea! A generous neighbour shares treats. Generous means happy to give. What do polite children say? “Thank you!” Let’s practise: “Trick or treat!” … “Thank you!”
+> On Halloween, many children dress up and go from door to door.  
+> They say “Trick or treat”, and neighbours give them candy.  
+> A small difference is the word: Americans usually say “candy”, while British people say “sweets”.
 
-**Acción:** dos golpecitos suaves en el aire. Dar solo unos segundos para repetir; si nadie responde, decir tú las frases y continuar. Ir con un adulto es una recomendación de seguridad, no una regla que cumplan todas las familias.
+**Traducción al castellano:**
+
+> En Halloween, muchos niños se disfrazan y van de puerta en puerta.  
+> Dicen «Truco o trato» y los vecinos les dan golosinas.  
+> Una pequeña diferencia es la palabra: los estadounidenses suelen decir «candy», mientras que los británicos dicen «sweets».
+
+**Acción:** señalar la puerta y enlazar directamente con la diferencia de vocabulario.
 
 ### 8. Big pumpkin. Tiny superhero. — 04:20–05:00 (40 s)
 
-**Pistas:** imaginary → is wearing → enormous/tiny → already → for hours.
+**Pistas:** red cape → huge pumpkin → not always scary.
 
-> Look at this imaginary scene! This child is wearing a red cape. The pumpkin is enormous, and our superhero looks tiny next to it. Enormous means very big. Tiny means very small.
->
-> The child has already collected some candy. The family has been making the costume for hours. They’re very creative! Costumes can be ghosts, witches or superheroes. Some costumes are absolutely hilarious! That means very, very funny. Do you prefer spooky or funny costumes?
+> In this picture, the child wears a red cape and carries a bag of candy.  
+> The pumpkin looks huge next to the little superhero.  
+> Halloween costumes are not always scary: superheroes are popular too.
 
-**Acción:** mostrar grande/pequeño con las manos. La escena tiene una historia inventada: su familia lleva horas preparando el disfraz y el niño ya ha recogido caramelos. No afirmar que esto sea una foto o un dato real.
+**Traducción al castellano:**
+
+> En esta imagen, el niño lleva una capa roja y una bolsa de golosinas.  
+> La calabaza parece enorme al lado del pequeño superhéroe.  
+> Los disfraces de Halloween no siempre dan miedo: los superhéroes también son populares.
+
+**Acción:** comentar la ilustración con naturalidad. Es una escena inventada, no una anécdota personal ni una foto real.
 
 ### 9. Different words. Lots in common. — 05:00–05:35 (35 s)
 
-**Pistas:** sweets/candy → shared customs → often bigger → not everybody.
+**Pistas:** soul cakes → shared traditions → fun, not religion.
 
-> What is different? England has older customs such as soul cakes. In the US, pumpkin lanterns became very popular, and celebrations are often bigger. But costumes, pumpkins and trick-or-treating exist in both places today. Superheroes are not only American!
->
-> Halloween has pagan roots and Christian links. Today, many American families enjoy it as a non-religious celebration, just like many families in England. Every family is different.
+> England has old customs like soul cakes, and pumpkin lanterns are very popular in the USA.  
+> Today, both places share costumes, pumpkins and trick-or-treating.  
+> For many families, Halloween is more about fun than religion, but not everyone celebrates it.
 
-**Acción:** comparar las dos columnas y luego señalar «BOTH». No convertir diferencias de frecuencia o vocabulario en reglas absolutas.
+**Traducción al castellano:**
+
+> Inglaterra tiene costumbres antiguas, como los dulces de ánimas, y las calabazas iluminadas son muy populares en Estados Unidos.  
+> Hoy en día, ambos lugares comparten los disfraces, las calabazas y el «truco o trato».  
+> Para muchas familias, Halloween tiene más que ver con la diversión que con la religión, pero no todo el mundo lo celebra.
+
+**Acción:** comparar las dos columnas y señalar lo que comparten. Las diferencias de vocabulario son usos habituales, no reglas absolutas; los dulces de ánimas tampoco son exclusivos de Inglaterra.
 
 ### 10. A ghost or a superhero? — 05:35–06:00 (25 s)
 
-**Pistas:** choose → ghost/superhero → same date → thank you.
+**Pistas:** ghost or superhero → same date → thank you.
 
-> One last question! What would you wear: a ghost costume or a superhero costume? Hands up for a ghost! Now hands up for a superhero!
->
-> Both are great choices. We have visited two places with different words and shared traditions. Same date, lots of imagination! Thank you for joining our little Halloween adventure. Happy Halloween!
+> A ghost or a superhero: both fit Halloween.  
+> In the UK and the USA, the date is the same, but each family celebrates in its own way.  
+> That is our short tour of Halloween in both places, and thank you for your time.
 
-**Acción:** dos votaciones rápidas levantando la mano. Cerrar aquí, sin avanzar automáticamente a las fuentes.
+**Traducción al castellano:**
+
+> Un fantasma o un superhéroe: los dos encajan en Halloween.  
+> En el Reino Unido y Estados Unidos, la fecha es la misma, pero cada familia lo celebra a su manera.  
+> Este es nuestro breve recorrido por Halloween en ambos lugares, y gracias por vuestro tiempo.
+
+**Acción:** señalar los dos personajes y cerrar sin votaciones ni avanzar automáticamente a las fuentes.
 
 ## Cómo ensayarlo sin leer
 
