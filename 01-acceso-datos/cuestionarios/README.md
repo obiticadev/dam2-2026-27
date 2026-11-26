@@ -32,7 +32,7 @@ src/content/docs/
     └── mixto.mdx  mixto-dificil.mdx
 ```
 
-`archivo/` conserva los once cuestionarios antiguos del tema 2 sin publicarlos. La selección activa contiene **24 cuestionarios de práctica (480 preguntas)** y el **examen oficial del Tema 3 (20 preguntas, prefijo `t3eo`)**. El examen se transcribió de la grabación del 25/11/2026; las soluciones son razonadas, ya que el Aula Virtual no muestra la corrección de ese intento. Cada mixto tiene diez preguntas de cada mitad del tema (A/B, 3A/3B, 4A–4B/4C); es una distribución de práctica, no una ponderación oficial.
+`archivo/` conserva los once cuestionarios antiguos del tema 2 sin publicarlos. La selección activa contiene **24 cuestionarios de práctica (480 preguntas)** y el **examen oficial resuelto del Tema 3 (20 preguntas, anclas `t3eo`)**. El examen se transcribió de la grabación del 25/11/2026 y muestra las soluciones razonadas al abrir la página, en el orden original. El Aula Virtual no muestra la corrección de ese intento. Cada mixto tiene diez preguntas de cada mitad del tema (A/B, 3A/3B, 4A–4B/4C); es una distribución de práctica, no una ponderación oficial.
 
 La barra lateral agrupa cada tema en un bloque (`sidebar` de `astro.config.mjs`). Para un tema nuevo: crear `src/content/docs/tema-N/` con sus subcarpetas, añadir el bloque en `sidebar`, la tarjeta en la portada y sus rutas en `scripts/verificar-cuestionarios.mjs`.
 

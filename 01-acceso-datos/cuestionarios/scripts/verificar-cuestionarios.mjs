@@ -46,7 +46,6 @@ const routes = [
   ['tema-3/3b/casos-con-codigo', 't3brc', true],
   ['tema-3/casos-mixto', 't3rmn', null, [/Repasar: 3A §/, /Repasar: 3B §/]],
   ['tema-3/casos-mixto-dificil', 't3rmd', null, [/Repasar: 3A §/, /Repasar: 3B §/]],
-  ['tema-3/examen-oficial', 't3eo', false],
   ['tema-4/orm/sin-codigo', 't4on', false],
   ['tema-4/orm/con-codigo', 't4oc', true],
   ['tema-4/hql/sin-codigo', 't4hn', false],
@@ -60,8 +59,9 @@ function mdxFiles(dir) {
     return entry.isDirectory() ? mdxFiles(path) : path.endsWith('.mdx') ? [path] : [];
   });
 }
-assert.equal(mdxFiles(fileURLToPath(new URL('src/content/docs', root))).length, routes.length + 1,
-  'Deben publicarse los cuestionarios de la lista y la portada');
+const examRoute = 'tema-3/examen-oficial';
+assert.equal(mdxFiles(fileURLToPath(new URL('src/content/docs', root))).length, routes.length + 2,
+  'Deben publicarse los cuestionarios de la lista, el examen resuelto y la portada');
 
 const ids = new Set();
 let total = 0;
@@ -117,4 +117,20 @@ console.log(`Correcta estrictamente más larga: ${longest}/${total} (métrica or
 
 const home = read('dist/index.html');
 for (const [route] of routes) assert.ok(home.includes(`href="/${route}/"`), `Falta enlace: ${route}`);
+assert.ok(home.includes(`href="/${examRoute}/"`), 'Falta enlace al examen resuelto');
 assert.ok(!home.includes('/ut02a/a1-file-filtros/'), 'La portada enlaza contenido archivado');
+
+const exam = read(`dist/${examRoute}/index.html`);
+const examQuestions = exam.split(/<span id="(t3eo-\d{2})"><\/span>/).slice(1);
+assert.equal(examQuestions.length, 40, 'El examen resuelto tiene 20 preguntas con ancla');
+assert.doesNotMatch(exam, /<sl-quiz[\s>]/, 'El examen resuelto no requiere responder');
+for (let number = 1; number <= 20; number++) {
+  const [id, body] = examQuestions.slice((number - 1) * 2, number * 2);
+  assert.equal(id, `t3eo-${String(number).padStart(2, '0')}`);
+  assert.equal([...body.matchAll(/<li>\s*<strong>[a-d]\.<\/strong>/g)].length, 4, `${id}: cuatro opciones`);
+  assert.equal([...body.matchAll(/<blockquote>/g)].length, 4, `${id}: cuatro explicaciones`);
+  assert.equal([...body.matchAll(/class="sl-badge success[^"]*"[^>]*>(?:Correcta|Respuesta esperada)<\/span>/g)].length,
+    1, `${id}: una solución visible en el HTML`);
+  assert.match(body, /Repasar: /, `${id}: referencia de estudio`);
+}
+console.log(`${examRoute}: 20 preguntas resueltas en el HTML.`);
