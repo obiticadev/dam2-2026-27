@@ -1,0 +1,37 @@
+.examen-resuelto > p:has(+ ul) {
+	padding: 0.75rem 1rem;
+	border: 1px solid var(--sl-color-hairline);
+	border-radius: 0.75rem;
+	background-color: var(--sl-color-gray-6);
+	color: var(--sl-color-white);
+	font-size: var(--sl-text-lg);
+	font-weight: 600;
+}
+
+.examen-resuelto > ul {
+	padding-inline-start: 0;
+}
+
+.examen-resuelto > ul > li {
+	padding: 0.625rem 1rem;
+	border: 1px solid transparent;
+	border-radius: 0.75rem;
+}
+
+.examen-resuelto > ul > li::marker {
+	color: transparent;
+}
+
+.examen-resuelto > ul > li:has(> .sl-badge.success) {
+	border-color: var(--sl-color-green-high);
+	background-color: color-mix(in srgb, var(--sl-color-green) 14%, var(--sl-color-bg));
+	color: var(--sl-color-white);
+	font-weight: 600;
+}
+
+.examen-resuelto > ul > li > blockquote {
+	margin-block: 0.375rem 0;
+	padding-inline-start: 0.75rem;
+	font-size: var(--sl-text-sm);
+	font-weight: 400;
+}
