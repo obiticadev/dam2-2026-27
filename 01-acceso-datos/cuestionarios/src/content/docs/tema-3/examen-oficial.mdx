@@ -1,0 +1,310 @@
+---
+title: "EXAMEN OFICIAL"
+description: "Tema 3 · JDBC y SQLite · 20 preguntas del examen del 25/11/2026 con corrección razonada."
+---
+
+import { Quiz, QuizResults } from 'starlight-quiz/components';
+
+**Tema 3 · JDBC y SQLite · 25/11/2026.** Las 20 preguntas y sus opciones proceden del examen del Aula Virtual, con erratas tipográficas corregidas. Las soluciones se han razonado a partir del temario y la API JDBC: el Aula Virtual no mostró su plantilla de corrección.
+
+<Quiz id="t3eo-01" title="Metadatos de un resultado">
+¿Qué información nos permite obtener la interfaz `ResultSetMetaData`?
+
+- [x] Nos permite obtener información de los datos contenidos en un `ResultSet`.
+  > Describe las columnas del resultado: cuántas hay, sus etiquetas, tipos, etc. Para leer los valores de cada fila se usa el propio `ResultSet`.
+- [ ] Nos permite obtener información de los datos contenidos en un `Statement`.
+  > Describe el resultado, no la sentencia que lo produjo.
+- [ ] Ninguna de las otras respuestas es correcta.
+  > Sí hay una válida: la que se refiere a un `ResultSet`.
+- [ ] `ResultSetMetaData` no es una interfaz, es una clase.
+  > Es una interfaz de `java.sql`; el controlador proporciona su implementación.
+
+Repasar: 3A §6, metadatos del resultado.
+</Quiz>
+
+<Quiz id="t3eo-02" title="Nombre del controlador">
+¿Qué información devuelve el método `getDriverName()` de la interfaz `DatabaseMetaData`?
+
+- [ ] Todas las demás respuestas son correctas.
+  > El nombre, la versión y el límite de conexiones se consultan con métodos distintos.
+- [x] Devuelve, en un `String`, el nombre del controlador JDBC.
+  > `getDriverName()` identifica el controlador JDBC utilizado por la conexión.
+- [ ] Recupera el número máximo de conexiones simultáneas a esta base de datos que son posibles.
+  > Lo consulta `getMaxConnections()`, que devuelve un `int`.
+- [ ] Devuelve el número de versión del controlador JDBC como un `String`.
+  > La versión en texto se obtiene con `getDriverVersion()`.
+
+Repasar: 3A §6, `DatabaseMetaData`.
+</Quiz>
+
+<Quiz id="t3eo-03" title="Uso de PreparedStatement">
+¿Para qué se usa la interfaz `PreparedStatement`?
+
+- [ ] Se utiliza para implementar sentencias SQL simples sin parámetros.
+  > Puede ejecutar SQL sin parámetros, pero eso no caracteriza a `PreparedStatement`; también puede hacerlo un `Statement`.
+- [x] Se utiliza para compilar previamente sentencias SQL que pueden contener parámetros de entrada.
+  > Es la interfaz para sentencias preparadas. Permite vincular los valores de los marcadores `?` y ejecutar la sentencia más de una vez.
+- [ ] Todas las demás respuestas son correctas.
+  > La opción que describe los parámetros de salida corresponde a `CallableStatement`.
+- [ ] Se utiliza para ejecutar procedimientos almacenados que pueden contener parámetros de entrada y salida.
+  > JDBC ofrece `CallableStatement` para estas llamadas y para registrar parámetros de salida.
+
+Repasar: 3A §5 y §8.
+</Quiz>
+
+<Quiz id="t3eo-04" title="Sentencias preparadas e inyección SQL">
+Las sentencias preparadas evitan la inyección SQL. ¿Es correcto?
+
+- [ ] Incorrecto.
+  > Usadas con parámetros, sí protegen los valores vinculados como datos.
+- [ ] Ninguna de las otras respuestas es correcta.
+  > «Correcto» es la respuesta cuando los datos de entrada se vinculan como parámetros.
+- [ ] Las sentencias preparadas no tienen nada que ver con la inyección SQL.
+  > La separación entre sintaxis SQL y valores es precisamente lo que aporta la protección.
+- [x] Correcto.
+  > Los valores vinculados a `?` no se interpretan como código SQL. Crear un `PreparedStatement` no protege fragmentos de SQL que se hayan construido concatenando entradas.
+
+Repasar: 3A §5, seguridad y parámetros.
+</Quiz>
+
+<Quiz id="t3eo-05" title="Gestión automática de transacciones">
+Si no es importante gestionar las transacciones en un código Java, entonces…
+
+- [ ] Finalizamos el código con `conexion.commit()`.
+  > Si está activo el modo de confirmación automática, no se necesita un `commit()` explícito.
+- [x] No hay que hacer nada en el código.
+  > No hace falta configurar transacciones manuales si la conexión mantiene el modo predeterminado, `autoCommit = true`. Cada sentencia se confirma al completarse.
+- [ ] Hay que poner la propiedad `autoCommit` a `false`.
+  > Eso desactiva la confirmación automática y obliga a decidir cuándo confirmar o revertir los cambios.
+- [ ] Ninguna de las otras respuestas es correcta.
+  > Con el modo predeterminado sí es válida la opción de no configurar nada específicamente para las transacciones.
+
+Repasar: 3A §9, `autoCommit`.
+</Quiz>
+
+<Quiz id="t3eo-06" title="Estándares ODBC y JDBC">
+Indica cuál de las siguientes afirmaciones es **falsa** en relación con los estándares de conectividad ODBC y JDBC.
+
+- [ ] JDBC es un estándar de conexión adaptado a las especificidades de Java.
+  > Es verdadera: JDBC es la API estándar de acceso a datos de Java.
+- [ ] ODBC se puede conectar a distintos tipos de sistemas de gestión de bases de datos, aunque no sean de Microsoft.
+  > Es verdadera: ODBC puede utilizarse con distintos fabricantes si existe un controlador compatible.
+- [x] Para ODBC no hace falta que las empresas desarrolladoras de sistemas de gestión de bases de datos desarrollen controladores de conexión; fue el gran avance que trajo ODBC al mercado.
+  > Es la afirmación falsa en el sentido del examen: una interfaz común no elimina la necesidad de un controlador compatible con el motor. Puede suministrarlo el fabricante o un tercero.
+- [ ] Ambos son estándares de interfaz que permiten a las aplicaciones conectarse a diferentes sistemas de gestión de bases de datos.
+  > Es verdadera: ambos ofrecen una interfaz común sobre controladores específicos.
+
+Repasar: 3A §1 y §2, estándares y controladores.
+</Quiz>
+
+<Quiz id="t3eo-07" title="Procedimientos y funciones">
+¿Qué interfaz se utiliza en JDBC para invocar procedimientos y funciones almacenados en la base de datos y a través de qué método de `Connection` se crea?
+
+- [ ] `PreparedStatement`, mediante `prepareStatement()`.
+  > Prepara SQL con parámetros de entrada. La interfaz que JDBC dedica a las llamadas a rutinas es `CallableStatement`.
+- [x] `CallableStatement`, mediante `prepareCall()`.
+  > `Connection.prepareCall(...)` devuelve un `CallableStatement`, que admite el registro de parámetros de salida.
+- [ ] `DatabaseMetaData`, mediante `getMetaData()`.
+  > Permite consultar información sobre la base de datos, el controlador y sus capacidades.
+- [ ] `Statement`, mediante `createStatement()`.
+  > Crea una sentencia general. No proporciona la API de `CallableStatement` para parámetros de salida.
+
+Repasar: 3A §8, procedimientos almacenados.
+</Quiz>
+
+<Quiz id="t3eo-08" title="Tipo de controlador más habitual">
+¿Cuál es el tipo de conector JDBC más habitual y extendido?
+
+- [ ] Tipo 3.
+  > Se comunica mediante un servidor intermediario o middleware.
+- [ ] Tipo 1.
+  > Es el puente histórico JDBC–ODBC.
+- [x] Tipo 4.
+  > Está escrito en Java y se comunica directamente con el protocolo del gestor, sin bibliotecas nativas en el cliente ni middleware.
+- [ ] Tipo 2.
+  > Utiliza bibliotecas nativas del cliente.
+
+Repasar: 3A §2, clasificación de los controladores.
+</Quiz>
+
+<Quiz id="t3eo-09" title="Información de una URL JDBC">
+La cadena de conexión es `String url = "jdbc:mysql://localhost:3306/world";`. Señala qué **no** dice este parámetro sobre la conexión.
+
+- [ ] El servidor está en el mismo host que el programa Java.
+  > `localhost` indica que el programa intenta conectarse al host local.
+- [x] La base de datos está levantada para recibir peticiones.
+  > La URL describe el destino, pero no indica si está disponible. Eso se comprueba al intentar conectarse.
+- [ ] El nombre de la base de datos de conexión.
+  > El segmento `/world` indica el nombre de la base de datos solicitada.
+- [ ] El servidor está en el puerto `3306`.
+  > `:3306` indica el puerto de destino, aunque no garantiza que haya un servidor escuchando.
+
+Repasar: 3A §3, URL de conexión.
+</Quiz>
+
+<Quiz id="t3eo-10" title="Cursor desplazable sensible">
+Al configurar un `ResultSet`, ¿qué tipo de cursor permite desplazarse tanto hacia delante como hacia atrás y refleja además en tiempo real las modificaciones realizadas por otras transacciones concurrentes?
+
+- [ ] `ResultSet.TYPE_SCROLL_INSENSITIVE`.
+  > Permite desplazarse en ambos sentidos, pero normalmente no refleja los cambios de los datos subyacentes.
+- [x] `ResultSet.TYPE_SCROLL_SENSITIVE`.
+  > Es la opción esperada: permite desplazarse en ambos sentidos y suele ser sensible a cambios en los datos. «En tiempo real» no es una garantía universal; la visibilidad depende del controlador, el motor y el aislamiento.
+- [ ] `ResultSet.CONCUR_UPDATABLE`.
+  > Es un modo de concurrencia para modificar filas a través del resultado; no determina cómo puede desplazarse el cursor.
+- [ ] `ResultSet.TYPE_FORWARD_ONLY`.
+  > Solo permite desplazarse hacia delante.
+
+Repasar: 3A §10, tipo y concurrencia.
+</Quiz>
+
+<Quiz id="t3eo-11" title="Controlador JDBC de tipo 1">
+¿Cómo se denominan y cuál es el funcionamiento principal de los conectores JDBC de tipo 1?
+
+- [ ] Son controladores 100 % Java puro que se comunican directamente con el protocolo propietario de la base de datos.
+  > Esa es la descripción del tipo 4.
+- [ ] Se conocen como API nativa y traducen las llamadas JDBC directamente a código nativo de la máquina cliente sin pasar por ODBC.
+  > Esa es la descripción del tipo 2.
+- [x] Se denominan puente JDBC–ODBC y traducen las llamadas JDBC a llamadas ODBC para enviarlas a la fuente de datos.
+  > El puente delega el acceso al gestor en la capa ODBC y su controlador.
+- [ ] Son controladores de red en Java puro que envían las peticiones a un servidor intermedio o middleware.
+  > Esa es la descripción del tipo 3.
+
+Repasar: 3A §2, clasificación de los controladores.
+</Quiz>
+
+<Quiz id="t3eo-12" title="Rendimiento de las sentencias preparadas">
+Una sentencia preparada es más lenta que una sentencia SQL no preparada. ¿Es correcto?
+
+- [ ] Sí, al ser precompilada tarda más en ser ejecutada.
+  > Preparar tiene un coste inicial, pero dicho coste puede amortizarse si se reutiliza la misma sentencia.
+- [ ] No, son iguales.
+  > No hay una igualdad de rendimiento garantizada entre las dos formas de ejecución.
+- [ ] Ninguna de las otras respuestas es correcta.
+  > Una lectura estricta admite esta opción, porque ninguna comparación absoluta se cumple siempre. En el contexto del temario, se espera reconocer la ventaja al reutilizar la preparación.
+- [x] No, es más rápida.
+  > Es la respuesta esperada según el temario: al repetir la consulta con distintos parámetros se puede ahorrar trabajo de preparación. Una ejecución aislada no tiene por qué ser más rápida; depende del motor y del controlador.
+
+Repasar: 3A §5, sentencias preparadas.
+</Quiz>
+
+<Quiz id="t3eo-13" title="Paquetes de la API JDBC">
+¿Cuál es o cuáles son los paquetes de la API JDBC?
+
+- [ ] Ninguna de las otras respuestas es correcta.
+  > Sí hay una que nombra los dos paquetes principales.
+- [ ] `java.sql.*`, `javay.sql.*` y `javax.sql.*`.
+  > `javay.sql` no es un paquete de JDBC.
+- [x] `java.sql.*` y `javax.sql.*`.
+  > `java.sql` incluye tipos como `Connection` y `ResultSet`; `javax.sql` incluye, entre otros, `DataSource`.
+- [ ] `java.sql.*`.
+  > Es el paquete principal, pero por sí solo deja fuera `javax.sql`.
+
+Repasar: 3A §1, API JDBC.
+</Quiz>
+
+<Quiz id="t3eo-14" title="Resultado de un INSERT">
+¿Qué devuelve `executeUpdate("insert into jobs values ('ID TEACH', 'PROFESOR IT', 2500, 5000)")` si no hay ningún error ni se viola ninguna restricción de la base de datos?
+
+- [ ] `0`.
+  > El `INSERT` indicado sí afecta a una fila.
+- [x] `1`.
+  > `executeUpdate()` devuelve el número de filas afectadas como un `int`; aquí se inserta una sola fila.
+- [ ] No devuelve nada.
+  > El método no es `void`: devuelve un recuento.
+- [ ] `"0"`.
+  > No devuelve una cadena de texto y la operación afecta a una fila.
+
+Repasar: 3A §5 y §7, `executeUpdate()`.
+</Quiz>
+
+<Quiz id="t3eo-15" title="Liberación de recursos JDBC">
+En relación con la liberación de recursos al gestionar conexiones y resultados con JDBC, señala la respuesta **falsa**.
+
+- [ ] Conviene cerrar la clase `Connection`.
+  > Es verdadera en el sentido del examen: se cierra la instancia de `Connection` cuando ya no se necesita, no la clase.
+- [ ] Conviene cerrar las llamadas a procedimientos almacenados (`CallableStatement`), las consultas (`Statement` y `PreparedStatement`) y los resultados (`ResultSet`) para liberar recursos.
+  > Es verdadera: cerrarlos libera los recursos que mantienen.
+- [x] Dejar abiertas las clases usadas en las consultas no tiene ningún impacto en la gestión de recursos del programa.
+  > Es falsa: dejar los objetos abiertos puede retener cursores, conexiones u otros recursos del controlador y del servidor.
+- [ ] Es recomendable liberar recursos en el bloque `finally` del `try`–`catch`.
+  > Es verdadera si el cierre se gestiona manualmente. En Java moderno, `try` con recursos suele ser preferible porque automatiza el cierre.
+
+Repasar: 3A §4, cierre de recursos.
+</Quiz>
+
+<Quiz id="t3eo-16" title="Significado de JDBC">
+¿Qué significa el acrónimo JDBC?
+
+- [ ] Java Data Binding Contract.
+  > No es el nombre usado para la API de conectividad con bases de datos.
+- [ ] Java Bridge for Database Connectivity.
+  > JDBC no significa «puente»; el puente JDBC–ODBC es solamente un tipo de controlador.
+- [x] Java Database Connectivity.
+  > Es la denominación habitual que recoge el temario.
+- [ ] Joint Database Communication Layer.
+  > No corresponde al nombre de la API JDBC.
+
+Repasar: 3A §1, introducción.
+</Quiz>
+
+<Quiz id="t3eo-17" title="ResultSet actualizable">
+Si el objeto `ResultSet` tiene el atributo `CONCUR_UPDATABLE`, ¿qué ocurre?
+
+- [ ] Puede modificar los valores de los campos de una fila del objeto.
+  > Es cierto, pero no es la respuesta completa. Se pueden cambiar columnas y aplicar los cambios con `updateRow()`.
+- [x] Todas las otras respuestas son correctas.
+  > Un resultado efectivamente actualizable permite modificar, insertar y borrar filas, dentro de las limitaciones del controlador y la consulta.
+- [ ] Puede insertar una fila del objeto.
+  > Es cierto: se prepara la fila de inserción y se llama a `insertRow()`. También se puede modificar y borrar.
+- [ ] Puede borrar una fila del objeto.
+  > Es cierto: `deleteRow()` borra la fila actual. No es la única operación disponible.
+
+Repasar: 3A §10, modificar, insertar y borrar.
+</Quiz>
+
+<Quiz id="t3eo-18" title="Arquitectura de la API JDBC">
+¿Cómo es la arquitectura de conexión de la API JDBC?
+
+- [ ] La API `java.sql.*` ofrece interfaces y métodos para gestionar conexiones que no cambian con el fabricante. El controlador implementa esas interfaces y es el mismo aunque cambie el fabricante de la base de datos.
+  > La API es común, pero el controlador concreto debe ser compatible con el gestor al que se quiere acceder.
+- [ ] Ninguna de las otras respuestas es correcta.
+  > Sí hay una opción que distingue la API común de las implementaciones específicas.
+- [ ] La API `java.sql.*` es un conjunto de clases que implementan interfaces Java y no cambia con el fabricante. El controlador es una colección de interfaces y métodos de gestión de conexiones que cambia según el fabricante.
+  > Invierte las funciones: la API define el contrato y el controlador lo implementa.
+- [x] La API `java.sql.*` ofrece interfaces y métodos para gestionar conexiones que no cambian con el fabricante. Los controladores son clases que implementan esas interfaces y varían según el gestor de la base de datos.
+  > La aplicación usa tipos estándar, como `Connection`, mientras que el controlador traduce las llamadas para el gestor al que accede.
+
+Repasar: 3A §1 y §2, API y controladores.
+</Quiz>
+
+<Quiz id="t3eo-19" title="Sentencias que admite JDBC">
+¿Qué tipos de sentencias se pueden ejecutar con JDBC?
+
+- [ ] Consultas.
+  > Sí, por ejemplo `SELECT` con `executeQuery()`; también se admiten DDL y DML.
+- [ ] Sentencias DDL.
+  > Sí, por ejemplo `CREATE TABLE` con `executeUpdate()`; no es la única categoría.
+- [x] Todas las otras respuestas son correctas.
+  > JDBC puede ejecutar consultas, sentencias DDL que cambian el esquema y sentencias DML que modifican los datos.
+- [ ] Sentencias DML.
+  > Sí, por ejemplo `INSERT`, `UPDATE` y `DELETE` con `executeUpdate()`; también se admiten consultas y DDL.
+
+Repasar: 3A §5 y §7, métodos de ejecución.
+</Quiz>
+
+<Quiz id="t3eo-20" title="Almacenamiento de lecturas sin conexión">
+Un dispositivo que monitoriza el clima tiene pocos recursos de hardware y necesita guardar lecturas cada cierto tiempo. Algunos dispositivos tienen conexión a Internet, otros no, y algunas conexiones se pierden temporalmente. ¿Qué tipo de base de datos es más adecuado?
+
+- [ ] Ambas soluciones son adecuadas.
+  > Un servidor local en el propio dispositivo puede funcionar sin Internet, pero añade el coste de mantener otro proceso. Con pocos recursos, la opción embebida encaja mejor.
+- [ ] Optaría por una base de datos cliente-servidor en local.
+  > Puede funcionar sin Internet si el servidor es accesible localmente, pero requiere desplegar y mantener un servidor separado de la aplicación.
+- [ ] Ninguna solución es adecuada.
+  > Una base embebida sí cubre la necesidad de escribir lecturas localmente con poca infraestructura.
+- [x] Optaría por una base de datos embebida.
+  > Por ejemplo, SQLite guarda las lecturas en un fichero local sin un proceso servidor independiente y sin depender de Internet.
+
+Repasar: 3B §1 y §2, base embebida frente a cliente-servidor.
+</Quiz>
+
+<QuizResults />

@@ -26,13 +26,13 @@ src/content/docs/
 │   └── mixto.mdx  mixto-dificil.mdx
 ├── tema-3/                  # JDBC y SQLite
 │   ├── 3a/  3b/             # sin-codigo.mdx y con-codigo.mdx (normal) y casos-sin-codigo.mdx y casos-con-codigo.mdx (casos reales)
-│   └── mixto.mdx  mixto-dificil.mdx  casos-mixto.mdx  casos-mixto-dificil.mdx
+│   └── mixto.mdx  mixto-dificil.mdx  casos-mixto.mdx  casos-mixto-dificil.mdx  examen-oficial.mdx
 └── tema-4/                  # Hibernate y HQL
     ├── orm/  hql/           # 4A–4B y 4C: sin-codigo.mdx y con-codigo.mdx
     └── mixto.mdx  mixto-dificil.mdx
 ```
 
-`archivo/` conserva los once cuestionarios antiguos del tema 2 sin publicarlos. La selección activa contiene **24 cuestionarios y 480 preguntas**: seis por tema, más seis de casos reales del tema 3 (incidencias del día a día con JDBC y SQLite). Cada mixto tiene diez preguntas de cada mitad del tema (A/B, 3A/3B, 4A–4B/4C); es una distribución de práctica, no una ponderación oficial.
+`archivo/` conserva los once cuestionarios antiguos del tema 2 sin publicarlos. La selección activa contiene **24 cuestionarios de práctica (480 preguntas)** y el **examen oficial del Tema 3 (20 preguntas, prefijo `t3eo`)**. El examen se transcribió de la grabación del 25/11/2026; las soluciones son razonadas, ya que el Aula Virtual no muestra la corrección de ese intento. Cada mixto tiene diez preguntas de cada mitad del tema (A/B, 3A/3B, 4A–4B/4C); es una distribución de práctica, no una ponderación oficial.
 
 La barra lateral agrupa cada tema en un bloque (`sidebar` de `astro.config.mjs`). Para un tema nuevo: crear `src/content/docs/tema-N/` con sus subcarpetas, añadir el bloque en `sidebar`, la tarjeta en la portada y sus rutas en `scripts/verificar-cuestionarios.mjs`.
 

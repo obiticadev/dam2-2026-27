@@ -46,6 +46,7 @@ const routes = [
   ['tema-3/3b/casos-con-codigo', 't3brc', true],
   ['tema-3/casos-mixto', 't3rmn', null, [/Repasar: 3A §/, /Repasar: 3B §/]],
   ['tema-3/casos-mixto-dificil', 't3rmd', null, [/Repasar: 3A §/, /Repasar: 3B §/]],
+  ['tema-3/examen-oficial', 't3eo', false],
   ['tema-4/orm/sin-codigo', 't4on', false],
   ['tema-4/orm/con-codigo', 't4oc', true],
   ['tema-4/hql/sin-codigo', 't4hn', false],

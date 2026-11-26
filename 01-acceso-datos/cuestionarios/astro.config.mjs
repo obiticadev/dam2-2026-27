@@ -35,6 +35,7 @@ export default defineConfig({
 				{
 					label: 'Tema 3 · JDBC y SQLite',
 					items: [
+						{ label: 'EXAMEN OFICIAL', slug: 'tema-3/examen-oficial' },
 						{ label: '3A · Conectores JDBC', items: [{ autogenerate: { directory: 'tema-3/3a' } }] },
 						{ label: '3B · SQLite', items: [{ autogenerate: { directory: 'tema-3/3b' } }] },
 						{
